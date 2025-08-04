@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import ramStorage from "./Assets/ramStorage.png";
-import BlueprintTable from "./Components/blueprint.jsx";
 // Main App component that holds all the logic and child components
 const App = () => {
   // State to manage which major part of the book is currently active
