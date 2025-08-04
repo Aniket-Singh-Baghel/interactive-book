@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import ramStorage from "./Assets/ramStorage.png";
-import BlueprintTable from "./Components/blueprint.jsx";
 // Main App component that holds all the logic and child components
 const App = () => {
   // State to manage which major part of the book is currently active
@@ -535,7 +534,7 @@ const App = () => {
       <div className="flex justify-center mt-8">
         <img
           src={img}
-          alt={`An image for ${title}`}
+          alt={`A visual representation of the concept: ${title}`}
           className="rounded-xl shadow-lg w-full max-w-md md:max-w-xl"
         />
       </div>
