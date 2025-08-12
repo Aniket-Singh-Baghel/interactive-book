@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FaPencilAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const topics = [
   {
     id: 1,
+    part:'Part-1',
     title: "The Basics - Understanding the Computer",
     fact: "💡 The first computer mouse was made of wood!",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
@@ -12,6 +14,7 @@ const topics = [
   },
   {
     id: 2,
+    part:'Part-2',
     title: "The Software Side - Giving Instructions",
     fact: "💡 Early monitors could only show green text!",
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpNhOb6NdbrkOMYPwVUYx1vpfluX_T-ofljQ&s",
@@ -19,6 +22,7 @@ const topics = [
   },
   {
     id: 3,
+    part:'Part-3',
     title: "Using a Computer - Practical Skills",
     fact: "💡 Before GUIs, everything was typed in commands!",
     image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
@@ -26,6 +30,7 @@ const topics = [
   },
   {
     id: 4,
+    part:'Part-4',
     title: "The Digital World - Internet & Safety",
     fact: "💡 The first email was sent in 1971!",
     image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
@@ -33,6 +38,7 @@ const topics = [
   },
   {
     id: 5,
+    part:'Part-5',
     title: "Looking Ahead - From Beginner to Pro",
     fact: "💡 Quantum computers can solve problems in seconds!",
     image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
@@ -67,6 +73,10 @@ const HomePage = () => {
               className="w-full h-48 object-cover"
             />
             <div className="p-6">
+              <div className="flex items-center space-x-2 ">
+                <FaPencilAlt className="ml-28 text-orange-700"/>
+                <h1 className="font-bold text-lg ml-28">{topic.part}</h1>
+              </div>
               <h2 className="text-xl font-bold text-indigo-700">{topic.title}</h2>
               <p className="text-gray-600 mt-3 italic">{topic.fact}</p>
             </div>

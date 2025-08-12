@@ -127,7 +127,7 @@ const Chapter5 = () => {
                 <div className="px-3 py-1 rounded-full bg-gray-100 text-sm">Process</div>
                 <FlowArrow direction="right" />
               </div>
-            </div>
+            </div>   
 
             {/* Output */}
             <div className="flex-1">
