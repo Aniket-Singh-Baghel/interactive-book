@@ -26,7 +26,7 @@ const Chapter3 = () => {
             <div className="max-w-5xl mx-auto relative">
                 <div className="flex justify-center mb-6">
                     <Link
-                        to="/"
+                        to="/parts/prt1"
                         className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
                     >
                         <FaHome className="mr-2 text-lg text-indigo-600" />
@@ -163,7 +163,7 @@ const Chapter3 = () => {
 
                 {/* Floating Prev / Next navigation (center-right and center-left) */}
                 <Link
-                    to="/chapters/ch2"
+                    to="/part1/chapters//ch2"
                     className="fixed left-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition"
                     aria-label="Previous chapter"
                 >
@@ -171,7 +171,7 @@ const Chapter3 = () => {
                 </Link>
 
                 <Link
-                    to="/chapters/ch4"
+                    to="/part1/chapters/ch4"
                     className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition"
                     aria-label="Next chapter"
                 >

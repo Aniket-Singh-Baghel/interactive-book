@@ -7,7 +7,7 @@ const Chapter1 = () => {
     <div className="p-6 max-w-5xl mx-auto space-y-6">
        <div className="flex justify-center">
         <Link
-          to="/"
+          to="/parts/prt1"
           className="px-6 py-2 bg-yellow-400 text-white font-semibold rounded-full shadow-lg hover:bg-yellow-500 transition"
         >
           🏠 Home
@@ -76,7 +76,7 @@ const Chapter1 = () => {
     </div>
     <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
         <Link
-          to="/chapters/ch2"
+          to="/part1/chapters/ch2"
           className="px-6 py-2 bg-green-400 text-white font-semibold rounded-full shadow-lg hover:bg-green-500 transition"
         >
           Next →→→

@@ -1,44 +1,45 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaLaptop, FaCogs, FaMicrochip, FaMemory, FaKeyboard } from "react-icons/fa";
+import { FaLaptop, FaCogs, FaMicrochip, FaMemory, FaKeyboard,FaHome } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom"
 import studentCartoon from '../Assets/Student_Cartton.png'
 import teacherCartoon from '../Assets/teacher_Cartoon.png'
 
 const topics = [
   {
-    id: 1,
+    id: 1,  
     title: "Chapter 1: What is a Computer?",
     fact: "Defining a computer as a helpful electronic machine.",
-    path: "/chapters/ch1",
+    path: "/part1/chapters/ch1",
     icon: <FaLaptop className="text-blue-500 text-3xl" />
   },
   {
     id: 2,
     title: "Chapter 2: The Main Parts (Hardware)",
     fact: "Introducing the physical components of a computer.",
-    path: "/chapters/ch2",
+    path: "/part1/chapters/ch2",
     icon: <FaCogs className="text-pink-500 text-3xl" />
   },
   {
     id: 3,
     title: "Chapter 3: The Brain of the Computer: The CPU",
     fact: "Explaining the CPU's role as the central processing unit.",
-    path: "/chapters/ch3",
+    path: "/part1/chapters/ch3",
     icon: <FaMicrochip className="text-yellow-500 text-3xl" />
   },
   {
     id: 4,
     title: "Chapter 4: Memory and Storage",
     fact: "Differentiating between temporary memory (RAM) and permanent storage (Hard Drive).",
-    path: "/chapters/ch4",
+    path: "/part1/chapters/ch4",
     icon: <FaMemory className="text-green-500 text-3xl" />
   },
   {
     id: 5,
     title: "Chapter 5: Input and Output Devices",
     fact: "How we talk to the computer and how it talks back.",
-    path: "/chapters/ch5",
+    path: "/part1/chapters/ch5",
     icon: <FaKeyboard className="text-purple-500 text-3xl" />
   }
 ];
@@ -48,7 +49,15 @@ export default function Part1() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-100 via-pink-100 to-yellow-100 p-8 font-sans overflow-hidden">
-      
+      <div className="flex justify-center mb-6">
+        <Link
+          to="/"
+          className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
+        >
+          <FaHome className="mr-2 text-lg text-indigo-600" />
+          Home
+        </Link>
+      </div>
       {/* Cartoon Characters */}
       <motion.img
         src={teacherCartoon}

@@ -1,7 +1,7 @@
 // src/chapters/Chapter2.jsx
 import React from "react";
 import { Link } from "react-router-dom"
-import { FaKeyboard, FaMicrochip, FaDesktop, FaDatabase, FaArrowRight, FaArrowLeft, FaHome } from "react-icons/fa";
+import {FaArrowRight, FaArrowLeft} from "react-icons/fa";
 
 
 const PartCard = ({ emoji, title, desc, visual }) => {
@@ -130,7 +130,7 @@ const Chapter2 = () => {
       {/* Home Button */}
       <div className="flex justify-center">
         <Link
-          to="/"
+          to="/parts/prt1"
           className="px-6 py-2 bg-yellow-400 text-white font-semibold rounded-full shadow-lg hover:bg-yellow-500 transition"
         >
           🏠 Home
@@ -231,14 +231,14 @@ const Chapter2 = () => {
         </ul>
       </section>
       <Link
-        to="/chapters/ch1"
+        to="/part1/chapters/ch1"
         className="fixed left-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition"
         aria-label="Previous chapter"
       >
         <FaArrowLeft className="text-lg text-indigo-600" />
       </Link>
       <Link
-        to="/chapters/ch3"
+        to="/part1/chapters/ch3"
         className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition"
         aria-label="Next chapter"
       >
