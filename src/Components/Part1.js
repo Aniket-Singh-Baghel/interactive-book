@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaLaptop, FaCogs, FaMicrochip, FaMemory, FaKeyboard,FaHome } from "react-icons/fa";
+import { FaLaptop, FaCogs, FaMicrochip, FaMemory, FaKeyboard,FaHome,FaQuestionCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom"
 import studentCartoon from '../Assets/Student_Cartton.png'
@@ -41,7 +41,14 @@ const topics = [
     fact: "How we talk to the computer and how it talks back.",
     path: "/part1/chapters/ch5",
     icon: <FaKeyboard className="text-purple-500 text-3xl" />
-  }
+  },
+  {
+    id: 6,
+    title: "Chapter 6: Interactive Quiz",
+    fact: "Test your knowledge with a fun and engaging quiz!",
+    path: "/part1/chapters/qiz1",
+    icon: <FaQuestionCircle className="text-green-500 text-3xl" />
+}
 ];
 
 export default function Part1() {

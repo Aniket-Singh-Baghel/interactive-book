@@ -161,7 +161,7 @@ const Chapter5 = () => {
         </section>
 
         {/* Navigation */}
-        <Link to="/part1/chapters//ch4" className="fixed left-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition" aria-label="Previous chapter">
+        <Link to="/part1/chapters/ch4" className="fixed left-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition" aria-label="Previous chapter">
           <FaArrowLeft className="text-lg text-indigo-600" />
         </Link>
         <Link to="/part1/chapters/qiz1" className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition" aria-label="Next chapter">
