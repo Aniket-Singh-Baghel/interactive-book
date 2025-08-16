@@ -5,6 +5,8 @@ import { FaHome, FaArrowLeft, FaArrowRight, FaHdd, FaMicrochip, FaMemory, FaNetw
 
 export default function OSChapter7() {
 
+    const navigate = useNavigate();
+    
     const diagramItems = [
         { label: "CPU", color: "border-purple-500", icon: <FaMicrochip /> },
         { label: "Memory", color: "border-green-500", icon: <FaMemory /> },
@@ -61,7 +63,6 @@ export default function OSChapter7() {
             desc: "Makes sure projectors, printers, and devices are ready to use."
         },
     ];
-    const navigate = useNavigate();
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 p-6">

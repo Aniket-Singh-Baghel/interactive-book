@@ -1,6 +1,6 @@
 // src/chapters/Chapter3.jsx
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { FaKeyboard, FaMicrochip, FaDesktop, FaDatabase, FaArrowRight, FaArrowLeft, FaHome } from "react-icons/fa";
 
 const DiagramBox = ({ title, subtitle, bg = "bg-white", border = "border-gray-200", icon }) => {
@@ -20,6 +20,7 @@ const CpuInnerBox = ({ label }) => (
 );
 
 const Chapter3 = () => {
+    const navigate = useNavigate()
     return (
         <div className="p-6 min-h-screen bg-gray-50">
             {/* Home button (top center) */}
@@ -162,21 +163,24 @@ const Chapter3 = () => {
                 </section>
 
                 {/* Floating Prev / Next navigation (center-right and center-left) */}
-                <Link
-                    to="/part1/chapters//ch2"
-                    className="fixed left-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition"
-                    aria-label="Previous chapter"
-                >
-                    <FaArrowLeft className="text-lg text-indigo-600" />
-                </Link>
+                <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
+                    <button
+                        onClick={() => navigate('/part1/chapters/ch2')}
+                        className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+                    >
+                        <FaArrowLeft />
+                        Previous
+                    </button>
 
-                <Link
-                    to="/part1/chapters/ch4"
-                    className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition"
-                    aria-label="Next chapter"
-                >
-                    <FaArrowRight className="text-lg text-indigo-600" />
-                </Link>
+                    <button
+                        onClick={() => navigate('/part1/chapters/ch4')}
+                        className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+                    >
+                        Next
+                        <FaArrowRight />
+                    </button>
+                </div>
+
             </div >
         </div >
     );

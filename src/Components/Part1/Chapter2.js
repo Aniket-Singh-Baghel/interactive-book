@@ -1,7 +1,7 @@
 // src/chapters/Chapter2.jsx
 import React from "react";
-import { Link } from "react-router-dom"
-import {FaArrowRight, FaArrowLeft} from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom"
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 
 const PartCard = ({ emoji, title, desc, visual }) => {
@@ -124,6 +124,7 @@ const CartoonSpeakers = () => (
 );
 
 const Chapter2 = () => {
+  const navigate = useNavigate()
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-6">
 
@@ -230,20 +231,24 @@ const Chapter2 = () => {
           </li>
         </ul>
       </section>
-      <Link
-        to="/part1/chapters/ch1"
-        className="fixed left-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition"
-        aria-label="Previous chapter"
-      >
-        <FaArrowLeft className="text-lg text-indigo-600" />
-      </Link>
-      <Link
-        to="/part1/chapters/ch3"
-        className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white border border-gray-200 rounded-full p-3 shadow hover:bg-gray-100 transition"
-        aria-label="Next chapter"
-      >
-        <FaArrowRight className="text-lg text-indigo-600" />
-      </Link>
+      <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
+        <button
+          onClick={() => navigate('/part1/chapters/ch1')}
+          className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+        >
+          <FaArrowLeft />
+          Previous
+        </button>
+
+        <button
+          onClick={() => navigate('/part1/chapters/ch3')}
+          className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+        >
+          Next
+          <FaArrowRight />
+        </button>
+      </div>
+
     </div>
   );
 };

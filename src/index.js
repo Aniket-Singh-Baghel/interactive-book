@@ -9,12 +9,17 @@ import Part2 from './Components/Part2'
 import Part3 from './Components/Part3'
 import Part4 from './Components/Part4'
 import Part5 from './Components/Part5'
-import Chapter1 from './Components/Chapter1';
-import Chapter2 from './Components/Chapter2';
-import Chapter3 from './Components/Chapter3';
-import Chapter4 from './Components/Chapter4';
-import Chapter5 from './Components/Chapter5';
-import Quiz1 from './Components/Quiz1'
+import Chapter1 from './Components/Part1/Chapter1'
+import Chapter2 from './Components/Part1/Chapter2';
+import Chapter3 from './Components/Part1/Chapter3';
+import Chapter4 from './Components/Part1/Chapter4';
+import Chapter5 from './Components/Part1/Chapter5';
+import Peripherals from './Components/Part1/Extras/Peripharals';
+import TertiaryStorage from './Components/Part1/Extras/Tertiary_Storage'
+import OtherStorageTypes from './Components/Part1/Extras/OtherStorageTypes'
+import MemoryComparison from './Components/Part1/Extras/MemoryComaparison'
+import RamVsRom from './Components/Part1/Extras/RamVsRom'
+import Quiz1 from './Components/Part1/Quiz1'
 import Chapter6 from './Components/Part2/Chapter6'
 import Chapter7 from './Components/Part2/Chapter7'
 import Chapter8 from './Components/Part2/Chapter8'
@@ -36,6 +41,11 @@ root.render(
         <Route path="/part1/chapters/ch3" element={<Chapter3 />} />
         <Route path="/part1/chapters/ch4" element={<Chapter4 />} />
         <Route path="/part1/chapters/ch5" element={<Chapter5 />} />
+        <Route path="/part1/chapters/peripherals" element={<Peripherals />} />
+        <Route path="/part1/chapters/tertriaryStorage" element={<TertiaryStorage />} />
+        <Route path="/part1/chapters/otherStorageTypes" element={<OtherStorageTypes />} />
+        <Route path="/part1/chapters/memoryComparison" element={<MemoryComparison />} />
+        <Route path="/part1/chapters/ramVsRom" element={<RamVsRom />} />
         <Route path="/part1/chapters/qiz1" element={<Quiz1 />} />
         <Route path="/part2/chapters/ch6" element={<Chapter6 />} />
         <Route path="/part2/chapters/ch7" element={<Chapter7 />} />

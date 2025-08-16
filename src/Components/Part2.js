@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import {Link} from 'react-router-dom'
-import { FaCode, FaCogs, FaToolbox,FaHome } from "react-icons/fa";
+import { Link } from 'react-router-dom'
+import { FaCode, FaCogs, FaToolbox, FaHome, FaQuestionCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import studentCartoon from '../Assets/Student_Cartton.png'
 import teacherCartoon from '../Assets/teacher_Cartoon.png'
@@ -31,7 +31,7 @@ const topics = [
     analogy: "Application software is like a tool (e.g., screwdriver), while the OS is the toolbox holding all tools.",
     path: "/part2/chapters/ch8",
     icon: <FaToolbox className="text-green-500 text-3xl" />
-  }
+  },
 ];
 
 export default function Part2() {
@@ -39,7 +39,7 @@ export default function Part2() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-yellow-100 p-8 font-sans">
-       <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-6">
         <Link
           to="/"
           className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
@@ -70,7 +70,7 @@ export default function Part2() {
       >
         🖥️ The Software Story
       </motion.h1>
-       <h2 className="text-2xl font-semibold mb-6 text-pink-600 text-center">
+      <h2 className="text-2xl font-semibold mb-6 text-pink-600 text-center">
         Part 2: Software - The storyteller of your digital world.
       </h2>
 
