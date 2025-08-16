@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom'
-import { FaCode, FaCogs, FaToolbox, FaHome, FaQuestionCircle } from "react-icons/fa";
+import { FaCode, FaCogs, FaToolbox, FaHome} from "react-icons/fa";
 import { motion } from "framer-motion";
 import studentCartoon from '../Assets/Student_Cartton.png'
 import teacherCartoon from '../Assets/teacher_Cartoon.png'

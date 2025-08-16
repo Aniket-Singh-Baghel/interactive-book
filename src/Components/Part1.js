@@ -2,8 +2,8 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FaLaptop, FaCogs, FaMicrochip, FaMemory, FaKeyboard, FaHome, FaDatabase, FaHdd, FaChartBar, FaMouse } from "react-icons/fa";
 import { motion } from "framer-motion";
-import studentCartoon from '../Assets/Student_Cartton.png'
-import teacherCartoon from '../Assets/teacher_Cartoon.png'
+// import studentCartoon from '../Assets/Student_Cartton.png'
+// import teacherCartoon from '../Assets/teacher_Cartoon.png'
 
 const topics = [
   {
