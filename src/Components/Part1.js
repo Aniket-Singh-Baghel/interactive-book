@@ -62,14 +62,14 @@ const topics = [
     icon: <FaHdd className="text-green-500 text-3xl" />
   },{
     id: 4,
-    title: "Chapter Extra 05: RAM vs ROM",
+    title: "Chapter Extra 04: RAM vs ROM",
     fact: "Differences between volatile and non-volatile memory.",
     path: "/part1/chapters/ramVsRom",
     icon: <FaMemory className="text-red-500 text-3xl" />
   },
   {
     id: 3,
-    title: "Chapter Extra 04: Memory Comparison",
+    title: "Chapter Extra 05: Memory Comparison",
     fact: "Compare speeds, cost, and uses of various memory types.",
     path: "/part1/chapters/memoryComparison",
     icon: <FaChartBar className="text-yellow-500 text-3xl" />

@@ -24,6 +24,7 @@ import Chapter6 from './Components/Part2/Chapter6'
 import Chapter7 from './Components/Part2/Chapter7'
 import Chapter8 from './Components/Part2/Chapter8'
 import Quiz2 from './Components/Part2/Quiz2'
+import Chapter9 from './Components/Part3/Chapter9'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -51,6 +52,7 @@ root.render(
         <Route path="/part2/chapters/ch7" element={<Chapter7 />} />
         <Route path="/part2/chapters/ch8" element={<Chapter8 />} />
         <Route path="/part2/chapters/qiz2" element={<Quiz2 />} />
+        <Route path="/part2/chapters/ch9" element={<Chapter9 />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

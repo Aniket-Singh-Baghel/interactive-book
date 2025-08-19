@@ -13,7 +13,7 @@ const topics = [
     title: "Chapter 9: The Desktop and Basic Navigation",
     concept: "The main screen and how to use the mouse and keyboard to navigate.",
     analogy: "The desktop is like the main table in your living room, where you can see all important items and start your work.",
-    path: "/parts/prt3/ch9",
+    path: "/part2/chapters/ch9",
     icon: <FaDesktop className="text-blue-500 text-3xl" />
   },
   {
