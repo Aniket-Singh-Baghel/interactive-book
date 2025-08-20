@@ -21,7 +21,7 @@ const topics = [
     title: "Chapter 10: Files and Folders",
     concept: "How to organize your documents, photos, and videos.",
     analogy: "A folder is like a file holder or a plastic box in your office. You put similar papers (files) in one box to keep them organized.",
-    path: "/parts/prt3/ch10",
+    path: "/part3/chapters/ch10",
     icon: <FaFolderOpen className="text-yellow-500 text-3xl" />
   },
   {

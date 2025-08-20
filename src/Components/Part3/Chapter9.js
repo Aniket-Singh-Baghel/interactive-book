@@ -5,7 +5,11 @@ import {
     FaFolder,
     FaMouse,
     FaKeyboard,
+    FaArrowLeft,
+    FaArrowRight,
+    FaHome
 } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
 import { MdSearch } from "react-icons/md";
 import { AiOutlineDesktop } from "react-icons/ai";
 import { BsRecycle } from "react-icons/bs";
@@ -14,7 +18,7 @@ import { motion } from "framer-motion";
 export default function DesktopUI() {
     const [active, setActive] = useState(null);
     const [startOpen, setStartOpen] = useState(false);
-
+    const navigate = useNavigate()
     // store positions for each desktop icon
     const [positions, setPositions] = useState({
         pc: { x: 0, y: 0 },
@@ -58,9 +62,18 @@ export default function DesktopUI() {
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
         >
+            <div className="flex justify-center mb-3 mt-2">
+                <Link
+                    to="/parts/prt3"
+                    className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
+                >
+                    <FaHome className="mr-2 text-lg text-indigo-600" />
+                    Home
+                </Link>
+            </div>
             {/* Title */}
             <motion.h1
-                className="text-3xl font-bold text-center mb-4 mt-5"
+                className="text-3xl font-bold text-center mb-4"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
             >
@@ -139,7 +152,7 @@ export default function DesktopUI() {
             </p>
 
             {/* Desktop Simulation */}
-            <div className="relative p-2 w-4/5 h-[500px] bg-gradient-to-b from-sky-200 to-sky-400 rounded-xl shadow-lg flex flex-col overflow-hidden">
+            <div className="relative p-2 mb-5 w-4/5 h-[500px] bg-gradient-to-b from-sky-200 to-sky-400 rounded-xl shadow-lg flex flex-col overflow-hidden">
                 {/* Draggable Desktop Icons */}
                 {Object.entries(positions).map(([key, pos]) => (
                     <div
@@ -223,6 +236,23 @@ export default function DesktopUI() {
                         You clicked <b>{active}</b>
                     </div>
                 )}
+            </div>
+            <div className="flex justify-between items-center mt-4 p-4 bg-gray-100 rounded-lg shadow-md">
+                <button
+                    onClick={() => navigate('/part2/chapters/ch8')}
+                    className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+                >
+                    <FaArrowLeft />
+                    Previous
+                </button>
+
+                <button
+                    onClick={() => navigate('/part3/chapters/ch10')}
+                    className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+                >
+                    Next
+                    <FaArrowRight />
+                </button>
             </div>
         </div>
     );

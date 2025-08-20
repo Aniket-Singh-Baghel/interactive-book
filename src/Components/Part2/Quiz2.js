@@ -1,8 +1,8 @@
-import { useState} from 'react';
-import { Link } from 'react-router-dom';
-import { motion} from "framer-motion";
-import { FaHome } from "react-icons/fa";
-import { Lightbulb, CheckCircle2, XCircle, RefreshCcw, ChevronLeft, ChevronRight} from 'lucide-react';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from "framer-motion";
+import { FaHome, FaArrowRight } from "react-icons/fa";
+import { Lightbulb, CheckCircle2, XCircle, RefreshCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // The original, unshuffled quiz data
 const originalQuizData = [
@@ -10,6 +10,11 @@ const originalQuizData = [
         "question": "Hardware is like a car, and software is the driver. Which of the following best describes the relationship between hardware and software?",
         "hint": "Think about the role of the driver in the analogy. Does the car function without the driver's instructions?",
         "answerOptions": [
+            {
+                "text": "Software tells the hardware what to do and how to do it.",
+                "isCorrect": true,
+                "rationale": "This aligns perfectly with the analogy: the driver (software) tells the car (hardware) where to go and how to operate."
+            },
             {
                 "text": "Hardware can function perfectly without any software.",
                 "isCorrect": false,
@@ -19,11 +24,6 @@ const originalQuizData = [
                 "text": "Software is a physical component you can touch.",
                 "isCorrect": false,
                 "rationale": "Software is a set of instructions, not a physical object. Hardware is the physical component."
-            },
-            {
-                "text": "Software tells the hardware what to do and how to do it.",
-                "isCorrect": true,
-                "rationale": "This aligns perfectly with the analogy: the driver (software) tells the car (hardware) where to go and how to operate."
             },
             {
                 "text": "Hardware and software are two names for the same thing.",
@@ -42,14 +42,14 @@ const originalQuizData = [
                 "rationale": "Creating documents is a task for application software like MS Word, not the primary function of the OS."
             },
             {
-                "text": "To provide power to the computer's components.",
-                "isCorrect": false,
-                "rationale": "The Power Supply Unit (PSU) provides power, not the OS."
-            },
-            {
                 "text": "To manage the computer's hardware and other software.",
                 "isCorrect": true,
                 "rationale": "Just as a sarpanch manages village resources, the OS manages all the computer's resources, from the CPU and memory to the applications."
+            },
+            {
+                "text": "To provide power to the computer's components.",
+                "isCorrect": false,
+                "rationale": "The Power Supply Unit (PSU) provides power, not the OS."
             },
             {
                 "text": "To protect the computer from physical damage.",
@@ -73,14 +73,14 @@ const originalQuizData = [
                 "rationale": "This is a function of the phone application, which is a type of application software."
             },
             {
-                "text": "Starting up the phone and displaying the home screen.",
-                "isCorrect": true,
-                "rationale": "The OS is responsible for the boot-up process, managing the user interface, and making the phone usable."
-            },
-            {
                 "text": "Charging the phone's battery.",
                 "isCorrect": false,
                 "rationale": "Charging is a function of the hardware and electrical components, not the software."
+            },
+            {
+                "text": "Starting up the phone and displaying the home screen.",
+                "isCorrect": true,
+                "rationale": "The OS is responsible for the boot-up process, managing the user interface, and making the phone usable."
             }
         ]
     },
@@ -94,14 +94,14 @@ const originalQuizData = [
                 "rationale": "Microsoft Windows is a widely used operating system, which is a type of system software."
             },
             {
-                "text": "The computer's BIOS (Basic Input/Output System).",
-                "isCorrect": false,
-                "rationale": "BIOS is a type of system software that helps the computer start up."
-            },
-            {
                 "text": "A video game like 'Minecraft'.",
                 "isCorrect": true,
                 "rationale": "A video game is designed for a specific task (entertainment) and runs 'on top of' the operating system, making it application software."
+            },
+            {
+                "text": "The computer's BIOS (Basic Input/Output System).",
+                "isCorrect": false,
+                "rationale": "BIOS is a type of system software that helps the computer start up."
             },
             {
                 "text": "The device driver for a printer.",
@@ -115,6 +115,11 @@ const originalQuizData = [
         "hint": "Think about the purpose of each type of software. Is its goal to manage the computer or to perform a user-facing task?",
         "answerOptions": [
             {
+                "text": "System software manages the computer's resources, while application software helps the user perform specific tasks.",
+                "isCorrect": true,
+                "rationale": "This is the core distinction. System software manages the underlying operations, and application software provides tools for the user."
+            },
+            {
                 "text": "System software is free, while application software is always paid.",
                 "isCorrect": false,
                 "rationale": "This is incorrect. Both system and application software can be free or paid."
@@ -123,11 +128,6 @@ const originalQuizData = [
                 "text": "System software runs on the computer, and application software runs on a smartphone.",
                 "isCorrect": false,
                 "rationale": "This is incorrect. Both types of software run on all kinds of computing devices, including smartphones and computers."
-            },
-            {
-                "text": "System software manages the computer's resources, while application software helps the user perform specific tasks.",
-                "isCorrect": true,
-                "rationale": "This is the core distinction. System software manages the underlying operations, and application software provides tools for the user."
             },
             {
                 "text": "System software is written in a different language than application software.",
@@ -146,14 +146,14 @@ const originalQuizData = [
                 "rationale": "A web browser can only be opened after the operating system has loaded."
             },
             {
-                "text": "A video game.",
-                "isCorrect": false,
-                "rationale": "Like a web browser, a video game is an application that requires the OS to be running first."
-            },
-            {
                 "text": "The operating system (OS).",
                 "isCorrect": true,
                 "rationale": "The operating system is the master control program that must load first to prepare the computer for running any other software."
+            },
+            {
+                "text": "A video game.",
+                "isCorrect": false,
+                "rationale": "Like a web browser, a video game is an application that requires the OS to be running first."
             },
             {
                 "text": "A text document.",
@@ -172,6 +172,11 @@ const originalQuizData = [
                 "rationale": "This is incorrect. The OS is what *enables* the user to use application software."
             },
             {
+                "text": "It makes it easier for the user to interact with the computer and its devices.",
+                "isCorrect": true,
+                "rationale": "By managing everything behind the scenes, the OS provides a user-friendly interface that simplifies complex tasks like printing or saving a file."
+            },
+            {
                 "text": "It allows the user to directly program the hardware themselves.",
                 "isCorrect": false,
                 "rationale": "The OS abstracts this complexity, preventing the user from needing to deal with low-level hardware details directly."
@@ -180,11 +185,6 @@ const originalQuizData = [
                 "text": "It makes the computer run faster than without an OS.",
                 "isCorrect": false,
                 "rationale": "While an efficient OS is fast, the primary purpose is management and usability, not solely speed."
-            },
-            {
-                "text": "It makes it easier for the user to interact with the computer and its devices.",
-                "isCorrect": true,
-                "rationale": "By managing everything behind the scenes, the OS provides a user-friendly interface that simplifies complex tasks like printing or saving a file."
             }
         ]
     },
@@ -192,6 +192,11 @@ const originalQuizData = [
         "question": "Imagine you are using a word processor to type a letter. The word processor (like MS Word) is which type of software?",
         "hint": "Is the software a tool you use to perform a specific task, or is it a program that manages the entire computer?",
         "answerOptions": [
+            {
+                "text": "Application software.",
+                "isCorrect": true,
+                "rationale": "A word processor is a classic example of application software, designed for the specific task of creating and editing text documents."
+            },
             {
                 "text": "System software.",
                 "isCorrect": false,
@@ -201,11 +206,6 @@ const originalQuizData = [
                 "text": "Operating system.",
                 "isCorrect": false,
                 "rationale": "The operating system would be Windows or macOS, not the word processor itself."
-            },
-            {
-                "text": "Application software.",
-                "isCorrect": true,
-                "rationale": "A word processor is a classic example of application software, designed for the specific task of creating and editing text documents."
             },
             {
                 "text": "Hardware.",
@@ -224,6 +224,11 @@ const originalQuizData = [
                 "rationale": "The monitor is hardware, an output device that displays information, not a set of instructions."
             },
             {
+                "text": "The computer's hard drive.",
+                "isCorrect": false,
+                "rationale": "The hard drive is hardware used for storing data, not the instructions themselves."
+            },
+            {
                 "text": "A physical mouse.",
                 "isCorrect": false,
                 "rationale": "A mouse is a piece of hardware that provides input, not the instructions to make the computer work."
@@ -232,11 +237,6 @@ const originalQuizData = [
                 "text": "The instructions in a program that you run.",
                 "isCorrect": true,
                 "rationale": "These instructions are the code that tells the hardware what to do, which is precisely the role of 'software' in the analogy."
-            },
-            {
-                "text": "The computer's hard drive.",
-                "isCorrect": false,
-                "rationale": "The hard drive is hardware used for storing data, not the instructions themselves."
             }
         ]
     },
@@ -244,6 +244,11 @@ const originalQuizData = [
         "question": "Think of a music player app on your phone. This app uses the phone's speakers (hardware) to play music. What type of software is the music player app?",
         "hint": "Is the music app a tool for a specific job, or is it the core software that manages the entire phone?",
         "answerOptions": [
+            {
+                "text": "Application software.",
+                "isCorrect": true,
+                "rationale": "The music player is a program designed for the specific purpose of playing music, making it an application."
+            },
             {
                 "text": "System software.",
                 "isCorrect": false,
@@ -253,11 +258,6 @@ const originalQuizData = [
                 "text": "Operating system.",
                 "isCorrect": false,
                 "rationale": "The operating system is Android or iOS, not the app itself."
-            },
-            {
-                "text": "Application software.",
-                "isCorrect": true,
-                "rationale": "The music player is a program designed for the specific purpose of playing music, making it an application."
             },
             {
                 "text": "A hardware device.",
@@ -276,6 +276,11 @@ const originalQuizData = [
                 "rationale": "An internet browser is a specific application, not the master manager of the entire computer."
             },
             {
+                "text": "The Operating System (OS).",
+                "isCorrect": true,
+                "rationale": "The OS is the core software that manages and organizes all the computer's resources, similar to a village head."
+            },
+            {
                 "text": "The computer's monitor.",
                 "isCorrect": false,
                 "rationale": "The monitor is hardware, an output device."
@@ -284,11 +289,6 @@ const originalQuizData = [
                 "text": "The Central Processing Unit (CPU).",
                 "isCorrect": false,
                 "rationale": "The CPU is the hardware that executes instructions, but it is the OS that organizes and manages what the CPU does."
-            },
-            {
-                "text": "The Operating System (OS).",
-                "isCorrect": true,
-                "rationale": "The OS is the core software that manages and organizes all the computer's resources, similar to a village head."
             }
         ]
     },
@@ -307,14 +307,14 @@ const originalQuizData = [
                 "rationale": "Video editing software is designed for a specific creative task, making it application software."
             },
             {
-                "text": "The macOS operating system.",
-                "isCorrect": true,
-                "rationale": "macOS is a well-known operating system, and all operating systems are considered a core type of system software."
-            },
-            {
                 "text": "An antivirus program.",
                 "isCorrect": false,
                 "rationale": "An antivirus program is an application that runs on top of the OS, not the core system software itself."
+            },
+            {
+                "text": "The macOS operating system.",
+                "isCorrect": true,
+                "rationale": "macOS is a well-known operating system, and all operating systems are considered a core type of system software."
             }
         ]
     },
@@ -322,6 +322,11 @@ const originalQuizData = [
         "question": "What is the relationship between the operating system and application software?",
         "hint": "Think of the OS as the base layer that all other software depends on.",
         "answerOptions": [
+            {
+                "text": "The operating system provides a platform for application software to run on.",
+                "isCorrect": true,
+                "rationale": "The OS manages resources and provides a stable environment, or 'platform', for all other applications to function correctly."
+            },
             {
                 "text": "Application software can run without an operating system.",
                 "isCorrect": false,
@@ -331,11 +336,6 @@ const originalQuizData = [
                 "text": "The operating system is a type of application software.",
                 "isCorrect": false,
                 "rationale": "This is incorrect. They are two distinct categories. The OS is system software."
-            },
-            {
-                "text": "The operating system provides a platform for application software to run on.",
-                "isCorrect": true,
-                "rationale": "The OS manages resources and provides a stable environment, or 'platform', for all other applications to function correctly."
             },
             {
                 "text": "They are both physical components of the computer.",
@@ -354,14 +354,14 @@ const originalQuizData = [
                 "rationale": "The motherboard is the physical hardware, not a tool or a program."
             },
             {
-                "text": "A graphics design program (e.g., Photoshop).",
-                "isCorrect": true,
-                "rationale": "A graphics design program is a specific tool for a specific job (graphics design), which fits the definition of application software."
-            },
-            {
                 "text": "The Linux operating system.",
                 "isCorrect": false,
                 "rationale": "Linux is the 'toolkit' itself, not one of the tools inside it."
+            },
+            {
+                "text": "A graphics design program (e.g., Photoshop).",
+                "isCorrect": true,
+                "rationale": "A graphics design program is a specific tool for a specific job (graphics design), which fits the definition of application software."
             },
             {
                 "text": "The computer's hard drive.",
@@ -384,6 +384,7 @@ const shuffleArray = (array) => {
 
 // --- MAIN APP COMPONENT ---
 export default function App() {
+    const navigate = useNavigate()
     const [quizQuestions, setQuizQuestions] = useState(() => shuffleArray(originalQuizData));
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState(0);
@@ -511,6 +512,13 @@ export default function App() {
                         Play Again!
                     </button>
                 </div>
+                <button
+                    onClick={() => navigate('/part3/chapters/ch9')}
+                    className="flex items-center mt-10 gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+                >
+                    Next
+                    <FaArrowRight />
+                </button>
             </div>
 
         );
@@ -519,84 +527,86 @@ export default function App() {
     const currentQuestion = quizQuestions[currentQuestionIndex];
 
     return (
-        <div className="flex items-center justify-center h-screen bg-yellow-100 p-4 font-sans">
-            <div className="w-full max-w-4xl p-6 md:p-10 bg-white rounded-3xl shadow-2xl border-4 border-yellow-500 transform transition-all duration-500 scale-100 hover:scale-105">
-                <div className="flex justify-between items-center mb-4">
-                    <span className="text-xl font-bold text-gray-700">
-                        Question {currentQuestionIndex + 1} / {quizQuestions.length}
-                    </span>
-                    <span className="text-xl font-bold text-yellow-600">
-                        Score: {score}
-                    </span>
-                </div>
-
-                <div className="md:grid md:grid-cols-2 md:gap-8">
-                    <div className="flex flex-col">
-                        <div className="mb-6 bg-yellow-500 text-white p-4 rounded-xl shadow-md">
-                            <h3 className="text-xl font-semibold">{currentQuestion.question}</h3>
-                        </div>
-                        {showHint && (
-                            <div className="mt-4 p-4 rounded-xl bg-blue-100 border-l-4 border-blue-500 shadow-inner animate-fade-in">
-                                <h4 className="font-bold text-blue-600 mb-1">Hint:</h4>
-                                <p className="text-gray-700 text-sm md:text-base">{currentQuestion.hint}</p>
-                            </div>
-                        )}
-                        {isAnswerSubmitted && (
-                            <div className="mt-6 p-4 rounded-xl bg-gray-100 border-l-4 border-yellow-500 shadow-inner animate-fade-in">
-                                <h4 className={`font-bold ${currentQuestion.answerOptions[selectedAnswerIndex]?.isCorrect ? 'text-green-600' : 'text-red-600'}`}>
-                                    {currentQuestion.answerOptions[selectedAnswerIndex]?.isCorrect ? 'Correct!' : 'Incorrect!'}
-                                </h4>
-                                <p className="text-gray-700 mt-2 text-sm md:text-base">
-                                    {currentQuestion.answerOptions[selectedAnswerIndex]?.rationale}
-                                </p>
-                            </div>
-                        )}
-                        {navigationWarning && (
-                            <div className="mt-4 p-4 rounded-xl bg-red-100 border-l-4 border-red-500 shadow-inner animate-fade-in">
-                                <p className="text-red-700 font-semibold text-sm md:text-base">{navigationWarning}</p>
-                            </div>
-                        )}
+        <>
+            <div className="flex items-center justify-center h-screen bg-yellow-100 p-4 font-sans">
+                <div className="w-full max-w-4xl p-6 md:p-10 bg-white rounded-3xl shadow-2xl border-4 border-yellow-500 transform transition-all duration-500 scale-100 hover:scale-105">
+                    <div className="flex justify-between items-center mb-4">
+                        <span className="text-xl font-bold text-gray-700">
+                            Question {currentQuestionIndex + 1} / {quizQuestions.length}
+                        </span>
+                        <span className="text-xl font-bold text-yellow-600">
+                            Score: {score}
+                        </span>
                     </div>
 
-                    <div className="flex flex-col justify-between mt-6 md:mt-0">
-                        <div className="space-y-4">
-                            {currentQuestion.answerOptions.map((option, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handleAnswerClick(index)}
-                                    disabled={isAnswerSubmitted}
-                                    className={`w-full flex items-center justify-between p-4 rounded-full font-semibold transition-transform duration-200 transform ${getButtonClass(index)}`}
-                                >
-                                    <span className="flex-1 text-left text-sm md:text-base">{option.text}</span>
-                                    {getIcon(index)}
-                                </button>
-                            ))}
+                    <div className="md:grid md:grid-cols-2 md:gap-8">
+                        <div className="flex flex-col">
+                            <div className="mb-6 bg-yellow-500 text-white p-4 rounded-xl shadow-md">
+                                <h3 className="text-xl font-semibold">{currentQuestion.question}</h3>
+                            </div>
+                            {showHint && (
+                                <div className="mt-4 p-4 rounded-xl bg-blue-100 border-l-4 border-blue-500 shadow-inner animate-fade-in">
+                                    <h4 className="font-bold text-blue-600 mb-1">Hint:</h4>
+                                    <p className="text-gray-700 text-sm md:text-base">{currentQuestion.hint}</p>
+                                </div>
+                            )}
+                            {isAnswerSubmitted && (
+                                <div className="mt-6 p-4 rounded-xl bg-gray-100 border-l-4 border-yellow-500 shadow-inner animate-fade-in">
+                                    <h4 className={`font-bold ${currentQuestion.answerOptions[selectedAnswerIndex]?.isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                                        {currentQuestion.answerOptions[selectedAnswerIndex]?.isCorrect ? 'Correct!' : 'Incorrect!'}
+                                    </h4>
+                                    <p className="text-gray-700 mt-2 text-sm md:text-base">
+                                        {currentQuestion.answerOptions[selectedAnswerIndex]?.rationale}
+                                    </p>
+                                </div>
+                            )}
+                            {navigationWarning && (
+                                <div className="mt-4 p-4 rounded-xl bg-red-100 border-l-4 border-red-500 shadow-inner animate-fade-in">
+                                    <p className="text-red-700 font-semibold text-sm md:text-base">{navigationWarning}</p>
+                                </div>
+                            )}
                         </div>
 
-                        <div className="mt-6 grid grid-cols-3 gap-4">
-                            <button
-                                onClick={handlePreviousQuestion}
-                                disabled={currentQuestionIndex === 0}
-                                className={`w-full px-6 py-3 font-bold rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 flex items-center justify-center ${currentQuestionIndex > 0 ? 'bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-300' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-                            >
-                                <ChevronLeft className="w-5 h-5" />
-                            </button>
-                            <button
-                                onClick={() => setShowHint(!showHint)}
-                                className="w-full px-6 py-3 bg-blue-500 text-white font-semibold rounded-full shadow-md flex items-center justify-center hover:bg-blue-600 transition-colors transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                            >
-                                <Lightbulb className="w-5 h-5" />
-                            </button>
-                            <button
-                                onClick={handleNextQuestion}
-                                className={`w-full px-6 py-3 font-bold rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 flex items-center justify-center ${isAnswerSubmitted ? 'bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-300' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-                            >
-                                <ChevronRight className="w-5 h-5" />
-                            </button>
+                        <div className="flex flex-col justify-between mt-6 md:mt-0">
+                            <div className="space-y-4">
+                                {currentQuestion.answerOptions.map((option, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleAnswerClick(index)}
+                                        disabled={isAnswerSubmitted}
+                                        className={`w-full flex items-center justify-between p-4 rounded-full font-semibold transition-transform duration-200 transform ${getButtonClass(index)}`}
+                                    >
+                                        <span className="flex-1 text-left text-sm md:text-base">{option.text}</span>
+                                        {getIcon(index)}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="mt-6 grid grid-cols-3 gap-4">
+                                <button
+                                    onClick={handlePreviousQuestion}
+                                    disabled={currentQuestionIndex === 0}
+                                    className={`w-full px-6 py-3 font-bold rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 flex items-center justify-center ${currentQuestionIndex > 0 ? 'bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-300' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+                                >
+                                    <ChevronLeft className="w-5 h-5" />
+                                </button>
+                                <button
+                                    onClick={() => setShowHint(!showHint)}
+                                    className="w-full px-6 py-3 bg-blue-500 text-white font-semibold rounded-full shadow-md flex items-center justify-center hover:bg-blue-600 transition-colors transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                                >
+                                    <Lightbulb className="w-5 h-5" />
+                                </button>
+                                <button
+                                    onClick={handleNextQuestion}
+                                    className={`w-full px-6 py-3 font-bold rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 flex items-center justify-center ${isAnswerSubmitted ? 'bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-300' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+                                >
+                                    <ChevronRight className="w-5 h-5" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
