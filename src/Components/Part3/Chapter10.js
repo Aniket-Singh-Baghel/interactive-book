@@ -522,7 +522,7 @@ export default function ExplorerInteractive() {
           </motion.ul>
         )}
       </AnimatePresence>
-      <div className="flex justify-between items-center mt-4 p-4 bg-gray-100 rounded-lg shadow-md">
+      <div className="flex w-full justify-between items-center mt-4 p-4 bg-gray-100 rounded-lg shadow-md">
         <button
           onClick={() => navigate('/part3/chapters/ch9')}
           className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
@@ -532,7 +532,7 @@ export default function ExplorerInteractive() {
         </button>
 
         <button
-          onClick={() => navigate('/part3/chapters/ch10')}
+          onClick={() => navigate('/part3/chapters/ch11')}
           className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
         >
           Next
