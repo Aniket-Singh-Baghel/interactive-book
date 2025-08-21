@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaHdd, FaFolder, FaFolderOpen, FaFileAlt,
@@ -120,29 +120,20 @@ export default function ExplorerInteractive() {
   const current = useMemo(() => findNode(fs, currentId)?.node, [fs, currentId]);
   const crumbs = useMemo(() => findNode(fs, currentId)?.path || [], [fs, currentId]);
 
-  // keyboard shortcuts
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "F2" && selectedId) setRenamingId(selectedId);
-      if (e.key === "Delete" && selectedId) onDelete(selectedId);
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "n") { e.preventDefault(); newFolder(); }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [selectedId, fs, currentId]);
-
+  /* actions */
   const toggleExpand = (id) => {
     const n = new Set(expanded); n.has(id) ? n.delete(id) : n.add(id); setExpanded(n);
   };
-
-  /* actions */
   const openFolder = (id) => { setCurrentId(id); setSelectedId(null); setRenamingId(null); };
-  const newFolder = () => {
+
+  // Wrap the functions in useCallback
+  const newFolder = useCallback(() => {
     const child = { id: uid(), name: "New Folder", type: "folder", children: [] };
     setFs(s => addChild(s, currentId, child));
     setSelectedId(child.id); setRenamingId(child.id);
     setTasks(t => ({ ...t, createdFolder: true }));
-  };
+  }, [currentId]); // Dependencies for newFolder
+
   const newFile = () => {
     const child = { id: uid(), name: `New File ${Math.floor(Math.random() * 100)}.txt`, type: "file" };
     setFs(s => addChild(s, currentId, child));
@@ -153,10 +144,13 @@ export default function ExplorerInteractive() {
     setFs(s => renameNode(s, id, name || "Untitled")); setRenamingId(null);
     setTasks(t => ({ ...t, renamed: true }));
   };
-  const onDelete = (id) => {
+  
+  // Wrap the functions in useCallback
+  const onDelete = useCallback((id) => {
     setFs(s => removeNode(s, id).t); setSelectedId(null);
     setTasks(t => ({ ...t, deleted: true }));
-  };
+  }, []); // Dependencies for onDelete
+
   const onDropInto = (targetId, e) => {
     e.preventDefault();
     const dragId = e.dataTransfer.getData("text/plain");
@@ -164,6 +158,19 @@ export default function ExplorerInteractive() {
     setFs(s => moveNode(s, dragId, targetId));
     setTasks(t => ({ ...t, moved: true }));
   };
+  
+  // keyboard shortcuts
+  // Moved useEffect after function definitions
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "F2" && selectedId) setRenamingId(selectedId);
+      if (e.key === "Delete" && selectedId) onDelete(selectedId);
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "n") { e.preventDefault(); newFolder(); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // Added newFolder and onDelete to dependency array
+  }, [selectedId, newFolder, onDelete]);
 
   const handleTerminalCommand = (e) => {
     if (e.key === "Enter") {
@@ -174,8 +181,6 @@ export default function ExplorerInteractive() {
       let output = "";
 
       const [cmd, ...args] = command.split(" ");
-      const currentPath = crumbs.map(c => c.name).join("/") + "/";
-
       switch (cmd) {
         case "help":
           output = "Available commands: ls, cd [folder], mkdir [name], touch [name], rm [name], cls";
@@ -244,7 +249,7 @@ export default function ExplorerInteractive() {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
         className={`w-36 p-4 rounded-xl text-center cursor-pointer backdrop-blur-sm transition-all duration-200 ease-in-out
-          ${selectedId === item.id ? "bg-white/80 ring-2 ring-blue-400 shadow-lg" : "bg-white/40 hover:bg-white/60 shadow"}`}
+           ${selectedId === item.id ? "bg-white/80 ring-2 ring-blue-400 shadow-lg" : "bg-white/40 hover:bg-white/60 shadow"}`}
         draggable
         onDragStart={(e) => {
           e.dataTransfer.setData("text/plain", item.id);
@@ -288,7 +293,7 @@ export default function ExplorerInteractive() {
       <div className="text-sm">
         <div
           className={`flex items-center gap-2 px-2 py-1 rounded-md transition-colors duration-150
-            ${currentId === node.id ? "bg-blue-200/50" : "hover:bg-blue-50/50"}`}
+             ${currentId === node.id ? "bg-blue-200/50" : "hover:bg-blue-50/50"}`}
           onClick={() => isFolderLike && (toggleExpand(node.id), setCurrentId(node.id))}
           onDoubleClick={() => isFolderLike && openFolder(node.id)}
           onContextMenu={(e) => { e.preventDefault(); setMenu({ x: e.clientX, y: e.clientY, id: node.id }); }}

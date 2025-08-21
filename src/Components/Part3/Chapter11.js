@@ -53,12 +53,6 @@
         typeof navigator !== "undefined" &&
         /Mac|iPod|iPhone|iPad/.test(navigator.platform);
 
-    const grid = { size: 88, pad: 14 }; // snap grid (icon + label footprint)
-
-    function snap(val, step) {
-        return Math.max(0, Math.round(val / step) * step);
-    }
-
     function showToast(text) {
         setToast(text);
         const t = setTimeout(() => setToast(null), 1400);
@@ -83,7 +77,6 @@
     const clearSelection = () => setSelectedIds(new Set());
 
     /** ---------- FINDERS ---------- */
-    const findIn = (list, ids) => list.filter((f) => ids.has(f.id));
     const removeFrom = (list, ids) => list.filter((f) => !ids.has(f.id));
 
     /** ---------- KEYBOARD SHORTCUTS ---------- */
