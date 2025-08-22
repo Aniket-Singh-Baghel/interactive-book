@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { FaDesktop, FaFolderOpen, FaClipboard, FaHome } from "react-icons/fa";
 import {Link} from 'react-router-dom'
 import { motion } from "framer-motion";
-import studentCartoon from '../Assets/Student_Cartton.png'
-import teacherCartoon from '../Assets/teacher_Cartoon.png'
-
 
 const topics = [
   {
@@ -29,9 +26,17 @@ const topics = [
     title: "Chapter 11: Copy, Cut, Paste, and Delete",
     concept: "Basic commands for managing files and text.",
     analogy: "Copy is like making a Xerox copy. Cut is moving a piece of paper to a new location. Paste is placing it there.",
-    path: "/parts/prt3/ch11",
+    path: "/part3/chapters/ch11",
     icon: <FaClipboard className="text-green-500 text-3xl" />
-  }
+  },
+  {
+    id: 12,
+    title: "Chapter 12: Using the Taskbar and Start Menu",
+    concept: "Opening, searching, and pinning apps.",
+    analogy: "The Start Menu is like the main index of a book, and the Taskbar is like a quick-access shelf.",
+    path: "/part3/chapters/ch12",
+    icon: <FaClipboard className="text-green-500 text-3xl" />
+  },
 ];
 
 export default function Part3() {
@@ -49,20 +54,6 @@ export default function Part3() {
           Home
         </Link>
       </div>
-      <motion.img
-        src={teacherCartoon}
-        alt="Teacher Cartoon"
-        className="absolute max-w-full -bottom-16 -left-8"
-        animate={{ y: [0, -10, 0] }}
-        transition={{ repeat: Infinity, duration: 3 }}
-      />
-      <motion.img
-        src={studentCartoon}
-        alt="Student Cartoon"
-        className="absolute w-72 bottom-4 right-4"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Infinity, duration: 3 }}
-      />
       <motion.h1
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

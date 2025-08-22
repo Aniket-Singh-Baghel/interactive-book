@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useRef, useState, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaHdd, FaFolder, FaFolderOpen, FaFileAlt,
-  FaPlus, FaTrash, FaEdit, FaChevronRight, FaRegListAlt, FaChartBar, FaTerminal, FaHome, FaArrowLeft, FaArrowRight
+  FaPlus, FaTrash, FaEdit, FaChevronRight, FaRegListAlt, 
+  FaChartBar, FaTerminal, FaHome, FaArrowLeft, FaArrowRight
 } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom'
 
