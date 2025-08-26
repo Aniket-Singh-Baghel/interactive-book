@@ -219,12 +219,12 @@ export default function Chapter11Desktop() {
     // map some desktop names to canonical apps
     const canonical =
       appName === "green anaconda" ? "Documents" :
-      appName === "extras" ? "Explorer" :
-      appName === "vasuki indicus" ? "Gallery" :
-      appName === "gyanganj" ? "Explorer" :
-      appName === "GEOlayers 3" ? "Browser" :
-      appName === "Shorts" ? "Gallery" :
-      appName;
+        appName === "extras" ? "Explorer" :
+          appName === "vasuki indicus" ? "Gallery" :
+            appName === "gyanganj" ? "Explorer" :
+              appName === "GEOlayers 3" ? "Browser" :
+                appName === "Shorts" ? "Gallery" :
+                  appName;
 
     let def = ALL_APPS.find((a) => a.name === canonical);
     if (!def) {
@@ -586,9 +586,8 @@ export default function Chapter11Desktop() {
             return (
               <div
                 key={i}
-                className={`h-9 rounded flex items-center justify-center border border-slate-700 ${g.outside ? "opacity-40" : ""} ${
-                  isToday ? "bg-[#1d2433] border-slate-600" : "bg-[#0f121a]"
-                }`}
+                className={`h-9 rounded flex items-center justify-center border border-slate-700 ${g.outside ? "opacity-40" : ""} ${isToday ? "bg-[#1d2433] border-slate-600" : "bg-[#0f121a]"
+                  }`}
               >
                 {g.date.getDate()}
               </div>
@@ -776,12 +775,12 @@ export default function Chapter11Desktop() {
               name === "Chrome"
                 ? "Browser"
                 : name === "VSCode"
-                ? "Explorer"
-                : name === "Photoshop"
-                ? "Photoshop"
-                : name === "Illustrator"
-                ? "Illustrator"
-                : name
+                  ? "Explorer"
+                  : name === "Photoshop"
+                    ? "Photoshop"
+                    : name === "Illustrator"
+                      ? "Illustrator"
+                      : name
             );
             const IconX = btn.Icon;
             return (
@@ -876,8 +875,8 @@ export default function Chapter11Desktop() {
                       name === "Documents"
                         ? APP_DEFS.Documents
                         : name === "Gallery"
-                        ? APP_DEFS.Gallery
-                        : ALL_APPS.find((a) => a.name === name) || APP_DEFS[name];
+                          ? APP_DEFS.Gallery
+                          : ALL_APPS.find((a) => a.name === name) || APP_DEFS[name];
                     if (!def) return null;
                     const IconX = name === "Explorer" ? FaFolder : def.icon;
                     return (

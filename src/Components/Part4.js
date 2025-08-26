@@ -34,6 +34,15 @@ const topics = [
     icon: <FaShieldAlt className="text-green-500 text-3xl" />,
     path: "/parts/prt4/ch14",
   },
+  {
+    id: 15,
+    title: "Chapter15: Cyber Crime",
+    concept: "Teaching students how to protect themselves and their data online.",
+    analogy:
+      "Just as you lock your house door with a taala (lock) to keep things safe, you should use passwords to protect your accounts online.",
+    icon: <FaShieldAlt className="text-green-500 text-3xl" />,
+    path: "/part4/chapters/ch15",
+  },
 ];
 
 export default function Part4() {
