@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { FaGlobe, FaChrome, FaShieldAlt, FaHome } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import teacherCartoon from "../Assets/teacher_Cartoon.png";
-import studentCartoon from "../Assets/Student_Cartton.png";
 
 const topics = [
   {
@@ -60,21 +58,6 @@ export default function Part4() {
           Home
         </Link>
       </div>
-      <motion.img
-        src={teacherCartoon}
-        alt="Teacher Cartoon"
-        className="absolute max-w-full -bottom-16 -left-8"
-        animate={{ y: [0, -10, 0] }}
-        transition={{ repeat: Infinity, duration: 3 }}
-      />
-      <motion.img
-        src={studentCartoon}
-        alt="Student Cartoon"
-        className="absolute w-72 bottom-4 right-4"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Infinity, duration: 3 }}
-      />
-
       {/* Title */}
       <motion.h1
         initial={{ y: -50, opacity: 0 }}

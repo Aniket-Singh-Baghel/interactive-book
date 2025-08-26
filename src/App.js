@@ -2,46 +2,51 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPencilAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Part1 from "./Assets/part1.jpeg";
+import Part2 from "./Assets/part2.jpeg";
+import Part3 from "./Assets/part3.jpeg";
+import Part4 from "./Assets/part4.jpeg";
+import Part5 from "./Assets/part5.jpeg";
 
 const topics = [
   {
     id: 1,
-    part:'Part-1',
+    part: 'Part-1',
     title: "The Basics - Understanding the Computer",
     fact: "💡 The first computer mouse was made of wood!",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+    image: Part1,
     path: "/parts/prt1"
   },
   {
     id: 2,
-    part:'Part-2',
+    part: 'Part-2',
     title: "The Software Side - Giving Instructions",
     fact: "💡 Early monitors could only show green text!",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpNhOb6NdbrkOMYPwVUYx1vpfluX_T-ofljQ&s",
+    image: Part2,
     path: "/parts/prt2"
   },
   {
     id: 3,
-    part:'Part-3',
+    part: 'Part-3',
     title: "Using a Computer - Practical Skills",
     fact: "💡 Before GUIs, everything was typed in commands!",
-    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+    image:Part3,
     path: "/parts/prt3"
   },
   {
     id: 4,
-    part:'Part-4',
+    part: 'Part-4',
     title: "The Digital World - Internet & Safety",
     fact: "💡 The first email was sent in 1971!",
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+    image:Part4,
     path: "/parts/prt4"
   },
   {
     id: 5,
-    part:'Part-5',
+    part: 'Part-5',
     title: "Looking Ahead - From Beginner to Pro",
     fact: "💡 Quantum computers can solve problems in seconds!",
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+    image:Part5,
     path: "/parts/prt5"
   }
 ];
@@ -74,7 +79,7 @@ const HomePage = () => {
             />
             <div className="p-6">
               <div className="flex items-center space-x-2 ">
-                <FaPencilAlt className="ml-28 text-orange-700"/>
+                <FaPencilAlt className="ml-28 text-orange-700" />
                 <h1 className="font-bold text-lg ml-28">{topic.part}</h1>
               </div>
               <h2 className="text-xl font-bold text-indigo-700">{topic.title}</h2>
