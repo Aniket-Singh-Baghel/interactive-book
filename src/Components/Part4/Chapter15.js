@@ -1,26 +1,24 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Shield,
-  Cpu,
   Terminal,
-  Network,
   Lock,
   Bug,
   Globe,
-  BookOpen,
-  Rocket,
   Sparkles,
   CircuitBoard,
   Mail,
-  Download,
   CreditCard,
   UserCheck,
   Users,
-  AlertTriangle
+  AlertTriangle,
+  UserX,
+  XCircle,
+  Rocket
 } from "lucide-react";
-
-
+import { FaArrowRight, FaArrowLeft, FaHome } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
 
 // ==== UI REPLACEMENTS (shadcn-free) ====
 
@@ -181,6 +179,31 @@ function CyberBackground() {
   );
 }
 
+function ShieldVsVirus() {
+  return (
+    <div className="relative flex flex-col items-center justify-center h-full w-full bg-white/10 rounded-2xl shadow-lg p-8">
+      {/* Shield */}
+      <motion.div
+        animate={{ scale: [1, 1.2, 1] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        className="text-green-400 mb-12"
+      >
+        <Shield className="w-28 h-28" />
+      </motion.div>
+
+      {/* Virus Moving Towards Shield */}
+      <motion.div
+        animate={{ y: [0, -150, 0] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        className="text-red-400"
+      >
+        <Bug className="w-20 h-20" />
+      </motion.div>
+    </div>
+  );
+}
+
+
 // TiltCard wrapper (simple 3D tilt using mouse position -> transform)
 function TiltCard({ children, className = "", ...rest }) {
   // We'll use CSS transforms on mouse move for tilt effect (no types)
@@ -257,27 +280,19 @@ function CircuitDivider() {
 
 
 // Pulse badge
-function PulseBadge({ label }) {
-  return (
-    <div className="relative inline-flex items-center gap-2">
-      <span className="absolute -left-2 inline-flex h-3 w-3">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-        <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
-      </span>
-      <Badge className="pl-4 bg-emerald-500/20 text-emerald-200 border border-emerald-400/30">{label}</Badge>
-    </div>
-  );
-}
+// function PulseBadge({ label }) {
+//   return (
+//     <div className="relative inline-flex items-center gap-2">
+//       <span className="absolute -left-2 inline-flex h-3 w-3">
+//         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+//         <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
+//       </span>
+//       <Badge className="pl-4 bg-emerald-500/20 text-emerald-200 border border-emerald-400/30">{label}</Badge>
+//     </div>
+//   );
+// }
 
-// Datasets
-// ======================
-// Beginner-Friendly Content
-// ======================
-
-// Theory Topics
 // ======= THEORY TOPICS (split "Types of Cyber Crimes") =======
-// ======= THEORY TOPICS HIERARCHY =======
-// ======= THEORY TOPICS HIERARCHY =======
 const THEORY_TOPICS = [
   // 1. Full-width Introduction
   {
@@ -357,6 +372,14 @@ const THEORY_TOPICS = [
       "Criminals locking data and demanding money.",
     ],
   },
+  {
+    icon: <CircuitBoard className="h-5 w-5" />,
+    title: "DDoS Attack",
+    points: [
+      "Overwhelming a website or server with massive traffic to make it unavailable.",
+      "Example: Flooding an online store with fake requests to crash it.",
+    ],
+  },
 
 
   // 3. Real-life Examples (full-width, separate)
@@ -386,79 +409,213 @@ const THEORY_TOPICS = [
   },
 ];
 
+const showAlert = (msg) => {
+  alert(msg);
+};
 
+// Your PRACTICAL LABS data
 
-
-// Practical Labs
 const PRACTICAL_LABS = [
   {
-    icon: <Lock className="h-5 w-5" />,
-    title: "Password Strength Check",
-    steps: [
-      "Try creating a weak password like 12345.",
-      "Now create a strong one with letters, numbers, and symbols.",
-      "Compare which is harder to guess.",
-      "Understand why strong passwords protect better."
-    ],
-  },
-  {
-    icon: <Mail className="h-5 w-5" />, // you can import Mail from lucide-react
+    id: "phishing",
+    icon: <Mail className="h-6 w-6 text-blue-600" />,
     title: "Phishing Email Demo",
     steps: [
-      "Look at a sample fake email that asks for your password.",
-      "Notice spelling mistakes or strange links.",
-      "Compare with a real email from the same company.",
-      "Learn to never click suspicious links."
+      "View a fake email that asks you to reset your bank password.",
+      "Hover over the link — notice the suspicious URL.",
+      "Compare with a real bank email that has a secure domain.",
+      "Learn why clicking unknown links can lead to credential theft."
     ],
+    guide:
+      "In cybercrime, phishing runs like a mass-distribution scam. Attackers send out crafted emails that mimic trusted institutions, often embedding malicious links or attachments. These emails usually exploit urgency or fear to push victims into clicking quickly. Once clicked, the victim is redirected to a spoofed site where credentials or financial data are harvested. Advanced phishing operations even use lookalike domains, stolen brand logos, and spoofed email headers to bypass filters and increase credibility.",
+    demo: (
+      <div className="bg-white p-6 rounded-2xl shadow-lg space-y-4 text-lg">
+        <h3 className="font-bold text-red-600 text-xl">🚨 Fake Bank Email</h3>
+        <p>
+          Dear User, your account has been <b>blocked</b>.
+          Click below to reset your password immediately!
+        </p>
+        <a
+          href="https://example.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => showAlert("⚠️ This link is malicious!")}
+          className="text-blue-700 underline hover:text-blue-900 font-semibold text-lg"
+        >
+          http://secure-bank-login.xyz/reset
+        </a>
+      </div>
+    ),
   },
   {
-    icon: <Globe className="h-5 w-5" />,
-    title: "Social Media Privacy Settings",
+    id: "malware",
+    icon: <Bug className="h-6 w-6 text-yellow-500" />,
+    title: "Malware Pop-Up Trap",
     steps: [
-      "Open your social media account.",
-      "Check what personal info is public.",
-      "Switch account to private mode.",
-      "See how privacy reduces risk of misuse."
+      "See a pop-up offering a 'Free Movie Download'.",
+      "Notice how it asks to disable antivirus before installing.",
+      "Compare with a legitimate installer that doesn’t do this.",
+      "Understand how malware lures users with tempting offers."
     ],
+    guide:
+      "Malware distribution is often hidden behind lures like pirated software, fake installers, or system updates. Criminal operators spread these files on forums, torrent sites, or through malicious ads. Once installed, the malware may create a backdoor, log keystrokes, exfiltrate sensitive documents, or join the victim’s machine into a botnet. To increase infection rates, attackers frequently disguise malware as popular free content and force users to bypass legitimate protections like antivirus or browser warnings.",
+    demo: (
+      <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-lg space-y-3 text-lg">
+        <h3 className="font-bold text-yellow-400 text-xl">⚠️ Free Movie Download</h3>
+        <p>Download blockbuster movies now – FREE!</p>
+        <button
+          onClick={() => showAlert("⚠️ You almost downloaded malware!")}
+          className="bg-green-500 px-5 py-2 rounded-xl hover:bg-green-600 font-semibold text-lg"
+        >
+          Download
+        </button>
+        <p className="text-sm text-red-400 mt-2">* Disable antivirus to continue</p>
+      </div>
+    ),
   },
   {
-    icon: <Download className="h-5 w-5" />, // you can import Download from lucide-react
-    title: "Safe Downloading",
+    id: "identity",
+    icon: <UserX className="h-6 w-6 text-purple-600" />,
+    title: "Fake Profile Identity Theft",
     steps: [
-      "Try searching for a popular app on unofficial sites.",
-      "See how risky pop-ups/ads appear.",
-      "Now download the same app from the official store.",
-      "Understand why official sources are safer."
+      "Look at a fake social media account using stolen photos.",
+      "Spot mismatched details like name vs. location.",
+      "Compare with a verified genuine account.",
+      "Understand how identity theft enables scams and fraud."
     ],
+    guide:
+      "Identity theft on social media is executed through fake accounts built with stolen or scraped personal photos and bios. Criminals use these impersonations to build trust with victims, run romance scams, or collect further personal data. Often, these profiles are part of large-scale social engineering campaigns, where attackers clone dozens of legitimate users to spread misinformation, solicit money transfers, or phish for sensitive information. Over time, these accounts make it difficult for victims to distinguish between genuine and fraudulent online identities.",
+
+    demo: (
+      <div className="bg-white p-6 rounded-2xl shadow-lg flex items-center gap-4 text-lg">
+        <img
+          src="https://randomuser.me/api/portraits/men/32.jpg"
+          alt="profile"
+          className="w-16 h-16 rounded-full border"
+        />
+        <div>
+          <p className="font-bold text-xl">John Mark (Fake)</p>
+          <p className="text-gray-600">Lives in Paris</p>
+          <p className="text-gray-600">Works at Microsoft</p>
+          <button
+            onClick={() => showAlert("⚠️ This profile is fake!")}
+            className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 font-semibold text-lg"
+          >
+            Follow
+          </button>
+        </div>
+      </div>
+    ),
   },
+  {
+    id: "fraud",
+    icon: <CreditCard className="h-6 w-6 text-red-600" />,
+    title: "Online Shopping Fraud",
+    steps: [
+      "Visit a fake e-commerce site with unreal discounts (90% off iPhone).",
+      "Check the payment page — it lacks HTTPS lock symbol.",
+      "Compare with a real shopping site checkout page.",
+      "Learn how fraudsters capture credit card info."
+    ],
+    guide:
+      "Online shopping fraud operations use cloned e-commerce websites that mirror real brands while advertising impossible discounts to bait buyers. These sites are set up quickly on cheap domains and often promoted through social media ads or spam messages. Once victims enter payment details, the data is captured and either sold on underground markets or used directly for card-not-present fraud. In many cases, the victim never receives any product, and the site may disappear overnight, only to reappear under a new name.",
+    demo: (
+      <div className="bg-white p-6 rounded-2xl shadow-lg text-lg">
+        <h3 className="font-bold text-red-600 text-xl">🔥 iPhone 15 Pro – 90% OFF</h3>
+        <p>Only $99! Limited Offer.</p>
+        <input
+          type="text"
+          placeholder="Card Number"
+          className="border p-3 w-full rounded-xl mt-3 text-lg"
+        />
+        <button
+          onClick={() => showAlert("⚠️ Fraudulent payment attempt blocked!")}
+          className="bg-red-500 text-white px-5 py-2 rounded-xl mt-3 hover:bg-red-600 font-semibold text-lg"
+        >
+          Pay Now
+        </button>
+        <p className="text-sm text-red-500 mt-2">⚠️ No HTTPS Secure Lock</p>
+      </div>
+    ),
+  },
+  {
+  id: "ddos",
+  icon: <Rocket className="h-6 w-6 text-pink-500" />,
+  title: "DDoS Attack Simulation",
+  steps: [
+    "Understand how attackers flood a server with massive traffic to crash it.",
+    "Observe a demo simulation of overwhelming requests on a target website.",
+    "Learn why DDoS attacks disrupt services and how mitigation works.",
+    "Compare with normal traffic to see the difference."
+  ],
+  guide:
+    "Distributed Denial of Service (DDoS) attacks occur when multiple systems send excessive traffic to a target server or website, overwhelming its capacity and making it unavailable. These attacks are often executed via botnets. Learning to identify traffic patterns and use mitigation tools is crucial to prevent service downtime. Understanding DDoS helps in strengthening network security, analyzing traffic anomalies, and preparing incident response strategies.",
+  demo: (
+    <div className="bg-slate-800 text-white p-6 rounded-2xl shadow-lg space-y-4 text-lg">
+      <h3 className="font-bold text-pink-400 text-xl">🚀 Simulated DDoS Attack</h3>
+      <p>Click the button below to simulate a massive traffic attack on a test server.</p>
+      <button
+        onClick={() => showAlert("⚠️ DDoS attack simulation triggered!")}
+        className="bg-pink-500 px-5 py-2 rounded-xl hover:bg-pink-600 font-semibold text-lg"
+      >
+        Simulate DDoS
+      </button>
+      <p className="text-sm text-gray-300 mt-2">* This is a safe demo environment for learning purposes.</p>
+    </div>
+  ),
+},
+
 ];
 
-// Packet stream (animated dots)
-function PacketStream() {
+
+// Modal component
+const DemoModal = ({ open, onClose, title, children }) => {
+  if (!open) return null;
   return (
-    <div className="relative h-44 w-full overflow-hidden">
-      {[0, 1, 2, 3, 4, 5].map((row) => (
-        <div key={row} className="absolute left-0 right-0" style={{ top: `${row * 18 + 8}px` }}>
-          <motion.div
-            className="h-0.5 w-full bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-          />
-          <motion.span
-            className="absolute -top-1 h-3 w-3 rounded-full bg-fuchsia-300 shadow-[0_0_16px_2px_rgba(217,70,239,0.6)]"
-            initial={{ left: "-4%" }}
-            animate={{ left: ["-4%", "104%"] }}
-            transition={{ duration: 3 + row * 0.4, repeat: Infinity, ease: "linear", delay: row * 0.2 }}
-          />
-        </div>
-      ))}
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div className="bg-slate-900 text-white rounded-lg shadow-lg w-full max-w-lg p-5 relative">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-slate-400 hover:text-white"
+        >
+          <XCircle className="h-6 w-6" />
+        </button>
+        <h2 className="text-xl font-bold mb-3">{title}</h2>
+        <div className="text-sm">{children}</div>
+      </div>
     </div>
   );
-}
+};
+
+// Main Practical Labs component
+
+// Packet stream (animated dots)
+// function PacketStream() {
+//   return (
+//     <div className="relative h-44 w-full overflow-hidden">
+//       {[0, 1, 2, 3, 4, 5].map((row) => (
+//         <div key={row} className="absolute left-0 right-0" style={{ top: `${row * 18 + 8}px` }}>
+//           <motion.div
+//             className="h-0.5 w-full bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
+//             initial={{ opacity: 0 }}
+//             whileInView={{ opacity: 1 }}
+//             viewport={{ once: true }}
+//             transition={{ duration: 1 }}
+//           />
+//           <motion.span
+//             className="absolute -top-1 h-3 w-3 rounded-full bg-fuchsia-300 shadow-[0_0_16px_2px_rgba(217,70,239,0.6)]"
+//             initial={{ left: "-4%" }}
+//             animate={{ left: ["-4%", "104%"] }}
+//             transition={{ duration: 3 + row * 0.4, repeat: Infinity, ease: "linear", delay: row * 0.2 }}
+//           />
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
 
 // Threat radar
+
 function ThreatRadar() {
   return (
     <div className="relative aspect-square max-w-xs mx-auto">
@@ -498,16 +655,47 @@ function RadarIcon() {
 // Main component
 export default function CyberLab() {
   const [tab, setTab] = useState("theory");
-  const [progress, setProgress] = useState(42);
+  const [openLab, setOpenLab] = useState(null);
+  // const [progress, setProgress] = useState(42);
 
-  useEffect(() => {
-    const t = setInterval(() => setProgress((p) => (p >= 96 ? 24 : p + 2)), 800);
-    return () => clearInterval(t);
-  }, []);
+  // useEffect(() => {
+  //   const t = setInterval(() => setProgress((p) => (p >= 96 ? 24 : p + 2)), 800);
+  //   return () => clearInterval(t);
+  // }, []);
+
+  const navigate = useNavigate()
+
+  const handlePrev = () => {
+    if (tab === "theory") {
+      navigate("/part3/chapters/ch10");
+    } else if (tab === "practice") {
+      setTab("theory");
+    }
+  };
+
+  const handleNext = () => {
+    if (tab === "theory") {
+      setTab("practice");
+    } else if (tab === "practice") {
+      navigate("/part4/chapters/ch16");
+    }
+  };
 
   return (
     <div className="relative min-h-screen w-full bg-slate-950 text-slate-100">
       <CyberBackground />
+      <div className="flex justify-center mb-1 pt-4">
+        <Link
+          to="/parts/prt4"
+          className="inline-flex items-center px-5 py-2 rounded-full border border-cyan-400/50 
+               text-cyan-300 font-semibold transition-all
+               bg-cyan-500/10 hover:bg-cyan-500/20 
+               hover:shadow-[0_0_20px_rgba(34,211,238,0.6)] backdrop-blur-md"
+        >
+          <FaHome className="mr-2 text-lg text-cyan-300" />
+          Home
+        </Link>
+      </div>
 
       {/* HERO */}
       <section className="relative px-5 md:px-4 py-8 md:py-4">
@@ -516,63 +704,44 @@ export default function CyberLab() {
             <GlowRing />
             <div className="relative rounded-3xl border border-white/10 overflow-hidden bg-slate-900/60 backdrop-blur-md shadow-2xl">
               <div className="grid md:grid-cols-2 gap-0">
+
+                {/* Left Column */}
                 <div className="p-8 md:p-12">
                   <div className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-cyan-300/90">
                     <Sparkles className="h-4 w-4" /> Real-time Interactive Cyber Module
                   </div>
                   <h1 className="mt-4 text-4xl md:text-6xl font-black leading-tight">
-                    <GradientText>Cyber Lab</GradientText>
-                    <span className="block text-slate-300 font-semibold text-xl md:text-2xl mt-2">Theory ↔ Practice. High-Fi. Animated.</span>
+                    <GradientText> Understanding Cyber Crime</GradientText>
+                    <span className="block text-slate-300 font-semibold text-xl md:text-lg mt-3">
+                      🎯 Awareness 👀 → Action ⌨️ → Protection 🔒
+                    </span>
                   </h1>
                   <p className="mt-6 text-slate-300/90 max-w-prose">
-                    Explore foundational concepts and jump straight into hands-on labs. Designed for classrooms and workshops with cinematic micro-interactions and a neon cyber aesthetic.
+                    Cyber Crime refers to illegal activities carried out using computers,
+                    the internet, or digital devices. From hacking to online fraud,
+                    it affects individuals, organizations, and even nations.
                   </p>
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <Button onClick={() => setTab("theory")} className="bg-cyan-600 hover:bg-cyan-500">Theory</Button>
-                    <Button onClick={() => setTab("practice")} className="bg-fuchsia-600 hover:bg-fuchsia-500">Practical</Button>
-                    <Button variant="outline" className="border-white/20 bg-white/5">Quick Demo</Button>
-                  </div>
-                  <div className="mt-8 space-y-2">
-                    <PulseBadge label="Live progress" />
-                    <Progress value={progress} className="h-2 bg-white/10" />
-                  </div>
                 </div>
-                <div className="relative min-h-[300px] md:min-h-[420px]">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="relative">
-                      <div className="absolute -inset-10 rounded-full blur-3xl bg-fuchsia-500/20" />
-                      <div className="absolute inset-x-0 -bottom-10 h-40 bg-gradient-to-t from-slate-950 to-transparent" />
-                      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 120 }}
-                        className="relative grid grid-cols-2 gap-4">
-                        <TiltCard>
-                          <div className="p-4">
-                            <CardHeader className="pb-2"><CardTitle className="flex items-center gap-2 text-cyan-200"><Shield className="h-5 w-5" />Defense</CardTitle></CardHeader>
-                            <CardContent className="text-slate-300/80">Defense-in-depth, least privilege.</CardContent>
-                          </div>
-                        </TiltCard>
-                        <TiltCard>
-                          <div className="p-4">
-                            <CardHeader className="pb-2"><CardTitle className="flex items-center gap-2 text-fuchsia-200"><Bug className="h-5 w-5" />Threats</CardTitle></CardHeader>
-                            <CardContent className="text-slate-300/80">OWASP, CVEs, exploit chain.</CardContent>
-                          </div>
-                        </TiltCard>
-                        <TiltCard className="col-span-2">
-                          <div className="p-4">
-                            <CardHeader className="pb-2"><CardTitle className="flex items-center gap-2 text-emerald-200"><Network className="h-5 w-5" />Traffic</CardTitle></CardHeader>
-                            <CardContent>
-                              <PacketStream />
-                            </CardContent>
-                          </div>
-                        </TiltCard>
-                      </motion.div>
+
+                {/* Right Column */}
+                {/* Right Column */}
+                <div className="relative min-h-[300px] md:min-h-[420px] w-full flex items-center justify-center pr-6 md:pr-12">
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <div className="absolute -inset-10 rounded-full blur-3xl bg-fuchsia-500/20" />
+
+                    <div className="w-full max-w-[500px] mx-auto">
+                      <ShieldVsVirus />
                     </div>
                   </div>
                 </div>
+
+
               </div>
             </div>
           </div>
         </div>
       </section>
+
       <div className="relative w-full">
         <CircuitDivider />
       </div>
@@ -582,11 +751,22 @@ export default function CyberLab() {
         <div className="max-w-6xl mx-auto">
           <Tabs value={tab} onValueChange={setTab}>
             <div className="flex items-center justify-between mb-4">
-              <TabsList className="bg-white/10 border border-white/10">
-                <TabsTrigger value="theory">Theoretical</TabsTrigger>
-                <TabsTrigger value="practice">Practical</TabsTrigger>
-                <TabsTrigger value="resources">Resources</TabsTrigger>
-              </TabsList>
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-white/10 border border-white/10 rounded-md p-1 flex">
+                  <Button
+                    onClick={() => setTab("theory")}
+                    className={`ml-0 ${tab === "theory" ? "bg-cyan-600 text-white" : "bg-transparent hover:bg-cyan-500/30"}`}
+                  >
+                    Theory
+                  </Button>
+                  <Button
+                    onClick={() => setTab("practice")}
+                    className={`ml-2 ${tab === "practice" ? "bg-fuchsia-600 text-white" : "bg-transparent hover:bg-fuchsia-500/30"}`}
+                  >
+                    Practical
+                  </Button>
+                </div>
+              </div>
               <div className="hidden md:flex items-center gap-2 text-xs text-slate-300/80">
                 <CircuitBoard className="h-4 w-4" />
                 <span>Cyber mode engaged</span>
@@ -636,95 +816,119 @@ export default function CyberLab() {
             <TabsContent value="practice">
               <div className="grid md:grid-cols-3 gap-6">
                 {PRACTICAL_LABS.map((lab, i) => (
-                  <motion.div key={lab.title} initial={{ y: 20, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>
-                    <TiltCard>
-                      <div className="p-4">
-                        <CardHeader className="pb-2">
-                          <CardTitle className="flex items-center gap-2">
-                            <span className="text-fuchsia-200">{lab.icon}</span>
-                            <span>{lab.title}</span>
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <ol className="list-decimal list-inside space-y-1 text-sm text-slate-300/90">
-                            {lab.steps.map((s) => (<li key={s}>{s}</li>))}
-                          </ol>
-                          <div className="mt-4 flex gap-2">
-                            <Button size="sm" className="bg-emerald-600 hover:bg-emerald-500">Start</Button>
-                            <Button size="sm" variant="outline" className="border-white/20 bg-white/5">View Guide</Button>
-                          </div>
-                        </CardContent>
+                  <motion.div
+                    key={lab.title}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.06 }}
+                  >
+                    <div className="bg-slate-800 border border-slate-700 rounded-xl shadow p-4">
+                      <h3 className="flex items-center gap-2 text-lg text-cyan-300">
+                        {lab.icon}
+                        {lab.title}
+                      </h3>
+                      <ol className="list-decimal list-inside text-sm text-slate-300 mt-2 space-y-1">
+                        {lab.steps.map((s, idx) => (
+                          <li key={idx}>{s}</li>
+                        ))}
+                      </ol>
+                      <div className="mt-4 flex gap-2">
+                        <button
+                          onClick={() => setOpenLab({ title: lab.title + " - Demo", content: lab.demo })}
+                          className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-sm rounded"
+                        >
+                          Start
+                        </button>
+                        <button
+                          onClick={() =>
+                            setOpenLab({
+                              title: lab.title + " - Guide",
+                              content: (
+                                <div className="space-y-4">
+                                  {/* Main Guide */}
+                                  <p className="text-lg text-slate-100 leading-relaxed">
+                                    {lab.guide}
+                                  </p>
+                                  <div className="relative w-full h-36 rounded-xl overflow-hidden">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 via-fuchsia-400/20 to-yellow-400/20 animate-pulse rounded-xl"></div>
+                                    <p className="absolute inset-0 flex items-center justify-center text-slate-300 font-bold text-lg">
+                                      🔒 Stay Safe Online!
+                                    </p>
+                                  </div>
+                                </div>
+                              ),
+                            })
+                          }
+                          className="px-4 py-2 border border-white/20 bg-white/10 hover:bg-white/20 text-sm rounded-md font-semibold"
+                        >
+                          View Guide
+                        </button>
                       </div>
-                    </TiltCard>
+                    </div>
                   </motion.div>
                 ))}
 
-                <motion.div initial={{ y: 20, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.18 }} className="md:col-span-3">
-                  <TiltCard>
-                    <div className="p-4">
-                      <CardHeader className="pb-2">
-                        <CardTitle className="flex items-center gap-2 text-cyan-200"><RadarIcon /> Threat Radar</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid md:grid-cols-2 gap-6 items-center">
-                          <ThreatRadar />
-                          <div className="text-sm text-slate-300/85 space-y-2">
-                            <p>Live simulation of signal sweep spotting anomalies on the network plane. Use this to discuss detection vs prevention and mean-time-to-respond.</p>
-                            <div className="flex flex-wrap gap-2">
-                              {['Phishing', 'Ransomware', 'Misconfig', 'Insider', 'DDoS'].map(tag => (
-                                <Badge key={tag} className="bg-white/10 border border-white/15">{tag}</Badge>
-                              ))}
-                            </div>
+                {/* Modal */}
+                <DemoModal
+                  open={!!openLab}
+                  onClose={() => setOpenLab(null)}
+                  title={openLab?.title}
+                >
+                  {openLab?.content}
+                </DemoModal>
+              </div>
+              <motion.div initial={{ y: 20, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.18 }} className="md:col-span-3 mt-5">
+                <TiltCard>
+                  <div className="p-4">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="flex items-center gap-2 text-cyan-200"><RadarIcon /> Threat Radar</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid md:grid-cols-2 gap-6 items-center">
+                        <ThreatRadar />
+                        <div className="text-sm text-slate-300/85 space-y-2">
+                          <p>Live simulation of signal sweep spotting anomalies on the network plane. Use this to discuss detection vs prevention and mean-time-to-respond.</p>
+                          <div className="flex flex-wrap gap-2">
+                            {['Phishing', 'Ransomware', 'Misconfig', 'Insider', 'DDoS'].map(tag => (
+                              <Badge key={tag} className="bg-white/10 border border-white/15">{tag}</Badge>
+                            ))}
                           </div>
                         </div>
-                      </CardContent>
-                    </div>
-                  </TiltCard>
-                </motion.div>
-              </div>
-            </TabsContent>
-
-            {/* RESOURCES */}
-            <TabsContent value="resources">
-              <div className="grid md:grid-cols-2 gap-6">
-                <TiltCard>
-                  <div className="p-4">
-                    <CardHeader className="pb-2"><CardTitle className="flex items-center gap-2"><BookOpen className="h-5 w-5" /> Quick Theory Recap</CardTitle></CardHeader>
-                    <CardContent className="text-sm text-slate-300/85">
-                      <ul className="list-disc list-inside space-y-1">
-                        <li>Security is about trade-offs: usability, cost, risk.</li>
-                        <li>Trust but verify → better: <em>never trust, always verify</em>.</li>
-                        <li>Assume breach; practice incident response.</li>
-                        <li>Automation + observability win over ad-hoc heroics.</li>
-                      </ul>
+                      </div>
                     </CardContent>
                   </div>
                 </TiltCard>
-                <TiltCard>
-                  <div className="p-4">
-                    <CardHeader className="pb-2"><CardTitle className="flex items-center gap-2"><Rocket className="h-5 w-5" /> Teaching Tips</CardTitle></CardHeader>
-                    <CardContent className="text-sm text-slate-300/85">
-                      <ul className="list-disc list-inside space-y-1">
-                        <li>Use the Packet Stream as a visual metaphor for data in transit.</li>
-                        <li>Assign labs in pairs: one plays <em>attacker</em>, one <em>defender</em>.</li>
-                        <li>Have students map each step to a control in the NIST/ISO framework.</li>
-                        <li>Finish with a 10-minute tabletop incident drill.</li>
-                      </ul>
-                    </CardContent>
-                  </div>
-                </TiltCard>
-              </div>
+              </motion.div>
             </TabsContent>
           </Tabs>
         </div>
-      </section>
+      </section >
+      <div className="flex justify-between items-center -mt-6 p-4 bg-white/5 border border-white/10 rounded-xl backdrop-blur-md">
+        <button
+          onClick={handlePrev}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-cyan-400/50 
+               text-cyan-300 font-medium transition-all
+               bg-cyan-500/10 hover:bg-cyan-500/20 
+               hover:shadow-[0_0_15px_rgba(34,211,238,0.6)]"
+        >
+          <FaArrowLeft className="text-cyan-300" />
+          Previous
+        </button>
 
-      {/* FOOTER */}
-      <footer className="relative px-5 md:px-10 pb-10">
-        <div className="max-w-6xl mx-auto text-xs text-slate-400/80 flex items-center gap-2">
-          <Cpu className="h-4 w-4" /> Built for fast sessions • <span className="text-slate-300">Tip:</span> Press <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/20">T</kbd> then <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/20">P</kbd> to jump Theory/Practical.
-        </div>
-      </footer>
-    </div>
+        <button
+          onClick={handleNext}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-fuchsia-400/50 
+               text-fuchsia-300 font-medium transition-all
+               bg-fuchsia-500/10 hover:bg-fuchsia-500/20 
+               hover:shadow-[0_0_15px_rgba(217,70,239,0.6)]"
+        >
+          Next
+          <FaArrowRight className="text-fuchsia-300" />
+        </button>
+      </div>
+
+
+    </div >
   );
 }
