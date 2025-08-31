@@ -241,12 +241,18 @@ export default function DigitalSafetyShowcase() {
     },
   ];
 
-  const items = [
-    { icon: "🔒", title: "Device Safety", points: ["Lock screen & updates", "Antivirus basics", "App permissions hygiene"] },
-    { icon: "🗂", title: "Data Safety", points: ["Backups & secure cloud", "Share minimally", "Encrypt sensitive files"] },
-    { icon: "🆔", title: "Identity Safety", points: ["Keep address/phone/Aadhaar private", "Strong passwords", "Beware profile oversharing"] },
-    { icon: "💬", title: "Communication Safety", points: ["Be respectful", "Avoid strangers", "Limit personal details in chats"] },
-  ];
+const items = [
+  { icon: "🔒", title: "Device Safety", points: ["Lock screen & updates", "Antivirus basics", "App permissions hygiene"] },
+  { icon: "🗂", title: "Data Safety", points: ["Backups & secure cloud", "Share minimally", "Encrypt sensitive files"] },
+  { icon: "🆔", title: "Identity Safety", points: ["Keep address/phone/Aadhaar private", "Strong passwords", "Beware profile oversharing"] },
+  { icon: "💬", title: "Communication Safety", points: ["Be respectful", "Avoid strangers", "Limit personal details in chats"] },
+  { icon: "💳", title: "Financial Safety", points: ["Use secure payment methods", "Monitor transactions", "Avoid phishing emails"] },
+  { icon: "🌐", title: "Online Privacy", points: ["Use VPN when needed", "Manage cookies & trackers", "Control social media visibility"] },
+  { icon: "🛡", title: "Network Safety", points: ["Secure Wi-Fi", "Avoid public hotspots for sensitive tasks", "Strong router passwords"] },
+  { icon: "🧑‍💻", title: "Account Safety", points: ["Enable two-factor authentication", "Regularly update passwords", "Monitor account activity"] },
+  { icon: "📚", title: "Educational Safety", points: ["Verify sources before sharing", "Critical thinking online", "Avoid scams & misinformation"] },
+];
+
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-[#0a0b1e] via-[#13183b] to-[#2a1040] text-white flex flex-col items-center py-10 px-4 overflow-hidden">
