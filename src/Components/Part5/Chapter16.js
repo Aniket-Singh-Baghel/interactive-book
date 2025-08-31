@@ -547,7 +547,7 @@ export default function DigitalSafetyShowcase() {
 
               {/* Grid */}
               <motion.div
-                className="grid gap-6 md:grid-cols-2 mt-4"
+                className="grid gap-6 md:grid-cols-2 mt-8"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
@@ -559,7 +559,17 @@ export default function DigitalSafetyShowcase() {
                 {items.map((c, i) => (
                   <motion.div
                     key={i}
-                    variants={{ hidden: { opacity: 0, scale: 0.98 }, visible: { opacity: 1, scale: 1 } }}
+                    variants={{
+                      hidden: { opacity: 0, scale: 0.98 },
+                      visible: { opacity: 1, scale: 1 }
+                    }}
+                    initial="hidden"
+                    animate="visible"
+                    whileHover={{
+                      scale: 1.03,
+                      boxShadow: "0 0 20px rgba(16, 179, 200, 0.5), 0 0 40px rgba(16, 179, 200, 0.3)",
+                      transition: { duration: 0.3, ease: "easeOut" }
+                    }}
                     transition={{ duration: 0.35 }}
                     className="rounded-2xl bg-[#0F1A2B] ring-1 ring-white/10 p-6 shadow-[0_6px_40px_rgba(0,0,0,0.35)]"
                   >
@@ -577,6 +587,7 @@ export default function DigitalSafetyShowcase() {
                     </ul>
                   </motion.div>
                 ))}
+
               </motion.div>
             </section>
           </MotionConfig>
