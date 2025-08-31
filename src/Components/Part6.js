@@ -1,37 +1,37 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaGlobe, FaChrome,FaHome } from "react-icons/fa";
+import { FaDesktop, FaLaptopCode, FaHome } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const topics = [
   {
-    id: 12,
-    title: "Chapter 12: What is the Internet?",
-    concept: "Introducing the internet as a global network of computers.",
+    id: 15,
+    title: "Chapter 15: Different Types of Computers",
+    concept: "Exploring desktop computers, laptops, tablets, and smartphones.",
     analogy:
-      "The internet is like a vast network of roads and railway lines connecting every city and village in the world, allowing people to send and receive goods (information) from anywhere.",
-    icon: <FaGlobe className="text-blue-500 text-3xl" />,
-    path: "/parts/prt4/ch12",
+      "All are computers, but they are like a big car (desktop), a scooter (laptop), and a bicycle (smartphone). They serve different purposes, but all get you from one place to another.",
+    icon: <FaDesktop className="text-blue-500 text-3xl" />,
+    path: "/part5/chapters/ch15",
   },
   {
-    id: 13,
-    title: "Chapter 13: Web Browsers and Websites",
-    concept: "Explaining how to access the internet.",
+    id: 16,
+    title: "Chapter 16: An Introduction to Coding",
+    concept: "Briefly explaining what coding is and why it's important.",
     analogy:
-      "A web browser is like a bus or train that takes you to different websites (cities) on the internet.",
-    icon: <FaChrome className="text-pink-500 text-3xl" />,
-    path: "/parts/prt4/ch13",
+      "Writing code is like writing a detailed recipe for a dish. You are giving the computer step-by-step instructions on what to cook (do).",
+    icon: <FaLaptopCode className="text-green-500 text-3xl" />,
+    path: "/part5/chapters/ch16",
   },
 ];
 
-export default function Part4() {
+export default function Part5() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen relative bg-gradient-to-br from-green-100 via-yellow-100 to-red-100 p-8 font-sans overflow-hidden">
+    <div className="min-h-screen relative bg-gradient-to-br from-purple-100 via-pink-100 to-yellow-100 p-8 font-sans overflow-hidden">
       {/* Home Button */}
-     <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-6">
         <Link
           to="/"
           className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
@@ -40,6 +40,7 @@ export default function Part4() {
           Home
         </Link>
       </div>
+
       {/* Title */}
       <motion.h1
         initial={{ y: -50, opacity: 0 }}
@@ -47,12 +48,12 @@ export default function Part4() {
         transition={{ type: "spring", stiffness: 100 }}
         className="text-4xl font-bold text-center text-purple-700 mb-3"
       >
-        🌐 The Digital World
+        🚀 Looking Ahead
       </motion.h1>
 
       {/* Tagline */}
       <p className="text-center text-pink-600 font-semibold mb-10">
-        Part 4: Internet & Safety – Navigating the online world with confidence.
+        Part 5: From Beginner to Pro – Exploring your tech journey ahead.
       </p>
 
       {/* Topics List */}

@@ -1,39 +1,37 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaDesktop, FaLaptopCode, FaHome } from "react-icons/fa";
+import { FaShieldAlt, FaHome } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import teacherCartoon from "../Assets/teacher_Cartoon.png";
-import studentCartoon from "../Assets/Student_Cartton.png";
 
 const topics = [
   {
     id: 15,
-    title: "Chapter 15: Different Types of Computers",
-    concept: "Exploring desktop computers, laptops, tablets, and smartphones.",
+    title: "Chapter15: Cyber Crime",
+    concept: "Teaching students how to protect themselves and their data online.",
     analogy:
-      "All are computers, but they are like a big car (desktop), a scooter (laptop), and a bicycle (smartphone). They serve different purposes, but all get you from one place to another.",
-    icon: <FaDesktop className="text-blue-500 text-3xl" />,
-    path: "/parts/prt5/ch15",
+      "Just as you lock your house door with a taala (lock) to keep things safe, you should use passwords to protect your accounts online.",
+    icon: <FaShieldAlt className="text-green-500 text-3xl" />,
+    path: "/part5/chapters/ch15",
   },
-  {
-    id: 16,
-    title: "Chapter 16: An Introduction to Coding",
-    concept: "Briefly explaining what coding is and why it's important.",
-    analogy:
-      "Writing code is like writing a detailed recipe for a dish. You are giving the computer step-by-step instructions on what to cook (do).",
-    icon: <FaLaptopCode className="text-green-500 text-3xl" />,
-    path: "/parts/prt5/ch16",
-  },
+    {
+      id: 16,
+      title: "Chapter 16: Digital Safety",
+      concept: "Teaching students how to protect themselves and their data online.",
+      analogy:
+        "Just as you lock your house door with a taala (lock) to keep things safe, you should use passwords to protect your accounts online.",
+      icon: <FaShieldAlt className="text-green-500 text-3xl" />,
+      path: "/part5/chapters/ch16",
+    },
 ];
 
-export default function Part5() {
+export default function Part4() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen relative bg-gradient-to-br from-purple-100 via-pink-100 to-yellow-100 p-8 font-sans overflow-hidden">
+    <div className="min-h-screen relative bg-gradient-to-br from-green-100 via-yellow-100 to-red-100 p-8 font-sans overflow-hidden">
       {/* Home Button */}
-      <div className="flex justify-center mb-6">
+     <div className="flex justify-center mb-6">
         <Link
           to="/"
           className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
@@ -42,25 +40,6 @@ export default function Part5() {
           Home
         </Link>
       </div>
-
-      {/* Left Cartoon */}
-      <motion.img
-        src={teacherCartoon}
-        alt="Teacher Cartoon"
-        className="absolute max-w-full -bottom-16 -left-8"
-        animate={{ y: [0, -10, 0] }}
-        transition={{ repeat: Infinity, duration: 3 }}
-      />
-
-      {/* Right Cartoon */}
-      <motion.img
-        src={studentCartoon}
-        alt="Student Cartoon"
-        className="absolute w-72 bottom-4 right-4"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Infinity, duration: 3 }}
-      />
-
       {/* Title */}
       <motion.h1
         initial={{ y: -50, opacity: 0 }}
@@ -68,12 +47,12 @@ export default function Part5() {
         transition={{ type: "spring", stiffness: 100 }}
         className="text-4xl font-bold text-center text-purple-700 mb-3"
       >
-        🚀 Looking Ahead
+        🌐 The Digital World
       </motion.h1>
 
       {/* Tagline */}
       <p className="text-center text-pink-600 font-semibold mb-10">
-        Part 5: From Beginner to Pro – Exploring your tech journey ahead.
+        Part 4: Internet & Safety – Navigating the online world with confidence.
       </p>
 
       {/* Topics List */}

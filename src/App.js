@@ -41,13 +41,21 @@ const topics = [
     image:Part4,
     path: "/parts/prt4"
   },
-  {
+    {
     id: 5,
     part: 'Part-5',
+    title: "Digital-Safety",
+    fact: "💡 The first email was sent in 1971!",
+    image:Part4,
+    path: "/parts/prt5"
+  },
+  {
+    id: 6,
+    part: 'Part-6',
     title: "Looking Ahead - From Beginner to Pro",
     fact: "💡 Quantum computers can solve problems in seconds!",
     image:Part5,
-    path: "/parts/prt5"
+    path: "/parts/prt6"
   }
 ];
 

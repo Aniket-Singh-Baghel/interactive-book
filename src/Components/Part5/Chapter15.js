@@ -667,7 +667,7 @@ export default function CyberLab() {
 
   const handlePrev = () => {
     if (tab === "theory") {
-      navigate("/part3/chapters/ch10");
+      navigate("/parts/prt5");
     } else if (tab === "practice") {
       setTab("theory");
     }
@@ -677,7 +677,7 @@ export default function CyberLab() {
     if (tab === "theory") {
       setTab("practice");
     } else if (tab === "practice") {
-      navigate("/part4/chapters/ch16");
+      navigate("/parts/prt5");
     }
   };
 
@@ -686,7 +686,7 @@ export default function CyberLab() {
       <CyberBackground />
       <div className="flex justify-center mb-1 pt-4">
         <Link
-          to="/parts/prt4"
+          to="/parts/prt5"
           className="inline-flex items-center px-5 py-2 rounded-full border border-cyan-400/50 
                text-cyan-300 font-semibold transition-all
                bg-cyan-500/10 hover:bg-cyan-500/20 
@@ -927,8 +927,6 @@ export default function CyberLab() {
           <FaArrowRight className="text-fuchsia-300" />
         </button>
       </div>
-
-
     </div >
   );
 }
