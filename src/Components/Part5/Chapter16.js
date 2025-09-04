@@ -192,7 +192,7 @@ export default function DigitalSafetyShowcase() {
     const idx = tabOrder.indexOf(activeTab);
 
     if (idx === tabOrder.length - 1) {
-      navigate("/part5/chapters/ch17");
+      navigate("/error404");
     } else {
       setActiveTab(tabOrder[idx + 1]);
     }

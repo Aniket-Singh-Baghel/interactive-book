@@ -24,6 +24,7 @@ import Quiz1 from './Components/Part1/Quiz1';
 import Chapter6 from './Components/Part2/Chapter6';
 import Chapter7 from './Components/Part2/Chapter7';
 import Chapter8 from './Components/Part2/Chapter8';
+import Chapter2_4 from './Components/Part2/Chapter4'
 import Quiz2 from './Components/Part2/Quiz2';
 import Chapter9 from './Components/Part3/Chapter9';
 import Chapter10 from './Components/Part3/Chapter10';
@@ -31,6 +32,7 @@ import Chapter11 from './Components/Part3/Chapter11';
 import Chapter12 from './Components/Part3/Chapter12';
 import Chapter15 from './Components/Part5/Chapter15';
 import Chapter16 from './Components/Part5/Chapter16';
+import ErrorAnimation from './Components/error';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -55,9 +57,10 @@ root.render(
         <Route path="/part1/chapters/memoryComparison" element={<MemoryComparison />} />
         <Route path="/part1/chapters/ramVsRom" element={<RamVsRom />} />
         <Route path="/part1/chapters/qiz1" element={<Quiz1 />} />
-        <Route path="/part2/chapters/ch6" element={<Chapter6 />} />
-        <Route path="/part2/chapters/ch7" element={<Chapter7 />} />
-        <Route path="/part2/chapters/ch8" element={<Chapter8 />} />
+        <Route path="/module1/what-is-software" element={<Chapter6 />} />
+        <Route path="/module1/operating-system" element={<Chapter7 />} />
+        <Route path="/module1/types-of-software" element={<Chapter8 />} />
+        <Route path="/module2/developer-role" element={<Chapter2_4 />} />
         <Route path="/part2/chapters/qiz2" element={<Quiz2 />} />
         <Route path="/part3/chapters/ch9" element={<Chapter9 />} />
         <Route path="/part3/chapters/ch10" element={<Chapter10 />} />
@@ -65,6 +68,7 @@ root.render(
         <Route path="/part3/chapters/ch12" element={<Chapter12 />} />
         <Route path="/part5/chapters/ch15" element={<Chapter15 />} />
         <Route path="/part5/chapters/ch16" element={<Chapter16 />} />
+        <Route path="/error404" element={<ErrorAnimation />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
