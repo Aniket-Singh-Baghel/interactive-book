@@ -282,11 +282,11 @@ function AnimatedSVG({ stage }) {
     }
 }
 
-
 export default function SDLCExplorer() {
-    const [language, setLanguage] = useState('en'); // 'en' for English, 'hi' for Hindi
+    const [language, setLanguage] = useState('en');
     const [activeStage, setActiveStage] = useState(sdlcStages[0]);
-    const navigate = useNavigate()
+    const [sidebarOpen, setSidebarOpen] = useState(false); // for mobile
+    const navigate = useNavigate();
 
     const currentStage = language === 'en'
         ? sdlcStages.find(stage => stage.id === activeStage.id)
@@ -294,6 +294,7 @@ export default function SDLCExplorer() {
 
     return (
         <>
+            {/* Language Toggle */}
             <div className="flex justify-end p-4 space-x-2">
                 <button
                     onClick={() => setLanguage('en')}
@@ -316,6 +317,7 @@ export default function SDLCExplorer() {
                 </button>
             </div>
 
+            {/* Home Button */}
             <div className="flex justify-center mb-6 -mt-6">
                 <Link
                     to="/parts/prt2"
@@ -323,8 +325,8 @@ export default function SDLCExplorer() {
                 >
                     <motion.div
                         className="mr-2"
-                        animate={{ y: [0, -6, 0] }}       // moves up by 6px and back
-                        transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }} // infinite bounce
+                        animate={{ y: [0, -6, 0] }}
+                        transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
                     >
                         <FaHome className="text-lg text-indigo-600" />
                     </motion.div>
@@ -332,20 +334,31 @@ export default function SDLCExplorer() {
                 </Link>
             </div>
 
-            {/* title */}
+            {/* Title */}
             <motion.h1
                 initial={{ y: -30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 120 }}
                 className="text-4xl font-extrabold text-center text-purple-700 mb-2"
             >
-                🚗 SDLC : SoftWare Developement Lifecycle
+                🚗 SDLC : Software Development Lifecycle
             </motion.h1>
 
-            <div className="flex font-sans bg-gray-100 w-full max-w-6xl mx-auto my-8 shadow-2xl rounded-2xl overflow-hidden min-h-[700px]">
+            {/* Main Container */}
+            <div className="flex flex-col md:flex-row font-sans bg-gray-100 w-full max-w-6xl mx-auto my-8 shadow-2xl rounded-2xl overflow-hidden min-h-[700px]">
 
-                {/* Sidebar Navigation */}
-                <aside className="w-1/3 bg-white p-6 border-r border-gray-200">
+                {/* Sidebar Toggle Button (mobile) */}
+                <div className="md:hidden flex justify-end p-4">
+                    <button
+                        onClick={() => setSidebarOpen(!sidebarOpen)}
+                        className="px-3 py-2 bg-purple-500 text-white rounded-lg shadow"
+                    >
+                        {sidebarOpen ? 'Close Menu' : 'Open Menu'}
+                    </button>
+                </div>
+
+                {/* Sidebar */}
+                <aside className={`bg-white p-6 border-r border-gray-200 md:w-1/3 w-full md:block ${sidebarOpen ? 'block' : 'hidden'} md:relative absolute z-50 top-0 left-0 h-full md:h-auto`}>
                     <h2 className="text-2xl font-bold text-gray-800 mb-2">
                         {language === 'en' ? 'The SDLC' : 'SDLC चरण'}
                     </h2>
@@ -361,7 +374,10 @@ export default function SDLCExplorer() {
                             return (
                                 <motion.button
                                     key={stage.id}
-                                    onClick={() => setActiveStage(stage)}
+                                    onClick={() => {
+                                        setActiveStage(stage);
+                                        setSidebarOpen(false); // close sidebar on mobile
+                                    }}
                                     className="w-full flex items-center text-left p-3 rounded-lg transition-all duration-300 focus:outline-none focus-visible:ring-2"
                                     style={{ color: activeStage.id === stage.id ? 'white' : '#374151' }}
                                     animate={{
@@ -390,9 +406,8 @@ export default function SDLCExplorer() {
                     </nav>
                 </aside>
 
-
-                {/* Main Content Area */}
-                <main className="w-2/3 p-10 bg-purple-100">
+                {/* Main Content */}
+                <main className="md:w-2/3 w-full p-6 md:p-10 bg-purple-100">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeStage.id}
@@ -402,11 +417,13 @@ export default function SDLCExplorer() {
                             exit="exit"
                             className="flex flex-col h-full"
                         >
-                            <header className="flex items-center mb-6">
-                                <div className="p-4 rounded-xl shadow-md flex items-center justify-center" style={{ backgroundColor: activeStage.color, color: 'white' }}>
+                            <header className="flex flex-col items-center mb-6">
+                                <div className="p-4 rounded-xl shadow-md mb-4" style={{ backgroundColor: activeStage.color, color: 'white' }}>
                                     <AnimatedSVG stage={activeStage} />
                                 </div>
-                                <h1 className="text-4xl font-extrabold text-gray-800 ml-5">{currentStage.name}</h1>
+                                <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800 text-center">
+                                    {currentStage.name}
+                                </h1>
                             </header>
 
                             <div className="space-y-6 text-gray-600 leading-relaxed">
@@ -432,25 +449,46 @@ export default function SDLCExplorer() {
                 </main>
             </div>
 
-            {/* Page Navigation*/}
-            <div className="flex justify-between items-center -mt-8 p-6 bg-gray-100 rounded-lg shadow-md">
+            {/* Page Navigation */}
+            <div className="flex flex-col md:flex-row justify-between items-center -mt-8 p-6 bg-gray-100 rounded-lg shadow-md gap-4 md:gap-0">
+                {/* Previous Button */}
                 <button
-                    onClick={() => navigate('/module2/developer-role')}
+                    onClick={() => {
+                        if (activeStage.id === 0) {
+                            // At first stage → navigate to external path
+                            navigate('/module2/developer-role');
+                        } else {
+                            // Go to previous stage
+                            const prevStage = sdlcStages.find(stage => stage.id === activeStage.id - 1);
+                            setActiveStage(prevStage);
+                        }
+                    }}
                     className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
                 >
                     <FaArrowLeft />
                     Previous
                 </button>
 
+                {/* Next Button */}
                 <button
-                    onClick={() => navigate('/module1/operating-system')}
+                    onClick={() => {
+                        if (activeStage.id === sdlcStages.length - 1) {
+                            navigate('/module1/operating-system');
+                        } else {
+
+                            const nextStage = sdlcStages.find(stage => stage.id === activeStage.id + 1);
+                            setActiveStage(nextStage);
+                        }
+                    }}
                     className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
                 >
                     Next
                     <FaArrowRight />
                 </button>
+
             </div>
 
         </>
     );
 }
+
