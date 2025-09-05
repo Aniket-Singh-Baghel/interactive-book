@@ -261,7 +261,7 @@ export default function Chapter6() {
         </button>
 
         <button
-          onClick={() => navigate('/part2/chapters/ch7')}
+          onClick={() => navigate('/module1/operating-system')}
           className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
         >
           Next

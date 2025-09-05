@@ -7,17 +7,13 @@ import {
   animate,
 } from "framer-motion";
 import {
-  User,
   Search,
   BookOpen,
   Milestone,
   Star,
-  Briefcase,
-  Sparkles,
-  ArrowRight,
 } from "lucide-react";
 import { FaHome, FaArrowLeft, FaArrowRight } from 'react-icons/fa'
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // --- Custom Animated SVGs (from both versions) ---
 // const AnimatedCodeIcon = () => (
@@ -179,15 +175,15 @@ const AnimatedDeveloperMindIcon = () => {
       <motion.rect x="64" y="106" width="12" height="22" fill="#2563EB" rx="3" />
 
       {/* --- Laptop --- */}
-      <motion.rect x="70" y="80" width="30" height="18" fill="#9CA3AF" stroke="#374151" rx="2" />
-      <motion.rect x="70" y="80" width="30" height="2" fill="#1F2937" />
+      <motion.rect x="45" y="90" width="30" height="18" fill="#9CA3AF" stroke="#374151" rx="2" />
+      <motion.rect x="45" y="90" width="30" height="2" fill="#1F2937" />
 
       {/* Laptop code lines */}
       {[...Array(4)].map((_, i) => (
         <motion.rect
           key={i}
-          x="73"
-          y={84 + i * 3}
+          x="50"
+          y={95 + i * 3}
           width={20}
           height="2"
           fill={i % 2 === 0 ? "#10B981" : "#F59E0B"}
@@ -196,38 +192,6 @@ const AnimatedDeveloperMindIcon = () => {
           transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.5 }}
         />
       ))}
-
-      {/* --- Floating Symbols --- */}
-      <motion.text
-        x="30"
-        y="30"
-        fontSize="14"
-        fill="#A78BFA"
-        animate={{ y: [0, -10, 0], opacity: [0, 1, 0] }}
-        transition={{ duration: 3, repeat: Infinity }}
-      >
-        {"</>"}
-      </motion.text>
-      <motion.text
-        x="80"
-        y="40"
-        fontSize="16"
-        fill="#FBBF24"
-        animate={{ y: [0, -8, 0], opacity: [0, 1, 0] }}
-        transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-      >
-        💡
-      </motion.text>
-      <motion.text
-        x="90"
-        y="20"
-        fontSize="16"
-        fill="#34D399"
-        animate={{ y: [0, -12, 0], opacity: [0, 1, 0] }}
-        transition={{ duration: 3, repeat: Infinity, delay: 2 }}
-      >
-        ⚡
-      </motion.text>
     </motion.svg>
 
   );
@@ -323,7 +287,7 @@ const AnimatedCounter = ({ to }) => {
 
 // --- Main Component ---
 const DeveloperHybridPage = () => {
-  const navigate  = useNavigate()
+  const navigate = useNavigate()
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-gray-200 font-sans overflow-hidden">
       {/* background blob */}
@@ -497,7 +461,7 @@ const DeveloperHybridPage = () => {
         {/* Page Navigation*/}
         <div className="flex justify-between items-center -mt-6 p-4 bg-white/5 border border-white/10 rounded-xl backdrop-blur-md">
           <button
-            onClick={() => navigate('/module1/types-of-software ')}
+            onClick={() => navigate('/module2/developer-role')}
             className="flex items-center gap-2 px-4 py-2 rounded-lg border border-cyan-400/50 
                        text-cyan-300 font-medium transition-all
                        bg-cyan-500/10 hover:bg-cyan-500/20 
@@ -508,7 +472,7 @@ const DeveloperHybridPage = () => {
           </button>
 
           <button
-            onClick={() => navigate('/part2/chapters/qiz2')}
+            onClick={() => navigate('/module2/sdlc')}
             className="flex items-center gap-2 px-4 py-2 rounded-lg border border-fuchsia-400/50 
                        text-fuchsia-300 font-medium transition-all
                        bg-fuchsia-500/10 hover:bg-fuchsia-500/20 
