@@ -417,11 +417,17 @@ export default function SDLCExplorer() {
                             exit="exit"
                             className="flex flex-col h-full"
                         >
-                            <header className="flex flex-col items-center mb-6">
-                                <div className="p-4 rounded-xl shadow-md mb-4" style={{ backgroundColor: activeStage.color, color: 'white' }}>
+                            <header className="flex flex-col md:flex-row items-center mb-6 text-center md:text-left">
+                                {/* SVG */}
+                                <div
+                                    className="p-4 rounded-xl shadow-md flex items-center justify-center mb-4 md:mb-0"
+                                    style={{ backgroundColor: activeStage.color, color: 'white' }}
+                                >
                                     <AnimatedSVG stage={activeStage} />
                                 </div>
-                                <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800 text-center">
+
+                                {/* Title */}
+                                <h1 className="text-4xl font-extrabold text-gray-800 md:ml-5">
                                     {currentStage.name}
                                 </h1>
                             </header>
