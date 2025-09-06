@@ -68,7 +68,7 @@ export default function ProgrammingLanguagesProComponent() {
                 },
                 4: {
                     title: 'Python — first logic language',
-                    analogy : 'Python is like giving instructions to a smart helper who understands simple English.',
+                    analogy: 'Python is like giving instructions to a smart helper who understands simple English.',
                     short:
                         'High-level language: no need for computer binary, human-friendly words.\n' +
                         'Beginner-friendly: easy to learn and start programming.\n' +
@@ -116,15 +116,15 @@ export default function ProgrammingLanguagesProComponent() {
                 },
                 4: {
                     title: 'Python — शुरुआती के लिए',
-                    analogy :  'Python ऐसा है जैसे आप किसी स्मार्ट सहायक को सरल अंग्रेज़ी में निर्देश दे रहे हों।',
-                    short: 
+                    analogy: 'Python ऐसा है जैसे आप किसी स्मार्ट सहायक को सरल अंग्रेज़ी में निर्देश दे रहे हों।',
+                    short:
                         'High-level भाषा: कंप्यूटर बाइनरी की जरूरत नहीं, इंसान के लिए आसान शब्द।\n' +
                         'शुरुआत करने वालों के लिए आसान: जल्दी सीखने और प्रोग्रामिंग शुरू करने के लिए।\n' +
                         'लॉजिक और समस्या समाधान: कंप्यूटर को कदम-दर-कदम सोचने के निर्देश देता है।\n' +
                         'छोटे काम और ऑटोमेशन: बोरिंग काम जैसे फाइल का नाम बदलना अपने आप कर देता है।\n' +
                         'बड़े प्रोजेक्ट्स भी: वेबसाइट, गेम, डेटा एनालिसिस, और AI में इस्तेमाल होता है।\n' +
                         'सिंटैक्स सरल: निर्देशों को सामान्य वाक्यों में लिखा जा सकता है।'
-                },  
+                },
                 5: {
                     title: 'Pages कैसे ज़िंदा होते हैं — JavaScript & Java',
                     short: 'JavaScript web पर interaction देता है. Java बड़े apps के लिए इस्तेमाल होता है।',
@@ -215,12 +215,8 @@ export default function ProgrammingLanguagesProComponent() {
         setPythonOutput([]);
         setPythonRunning(true);
 
-        // Split code into lines & clean
-        const lines = pythonCode
-            .split('\n')
-            .map(l => l.trim())
-            .filter(Boolean);
-
+        // Split code into lines, trim and remove empty lines
+        const lines = pythonCode.split('\n').map(l => l.trim()).filter(Boolean);
         let delay = 0;
 
         lines.forEach((ln) => {
@@ -232,13 +228,10 @@ export default function ProgrammingLanguagesProComponent() {
             if (m) {
                 const inner = m[1].trim();
 
-                // Case 1: print("string")
-                const s = inner.match(/^\"(.+)\"$|^\'(.+)\'$/);
+                // Case 1: print("string") or print('string')
+                const s = inner.match(/^"(.+)"$|^'(.+)'$/);
                 if (s) {
-                    setTimeout(
-                        () => setPythonOutput(p => [...p, s[1] ?? s[2]]),
-                        delay
-                    );
+                    setTimeout(() => setPythonOutput(p => [...p, s[1] ?? s[2]]), delay);
                 }
                 else {
                     // Case 2: print(2 + 3), print(10 - 5), etc.
@@ -247,8 +240,8 @@ export default function ProgrammingLanguagesProComponent() {
                         const a = Number(ar[1]);
                         const op = ar[2];
                         const b = Number(ar[3]);
-
                         let r = '';
+
                         if (op === '+') r = String(a + b);
                         if (op === '-') r = String(a - b);
                         if (op === '*') r = String(a * b);
@@ -258,31 +251,23 @@ export default function ProgrammingLanguagesProComponent() {
                     }
                     else {
                         // Unsupported expression inside print
-                        setTimeout(
-                            () =>
-                                setPythonOutput(p => [
-                                    ...p,
-                                    lang === 'en'
-                                        ? '(unsupported line)'
-                                        : '(समर्थित पंक्ति नहीं)',
-                                ]),
-                            delay
-                        );
+                        setTimeout(() =>
+                            setPythonOutput(p => [
+                                ...p,
+                                lang === 'en' ? '(unsupported line)' : '(समर्थित पंक्ति नहीं)'
+                            ]),
+                            delay);
                     }
                 }
             }
             else {
                 // Line that is not a print
-                setTimeout(
-                    () =>
-                        setPythonOutput(p => [
-                            ...p,
-                            lang === 'en'
-                                ? '(ignored line)'
-                                : '(लाइनेँ छोड़ दी)',
-                        ]),
-                    delay
-                );
+                setTimeout(() =>
+                    setPythonOutput(p => [
+                        ...p,
+                        lang === 'en' ? '(ignored line)' : '(लाइनेँ छोड़ दी)'
+                    ]),
+                    delay);
             }
         });
 
