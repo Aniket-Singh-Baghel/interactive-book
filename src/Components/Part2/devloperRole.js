@@ -15,65 +15,6 @@ import {
 import { FaHome, FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { Link, useNavigate } from "react-router-dom";
 
-// --- Custom Animated SVGs (from both versions) ---
-// const AnimatedCodeIcon = () => (
-//   <motion.svg
-//     width="100"
-//     height="100"
-//     viewBox="0 0 24 24"
-//     fill="none"
-//     xmlns="http://www.w3.org/2000/svg"
-//     initial="hidden"
-//     whileInView="visible"
-//     viewport={{ once: true, amount: 0.5 }}
-//   >
-//     <motion.path
-//       d="M7 8L3 12L7 16"
-//       stroke="#34D399"
-//       strokeWidth="1.5"
-//       strokeLinecap="round"
-//       strokeLinejoin="round"
-//       variants={{
-//         hidden: { pathLength: 0, opacity: 0 },
-//         visible: {
-//           pathLength: 1,
-//           opacity: 1,
-//           transition: { duration: 1.5, type: "spring" },
-//         },
-//       }}
-//     />
-//     <motion.path
-//       d="M17 8L21 12L17 16"
-//       stroke="#34D399"
-//       strokeWidth="1.5"
-//       strokeLinecap="round"
-//       strokeLinejoin="round"
-//       variants={{
-//         hidden: { pathLength: 0, opacity: 0 },
-//         visible: {
-//           pathLength: 1,
-//           opacity: 1,
-//           transition: { duration: 1.5, type: "spring", delay: 0.2 },
-//         },
-//       }}
-//     />
-//     <motion.path
-//       d="M14 4L10 20"
-//       stroke="#60A5FA"
-//       strokeWidth="1.5"
-//       strokeLinecap="round"
-//       strokeLinejoin="round"
-//       variants={{
-//         hidden: { pathLength: 0, opacity: 0 },
-//         visible: {
-//           pathLength: 1,
-//           opacity: 1,
-//           transition: { duration: 1.5, type: "spring", delay: 0.4 },
-//         },
-//       }}
-//     />
-//   </motion.svg>
-// );
 
 const AnimatedDeveloperMindIcon = () => {
   return (
