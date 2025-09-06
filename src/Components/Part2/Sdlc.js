@@ -479,7 +479,7 @@ export default function SDLCExplorer() {
                 <button
                     onClick={() => {
                         if (activeStage.id === sdlcStages.length - 1) {
-                            navigate('/module1/operating-system');
+                            navigate('/module2/programming-languages');
                         } else {
 
                             const nextStage = sdlcStages.find(stage => stage.id === activeStage.id + 1);

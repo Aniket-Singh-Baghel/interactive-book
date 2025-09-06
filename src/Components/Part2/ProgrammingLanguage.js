@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaCode, FaPython, FaJava, FaHtml5, FaCss3 } from "react-icons/fa";
-import { SiJavascript } from "react-icons/si"
+import { FaCode, FaPython, FaJava, FaHtml5, FaCss3, FaHome, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { SiJavascript } from "react-icons/si";
+import { Link, useNavigate} from 'react-router-dom'
 
 export default function ProgrammingLanguagesProComponent() {
     const [lang, setLang] = useState("en"); // 'en' or 'hi'
     const [stage, setStage] = useState(1); // 1..5
     const iframeRef = useRef(null);
+    const navigate = useNavigate()
 
     // Editors for web (dark)
     const [htmlCode, setHtmlCode] = useState(`<!doctype html>
@@ -33,110 +35,156 @@ export default function ProgrammingLanguagesProComponent() {
         });`);
 
     // Python & Java editors + output
-    const [pythonCode, setPythonCode] = useState(`print("Hello friend")\nprint(2 + 3)`);
+    const [pythonCode, setPythonCode] = useState(
+        `print("Hello friend")\nprint(2 + 3)`
+    );
     const [pythonOutput, setPythonOutput] = useState([]);
     const [pythonRunning, setPythonRunning] = useState(false);
 
-    const [javaCode, setJavaCode] = useState(`public class Hello {\n  public static void main(String[] args) {\n    System.out.println("Hello from Java");\n  }\n}`);
+    const [javaCode, setJavaCode] = useState(
+        `public class Hello {\n  public static void main(String[] args) {\n    System.out.println("Hello from Java");\n  }\n}`
+    );
     const [javaOutput, setJavaOutput] = useState([]);
     const [javaCompiling, setJavaCompiling] = useState(false);
 
     // Content: English + simple conversational Hindi (technical words stay English)
     const content = {
         en: {
-            title: 'About Programming Languages',
-            subtitle: 'Simple steps — with analogies & live code',
-            stages: {
-                1: {
-                    title: 'What is a programming language?',
-                    short: 'A programming language is a special way of writing instructions that a computer can understand. Instead of giving direct commands through a keyboard or mouse (like opening a file or clicking a button), a programming language lets us write step-by-step instructions — similar to a recipe — so the computer can automatically follow those steps and solve problems.',
-                    analogy: 'Recipe analogy: a cooking recipe gives exact steps. Computers need the same clear steps.',
-                    syntax: 'Syntax = grammar / rules (missing punctuation breaks code).',
-                    semantics: 'Semantics = meaning / result (does the code do what you want?).',
+            title: "About Programming Languages",
+            subtitle: "Simple steps — with analogies & live code",
+            stages: [
+                {
+                    id: 0,
+                    title: "What is a programming language?",
+                    short:
+                        "A programming language is a special way of writing instructions that a computer can understand. Instead of giving direct commands through a keyboard or mouse (like opening a file or clicking a button), a programming language lets us write step-by-step instructions — similar to a recipe — so the computer can automatically follow those steps and solve problems.",
+                    analogy:
+                        "Recipe analogy: a cooking recipe gives exact steps. Computers need the same clear steps.",
+                    syntax: "Syntax = grammar / rules (missing punctuation breaks code).",
+                    semantics: "Semantics = meaning / result (does the code do what you want?).",
                 },
-                2: {
-                    title: 'How code runs — Interpreted vs Compiled',
-                    short: 'Interpreted: reads & runs line-by-line. Compiled: translates whole program first, then runs fast.',
-                    analogy: 'Interpreter = live translator; Compiler = translate whole book once then run.',
+                {
+                    id: 1,
+                    title: "How code runs — Interpreted vs Compiled",
+                    short:
+                        "Interpreted: reads & runs line-by-line. Compiled: translates whole program first, then runs fast.",
+                    analogy:
+                        "Interpreter = live translator; Compiler = translate whole book once then run.",
                 },
-                3: {
-                    title: 'Web building blocks — HTML, CSS, JavaScript',
+                {
+                    id: 2,
+                    title: "Web building blocks — HTML, CSS, JavaScript",
                     short:
                         "HTML = Structure → It decides what is on the page (like text, images, buttons).\n" +
                         "CSS = Look & Style → It controls how the page looks (colors, fonts, layout, design).\n" +
                         "JavaScript = Behavior → It makes the page interactive (buttons working, animations, forms).",
                 },
-                4: {
-                    title: 'Python — first logic language',
-                    analogy: 'Python is like giving instructions to a smart helper who understands simple English.',
+                {
+                    id: 3,
+                    title: "Python — first logic language",
+                    analogy:
+                        "Python is like giving instructions to a smart helper who understands simple English.",
                     short:
-                        'High-level language: no need for computer binary, human-friendly words.\n' +
-                        'Beginner-friendly: easy to learn and start programming.\n' +
-                        'Logic & problem-solving: tells the computer how to think step by step.\n' +
-                        'Small tasks & automation: automates boring work like renaming files.\n' +
-                        'Big projects too: used for websites, games, data analysis, AI.\n' +
-                        'Simple syntax: write instructions in plain sentences.',
+                        "High-level language: no need for computer binary, human-friendly words.\n" +
+                        "Beginner-friendly: easy to learn and start programming.\n" +
+                        "Logic & problem-solving: tells the computer how to think step by step.\n" +
+                        "Small tasks & automation: automates boring work like renaming files.\n" +
+                        "Big projects too: used for websites, games, data analysis, AI.\n" +
+                        "Simple syntax: write instructions in plain sentences.",
                 },
-                5: {
-                    title: 'Make pages come alive — JavaScript & Java',
-                    short: 'JavaScript brings interaction to web pages. Java is used for apps. Try small edits.',
+                {
+                    id: 4,
+                    title: "Java — the power language",
+                    analogy:
+                        "Java is like building with LEGO blocks — once you make something, it can fit anywhere, on almost any computer or device.",
+                    short:
+                        "Cross-platform: write your program once, run it on many devices.\n" +
+                        "Popular choice: used in Android apps, websites, games, and big company software.\n" +
+                        "Beginner-friendly: a good language to start learning coding basics.\n" +
+                        "Strong and reliable: trusted for small tools as well as huge projects.\n" +
+                        "Widely used: millions of developers and companies around the world use Java.\n" +
+                        "Step into coding: helps you learn the core ideas of programming clearly.",
                 },
-            },
-            runPreview: 'Run Preview',
-            reset: 'Reset',
-            run: 'Run',
-            compiling: 'Compiling...',
-            running: 'Running...',
-            tip: 'Tip: use 1–5 to jump stages; Arrow keys to navigate; Ctrl/Cmd+K toggles language.',
-            nextSteps: ['Edit small code lines and observe.', 'Write one tiny program every day.', 'Try Replit or CodePen when ready.'],
+            ],
+            runPreview: "Run Preview",
+            reset: "Reset",
+            run: "Run",
+            compiling: "Compiling...",
+            running: "Running...",
+            tip: "Tip: use 1–5 to jump stages; Arrow keys to navigate; Ctrl/Cmd+K toggles language.",
+            nextSteps: [
+                "Edit small code lines and observe.",
+                "Write one tiny program every day.",
+                "Try Replit or CodePen when ready.",
+            ],
         },
 
         hi: {
-            title: 'Programming Languages के बारे में',
-            subtitle: 'सरल भाषा, रोज़मर्रा की उपमाएँ और लाइव कोड',
-            stages: {
-                1: {
-                    title: 'Programming language क्या है?',
-                    short: 'प्रोग्रामिंग लैंग्वेज एक विशेष तरीका है जिसमें हम ऐसे निर्देश लिखते हैं जिन्हें कंप्यूटर समझ सके। कीबोर्ड या माउस से सीधे कमांड देने (जैसे फ़ाइल खोलना या बटन क्लिक करना) के बजाय, प्रोग्रामिंग लैंग्वेज हमें स्टेप-बाय-स्टेप निर्देश लिखने देती है — बिल्कुल किसी रेसिपी की तरह — ताकि कंप्यूटर अपने आप उन स्टेप्स को फॉलो करके समस्या का समाधान कर सके।',
-                    analogy: 'Recipe की तरह: steps और नाप बिलकुल सही होने चाहिए, तभी खाना सही बनेगा।',
-                    syntax: 'Syntax = grammar / rules (गलत punctuation से code नहीं चलेगा).',
-                    semantics: 'Semantics = meaning / result (क्या code वही करेगा जो आप चाह रहे हैं?).',
-                },
-                2: {
-                    title: 'Code कैसे चलता — Interpreted vs Compiled',
-                    short: 'Interpreted: लाइन-बाय-लाइन पढ़कर चलता है. Compiled: पूरा program पहले translate होता है, फिर तेज चलता है.',
-                    analogy: 'Interpreter = live translator; Compiler = पूरा किताब पहले translate कर दो, फिर काम तेजी से होगा.',
-                },
-                3: {
-                    title: 'Web के हिस्से — HTML, CSS, JavaScript',
-                    short: `HTML = संरचना → यह तय करता है कि पेज पर क्या होगा (जैसे टेक्स्ट, इमेज, बटन).\n
-                    CSS = रूप और स्टाइल → यह तय करता है कि पेज कैसा दिखेगा (रंग, फॉन्ट, लेआउट, डिज़ाइन).\n
-                    JavaScript = व्यवहार → यह पेज को इंटरएक्टिव बनाता है (बटन काम करना, ऐनिमेशन, फॉर्म्स).`,
-
-                },
-                4: {
-                    title: 'Python — शुरुआती के लिए',
-                    analogy: 'Python ऐसा है जैसे आप किसी स्मार्ट सहायक को सरल अंग्रेज़ी में निर्देश दे रहे हों।',
+            title: "Programming Languages के बारे में",
+            subtitle: "सरल भाषा, रोज़मर्रा की उपमाएँ और लाइव कोड",
+            stages: [
+                {
+                    id: 0,
+                    title: "Programming language क्या है?",
                     short:
-                        'High-level भाषा: कंप्यूटर बाइनरी की जरूरत नहीं, इंसान के लिए आसान शब्द।\n' +
-                        'शुरुआत करने वालों के लिए आसान: जल्दी सीखने और प्रोग्रामिंग शुरू करने के लिए।\n' +
-                        'लॉजिक और समस्या समाधान: कंप्यूटर को कदम-दर-कदम सोचने के निर्देश देता है।\n' +
-                        'छोटे काम और ऑटोमेशन: बोरिंग काम जैसे फाइल का नाम बदलना अपने आप कर देता है।\n' +
-                        'बड़े प्रोजेक्ट्स भी: वेबसाइट, गेम, डेटा एनालिसिस, और AI में इस्तेमाल होता है।\n' +
-                        'सिंटैक्स सरल: निर्देशों को सामान्य वाक्यों में लिखा जा सकता है।'
+                        "प्रोग्रामिंग लैंग्वेज एक विशेष तरीका है जिसमें हम ऐसे निर्देश लिखते हैं जिन्हें कंप्यूटर समझ सके। कीबोर्ड या माउस से सीधे कमांड देने (जैसे फ़ाइल खोलना या बटन क्लिक करना) के बजाय, प्रोग्रामिंग लैंग्वेज हमें स्टेप-बाय-स्टेप निर्देश लिखने देती है — बिल्कुल किसी रेसिपी की तरह — ताकि कंप्यूटर अपने आप उन स्टेप्स को फॉलो करके समस्या का समाधान कर सके।",
+                    analogy:
+                        "Recipe की तरह: steps और नाप बिलकुल सही होने चाहिए, तभी खाना सही बनेगा।",
+                    syntax: "Syntax = grammar / rules (गलत punctuation से code नहीं चलेगा).",
+                    semantics: "Semantics = meaning / result (क्या code वही करेगा जो आप चाह रहे हैं?).",
                 },
-                5: {
-                    title: 'Pages कैसे ज़िंदा होते हैं — JavaScript & Java',
-                    short: 'JavaScript web पर interaction देता है. Java बड़े apps के लिए इस्तेमाल होता है।',
+                {
+                    id: 1,
+                    title: "Code कैसे चलता — Interpreted vs Compiled",
+                    short:
+                        "Interpreted: लाइन-बाय-लाइन पढ़कर चलता है. Compiled: पूरा program पहले translate होता है, फिर तेज चलता है.",
+                    analogy:
+                        "Interpreter = live translator; Compiler = पूरा किताब पहले translate कर दो, फिर काम तेजी से होगा.",
                 },
-            },
-            runPreview: 'Preview चलाएँ',
-            reset: 'Reset',
-            run: 'चलाएँ',
-            compiling: 'कम्पाइल हो रहा...',
-            running: 'चालू...',
-            tip: 'टिप: 1–5 से स्टेप चुनें; Arrow keys से आगे/पीछे; Ctrl/Cmd+K भाषा बदलता है.',
-            nextSteps: ['छोटे-छोटे बदलाव करके देखें.', 'हर दिन एक छोटा प्रोग्राम लिखने की आदत डालें.', 'Replit/CodePen पर असली रन आज़माएँ.'],
+                {
+                    id: 2,
+                    title: "Web के हिस्से — HTML, CSS, JavaScript",
+                    short: `HTML = संरचना → यह तय करता है कि पेज पर क्या होगा (जैसे टेक्स्ट, इमेज, बटन).\n
+        CSS = रूप और स्टाइल → यह तय करता है कि पेज कैसा दिखेगा (रंग, फॉन्ट, लेआउट, डिज़ाइन).\n
+        JavaScript = व्यवहार → यह पेज को इंटरएक्टिव बनाता है (बटन काम करना, ऐनिमेशन, फॉर्म्स).`,
+                },
+                {
+                    id: 3,
+                    title: "Python — शुरुआती के लिए",
+                    analogy: "Python ऐसा है जैसे आप किसी स्मार्ट सहायक को सरल अंग्रेज़ी में निर्देश दे रहे हों।",
+                    short:
+                        "High-level भाषा: कंप्यूटर बाइनरी की जरूरत नहीं, इंसान के लिए आसान शब्द।\n" +
+                        "शुरुआत करने वालों के लिए आसान: जल्दी सीखने और प्रोग्रामिंग शुरू करने के लिए।\n" +
+                        "लॉजिक और समस्या समाधान: कंप्यूटर को कदम-दर-कदम सोचने के निर्देश देता है।\n" +
+                        "छोटे काम और ऑटोमेशन: बोरिंग काम जैसे फाइल का नाम बदलना अपने आप कर देता है।\n" +
+                        "बड़े प्रोजेक्ट्स भी: वेबसाइट, गेम, डेटा एनालिसिस, और AI में इस्तेमाल होता है।\n" +
+                        "सिंटैक्स सरल: निर्देशों को सामान्य वाक्यों में लिखा जा सकता है।",
+                },
+                {
+                    id: 4,
+                    title: "Java — मज़बूत प्रोग्रामिंग भाषा",
+                    analogy:
+                        "Java वैसा है जैसे LEGO के ब्लॉक्स से कुछ बनाना — एक बार बना लिया तो वही हर जगह, लगभग किसी भी कंप्यूटर या डिवाइस पर इस्तेमाल किया जा सकता है।",
+                    short:
+                        "हर जगह चले: एक बार प्रोग्राम लिखो, अलग-अलग कंप्यूटर पर चलाओ।\n" +
+                        "लोकप्रिय भाषा: एंड्रॉइड ऐप्स, वेबसाइट्स, गेम और बड़े सॉफ़्टवेयर में इस्तेमाल होती है।\n" +
+                        "शुरुआती के लिए आसान: कोडिंग की बुनियादी बातें सीखने के लिए अच्छा विकल्प।\n" +
+                        "मज़बूत और भरोसेमंद: छोटे टूल से लेकर बड़े प्रोजेक्ट तक में काम आता है।\n" +
+                        "सब जगह इस्तेमाल: लाखों डेवलपर और कंपनियाँ Java का उपयोग करती हैं।\n" +
+                        "कोडिंग की शुरुआत: प्रोग्रामिंग के मूल विचार साफ़ तरीके से समझाता है।",
+                },
+            ],
+            runPreview: "Preview चलाएँ",
+            reset: "Reset",
+            run: "चलाएँ",
+            compiling: "कम्पाइल हो रहा...",
+            running: "चालू...",
+            tip: "टिप: 1–5 से स्टेप चुनें; Arrow keys से आगे/पीछे; Ctrl/Cmd+K भाषा बदलता है.",
+            nextSteps: [
+                "छोटे-छोटे बदलाव करके देखें.",
+                "हर दिन एक छोटा प्रोग्राम लिखने की आदत डालें.",
+                "Replit/CodePen पर असली रन आज़माएँ.",
+            ],
         },
     };
 
@@ -145,14 +193,16 @@ export default function ProgrammingLanguagesProComponent() {
             title: "Correct Syntax ✔️, Wrong Semantics ❌",
             code: `<h1>Welcome!</h1>
 <p>This is a heading written in paragraph tag.</p>`,
-            explanation: "Browser accepts it, but using <p> for heading is misleading.",
+            explanation:
+                "Browser accepts it, but using <p> for heading is misleading.",
             labelColor: "text-pink-400",
         },
         {
             title: "Wrong Syntax ❌, Clear Intention ✔️",
             code: `<h1>Welcome!<h1>
 <p>Click here</p>`,
-            explanation: "h1 not closed properly. Browser guesses it, but invalid HTML.",
+            explanation:
+                "h1 not closed properly. Browser guesses it, but invalid HTML.",
             labelColor: "text-orange-400",
         },
         {
@@ -164,13 +214,13 @@ export default function ProgrammingLanguagesProComponent() {
         },
     ];
     const t = (key) => {
-        const parts = key.split('.');
+        const parts = key.split(".");
         let obj = content[lang];
         for (let p of parts) {
-            if (!obj) return '';
+            if (!obj) return "";
             obj = obj[p];
         }
-        return obj ?? '';
+        return obj ?? "";
     };
 
     // build safe srcDoc
@@ -206,7 +256,10 @@ export default function ProgrammingLanguagesProComponent() {
     </html>
 `;
 
-    const runPreview = () => { if (iframeRef.current) iframeRef.current.srcdoc = buildSrcDoc(htmlCode, cssCode, jsCode); };
+    const runPreview = () => {
+        if (iframeRef.current)
+            iframeRef.current.srcdoc = buildSrcDoc(htmlCode, cssCode, jsCode);
+    };
 
     // Simulated Python runner (very limited & safe)
     const runPython = () => {
@@ -216,7 +269,10 @@ export default function ProgrammingLanguagesProComponent() {
         setPythonRunning(true);
 
         // Split code into lines, trim and remove empty lines
-        const lines = pythonCode.split('\n').map(l => l.trim()).filter(Boolean);
+        const lines = pythonCode
+            .split("\n")
+            .map((l) => l.trim())
+            .filter(Boolean);
         let delay = 0;
 
         lines.forEach((ln) => {
@@ -231,43 +287,47 @@ export default function ProgrammingLanguagesProComponent() {
                 // Case 1: print("string") or print('string')
                 const s = inner.match(/^"(.+)"$|^'(.+)'$/);
                 if (s) {
-                    setTimeout(() => setPythonOutput(p => [...p, s[1] ?? s[2]]), delay);
-                }
-                else {
+                    setTimeout(() => setPythonOutput((p) => [...p, s[1] ?? s[2]]), delay);
+                } else {
                     // Case 2: print(2 + 3), print(10 - 5), etc.
                     const ar = inner.match(/^([0-9]+)\s*([+\-*/])\s*([0-9]+)$/);
                     if (ar) {
                         const a = Number(ar[1]);
                         const op = ar[2];
                         const b = Number(ar[3]);
-                        let r = '';
+                        let r = "";
 
-                        if (op === '+') r = String(a + b);
-                        if (op === '-') r = String(a - b);
-                        if (op === '*') r = String(a * b);
-                        if (op === '/') r = b !== 0 ? String(Math.floor(a / b)) : 'Infinity';
+                        if (op === "+") r = String(a + b);
+                        if (op === "-") r = String(a - b);
+                        if (op === "*") r = String(a * b);
+                        if (op === "/")
+                            r = b !== 0 ? String(Math.floor(a / b)) : "Infinity";
 
-                        setTimeout(() => setPythonOutput(p => [...p, r]), delay);
-                    }
-                    else {
+                        setTimeout(() => setPythonOutput((p) => [...p, r]), delay);
+                    } else {
                         // Unsupported expression inside print
-                        setTimeout(() =>
-                            setPythonOutput(p => [
-                                ...p,
-                                lang === 'en' ? '(unsupported line)' : '(समर्थित पंक्ति नहीं)'
-                            ]),
-                            delay);
+                        setTimeout(
+                            () =>
+                                setPythonOutput((p) => [
+                                    ...p,
+                                    lang === "en"
+                                        ? "(unsupported line)"
+                                        : "(समर्थित पंक्ति नहीं)",
+                                ]),
+                            delay
+                        );
                     }
                 }
-            }
-            else {
+            } else {
                 // Line that is not a print
-                setTimeout(() =>
-                    setPythonOutput(p => [
-                        ...p,
-                        lang === 'en' ? '(ignored line)' : '(लाइनेँ छोड़ दी)'
-                    ]),
-                    delay);
+                setTimeout(
+                    () =>
+                        setPythonOutput((p) => [
+                            ...p,
+                            lang === "en" ? "(ignored line)" : "(लाइनेँ छोड़ दी)",
+                        ]),
+                    delay
+                );
             }
         });
 
@@ -289,9 +349,9 @@ export default function ProgrammingLanguagesProComponent() {
 
             if (!hasClass) {
                 setJavaOutput([
-                    lang === 'en'
-                        ? 'Compilation error: missing class'
-                        : 'कम्पाइल त्रुटि: class गायब',
+                    lang === "en"
+                        ? "Compilation error: missing class"
+                        : "कम्पाइल त्रुटि: class गायब",
                 ]);
                 setJavaCompiling(false);
                 return;
@@ -299,39 +359,39 @@ export default function ProgrammingLanguagesProComponent() {
 
             if (!hasMain) {
                 setJavaOutput([
-                    lang === 'en'
-                        ? 'Compilation error: missing main'
-                        : 'कम्पाइल त्रुटि: main मेथड गायब',
+                    lang === "en"
+                        ? "Compilation error: missing main"
+                        : "कम्पाइल त्रुटि: main मेथड गायब",
                 ]);
                 setJavaCompiling(false);
                 return;
             }
 
             // --- Extract System.out.println statements ---
-            const matches = [...javaCode.matchAll(
-                /System\.out\.println\((?:"([^"]*)"|'([^']*)')\)/g
-            )].map(m => m[1] ?? m[2] ?? '');
+            const matches = [
+                ...javaCode.matchAll(
+                    /System\.out\.println\((?:"([^"]*)"|'([^']*)')\)/g
+                ),
+            ].map((m) => m[1] ?? m[2] ?? "");
 
             // Show compile success
             setJavaOutput([
-                lang === 'en'
-                    ? 'Compiled successfully.'
-                    : 'सफलतापूर्वक कम्पाइल हुआ.',
+                lang === "en" ? "Compiled successfully." : "सफलतापूर्वक कम्पाइल हुआ.",
             ]);
 
             // Simulate execution after compile
             setTimeout(() => {
                 if (matches.length === 0) {
-                    setJavaOutput(o => [
+                    setJavaOutput((o) => [
                         ...o,
-                        lang === 'en'
-                            ? '(Program ran but printed nothing)'
-                            : '(कोई आउटपुट नहीं)',
+                        lang === "en"
+                            ? "(Program ran but printed nothing)"
+                            : "(कोई आउटपुट नहीं)",
                     ]);
                 } else {
                     matches.forEach((mm, i) => {
                         setTimeout(() => {
-                            setJavaOutput(o => [...o, mm]);
+                            setJavaOutput((o) => [...o, mm]);
                         }, 180 * (i + 1));
                     });
                 }
@@ -345,30 +405,29 @@ export default function ProgrammingLanguagesProComponent() {
     useEffect(() => {
         const onKey = (e) => {
             // Number keys 1–5 → jump to stage
-            if (['1', '2', '3', '4', '5'].includes(e.key)) {
+            if (["1", "2", "3", "4", "5"].includes(e.key)) {
                 setStage(Number(e.key));
                 e.preventDefault();
             }
             // ArrowRight → next stage
-            if (e.key === 'ArrowRight') {
+            if (e.key === "ArrowRight") {
                 setStage((s) => Math.min(5, s + 1));
                 e.preventDefault();
             }
             // ArrowLeft → previous stage
-            if (e.key === 'ArrowLeft') {
+            if (e.key === "ArrowLeft") {
                 setStage((s) => Math.max(1, s - 1));
                 e.preventDefault();
             }
             // Ctrl/Cmd + K → toggle language
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-                setLang((l) => (l === 'en' ? 'hi' : 'en'));
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+                setLang((l) => (l === "en" ? "hi" : "en"));
                 e.preventDefault();
             }
         };
-        window.addEventListener('keydown', onKey);
-        return () => window.removeEventListener('keydown', onKey);
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
     }, []);
-
 
     // Animated SVGs
     const CodeArrows = ({ size = 92 }) => (
@@ -433,55 +492,89 @@ export default function ProgrammingLanguagesProComponent() {
                 strokeWidth="1.6"
                 fill="#F8FAFC"
             />
-            <circle
-                cx="24"
-                cy="32"
-                r="3"
-                fill="#60A5FA"
-            />
-            <circle
-                cx="40"
-                cy="32"
-                r="3"
-                fill="#34D399"
-            />
-            <rect
-                x="26"
-                y="40"
-                width="12"
-                height="3"
-                rx="1"
-                fill="#94A3B8"
-            />
+            <circle cx="24" cy="32" r="3" fill="#60A5FA" />
+            <circle cx="40" cy="32" r="3" fill="#34D399" />
+            <rect x="26" y="40" width="12" height="3" rx="1" fill="#94A3B8" />
         </motion.svg>
     );
 
-
     // Small UI pieces
     const StageBtn = ({ n }) => (
-        <button onClick={() => setStage(n)} className={`px-3 py-1 rounded-full text-xs font-medium ${stage === n ? 'bg-slate-900 text-white' : 'bg-white border text-slate-700'}`}>{lang === 'en' ? `Stage ${n}` : `स्टेप ${n}`}</button>
+        <button
+            onClick={() => setStage(n)}
+            className={`px-3 py-1 rounded-full text-xs font-medium ${stage === n
+                ? "bg-slate-900 text-white"
+                : "bg-white border text-slate-700"
+                }`}
+        >
+            {lang === "en" ? `Stage ${n}` : `स्टेप ${n}`}
+        </button>
     );
 
     return (
         <div className="max-w-6xl mx-auto p-6">
-            <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-700 text-white shadow-lg"><FaCode className="text-2xl" /></div>
-                <div className="flex-1">
-                    <h1 className="text-2xl font-extrabold text-slate-900">{t('title')}</h1>
-                    <p className="text-sm text-slate-500 mt-1">{t('subtitle')}</p>
-                </div>
+            <div className="flex justify-end p-4 space-x-2 -mt-6">
+                {/* English Button */}
+                <button
+                    onClick={() => setLang("en")}
+                    className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en"
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-white text-gray-700 border-gray-300"
+                        } transition`}
+                >
+                    EN
+                </button>
 
-                <div className="flex items-center gap-2">
-                    <div className="text-xs text-slate-500">EN</div>
-                    <div role="switch" aria-checked={lang === 'hi'} tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setLang(l => l === 'en' ? 'hi' : 'en') }} onClick={() => setLang(l => l === 'en' ? 'hi' : 'en')} className="w-12 h-6 bg-gray-200 rounded-full relative cursor-pointer">
-                        <motion.span layout className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow" animate={{ x: lang === 'hi' ? 24 : 0 }} transition={{ type: 'spring', stiffness: 400, damping: 28 }} />
-                    </div>
-                    <div className="text-xs text-slate-500">HI</div>
+                {/* Hindi Button */}
+                <button
+                    onClick={() => setLang("hi")}
+                    className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi"
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-white text-gray-700 border-gray-300"
+                        } transition`}
+                >
+                    हिं
+                </button>
+            </div>
+            <div className="flex justify-center mb-6 -mt-4">
+                <Link
+                    to="/parts/prt2"
+                    className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
+                >
+                    <motion.div
+                        className="mr-2"
+                        animate={{ y: [0, -6, 0] }}
+                        transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
+                    >
+                        <FaHome className="text-lg text-indigo-600" />
+                    </motion.div>
+                    Home
+                </Link>
+            </div>
+
+            {/* Title */}
+            <motion.h1
+                initial={{ y: -30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 120 }}
+                className="text-4xl font-extrabold text-center text-purple-700 mb-6"
+            >
+                📖 Learn to Code: Programming Language Basics with Examples
+            </motion.h1>
+
+            <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-700 text-white shadow-lg">
+                    <FaCode className="text-2xl" />
+                </div>
+                <div className="flex-1">
+                    <h1 className="text-2xl font-extrabold text-slate-900">
+                        {t("title")}
+                    </h1>
+                    <p className="text-sm text-slate-500 mt-1">{t("subtitle")}</p>
                 </div>
             </div>
 
             <div className="grid md:grid-cols-12 gap-6 items-start">
-
                 {/* left visual column */}
                 <div className="md:col-span-5 bg-gradient-to-br from-slate-100 via-slate-50 to-white rounded-2xl p-6 relative overflow-hidden border shadow-xl">
                     <motion.div
@@ -504,7 +597,9 @@ export default function ProgrammingLanguagesProComponent() {
                                 >
                                     <RobotGlyph />
                                     <div className="text-center">
-                                        <div className="text-lg font-semibold">{t("stages.1.title")}</div>
+                                        <div className="text-lg font-semibold">
+                                            {t("stages.1.title")}
+                                        </div>
                                         <div className="text-sm text-slate-600 mt-2 max-w-xs">
                                             {t("stages.1.analogy")}
                                         </div>
@@ -522,7 +617,9 @@ export default function ProgrammingLanguagesProComponent() {
                                 >
                                     <CodeArrows />
                                     <div className="text-center">
-                                        <div className="text-lg font-semibold">{t("stages.2.title")}</div>
+                                        <div className="text-lg font-semibold">
+                                            {t("stages.2.title")}
+                                        </div>
                                         <div className="text-sm text-slate-600 mt-2 max-w-xs">
                                             {t("stages.2.analogy")}
                                         </div>
@@ -544,11 +641,12 @@ export default function ProgrammingLanguagesProComponent() {
                                         <SiJavascript className="text-yellow-500" />
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-lg font-semibold">{t("stages.3.title")}</div>
+                                        <div className="text-lg font-semibold">
+                                            {t("stages.3.title")}
+                                        </div>
                                         <div className="text-sm text-slate-600 mt-2 max-w-xs">
-                                            HTML = शरीर (Body),
-                                            CSS = कपड़े (Clothes),
-                                            JavaScript = (Brain)
+                                            HTML = शरीर (Body), CSS = कपड़े (Clothes), JavaScript =
+                                            (Brain)
                                         </div>
                                     </div>
                                 </motion.div>
@@ -564,7 +662,9 @@ export default function ProgrammingLanguagesProComponent() {
                                 >
                                     <FaPython className="text-yellow-500 text-5xl" />
                                     <div className="text-center">
-                                        <div className="text-lg font-semibold">{t("stages.4.title")}</div>
+                                        <div className="text-lg font-semibold">
+                                            {t("stages.4.title")}
+                                        </div>
                                         <div className="text-sm text-slate-600 mt-2 max-w-xs">
                                             {t("stages.4.analogy")}
                                         </div>
@@ -583,14 +683,15 @@ export default function ProgrammingLanguagesProComponent() {
                                     <FaJava className="text-yellow-400 text-6xl" />
                                     <h6 className="font-bold text-yellow-500 -mt-2">JAVA</h6>
                                     <div className="text-center">
-                                        <div className="text-lg font-semibold">{t("stages.5.title")}</div>
+                                        <div className="text-lg font-semibold">
+                                            {t("stages.5.title")}
+                                        </div>
                                         <div className="text-sm text-slate-600 mt-2 max-w-xs">
-                                            {t("stages.5.short")}
+                                            {t("stages.5.analogy")}
                                         </div>
                                     </div>
                                 </motion.div>
                             )}
-
                         </AnimatePresence>
 
                         {/* stage buttons + tip */}
@@ -619,7 +720,9 @@ export default function ProgrammingLanguagesProComponent() {
 
                         <div className="mt-4 grid sm:grid-cols-2 gap-3">
                             <div className="p-3 bg-indigo-50 rounded-lg shadow-sm">
-                                <div className="text-xs font-semibold text-indigo-700">Syntax</div>
+                                <div className="text-xs font-semibold text-indigo-700">
+                                    Syntax
+                                </div>
                                 <div className="text-sm text-slate-700 mt-1">
                                     {lang === "en"
                                         ? "Grammar & rules — missing punctuation breaks code"
@@ -627,7 +730,9 @@ export default function ProgrammingLanguagesProComponent() {
                                 </div>
                             </div>
                             <div className="p-3 bg-emerald-50 rounded-lg shadow-sm">
-                                <div className="text-xs font-semibold text-emerald-700">Semantics</div>
+                                <div className="text-xs font-semibold text-emerald-700">
+                                    Semantics
+                                </div>
                                 <div className="text-sm text-slate-700 mt-1">
                                     {lang === "en"
                                         ? "What the code actually does"
@@ -660,28 +765,44 @@ export default function ProgrammingLanguagesProComponent() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -6 }}
                                 >
-                                    <h2 className="text-lg font-bold mb-2">{t('stages.1.title')}</h2>
-                                    <p className="text-slate-700 mb-3">{t('stages.1.short')}</p>
+                                    <h2 className="text-lg font-bold mb-2">
+                                        {t("stages.1.title")}
+                                    </h2>
+                                    <p className="text-slate-700 mb-3">{t("stages.1.short")}</p>
 
                                     <div className="p-3 bg-gray-50 rounded mb-3">
-                                        <div className="text-sm font-semibold mb-1">{lang === 'en' ? 'Analogy' : 'उपमा'}</div>
-                                        <div className="text-sm text-slate-700">{t('stages.1.analogy')}</div>
+                                        <div className="text-sm font-semibold mb-1">
+                                            {lang === "en" ? "Analogy" : "उपमा"}
+                                        </div>
+                                        <div className="text-sm text-slate-700">
+                                            {t("stages.1.analogy")}
+                                        </div>
                                     </div>
 
                                     <div className="grid sm:grid-cols-2 gap-3 mb-6">
                                         <div className="p-3 rounded-lg bg-indigo-50">
-                                            <div className="text-sm font-semibold text-indigo-700">Syntax</div>
-                                            <div className="text-sm text-slate-700 mt-1">{t('stages.1.syntax')}</div>
+                                            <div className="text-sm font-semibold text-indigo-700">
+                                                Syntax
+                                            </div>
+                                            <div className="text-sm text-slate-700 mt-1">
+                                                {t("stages.1.syntax")}
+                                            </div>
                                         </div>
                                         <div className="p-3 rounded-lg bg-emerald-50">
-                                            <div className="text-sm font-semibold text-emerald-700">Semantics</div>
-                                            <div className="text-sm text-slate-700 mt-1">{t('stages.1.semantics')}</div>
+                                            <div className="text-sm font-semibold text-emerald-700">
+                                                Semantics
+                                            </div>
+                                            <div className="text-sm text-slate-700 mt-1">
+                                                {t("stages.1.semantics")}
+                                            </div>
                                         </div>
                                     </div>
 
                                     {/* ---- Add Syntax vs Semantics Examples Here ---- */}
                                     <div className="mt-6 bg-white/5 p-6 rounded-2xl shadow-md border border-white/10 w-full">
-                                        <h3 className="text-2xl font-bold text-black mb-4">Syntax vs Semantics Examples</h3>
+                                        <h3 className="text-2xl font-bold text-black mb-4">
+                                            Syntax vs Semantics Examples
+                                        </h3>
                                         <p className="text-gray-500 mb-6">
                                             Syntax is the grammar of code, semantics is the meaning.
                                         </p>
@@ -695,11 +816,17 @@ export default function ProgrammingLanguagesProComponent() {
                                                     transition={{ duration: 0.5, delay: index * 0.2 }}
                                                     className="w-full bg-gray-900 rounded-xl p-5 shadow-md"
                                                 >
-                                                    <div className={`text-lg font-semibold mb-2 ${ex.labelColor}`}>{ex.title}</div>
+                                                    <div
+                                                        className={`text-lg font-semibold mb-2 ${ex.labelColor}`}
+                                                    >
+                                                        {ex.title}
+                                                    </div>
                                                     <pre className="bg-black/50 p-4 rounded text-sm text-gray-200 overflow-x-auto">
                                                         {ex.code}
                                                     </pre>
-                                                    <div className="text-gray-300 mt-2 text-sm">{ex.explanation}</div>
+                                                    <div className="text-gray-300 mt-2 text-sm">
+                                                        {ex.explanation}
+                                                    </div>
                                                 </motion.div>
                                             ))}
                                         </div>
@@ -716,35 +843,38 @@ export default function ProgrammingLanguagesProComponent() {
                                     className="space-y-4"
                                 >
                                     {/* Title + Short Intro */}
-                                    <h2 className="text-lg font-bold mb-2">{t('stages.2.title')}</h2>
-                                    <p className="text-slate-700 mb-3">{t('stages.2.short')}</p>
-
+                                    <h2 className="text-lg font-bold mb-2">
+                                        {t("stages.2.title")}
+                                    </h2>
+                                    <p className="text-slate-700 mb-3">{t("stages.2.short")}</p>
 
                                     {/* Detailed Explanation */}
                                     <div className="grid md:grid-cols-2 gap-4 mt-4">
                                         {/* Interpreted */}
                                         <div className="p-4 rounded-lg bg-indigo-50 shadow-sm">
                                             <h3 className="font-semibold text-indigo-700 text-sm mb-2">
-                                                {lang === 'en' ? 'Interpreted' : 'इंटरप्रेटेड'}
+                                                {lang === "en" ? "Interpreted" : "इंटरप्रेटेड"}
                                             </h3>
                                             <ul className="text-sm text-slate-700 list-disc pl-4 space-y-1">
                                                 <li>
-                                                    {lang === 'en'
-                                                        ? 'Reads code line by line and runs immediately'
-                                                        : 'कोड को लाइन-बाय-लाइन पढ़कर तुरंत चलाता है'}
+                                                    {lang === "en"
+                                                        ? "Reads code line by line and runs immediately"
+                                                        : "कोड को लाइन-बाय-लाइन पढ़कर तुरंत चलाता है"}
                                                 </li>
                                                 <li>
-                                                    {lang === 'en'
-                                                        ? 'Slower because it keeps translating while running'
-                                                        : 'धीमा होता है क्योंकि रन करते समय लगातार ट्रांसलेट करता है'}
+                                                    {lang === "en"
+                                                        ? "Slower because it keeps translating while running"
+                                                        : "धीमा होता है क्योंकि रन करते समय लगातार ट्रांसलेट करता है"}
                                                 </li>
                                                 <li>
-                                                    {lang === 'en'
-                                                        ? 'Easy to test and debug'
-                                                        : 'टेस्ट और डिबग करना आसान'}
+                                                    {lang === "en"
+                                                        ? "Easy to test and debug"
+                                                        : "टेस्ट और डिबग करना आसान"}
                                                 </li>
                                                 <li className="font-medium">
-                                                    {lang === 'en' ? 'Examples: Python, JavaScript' : 'उदाहरण: Python, JavaScript'}
+                                                    {lang === "en"
+                                                        ? "Examples: Python, JavaScript"
+                                                        : "उदाहरण: Python, JavaScript"}
                                                 </li>
                                             </ul>
                                         </div>
@@ -752,26 +882,28 @@ export default function ProgrammingLanguagesProComponent() {
                                         {/* Compiled */}
                                         <div className="p-4 rounded-lg bg-emerald-50 shadow-sm">
                                             <h3 className="font-semibold text-emerald-700 text-sm mb-2">
-                                                {lang === 'en' ? 'Compiled' : 'कम्पाइल्ड'}
+                                                {lang === "en" ? "Compiled" : "कम्पाइल्ड"}
                                             </h3>
                                             <ul className="text-sm text-slate-700 list-disc pl-4 space-y-1">
                                                 <li>
-                                                    {lang === 'en'
-                                                        ? 'Translates the whole program first'
-                                                        : 'पूरा प्रोग्राम पहले ट्रांसलेट करता है'}
+                                                    {lang === "en"
+                                                        ? "Translates the whole program first"
+                                                        : "पूरा प्रोग्राम पहले ट्रांसलेट करता है"}
                                                 </li>
                                                 <li>
-                                                    {lang === 'en'
-                                                        ? 'Runs very fast once compiled'
-                                                        : 'कम्पाइल होने के बाद बहुत तेज चलता है'}
+                                                    {lang === "en"
+                                                        ? "Runs very fast once compiled"
+                                                        : "कम्पाइल होने के बाद बहुत तेज चलता है"}
                                                 </li>
                                                 <li>
-                                                    {lang === 'en'
-                                                        ? 'Harder to debug (need to recompile)'
-                                                        : 'डिबग करना मुश्किल (फिर से कम्पाइल करना पड़ता है)'}
+                                                    {lang === "en"
+                                                        ? "Harder to debug (need to recompile)"
+                                                        : "डिबग करना मुश्किल (फिर से कम्पाइल करना पड़ता है)"}
                                                 </li>
                                                 <li className="font-medium">
-                                                    {lang === 'en' ? 'Examples: C, C++, Java' : 'उदाहरण: C, C++, Java'}
+                                                    {lang === "en"
+                                                        ? "Examples: C, C++, Java"
+                                                        : "उदाहरण: C, C++, Java"}
                                                 </li>
                                             </ul>
                                         </div>
@@ -780,18 +912,17 @@ export default function ProgrammingLanguagesProComponent() {
                                     {/* Analogy Box */}
                                     <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-slate-50 to-white border shadow-sm text-sm text-slate-700">
                                         <span className="font-semibold">
-                                            {lang === 'en' ? 'Easy Analogy:' : 'सरल उदाहरण:'}
+                                            {lang === "en" ? "Easy Analogy:" : "सरल उदाहरण:"}
                                         </span>
                                         <br />
                                         <span className="text-slate-600">
-                                            {lang === 'en'
-                                                ? 'Interpreted → Cooking while reading the recipe step by step.\nCompiled → Preparing all ingredients and instructions first, then cooking smoothly.'
-                                                : 'इंटरप्रेटेड → रेसिपी पढ़ते-पढ़ते पकाना।\nकम्पाइल्ड → पहले सारी सामग्री और निर्देश तैयार करना, फिर आसानी से पकाना।'}
+                                            {lang === "en"
+                                                ? "Interpreted → Cooking while reading the recipe step by step.\nCompiled → Preparing all ingredients and instructions first, then cooking smoothly."
+                                                : "इंटरप्रेटेड → रेसिपी पढ़ते-पढ़ते पकाना।\nकम्पाइल्ड → पहले सारी सामग्री और निर्देश तैयार करना, फिर आसानी से पकाना।"}
                                         </span>
                                     </div>
                                 </motion.div>
                             )}
-
 
                             {stage === 3 && (
                                 <motion.div
@@ -800,7 +931,9 @@ export default function ProgrammingLanguagesProComponent() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -6 }}
                                 >
-                                    <h2 className="text-lg font-bold mb-2">{t("stages.3.title")}</h2>
+                                    <h2 className="text-lg font-bold mb-2">
+                                        {t("stages.3.title")}
+                                    </h2>
 
                                     {/* Handle multiline text */}
                                     <div className="text-slate-700 mb-3 space-y-1 text-sm">
@@ -822,7 +955,9 @@ export default function ProgrammingLanguagesProComponent() {
                                             <div className="rounded-lg overflow-hidden border bg-[#0b1220] p-3 space-y-3">
                                                 {/* HTML */}
                                                 <div>
-                                                    <div className="text-xs mb-1 text-slate-400">HTML</div>
+                                                    <div className="text-xs mb-1 text-slate-400">
+                                                        HTML
+                                                    </div>
                                                     <textarea
                                                         value={htmlCode}
                                                         onChange={(e) => setHtmlCode(e.target.value)}
@@ -844,7 +979,9 @@ export default function ProgrammingLanguagesProComponent() {
 
                                                 {/* JavaScript */}
                                                 <div>
-                                                    <div className="text-xs mb-1 text-slate-400">JavaScript</div>
+                                                    <div className="text-xs mb-1 text-slate-400">
+                                                        JavaScript
+                                                    </div>
                                                     <textarea
                                                         value={jsCode}
                                                         onChange={(e) => setJsCode(e.target.value)}
@@ -879,8 +1016,6 @@ export default function ProgrammingLanguagesProComponent() {
                                             </div>
                                         </div>
 
-
-
                                         {/* right column */}
                                         <div>
                                             <div className="text-xs text-slate-400 mb-2">
@@ -906,7 +1041,6 @@ export default function ProgrammingLanguagesProComponent() {
                                 </motion.div>
                             )}
 
-
                             {stage === 4 && (
                                 <motion.div
                                     key="s4"
@@ -914,34 +1048,42 @@ export default function ProgrammingLanguagesProComponent() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -6 }}
                                 >
-                                    <h2 className="text-lg font-bold mb-2">{t('stages.4.title')}</h2>
-                                    <p className="text-slate-700 mb-3">{t("stages.4.short")
-                                        .split("\n")
-                                        .map((line, i) => (
-                                            <div key={i}>{line}</div>
-                                        ))}</p>
+                                    <h2 className="text-lg font-bold mb-2">
+                                        {t("stages.4.title")}
+                                    </h2>
+                                    <p className="text-slate-700 mb-3">
+                                        {t("stages.4.short")
+                                            .split("\n")
+                                            .map((line, i) => (
+                                                <div key={i}>{line}</div>
+                                            ))}
+                                    </p>
 
                                     <div className="grid sm:grid-cols-2 gap-4">
                                         {/* Left column: Python editor */}
                                         <div className="p-3 rounded-lg bg-[#0b1220] border">
                                             <div className="flex items-center justify-between mb-2">
                                                 <div className="text-xs text-slate-400">
-                                                    {lang === 'en' ? 'Python (editable)' : 'Python (संपादित करें)'}
+                                                    {lang === "en"
+                                                        ? "Python (editable)"
+                                                        : "Python (संपादित करें)"}
                                                 </div>
                                                 <button
                                                     onClick={runPython}
                                                     disabled={pythonRunning}
                                                     className={`px-3 py-1 rounded text-sm ${pythonRunning
-                                                        ? 'bg-gray-400 text-slate-700'
-                                                        : 'bg-yellow-600 text-white'
+                                                        ? "bg-gray-400 text-slate-700"
+                                                        : "bg-yellow-600 text-white"
                                                         }`}
                                                 >
-                                                    {pythonRunning ? content[lang].running : content[lang].run}
+                                                    {pythonRunning
+                                                        ? content[lang].running
+                                                        : content[lang].run}
                                                 </button>
                                             </div>
                                             <textarea
                                                 value={pythonCode}
-                                                onChange={e => setPythonCode(e.target.value)}
+                                                onChange={(e) => setPythonCode(e.target.value)}
                                                 spellCheck={false}
                                                 className="w-full min-h-[200px] bg-[#07070a] text-[#d8f3dc] font-mono p-3 rounded outline-none text-sm border border-[#101214]"
                                             />
@@ -950,12 +1092,16 @@ export default function ProgrammingLanguagesProComponent() {
                                         {/* Right column: Python output */}
                                         <div className="p-3 rounded-lg bg-white border">
                                             <div className="text-xs text-slate-400 mb-2">
-                                                {lang === 'en' ? 'Output (simulated)' : 'आउटपुट (अनुकरण)'}
+                                                {lang === "en"
+                                                    ? "Output (simulated)"
+                                                    : "आउटपुट (अनुकरण)"}
                                             </div>
                                             <div className="min-h-[200px] p-3 bg-[#0a0f14] rounded text-sm text-[#c7f9ff] font-mono">
                                                 {pythonOutput.length === 0 ? (
                                                     <div className="text-slate-400">
-                                                        {lang === 'en' ? 'No output yet — press Run' : 'कोई आउटपुट नहीं — Run दबाएँ'}
+                                                        {lang === "en"
+                                                            ? "No output yet — press Run"
+                                                            : "कोई आउटपुट नहीं — Run दबाएँ"}
                                                     </div>
                                                 ) : (
                                                     pythonOutput.map((o, i) => <div key={i}>{o}</div>)
@@ -966,20 +1112,120 @@ export default function ProgrammingLanguagesProComponent() {
                                 </motion.div>
                             )}
 
-
                             {stage === 5 && (
-                                <motion.div key="s5" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}>
-                                    <h2 className="text-lg font-bold mb-2">{t('stages.5.title')}</h2>
-                                    <p className="text-slate-700 mb-3">{t('stages.5.short')}</p>
+                                <motion.div
+                                    key="s5"
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -6 }}
+                                >
+                                    <h2 className="text-lg font-bold mb-2">
+                                        {t("stages.5.title")}
+                                    </h2>
+                                    <p className="text-slate-700 mb-3">
+                                        {t("stages.4.short")
+                                            .split("\n")
+                                            .map((line, i) => (
+                                                <div key={i}>{line}</div>
+                                            ))}
+                                    </p>
+
                                     <div className="grid sm:grid-cols-2 gap-4">
-                                        <div className="p-3 rounded-lg bg-[#0b1220] border"><div className="flex items-center justify-between mb-2"><div className="text-xs text-slate-400">{lang === 'en' ? 'Java (editable)' : 'Java (संपादित करें)'}</div><button onClick={runJava} disabled={javaCompiling} className={`px-3 py-1 rounded text-sm ${javaCompiling ? 'bg-gray-400 text-slate-700' : 'bg-indigo-600 text-white'}`}>{javaCompiling ? content[lang].compiling : (lang === 'en' ? 'Compile & Run' : 'कम्पाइल और चलाएँ')}</button></div><textarea value={javaCode} onChange={e => setJavaCode(e.target.value)} spellCheck={false} className="w-full min-h-[220px] bg-[#07070a] text-[#ffeedd] font-mono p-3 rounded outline-none text-sm border border-[#101214]" /></div>
-                                        <div className="p-3 rounded-lg bg-white border"><div className="text-xs text-slate-400 mb-2">{lang === 'en' ? 'Console (simulated)' : 'कंसोल (अनुकरण)'}</div><div className="min-h-[220px] p-3 bg-[#0a0f14] rounded text-sm text-[#d1f8ff] font-mono">{javaOutput.length === 0 ? <div className="text-slate-400">{lang === 'en' ? 'No output — try Compile & Run' : 'कोई आउटपुट नहीं — compile और चलाएँ'}</div> : javaOutput.map((l, i) => <div key={i}>{l}</div>)}</div></div>
+                                        {/* Java Code Editor */}
+                                        <div className="p-3 rounded-lg bg-[#0b1220] border">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <div className="text-xs text-slate-400">
+                                                    {lang === "en"
+                                                        ? "Java (editable)"
+                                                        : "Java (संपादित करें)"}
+                                                </div>
+                                                <button
+                                                    onClick={runJava}
+                                                    disabled={javaCompiling}
+                                                    className={`px-3 py-1 rounded text-sm ${javaCompiling
+                                                        ? "bg-gray-400 text-slate-700"
+                                                        : "bg-indigo-600 text-white"
+                                                        }`}
+                                                >
+                                                    {javaCompiling
+                                                        ? content[lang].compiling
+                                                        : lang === "en"
+                                                            ? "Compile & Run"
+                                                            : "कम्पाइल और चलाएँ"}
+                                                </button>
+                                            </div>
+
+                                            <textarea
+                                                value={javaCode}
+                                                onChange={(e) => setJavaCode(e.target.value)}
+                                                spellCheck={false}
+                                                className="w-full min-h-[220px] bg-[#07070a] text-[#ffeedd] font-mono p-3 rounded outline-none text-sm border border-[#101214]"
+                                            />
+                                        </div>
+
+                                        {/* Console Output */}
+                                        <div className="p-3 rounded-lg bg-white border">
+                                            <div className="text-xs text-slate-400 mb-2">
+                                                {lang === "en"
+                                                    ? "Console (simulated)"
+                                                    : "कंसोल (अनुकरण)"}
+                                            </div>
+
+                                            <div className="min-h-[220px] p-3 bg-[#0a0f14] rounded text-sm text-[#d1f8ff] font-mono">
+                                                {javaOutput.length === 0 ? (
+                                                    <div className="text-slate-400">
+                                                        {lang === "en"
+                                                            ? "No output — try Compile & Run"
+                                                            : "कोई आउटपुट नहीं — compile और चलाएँ"}
+                                                    </div>
+                                                ) : (
+                                                    javaOutput.map((l, i) => <div key={i}>{l}</div>)
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </div>
                 </div>
+            </div>
+            
+            {/* Navigation Button */}
+            <div className="flex flex-col md:flex-row justify-between items-center mt-4 p-6 bg-gray-100 rounded-lg shadow-md gap-4 md:gap-0">
+                {/* Previous Button */}
+                <button
+                    onClick={() => {
+                        if (stage === 1) {
+                            // First stage → page navigation
+                            navigate('/module2/sdlc');
+                        } else {
+                            // Go to previous stage
+                            setStage(stage - 1);
+                        }
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+                >
+                    <FaArrowLeft />
+                    Previous
+                </button>
+
+                {/* Next Button */}
+                <button
+                    onClick={() => {
+                        if (stage === 5) {
+                            // Last stage → page navigation
+                            navigate('/module2/data-structures');
+                        } else {
+                            // Go to next stage
+                            setStage(stage + 1);
+                        }
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+                >
+                    Next
+                    <FaArrowRight />
+                </button>
             </div>
 
         </div>
