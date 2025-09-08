@@ -28,6 +28,8 @@ import DevloperRole from './Components/Part2/devloperRole'
 import Sdlc from './Components/Part2/Sdlc';
 import ProgrammingLanguage from './Components/Part2/ProgrammingLanguage'
 import DataStructures from './Components/Part2/DataStructures';
+import Algorithms from './Components/Part2/Algorithms';
+import DesignPrinciples from './Components/Part2/DesignPrinciples';
 import Quiz2 from './Components/Part2/Quiz2';
 import Chapter9 from './Components/Part3/Chapter9';
 import Chapter10 from './Components/Part3/Chapter10';
@@ -67,6 +69,8 @@ root.render(
         <Route path="/module2/sdlc" element={<Sdlc />} />
         <Route path="/module2/programming-languages" element={<ProgrammingLanguage />} />
         <Route path="//module2/data-structures" element={<DataStructures />} />
+        <Route path="/module2/algorithms" element={<Algorithms />} />
+        <Route path="/module3/design-principles" element={<DesignPrinciples />} />
         <Route path="/part2/chapters/qiz2" element={<Quiz2 />} />
         <Route path="/part3/chapters/ch9" element={<Chapter9 />} />
         <Route path="/part3/chapters/ch10" element={<Chapter10 />} />
