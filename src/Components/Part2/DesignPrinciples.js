@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaHome, FaArrowLeft, FaArrowRight, FaDraftingCompass, FaCheckCircle, FaRecycle, FaLayerGroup, FaUser, FaUsers, FaCarBattery, FaPaintBrush, FaPlus, FaBolt, FaShieldAlt, FaUserFriends, FaToolbox, FaExchangeAlt } from "react-icons/fa";
+import { FaHome, FaArrowLeft, FaArrowRight, FaDraftingCompass, FaCheckCircle, FaRecycle, FaLayerGroup, FaPlus, FaBolt, FaUserFriends, FaToolbox, FaExchangeAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
 const principlesContent = {
@@ -87,16 +87,63 @@ const principlesContent = {
         analogy_title: "उदाहरण: सुपरहीरो की एक टीम",
         analogy_text: "अपने सॉफ्टवेयर को सुपरहीरोज की एक टीम की तरह सोचें। टीम को असरदार बनाने के लिए, हर हीरो को कुछ नियमों का पालन करना पड़ता है। ये नियम उन्हें एक-दूसरे के काम में बाधा डाले बिना दुनिया बचाने में मदद करते हैं।",
         sub_principles: [
-          { name: "S - सिंगल रिस्पॉन्सिबिलिटी", desc: "हर हीरो का एक मुख्य काम होता है। फ्लैश सुपर-स्पीड का काम करता है, सुपरमैन सुपर-स्ट्रेंथ का। आप फ्लैश को बिल्डिंग उठाने के लिए नहीं कहते। सॉफ्टवेयर में भी, हर हिस्से का केवल एक मुख्य काम होना चाहिए।", icon: FaBolt },
-          { name: "O - ओपन/क्लोज्ड", desc: "सुपरहीरो टीम हमेशा एक नए हीरो का स्वागत कर सकती है (यह नए सदस्यों के लिए 'खुली' है) बिना मौजूदा हीरो की शक्तियों को बदले (उनकी शक्तियाँ 'बंद' हैं)। सॉफ्टवेयर में भी नए फीचर पुराने कोड को बदले बिना जोड़े जाने चाहिए।", icon: FaPlus },
-          { name: "L - लिस्कोव सब्स्टिट्यूशन", desc: "अगर सुपरमैन व्यस्त है, तो आप सुपरगर्ल को उड़ान और ताकत की आवश्यकता वाले काम के लिए भेज सकते हैं। वह पूरी तरह से उसकी जगह ले सकती है। सॉफ्टवेयर में, एक 'विकल्प' हिस्सा वह सब कुछ करने में सक्षम होना चाहिए जो मूल हिस्सा कर सकता है।", icon: FaUserFriends },
-          { name: "I - इंटरफेस सेग्रीगेशन", desc: "आप सिर्फ एक बिल्ली को पेड़ से बचाने के लिए पूरी सुपरहीरो टीम को नहीं बुलाते। आप केवल सही कौशल वाले हीरो को बुलाते हैं। सॉफ्टवेयर को किसी हिस्से को ऐसे फ़ंक्शन नहीं देने चाहिए जिनकी उसे आवश्यकता नहीं है।", icon: FaToolbox },
-          { name: "D - डिपेंडेंसी इन्वर्जन", desc: "बैटमैन बैटमोबाइल का इंजन खुद नहीं बनाता। वह कार को इस तरह से बनाता है कि वह किसी भी शक्तिशाली इंजन का उपयोग कर सके जो एक मानक कनेक्शन में फिट हो। इस तरह, वह बाद में आसानी से एक नया, बेहतर इंजन लगा सकता है। सॉफ्टवेयर के उच्च-स्तरीय हिस्सों को विशिष्ट, निम्न-स्तरीय हिस्सों पर निर्भर नहीं होना चाहिए।", icon: FaExchangeAlt }
+            { name: "S - सिंगल रिस्पॉन्सिबिलिटी", desc: "हर हीरो का एक मुख्य काम होता है। फ्लैश सुपर-स्पीड का काम करता है, सुपरमैन सुपर-स्ट्रेंथ का। आप फ्लैश को बिल्डिंग उठाने के लिए नहीं कहते। सॉफ्टवेयर में भी, हर हिस्से का केवल एक मुख्य काम होना चाहिए।", icon: FaBolt },
+            { name: "O - ओपन/क्लोज्ड", desc: "सुपरहीरो टीम हमेशा एक नए हीरो का स्वागत कर सकती है (यह नए सदस्यों के लिए 'खुली' है) बिना मौजूदा हीरो की शक्तियों को बदले (उनकी शक्तियाँ 'बंद' हैं)। सॉफ्टवेयर में भी नए फीचर पुराने कोड को बदले बिना जोड़े जाने चाहिए।", icon: FaPlus },
+            { name: "L - लिस्कोव सब्स्टिट्यूशन", desc: "अगर सुपरमैन व्यस्त है, तो आप सुपरगर्ल को उड़ान और ताकत की आवश्यकता वाले काम के लिए भेज सकते हैं। वह पूरी तरह से उसकी जगह ले सकती है। सॉफ्टवेयर में, एक 'विकल्प' हिस्सा वह सब कुछ करने में सक्षम होना चाहिए जो मूल हिस्सा कर सकता है।", icon: FaUserFriends },
+            { name: "I - इंटरफेस सेग्रीगेशन", desc: "आप सिर्फ एक बिल्ली को पेड़ से बचाने के लिए पूरी सुपरहीरो टीम को नहीं बुलाते। आप केवल सही कौशल वाले हीरो को बुलाते हैं। सॉफ्टवेयर को किसी हिस्से को ऐसे फ़ंक्शन नहीं देने चाहिए जिनकी उसे आवश्यकता नहीं है।", icon: FaToolbox },
+            { name: "D - डिपेंडेंसी इन्वर्जन", desc: "बैटमैन बैटमोबाइल का इंजन खुद नहीं बनाता। वह कार को इस तरह से बनाता है कि वह किसी भी शक्तिशाली इंजन का उपयोग कर सके जो एक मानक कनेक्शन में फिट हो। इस तरह, वह बाद में आसानी से एक नया, बेहतर इंजन लगा सकता है। सॉफ्टवेयर के उच्च-स्तरीय हिस्सों को विशिष्ट, निम्न-स्तरीय हिस्सों पर निर्भर नहीं होना चाहिए।", icon: FaExchangeAlt }
         ]
       },
     ]
   }
 };
+
+const BackgroundShapes = () => (
+    <div className="absolute inset-0 overflow-hidden z-0">
+        <motion.div
+            className="absolute top-[5%] left-[10%] w-72 h-72 bg-purple-300 rounded-full filter blur-3xl opacity-30"
+            animate={{
+                x: [0, 100, 0, -50, 0],
+                y: [0, -50, 50, 100, 0],
+                scale: [1, 1.2, 1, 1.1, 1],
+            }}
+            transition={{
+                duration: 25,
+                repeat: Infinity,
+                repeatType: 'mirror',
+            }}
+        />
+        <motion.div
+            className="absolute bottom-[10%] right-[15%] w-80 h-80 bg-yellow-300 rounded-full filter blur-3xl opacity-30"
+            animate={{
+                x: [0, -80, 0, 70, 0],
+                y: [0, 60, -40, 90, 0],
+                scale: [1, 1.1, 1.2, 1, 1],
+            }}
+            transition={{
+                duration: 30,
+                repeat: Infinity,
+                repeatType: 'mirror',
+                delay: 5,
+            }}
+        />
+         <motion.div
+            className="absolute top-[20%] right-[5%] w-60 h-60 bg-green-300 rounded-full filter blur-3xl opacity-20"
+            animate={{
+                x: [0, -40, 0, 30, 0],
+                y: [0, 30, -20, 50, 0],
+                scale: [1, 1.1, 1, 1.2, 1],
+            }}
+            transition={{
+                duration: 20,
+                repeat: Infinity,
+                repeatType: 'mirror',
+                delay: 2,
+            }}
+        />
+    </div>
+);
+
 
 export default function DesignPrinciples() {
   const [lang, setLang] = useState("en");
@@ -110,8 +157,9 @@ export default function DesignPrinciples() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="min-h-screen bg-slate-50 font-sans py-8 relative overflow-hidden">
+      <BackgroundShapes />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 relative z-10">
         <div className="flex items-center justify-between">
           <Link
             to="/parts/prt2"
@@ -157,7 +205,7 @@ export default function DesignPrinciples() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200"
+            className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-200"
           >
             <h2 className="text-2xl font-bold text-gray-800 mb-3">{content.why_matters_title}</h2>
             <p className="text-gray-600 leading-relaxed">{content.why_matters_text}</p>
@@ -167,7 +215,7 @@ export default function DesignPrinciples() {
             <div key={p.id}>
               <motion.div
                 onClick={() => handleToggle(p.id)}
-                className={`p-6 rounded-2xl shadow-lg cursor-pointer transition-all duration-300 ${expandedId === p.id ? 'bg-white' : `bg-gradient-to-br ${p.color} hover:shadow-xl`}`}
+                className={`p-6 rounded-2xl shadow-lg cursor-pointer transition-all duration-300 ${expandedId === p.id ? 'bg-white/80 backdrop-blur-sm' : `bg-gradient-to-br ${p.color} hover:shadow-xl`}`}
                 whileHover={{ y: expandedId !== p.id ? -5 : 0 }}
               >
                 <div className="flex items-center gap-4">
@@ -186,7 +234,7 @@ export default function DesignPrinciples() {
                     animate={{ opacity: 1, height: 'auto', marginTop: '-1rem' }}
                     exit={{ opacity: 0, height: 0, marginTop: 0 }}
                     transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="bg-white rounded-b-2xl shadow-inner overflow-hidden"
+                    className="bg-white/80 backdrop-blur-sm rounded-b-2xl shadow-inner overflow-hidden"
                   >
                     <div className="p-8 pt-12 space-y-4 text-gray-800 leading-relaxed">
                        <p>{p.explanation}</p>
