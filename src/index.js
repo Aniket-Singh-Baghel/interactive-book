@@ -51,16 +51,16 @@ root.render(
         <Route path="/parts/prt4" element={<Part4 />} />
         <Route path="/parts/prt5" element={<Part5 />} />
         <Route path="/parts/prt6" element={<Part6 />} />
-        <Route path="/part1/chapters/ch1" element={<Chapter1 />} />
-        <Route path="/part1/chapters/ch2" element={<Chapter2 />} />
-        <Route path="/part1/chapters/ch3" element={<Chapter3 />} />
-        <Route path="/part1/chapters/ch4" element={<Chapter4 />} />
-        <Route path="/part1/chapters/ch5" element={<Chapter5 />} />
-        <Route path="/part1/chapters/peripherals" element={<Peripherals />} />
-        <Route path="/part1/chapters/tertriaryStorage" element={<TertiaryStorage />} />
-        <Route path="/part1/chapters/otherStorageTypes" element={<OtherStorageTypes />} />
-        <Route path="/part1/chapters/memoryComparison" element={<MemoryComparison />} />
-        <Route path="/part1/chapters/ramVsRom" element={<RamVsRom />} />
+        <Route path="/part1/what-is-computer" element={<Chapter1 />} />
+        <Route path="/part1/computer-hardware" element={<Chapter2 />} />
+        <Route path="/part1/cpu-brain" element={<Chapter3 />} />
+        <Route path="/part1/memory-and-storage" element={<Chapter4 />} />
+        <Route path="/part1/input-output-devices" element={<Chapter5 />} />
+        <Route path="/part1/peripherals" element={<Peripherals />} />
+        <Route path="/part1/tertiary-storage" element={<TertiaryStorage />} />
+        <Route path="/part1/other-storage-types" element={<OtherStorageTypes />} />
+        <Route path="/part1/ram-vs-rom" element={<RamVsRom />} />
+        <Route path="/part1/memory-comparison" element={<MemoryComparison />} />
         <Route path="/part1/chapters/qiz1" element={<Quiz1 />} />
         <Route path="/module1/what-is-software" element={<Chapter6 />} />
         <Route path="/module1/operating-system" element={<Chapter7 />} />

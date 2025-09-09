@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const content = {
     en: {
         home: "Home",
-        title: "Chapter 1: What is a Computer? 🤖",
+        title: "What is a Computer? 🤖",
         subtitle: "Let's understand what a computer is with a simple real-life example and a formal definition.",
         simple_machine_title: "A Simple Machine",
         simple_machine_desc: "A computer is a smart machine that helps us with our work, just like a <strong>mixer grinder</strong> in the kitchen. Let's see how they are similar.",
@@ -24,7 +24,7 @@ const content = {
     },
     hi: {
         home: "होम",
-        title: "अध्याय 1: कंप्यूटर क्या है? 🤖",
+        title: "कंप्यूटर क्या है? 🤖",
         subtitle: "आइए एक सरल वास्तविक जीवन के उदाहरण और एक औपचारिक परिभाषा के साथ समझें कि कंप्यूटर क्या है।",
         simple_machine_title: "एक सरल मशीन",
         simple_machine_desc: "कंप्यूटर एक स्मार्ट मशीन है जो हमारे काम में हमारी मदद करती है, ठीक रसोई में एक <strong>मिक्सर ग्राइंडर</strong> की तरह। आइए देखें कि वे कैसे समान हैं।",

@@ -6,7 +6,7 @@ import { FaHome, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 const content = {
     en: {
         home: "Home",
-        title: "Chapter 2: The Main Parts (Hardware) ⚙️",
+        title: "The Main Parts (Hardware) ⚙️",
         subtitle: "A computer is made of many physical parts. These are called <strong>hardware</strong>. Below are the key parts with cartoon visuals and simple analogies to help students remember.",
         memory_trick_title: "Memory Trick — Robot Friend 🤖",
         memory_trick_text: "Brain = CPU, Notepad = RAM, Cupboard = Storage, Eyes = Monitor, Hands = Keyboard, Pointer = Mouse, Voice = Speakers",
@@ -29,7 +29,7 @@ const content = {
     },
     hi: {
         home: "होम",
-        title: "अध्याय 2: मुख्य भाग (हार्डवेयर) ⚙️",
+        title: "मुख्य भाग (हार्डवेयर) ⚙️",
         subtitle: "एक कंप्यूटर कई भौतिक भागों से बना होता है। इन्हें <strong>हार्डवेयर</strong> कहा जाता है। नीचे छात्रों को याद रखने में मदद करने के लिए कार्टून दृश्यों और सरल उपमाओं के साथ प्रमुख भाग दिए गए हैं।",
         memory_trick_title: "याद रखने की ट्रिक - रोबोट दोस्त 🤖",
         memory_trick_text: "दिमाग = सीपीयू, नोटपैड = रैम, अलमारी = स्टोरेज, आंखें = मॉनिटर, हाथ = कीबोर्ड, पॉइंटर = माउस, आवाज = स्पीकर",
