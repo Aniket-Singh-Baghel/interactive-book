@@ -9,16 +9,76 @@ const content = {
     main_title: "🚀 Your First Step into Computers – Inviting for beginners.",
     part_title: "Part 1: The Basics - Understanding the Computer",
     topics: [
-      { id: 1, title: "Chapter 1: What is a Computer?", concept: "Defining a computer as a helpful electronic machine.", path: "/part1/what-is-computer", icon: <FaLaptop className="text-blue-500 text-3xl" /> },
-      { id: 2, title: "Chapter 2: The Main Parts (Hardware)", concept: "Introducing the physical components of a computer.", path: "/part1/computer-hardware", icon: <FaCogs className="text-pink-500 text-3xl" /> },
-      { id: 3, title: "Chapter 3: The Brain of the Computer: The CPU", concept: "Explaining the CPU's role as the central processing unit.", path: "/part1/cpu-brain", icon: <FaMicrochip className="text-yellow-500 text-3xl" /> },
-      { id: 4, title: "Chapter 4: Memory and Storage", concept: "Differentiating between temporary memory (RAM) and permanent storage (Hard Drive).", path: "/part1/memory-and-storage", icon: <FaMemory className="text-green-500 text-3xl" /> },
-      { id: 5, title: "Chapter 5: Input and Output Devices", concept: "How we talk to the computer and how it talks back.", path: "/part1/input-output-devices", icon: <FaKeyboard className="text-purple-500 text-3xl" /> },
-      { id: 6, title: "Chapter Extra 01: Peripherals", concept: "Devices that let us interact with the computer, like keyboard and mouse.", path: "/part1/peripherals", icon: <FaMouse className="text-purple-500 text-3xl" /> },
-      { id: 7, title: "Chapter Extra 02: Tertiary Storage", concept: "Used for long-term backups and archival storage.", path: "/part1/tertiary-storage", icon: <FaDatabase className="text-blue-500 text-3xl" /> },
-      { id: 8, title: "Chapter Extra 03: Other Storage Types", concept: "Covers different storage technologies beyond primary and secondary.", path: "/part1/other-storage-types", icon: <FaHdd className="text-green-500 text-3xl" /> },
-      { id: 9, title: "Chapter Extra 04: RAM vs ROM", concept: "Differences between volatile and non-volatile memory.", path: "/part1/ram-vs-rom", icon: <FaMemory className="text-red-500 text-3xl" /> },
-      { id: 10, title: "Chapter Extra 05: Memory Comparison", concept: "Compare speeds, cost, and uses of various memory types.", path: "/part1/memory-comparison", icon: <FaChartBar className="text-yellow-500 text-3xl" /> }
+      { 
+        id: 1, 
+        title: "Chapter 1: What is a Computer?", 
+        concept: "Defining a computer as a helpful electronic machine.", 
+        path: "/part1/what-is-computer", 
+        icon: <FaLaptop className="text-blue-500 text-3xl" /> 
+      },
+      { 
+        id: 2, 
+        title: "Chapter 2: The Main Parts (Hardware)", 
+        concept: "Introducing the physical components of a computer.", 
+        path: "/part1/computer-hardware", 
+        icon: <FaCogs className="text-pink-500 text-3xl" /> 
+      },
+      { 
+        id: 3, 
+        title: "Chapter 3: The Brain of the Computer: The CPU", 
+        concept: "Explaining the CPU's role as the central processing unit.", 
+        path: "/part1/cpu-brain", 
+        icon: <FaMicrochip className="text-yellow-500 text-3xl" /> 
+      },
+      { 
+        id: 4, 
+        title: "Chapter 4: Memory and Storage", 
+        concept: "Differentiating between temporary memory (RAM) and permanent storage (Hard Drive).", 
+        path: "/part1/memory-and-storage", 
+        icon: <FaMemory className="text-green-500 text-3xl" /> 
+      },
+      { 
+        id: 5, 
+        title: "Chapter 5: Input and Output Devices", 
+        concept: "How we talk to the computer and how it talks back.", 
+        path: "/part1/input-output-devices", 
+        icon: <FaKeyboard className="text-purple-500 text-3xl" /> 
+      },
+      { 
+        id: 6, 
+        title: "Chapter Extra 01: Peripherals", 
+        concept: "Devices that let us interact with the computer, like keyboard and mouse.",
+         path: "/part1/peripherals", 
+         icon: <FaMouse className="text-purple-500 text-3xl" /> 
+        },
+      { 
+        id: 7, 
+        title: "Chapter Extra 02: Tertiary Storage", 
+        concept: "Used for long-term backups and archival storage.", 
+        path: "/part1/tertiary-storage", 
+        icon: <FaDatabase className="text-blue-500 text-3xl" /> 
+      },
+      { 
+        id: 8, 
+        title: "Chapter Extra 03: Other Storage Types", 
+        concept: "Covers different storage technologies beyond primary and secondary.", 
+        path: "/part1/other-storage-types", 
+        icon: <FaHdd className="text-green-500 text-3xl" /> 
+      },
+      { 
+        id: 9, 
+        title: "Chapter Extra 04: RAM vs ROM", 
+        concept: "Differences between volatile and non-volatile memory.",
+        path: "/part1/ram-vs-rom", 
+        icon: <FaMemory className="text-red-500 text-3xl" />
+       },
+      { 
+        id: 10, 
+        title: "Chapter Extra 05: Memory Comparison", 
+        concept: "Compare speeds, cost, and uses of various memory types.", 
+        path: "/part1/memory-comparison", 
+        icon: <FaChartBar className="text-yellow-500 text-3xl" /> 
+      }
     ]
   },
   hi: {
