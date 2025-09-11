@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaCode, FaPython, FaJava, FaHtml5, FaCss3, FaHome, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaCode, FaPython, FaJava, FaHtml5, FaCss3, FaHome, FaArrowLeft, FaArrowRight, FaCat } from "react-icons/fa";
 import { SiJavascript } from "react-icons/si";
 import { Link, useNavigate} from 'react-router-dom'
 
 export default function ProgrammingLanguagesProComponent() {
     const [lang, setLang] = useState("en"); // 'en' or 'hi'
-    const [stage, setStage] = useState(1); // 1..5
+    const [stage, setStage] = useState(1); // 1..6
     const iframeRef = useRef(null);
     const navigate = useNavigate()
 
@@ -105,13 +105,19 @@ export default function ProgrammingLanguagesProComponent() {
                         "Widely used: millions of developers and companies around the world use Java.\n" +
                         "Step into coding: helps you learn the core ideas of programming clearly.",
                 },
+                {
+                    id: 5,
+                    title: "Scratch - Visual Programming",
+                    short: "Scratch is a visual programming language where you snap together blocks to create animations, games, and stories. It's designed to be fun and easy for beginners.\n",
+                    analogy: "Think of it like building with digital LEGOs. Each block is a piece of code, and you connect them to make something amazing."
+                }
             ],
             runPreview: "Run Preview",
             reset: "Reset",
             run: "Run",
             compiling: "Compiling...",
             running: "Running...",
-            tip: "Tip: use 1–5 to jump stages; Arrow keys to navigate; Ctrl/Cmd+K toggles language.",
+            tip: "Tip: use 1–6 to jump stages; Arrow keys to navigate; Ctrl/Cmd+K toggles language.",
             nextSteps: [
                 "Edit small code lines and observe.",
                 "Write one tiny program every day.",
@@ -173,13 +179,19 @@ export default function ProgrammingLanguagesProComponent() {
                         "सब जगह इस्तेमाल: लाखों डेवलपर और कंपनियाँ Java का उपयोग करती हैं।\n" +
                         "कोडिंग की शुरुआत: प्रोग्रामिंग के मूल विचार साफ़ तरीके से समझाता है।",
                 },
+                {
+                    id: 5,
+                    title: "स्क्रैच - विजुअल प्रोग्रामिंग",
+                    short: "स्क्रैच एक विजुअल प्रोग्रामिंग भाषा है जहाँ आप एनिमेशन, गेम और कहानियाँ बनाने के लिए ब्लॉक को एक साथ स्नैप करते हैं। इसे शुरुआती लोगों के लिए मजेदार और आसान बनाने के लिए डिज़ाइन किया गया है।\n",
+                    analogy: "इसे डिजिटल लेगो के साथ बनाने जैसा समझें। प्रत्येक ब्लॉक कोड का एक टुकड़ा है, और आप कुछ अद्भुत बनाने के लिए उन्हें जोड़ते हैं।"
+                }
             ],
             runPreview: "Preview चलाएँ",
             reset: "Reset",
             run: "चलाएँ",
             compiling: "कम्पाइल हो रहा...",
             running: "चालू...",
-            tip: "टिप: 1–5 से स्टेप चुनें; Arrow keys से आगे/पीछे; Ctrl/Cmd+K भाषा बदलता है.",
+            tip: "टिप: 1–6 से स्टेप चुनें; Arrow keys से आगे/पीछे; Ctrl/Cmd+K भाषा बदलता है.",
             nextSteps: [
                 "छोटे-छोटे बदलाव करके देखें.",
                 "हर दिन एक छोटा प्रोग्राम लिखने की आदत डालें.",
@@ -213,6 +225,7 @@ export default function ProgrammingLanguagesProComponent() {
             labelColor: "text-green-400",
         },
     ];
+
     const t = (key) => {
         const parts = key.split(".");
         let obj = content[lang];
@@ -404,14 +417,14 @@ export default function ProgrammingLanguagesProComponent() {
     // keyboard shortcuts
     useEffect(() => {
         const onKey = (e) => {
-            // Number keys 1–5 → jump to stage
-            if (["1", "2", "3", "4", "5"].includes(e.key)) {
+            // Number keys 1–6 → jump to stage
+            if (["1", "2", "3", "4", "5", "6"].includes(e.key)) {
                 setStage(Number(e.key));
                 e.preventDefault();
             }
             // ArrowRight → next stage
             if (e.key === "ArrowRight") {
-                setStage((s) => Math.min(5, s + 1));
+                setStage((s) => Math.min(6, s + 1));
                 e.preventDefault();
             }
             // ArrowLeft → previous stage
@@ -513,43 +526,18 @@ export default function ProgrammingLanguagesProComponent() {
 
     return (
         <div className="max-w-6xl mx-auto p-6">
-            <div className="flex justify-end p-4 space-x-2 -mt-6">
-                {/* English Button */}
-                <button
-                    onClick={() => setLang("en")}
-                    className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en"
-                        ? "bg-blue-500 text-white border-blue-500"
-                        : "bg-white text-gray-700 border-gray-300"
-                        } transition`}
-                >
-                    EN
-                </button>
-
-                {/* Hindi Button */}
-                <button
-                    onClick={() => setLang("hi")}
-                    className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi"
-                        ? "bg-blue-500 text-white border-blue-500"
-                        : "bg-white text-gray-700 border-gray-300"
-                        } transition`}
-                >
-                    हिं
-                </button>
-            </div>
-            <div className="flex justify-center mb-6 -mt-4">
+            <div className="flex items-center justify-between mb-8">
                 <Link
                     to="/parts/prt2"
                     className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
                 >
-                    <motion.div
-                        className="mr-2"
-                        animate={{ y: [0, -6, 0] }}
-                        transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
-                    >
-                        <FaHome className="text-lg text-indigo-600" />
-                    </motion.div>
-                    Home
+                    <FaHome className="mr-2 text-lg text-sky-600" />
+                    {t("home")}
                 </Link>
+                <div className="flex space-x-2">
+                    <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
+                    <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
+                </div>
             </div>
 
             {/* Title */}
@@ -692,11 +680,31 @@ export default function ProgrammingLanguagesProComponent() {
                                     </div>
                                 </motion.div>
                             )}
+                            
+                            {stage === 6 && (
+                                <motion.div
+                                    key="v6"
+                                    initial={{ opacity: 0, y: 6 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -6 }}
+                                    className="flex flex-col items-center gap-3"
+                                >
+                                    <FaCat className="text-orange-500 text-6xl" />
+                                    <div className="text-center">
+                                        <div className="text-lg font-semibold">
+                                            {t("stages.5.title")}
+                                        </div>
+                                        <div className="text-sm text-slate-600 mt-2 max-w-xs">
+                                            {t("stages.5.analogy")}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
                         </AnimatePresence>
 
                         {/* stage buttons + tip */}
                         <div className="mt-4 flex gap-2 flex-wrap justify-center">
-                            {[1, 2, 3, 4, 5].map((n) => (
+                            {[1, 2, 3, 4, 5, 6].map((n) => (
                                 <StageBtn key={n} n={n} />
                             ))}
                         </div>
@@ -1186,6 +1194,29 @@ export default function ProgrammingLanguagesProComponent() {
                                     </div>
                                 </motion.div>
                             )}
+
+                            {stage === 6 && (
+                                <motion.div
+                                    key="s6"
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -6 }}
+                                >
+                                    <h2 className="text-lg font-bold mb-2">
+                                        {t("stages.5.title")}
+                                    </h2>
+                                    <p className="text-slate-700 mb-3">{t("stages.5.short")}</p>
+
+                                    <div className="p-3 bg-gray-50 rounded mb-3">
+                                        <div className="text-sm font-semibold mb-1">
+                                            {lang === "en" ? "Analogy" : "उपमा"}
+                                        </div>
+                                        <div className="text-sm text-slate-700">
+                                            {t("stages.5.analogy")}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
                         </AnimatePresence>
                     </div>
                 </div>
@@ -1213,7 +1244,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {/* Next Button */}
                 <button
                     onClick={() => {
-                        if (stage === 5) {
+                        if (stage === 6) {
                             // Last stage → page navigation
                             navigate('/module2/data-structures');
                         } else {

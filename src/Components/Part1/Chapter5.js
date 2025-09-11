@@ -7,7 +7,7 @@ import confetti from "canvas-confetti";
 const content = {
     en: {
         home: "Home",
-        title: "Chapter 5: Input & Output Devices ⌨️🖱️",
+        title: "Input & Output Devices ⌨️🖱️",
         subtitle: "How we talk to the computer and how it talks back — with analogies, definitions, and interactive visuals.",
         understanding_title: "Understanding Input & Output",
         input_title: "🎯 Input Devices",

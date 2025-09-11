@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaDatabase, FaPlus, FaMinus, FaList, FaTerminal, FaLightbulb, FaPlay, FaEraser, FaHashtag, FaFont, FaToggleOn, FaDotCircle, FaMapPin, FaHome, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-
-// A mock Link component since we are in a single-file environment
-const Link = ({ to, children, className }) => <a href={to} className={className}>{children}</a>;
+import { Link, useNavigate } from "react-router-dom";
 
 const content = {
     en: {
@@ -52,6 +50,12 @@ const content = {
                 analogy: "An Array is like a numbered shelf. You can put items on it in order, and you can find any item by knowing its shelf number (which we call an 'index'). The first shelf is always number 0.",
                 description: "Arrays are ordered lists of values. You can store multiple items in a single variable, and access them using a numerical index. They are one of the most common and useful data structures.",
                 code: `let fruits = ["Apple", "Banana", "Cherry"];\n\n// Access by index (starts at 0)\nconsole.log(fruits[1]); // "Banana"\n\n// Add an item to the end\nfruits.push("Date");\n\n// Remove the last item\nfruits.pop();\n\nconsole.log("Total fruits:", fruits.length);`
+            },
+            8: {
+                title: "Strings",
+                analogy: "A string is like a sentence. It's a sequence of characters put together, just like words in a sentence.",
+                description: "Strings are used to represent text. They are a sequence of characters, and you can do many things with them, like combining them, finding their length, or changing them to uppercase or lowercase.",
+                code: `// Strings are sequences of characters.\nlet greeting = "Hello";\nlet name = "World";\n\n// Combine strings\nlet message = greeting + ", " + name + "!";\n\nconsole.log(message); // "Hello, World!"\nconsole.log("Length:", message.length);\nconsole.log("Uppercase:", message.toUpperCase());`
             }
         },
         common: {
@@ -70,6 +74,7 @@ const content = {
             enterValue: "Enter a value...",
             enterIndex: "Enter an index...",
             changeName: "Change Name",
+            tip: "Tip: use 1–8 to jump stages; Arrow keys to navigate; Ctrl/Cmd+K toggles language."
         },
     },
     hi: {
@@ -118,6 +123,12 @@ const content = {
                 analogy: "एक ऐरे एक नंबर वाली शेल्फ की तरह है। आप उस पर क्रम में सामान रख सकते हैं, और आप किसी भी सामान को उसका शेल्फ नंबर (जिसे हम 'index' कहते हैं) जानकर ढूंढ सकते हैं। पहली शेल्फ का नंबर हमेशा 0 होता है।",
                 description: "ऐरे मानों की क्रमबद्ध सूचियाँ हैं। आप एक ही वैरिएबल में कई आइटम स्टोर कर सकते हैं, और उन्हें एक संख्यात्मक इंडेक्स का उपयोग करके एक्सेस कर सकते हैं। वे सबसे आम और उपयोगी डेटा संरचनाओं में से एक हैं।",
                 code: `let fruits = ["Apple", "Banana", "Cherry"];\n\n// Access by index (starts at 0)\nconsole.log(fruits[1]); // "Banana"\n\n// Add an item to the end\nfruits.push("Date");\n\n// Remove the last item\nfruits.pop();\n\nconsole.log("Total fruits:", fruits.length);`
+            },
+            8: {
+                title: "स्ट्रिंग (Strings)",
+                analogy: "एक स्ट्रिंग एक वाक्य की तरह है। यह एक साथ रखे गए वर्णों का एक क्रम है, ठीक एक वाक्य में शब्दों की तरह।",
+                description: "स्ट्रिंग का उपयोग टेक्स्ट का प्रतिनिधित्व करने के लिए किया जाता है। वे वर्णों का एक क्रम हैं, और आप उनके साथ बहुत सी चीजें कर सकते हैं, जैसे उन्हें जोड़ना, उनकी लंबाई खोजना, या उन्हें अपरकेस या लोअरकेस में बदलना।",
+                code: `// स्ट्रिंग्स वर्णों के अनुक्रम हैं।\nlet greeting = "नमस्ते";\nlet name = "दुनिया";\n\n// स्ट्रिंग्स को मिलाएं\nlet message = greeting + ", " + name + "!";\n\nconsole.log(message); // "नमस्ते, दुनिया!"\nconsole.log("लंबाई:", message.length);\nconsole.log("अपरकेस:", message.toUpperCase());`
             }
         },
         common: {
@@ -136,11 +147,13 @@ const content = {
             enterValue: "एक मान दर्ज करें...",
             enterIndex: "एक इंडेक्स दर्ज करें...",
             changeName: "नाम बदलें",
+            tip: "टिप: 1–8 से स्टेप चुनें; Arrow keys से आगे/पीछे; Ctrl/Cmd+K भाषा बदलता है."
         },
     },
 };
 
 const DataStructuresModule = () => {
+    const navigate = useNavigate();
     const [lang, setLang] = useState("en");
     const [activeStage, setActiveStage] = useState(1);
     const [code, setCode] = useState("");
@@ -155,10 +168,34 @@ const DataStructuresModule = () => {
     const [refObjectNameInput, setRefObjectNameInput] = useState("Beth");
     const [array, setArray] = useState(["Apple", "Banana", "Cherry"]);
     const [arrayInput, setArrayInput] = useState("");
+    const [string, setString] = useState("Hello");
 
 
     const currentContent = content[lang];
     const stageData = currentContent.stages[activeStage];
+
+    useEffect(() => {
+        const onKey = (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                setLang(l => l === 'en' ? 'hi' : 'en');
+            }
+            if (e.key >= '1' && e.key <= '8') {
+                e.preventDefault();
+                setActiveStage(parseInt(e.key));
+            }
+            if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                setActiveStage(s => Math.min(8, s + 1));
+            }
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                setActiveStage(s => Math.max(1, s - 1));
+            }
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, []);
 
     useEffect(() => {
         setCode(stageData.code);
@@ -187,8 +224,8 @@ const DataStructuresModule = () => {
     }, [code]);
 
     const getStageIcon = (stage) => {
-        const icons = { 1: FaLightbulb, 2: FaHashtag, 3: FaDotCircle, 4: FaFont, 5: FaToggleOn, 6: FaMapPin, 7: FaList };
-        const colors = { 1: 'text-yellow-500', 2: 'text-green-500', 3: 'text-purple-500', 4: 'text-Pink-500', 5: 'text-pink-500', 6: 'text-red-500', 7: 'text-purple-500' };
+        const icons = { 1: FaLightbulb, 2: FaHashtag, 3: FaDotCircle, 4: FaFont, 5: FaToggleOn, 6: FaMapPin, 7: FaList, 8: FaFont };
+        const colors = { 1: 'text-yellow-500', 2: 'text-green-500', 3: 'text-purple-500', 4: 'text-Pink-500', 5: 'text-pink-500', 6: 'text-red-500', 7: 'text-purple-500', 8: 'text-blue-500' };
         const Icon = icons[stage];
         return Icon ? <Icon className={colors[stage]} /> : null;
     };
@@ -196,94 +233,223 @@ const DataStructuresModule = () => {
     const getVisualizerContent = () => {
         switch (activeStage) {
             case 2: // Integer
-                return <div className="text-center">
-                    <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="text-7xl font-bold text-green-600 bg-green-100 rounded-full w-32 h-32 flex items-center justify-center mx-auto shadow-lg">{integer}</motion.div>
-                    <div className="flex justify-center gap-4 mt-6">
-                        <button onClick={() => setInteger(i => i + 1)} className="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600">{currentContent.common.increment}</button>
-                        <button onClick={() => setInteger(i => i - 1)} className="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600">{currentContent.common.decrement}</button>
+                return (
+                    <div className="text-center">
+                        <motion.div
+                            initial={{ scale: 0.8 }}
+                            animate={{ scale: 1 }}
+                            className="text-7xl font-bold text-green-600 bg-green-100 rounded-full w-32 h-32 flex items-center justify-center mx-auto shadow-lg"
+                        >
+                            {integer}
+                        </motion.div>
+                        <div className="flex justify-center gap-4 mt-6">
+                            <button
+                                onClick={() => setInteger((i) => i + 1)}
+                                className="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600"
+                            >
+                                {currentContent.common.increment}
+                            </button>
+                            <button
+                                onClick={() => setInteger((i) => i - 1)}
+                                className="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600"
+                            >
+                                {currentContent.common.decrement}
+                            </button>
+                        </div>
                     </div>
-                </div>;
+                );
+
             case 3: // Float
-                return <div className="text-center">
-                    <div className="text-6xl font-semibold text-blue-600 bg-blue-100 rounded-lg px-6 py-4 inline-block mx-auto shadow-lg">{float.toFixed(2)}</div>
-                    <div className="flex justify-center gap-4 mt-6">
-                        <button onClick={() => setFloat(f => f + 0.5)} className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600">+ 0.5</button>
-                        <button onClick={() => setFloat(f => f * 2)} className="px-4 py-2 bg-purple-500 text-white rounded-lg shadow hover:bg-purple-600">x 2</button>
+                return (
+                    <div className="text-center">
+                        <div className="text-6xl font-semibold text-blue-600 bg-blue-100 rounded-lg px-6 py-4 inline-block mx-auto shadow-lg">
+                            {float.toFixed(2)}
+                        </div>
+                        <div className="flex justify-center gap-4 mt-6">
+                            <button
+                                onClick={() => setFloat((f) => f + 0.5)}
+                                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600"
+                            >
+                                + 0.5
+                            </button>
+                            <button
+                                onClick={() => setFloat((f) => f * 2)}
+                                className="px-4 py-2 bg-purple-500 text-white rounded-lg shadow hover:bg-purple-600"
+                            >
+                                x 2
+                            </button>
+                        </div>
                     </div>
-                </div>;
+                );
+
             case 4: // Character
-                return <div className="text-center">
-                    <input type="text" value={character} onChange={(e) => setCharacter(e.target.value.slice(0, 1))} maxLength="1" className="text-7xl font-bold text-indigo-600 bg-indigo-100 rounded-full w-32 h-32 flex items-center justify-center mx-auto shadow-lg text-center border-2 border-indigo-300 focus:outline-none focus:ring-4 focus:ring-indigo-200" />
-                </div>;
+                return (
+                    <div className="text-center">
+                        <input
+                            type="text"
+                            value={character}
+                            onChange={(e) => setCharacter(e.target.value.slice(0, 1))}
+                            maxLength="1"
+                            className="text-7xl font-bold text-indigo-600 bg-indigo-100 rounded-full w-32 h-32 flex items-center justify-center mx-auto shadow-lg text-center border-2 border-indigo-300 focus:outline-none focus:ring-4 focus:ring-indigo-200"
+                        />
+                    </div>
+                );
+
             case 5: // Boolean
-                return <div className="text-center flex flex-col items-center gap-4">
-                    <div className={`text-5xl font-bold px-6 py-3 rounded-lg shadow-lg ${boolean ? 'bg-pink-500 text-white' : 'bg-gray-300 text-gray-600'}`}>{String(boolean)}</div>
-                    <button onClick={() => setBoolean(b => !b)} className="px-6 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600">{currentContent.common.toggle}</button>
-                </div>;
+                return (
+                    <div className="text-center flex flex-col items-center gap-4">
+                        <div
+                            className={`text-5xl font-bold px-6 py-3 rounded-lg shadow-lg ${boolean ? "bg-pink-500 text-white" : "bg-gray-300 text-gray-600"
+                                }`}
+                        >
+                            {String(boolean)}
+                        </div>
+                        <button
+                            onClick={() => setBoolean((b) => !b)}
+                            className="px-6 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600"
+                        >
+                            {currentContent.common.toggle}
+                        </button>
+                    </div>
+                );
+
             case 6: // References
-                return <div className="w-full text-center">
-                    <div className="flex flex-col md:flex-row justify-around items-center gap-4">
-                        <div className="p-4 border-2 border-dashed border-red-400 rounded-lg bg-red-50">
-                            <h3 className="font-bold text-red-700">Variable <code>personA</code></h3>
-                            <p className="font-mono bg-white p-2 rounded mt-1">{`{ name: "${refObject.name}" }`}</p>
+                return (
+                    <div className="w-full text-center">
+                        <div className="flex flex-col md:flex-row justify-around items-center gap-4">
+                            <div className="p-4 border-2 border-dashed border-red-400 rounded-lg bg-red-50">
+                                <h3 className="font-bold text-red-700">
+                                    Variable <code>personA</code>
+                                </h3>
+                                <p className="font-mono bg-white p-2 rounded mt-1">
+                                    {`{ name: "${refObject.name}" }`}
+                                </p>
+                            </div>
+                            <div className="p-4 border-2 border-dashed border-red-400 rounded-lg bg-red-50">
+                                <h3 className="font-bold text-red-700">
+                                    Variable <code>personB</code>
+                                </h3>
+                                <p className="font-mono bg-white p-2 rounded mt-1">
+                                    {`{ name: "${refObject.name}" }`}
+                                </p>
+                            </div>
                         </div>
-                        <div className="p-4 border-2 border-dashed border-red-400 rounded-lg bg-red-50">
-                            <h3 className="font-bold text-red-700">Variable <code>personB</code></h3>
-                            <p className="font-mono bg-white p-2 rounded mt-1">{`{ name: "${refObject.name}" }`}</p>
+
+                        <FaArrowRight className="text-gray-400 text-3xl my-4 hidden md:block mx-auto transform -rotate-45" />
+                        <FaArrowRight className="text-gray-400 text-3xl my-4 hidden md:block mx-auto transform rotate-45 -mt-12" />
+
+                        <div className="p-4 bg-gray-700 text-white rounded-lg shadow-xl inline-block mt-4">
+                            <h3 className="font-bold text-gray-300">Object in Memory</h3>
+                            <p className="font-mono bg-gray-900 p-2 rounded mt-1">
+                                {`{ name: "${refObject.name}" }`}
+                            </p>
+                        </div>
+
+                        <div className="mt-6 flex justify-center gap-2">
+                            <input
+                                type="text"
+                                value={refObjectNameInput}
+                                onChange={(e) => setRefObjectNameInput(e.target.value)}
+                                className="px-3 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                            />
+                            <button
+                                onClick={() => setRefObject({ name: refObjectNameInput })}
+                                className="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600"
+                            >
+                                {currentContent.common.changeName}
+                            </button>
                         </div>
                     </div>
-                    <FaArrowRight className="text-gray-400 text-3xl my-4 hidden md:block mx-auto transform -rotate-45" />
-                    <FaArrowRight className="text-gray-400 text-3xl my-4 hidden md:block mx-auto transform rotate-45 -mt-12" />
-                    <div className="p-4 bg-gray-700 text-white rounded-lg shadow-xl inline-block mt-4">
-                        <h3 className="font-bold text-gray-300">Object in Memory</h3>
-                        <p className="font-mono bg-gray-900 p-2 rounded mt-1">{`{ name: "${refObject.name}" }`}</p>
-                    </div>
-                    <div className="mt-6 flex justify-center gap-2">
-                        <input type="text" value={refObjectNameInput} onChange={(e) => setRefObjectNameInput(e.target.value)} className="px-3 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-sky-400 focus:outline-none" />
-                        <button onClick={() => setRefObject({ name: refObjectNameInput })} className="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600">{currentContent.common.changeName}</button>
-                    </div>
-                </div>;
+                );
+
             case 7: // Array
-                return <div className="w-full">
-                    <div className="flex flex-wrap justify-center gap-2 mb-4 min-h-[50px]">
-                        {array.map((item, idx) => (
-                            <motion.div key={idx} className="flex flex-col items-center px-4 py-2 rounded-md bg-purple-500 text-white text-sm shadow">
-                                <span className="font-bold text-xs bg-purple-700 px-1 rounded -mt-3 mb-1">{idx}</span>{item}
-                            </motion.div>
-                        ))}
+                return (
+                    <div className="w-full">
+                        <div className="flex flex-wrap justify-center gap-2 mb-4 min-h-[50px]">
+                            {array.map((item, idx) => (
+                                <motion.div
+                                    key={idx}
+                                    className="flex flex-col items-center px-4 py-2 rounded-md bg-purple-500 text-white text-sm shadow"
+                                >
+                                    <span className="font-bold text-xs bg-purple-700 px-1 rounded -mt-3 mb-1">
+                                        {idx}
+                                    </span>
+                                    {item}
+                                </motion.div>
+                            ))}
+                        </div>
+                        <div className="flex gap-2 justify-center mt-4">
+                            <input
+                                value={arrayInput}
+                                onChange={(e) => setArrayInput(e.target.value)}
+                                placeholder={currentContent.common.enterValue}
+                                className="px-3 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                            />
+                            <button
+                                onClick={() => {
+                                    if (arrayInput) setArray([...array, arrayInput]);
+                                    setArrayInput("");
+                                }}
+                                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                            >
+                                <FaPlus />
+                            </button>
+                            <button
+                                onClick={() => setArray((arr) => arr.slice(0, -1))}
+                                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                            >
+                                <FaMinus />
+                            </button>
+                        </div>
                     </div>
-                    <div className="flex gap-2 justify-center mt-4">
-                        <input value={arrayInput} onChange={(e) => setArrayInput(e.target.value)} placeholder={currentContent.common.enterValue} className="px-3 py-2 rounded border border-gray-300 focus:ring-2 focus:ring-sky-400 focus:outline-none" />
-                        <button onClick={() => { if (arrayInput) setArray([...array, arrayInput]); setArrayInput(""); }} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"><FaPlus /></button>
-                        <button onClick={() => setArray(arr => arr.slice(0, -1))} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"><FaMinus /></button>
+                );
+
+            case 8: // String
+                return (
+                    <div className="w-full text-center">
+                        <input
+                            type="text"
+                            value={string}
+                            onChange={(e) => setString(e.target.value)}
+                            className="text-4xl font-bold text-blue-600 bg-blue-100 rounded-lg w-full p-4 text-center border-2 border-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-200"
+                        />
+                        <div className="mt-4 text-lg">Length: {string.length}</div>
+                        <div className="flex justify-center gap-4 mt-6">
+                            <button
+                                onClick={() => setString((s) => s.toUpperCase())}
+                                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600"
+                            >
+                                TO UPPER
+                            </button>
+                            <button
+                                onClick={() => setString((s) => s.toLowerCase())}
+                                className="px-4 py-2 bg-purple-500 text-white rounded-lg shadow hover:bg-purple-600"
+                            >
+                                to lower
+                            </button>
+                        </div>
                     </div>
-                </div>;
+                );
+
             default:
                 return null;
         }
     };
 
-    return (
-        <div className="bg-slate-50 min-h-screen font-sans py-8">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
-                <div className="flex items-center justify-between px-4">
+    return (
+        <div className="bg-slate-50 min-h-screen font-sans py-4 sm:py-8">
+            <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+
+                <div className="flex items-center justify-between px-2 sm:px-4">
                     {/* Home Link */}
                     <Link
                         to="/parts/prt2"
-                        className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
+                        className="inline-flex items-center px-3 sm:px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition text-sm sm:text-base"
                     >
-                        <motion.div
-                            className="mr-2"
-                            animate={{ y: [0, -5, 0] }}
-                            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                        >
-                            <FaHome className="text-lg text-sky-600" />
-                        </motion.div>
-                        {currentContent.home}
+                        <FaHome className="mr-2 text-lg text-sky-600" />
+                        {currentContent.home}   
                     </Link>
-
-                    {/* Language Toggle */}
                     <div className="flex space-x-2">
                         <button
                             onClick={() => setLang("en")}
@@ -309,26 +475,26 @@ const DataStructuresModule = () => {
 
                 {/* Header */}
                 <motion.div
-                    className="flex flex-col sm:flex-row items-center sm:items-start gap-6 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200"
+                    className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-200"
                     initial={{ y: -30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                 >
-                    <div className="p-4 bg-sky-100 rounded-full flex-shrink-0">
-                        <FaDatabase className="text-5xl text-sky-500" />
+                    <div className="p-3 sm:p-4 bg-sky-100 rounded-full flex-shrink-0">
+                        <FaDatabase className="text-4xl sm:text-5xl text-sky-500" />
                     </div>
                     <div className="text-center sm:text-left">
-                        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800">{currentContent.title}</h1>
-                        <p className="text-lg text-gray-500 mt-1">{currentContent.subtitle}</p>
+                        <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-800">{currentContent.title}</h1>
+                        <p className="text-base sm:text-lg text-gray-500 mt-1">{currentContent.subtitle}</p>
                     </div>
                 </motion.div>
 
                 {/* Stage Buttons */}
-                <div className="flex flex-wrap justify-center gap-3 p-3 bg-gray-100 rounded-xl">
+                <div className="flex flex-wrap justify-center gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-100 rounded-xl">
                     {Object.keys(currentContent.stages).map((stage) => (
                         <motion.button
                             key={stage}
                             onClick={() => setActiveStage(parseInt(stage))}
-                            className={`px-5 py-2 rounded-lg text-md font-semibold transition-all duration-300 flex items-center gap-2 ${activeStage === parseInt(stage)
+                            className={`px-3 sm:px-5 py-2 rounded-lg text-sm sm:text-md font-semibold transition-all duration-300 flex items-center gap-2 ${activeStage === parseInt(stage)
                                 ? "bg-sky-600 text-white shadow"
                                 : "bg-white text-gray-600 hover:bg-sky-100 hover:text-sky-700 border border-gray-200"
                                 }`}
@@ -339,6 +505,7 @@ const DataStructuresModule = () => {
                         </motion.button>
                     ))}
                 </div>
+                <p className="text-center text-xs sm:text-sm text-gray-500 mt-2">{currentContent.common.tip}</p>
 
                 {/* Stage Content */}
                 <AnimatePresence mode="wait">
@@ -348,28 +515,28 @@ const DataStructuresModule = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.4, ease: "easeInOut" }}
-                        className="flex flex-col lg:flex-row gap-8 w-full"
+                        className="flex flex-col lg:flex-row gap-6 sm:gap-8 w-full"
                         layout
                     >
                         {/* Description */}
                         <motion.div
                             layout
-                            className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 flex-1 space-y-5"
+                            className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-200 flex-1 space-y-4"
                         >
-                            <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">{stageData.title}</h3>
-                            <p className="text-sky-800 text-md italic bg-sky-50 p-4 rounded-lg border-l-4 border-sky-400">
+                            <h3 className="text-xl sm:text-3xl font-bold text-gray-800">{stageData.title}</h3>
+                            <p className="text-sky-800 text-base sm:text-md italic bg-sky-50 p-3 sm:p-4 rounded-lg border-l-4 border-sky-400">
                                 <span className="font-bold text-sky-900">{lang === 'en' ? 'Analogy' : 'उपमा'}:</span> {stageData.analogy}
                             </p>
-                            <p className="text-gray-600 leading-relaxed">{stageData.description}</p>
+                            <p className="text-gray-600 leading-relaxed text-sm sm:text-base">{stageData.description}</p>
                         </motion.div>
 
                         {/* Visualizer */}
                         {activeStage > 1 && (
                             <motion.div
                                 layout
-                                className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 flex flex-col items-center justify-center min-h-[300px] flex-1"
+                                className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-200 flex flex-col items-center justify-center min-h-[250px] sm:min-h-[300px] flex-1"
                             >
-                                <h4 className="text-gray-700 text-xl font-bold mb-6 flex items-center gap-2">
+                                <h4 className="text-gray-700 text-lg sm:text-xl font-bold mb-4 sm:mb-6 flex items-center gap-2">
                                     <FaTerminal className="text-sky-500" /> {currentContent.common.visualizer}
                                 </h4>
                                 {getVisualizerContent()}
@@ -383,23 +550,23 @@ const DataStructuresModule = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200"
+                    className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-200"
                 >
-                    <h4 className="text-gray-700 text-xl font-bold mb-4 flex items-center gap-2">
+                    <h4 className="text-gray-700 text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
                         <FaTerminal className="text-sky-500" /> {currentContent.common.codeEditor}
                     </h4>
-                    <div className="bg-slate-900 rounded-lg shadow-inner font-mono text-sm">
+                    <div className="bg-slate-900 rounded-lg shadow-inner font-mono text-xs sm:text-sm">
                         <textarea
                             value={code}
                             onChange={(e) => setCode(e.target.value)}
-                            className="w-full h-64 p-4 bg-transparent text-gray-200 resize-none border-0 focus:ring-0 focus:outline-none"
+                            className="w-full h-48 sm:h-64 p-4 bg-transparent text-gray-200 resize-none border-0 focus:ring-0 focus:outline-none"
                             spellCheck="false"
                         />
                     </div>
                     <div className="flex flex-col sm:flex-row items-center justify-between mt-4 gap-2 sm:gap-0">
                         <motion.button
                             onClick={runCode}
-                            className="px-6 py-2 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600 flex items-center gap-2"
+                            className="px-5 sm:px-6 py-2 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600 flex items-center gap-2 text-sm sm:text-base"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
@@ -409,7 +576,7 @@ const DataStructuresModule = () => {
                         {output.length > 0 && (
                             <motion.button
                                 onClick={() => setOutput([])}
-                                className="px-4 py-2 bg-gray-200 text-gray-600 font-semibold rounded-lg hover:bg-gray-300 flex items-center gap-2"
+                                className="px-3 sm:px-4 py-2 bg-gray-200 text-gray-600 font-semibold rounded-lg hover:bg-gray-300 flex items-center gap-2 text-sm sm:text-base"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -420,8 +587,8 @@ const DataStructuresModule = () => {
 
                     {output.length > 0 && (
                         <div className="mt-4">
-                            <h5 className="font-semibold text-gray-600 mb-2">{currentContent.common.output}</h5>
-                            <div className="bg-gray-100 p-4 rounded-lg font-mono text-sm text-gray-800 space-y-1 max-h-48 overflow-y-auto">
+                            <h5 className="font-semibold text-gray-600 mb-2 text-sm sm:text-base">{currentContent.common.output}</h5>
+                            <div className="bg-gray-100 p-3 sm:p-4 rounded-lg font-mono text-xs sm:text-sm text-gray-800 space-y-1 max-h-40 sm:max-h-48 overflow-y-auto">
                                 {output.map((line, index) => (
                                     <pre
                                         key={index}
@@ -436,23 +603,20 @@ const DataStructuresModule = () => {
                 </motion.div>
 
             </div>
-            <div className="flex flex-col md:flex-row justify-between items-center mt-4 p-6 bg-gray-100 rounded-lg shadow-md gap-4 md:gap-0">
+            <div className="flex flex-col md:flex-row justify-between items-center mt-4 p-4 sm:p-6 bg-gray-100 rounded-lg shadow-md gap-4 md:gap-0 max-w-7xl mx-auto">
                 {/* Previous Button */}
                 <button
                     onClick={() => {
                         if (activeStage === 1) {
-                            // In a real app with a router, you would use navigate()
-                            // For this mock, we'll simulate navigation
-                            window.location.href = '/module2/programming-languages';
+                            navigate('/module2/programming-languages');
                         } else {
                             setActiveStage(activeStage - 1);
                         }
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+                    className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition text-sm sm:text-base"
                 >
                     <FaArrowLeft />
-                    Previous
-                    {currentContent.common.previous}
+                    {currentContent.common.previous || 'Previous'}
                 </button>
 
                 {/* Next Button */}
@@ -460,18 +624,16 @@ const DataStructuresModule = () => {
                     onClick={() => {
                         const totalStages = Object.keys(currentContent.stages).length;
                         if (activeStage === totalStages) {
-                            // Last stage → page navigation
-                            window.location.href = '/module2/algorithms';
+                            navigate('/module2/algorithms');
                         } else {
                             // Go to next stage
                             setActiveStage(activeStage + 1);
                         }
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+                    className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition text-sm sm:text-base"
                 >
-                    {currentContent.common.next}
+                    {currentContent.common.next || 'Next'}
                     <FaArrowRight />
-                    Next
                 </button>
             </div>
         </div>
