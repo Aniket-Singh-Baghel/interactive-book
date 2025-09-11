@@ -532,7 +532,7 @@ export default function ProgrammingLanguagesProComponent() {
                     className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
                 >
                     <FaHome className="mr-2 text-lg text-sky-600" />
-                    {t("home")}
+                    {t("home")} Home
                 </Link>
                 <div className="flex space-x-2">
                     <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
