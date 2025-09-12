@@ -16,7 +16,7 @@ const translations = {
       "This book is designed so that students can gain knowledge in both Hindi and English. Also, the user interface has been kept as simple and intuitive as possible so that every student can use it easily.",
       "I would like to express my gratitude to all the teachers, friends, and family members who directly or indirectly encouraged and guided me in this work.",
     ],
-    signature: "— Aniket, ICT Instructor\nGovt. H.S.S. Ichaul, Satna",
+    signature: "— Aniket Singh Baghel,\n ICT Instructor\nGovt. H.S.S. Ichaul, Satna",
     startButton: "Start your journey",
     topHint: "Scroll down and click the button to start your journey",
     langOptions: { en: "English", hi: "हिन्दी", both: "Both" },
@@ -30,7 +30,7 @@ const translations = {
       "इस पुस्तक को इस प्रकार डिज़ाइन किया गया है कि विद्यार्थी हिंदी तथा अंग्रेज़ी — दोनों भाषाओं में ज्ञान प्राप्त कर सकें। साथ ही, इसका यूज़र इंटरफ़ेस बिल्कुल सरल और सहज रखने का प्रयास किया गया है ताकि हर विद्यार्थी आसानी से इसका उपयोग कर सके।",
       "मैं उन सभी शिक्षकों, मित्रों और परिवारजनों का आभार प्रकट करता हूँ जिन्होंने प्रत्यक्ष या परोक्ष रूप से इस कार्य में मेरा उत्साह बढ़ाया और मेरा मार्गदर्शन किया।",
     ],
-    signature: "— Aniket, ICT Instructor\nGovt. H.S.S. Ichaul, Satna",
+    signature: "— Aniket Singh Baghel,\n ICT Instructor\nGovt. H.S.S. Ichaul, Satna",
     startButton: "अपना सफर शुरू करें",
     topHint: "नीचे स्क्रॉल करें और अपना सफर शुरू करने के लिए बटन पर क्लिक करें",
     langOptions: { en: "English", hi: "हिन्दी", both: "दोनों" },
@@ -40,8 +40,8 @@ const translations = {
 export default function AcknowledgmentComponent({ onStart } = {}) {
   const ackRef = useRef(null);
   const startBtnRef = useRef(null);
-  const [langView, setLangView] = useState("both");
-  const navigate = useNavigate() // 'en' | 'hi' | 'both'
+  const [langView, setLangView] = useState("en");
+  const navigate = useNavigate() // 'en' | 'hi'
 
   const scrollToAck = () => {
     if (ackRef.current) ackRef.current.scrollIntoView({ behavior: "smooth" });
@@ -49,36 +49,44 @@ export default function AcknowledgmentComponent({ onStart } = {}) {
    
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-yellow-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       {/* Top hero / CTA */}
 
       <main className="max-w-4xl mx-auto px-4 py-12">
-        {/* Intro hero with localized hint */}
-        <section className="mb-8 rounded-lg p-6 bg-white dark:bg-gray-800 shadow">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <select
-                value={langView}
-                onChange={(e) => setLangView(e.target.value)}
-                className="px-3 py-2 rounded border bg-white dark:bg-gray-700 text-sm"
-              >
-                <option value="en">English</option>
-                <option value="hi">हिन्दी</option>
-                <option value="both">Both</option>
-              </select>
-              <button
-                onClick={scrollToAck}
-                className="px-3 py-2 rounded-md border hover:shadow-sm text-sm bg-sky-600 text-white"
-              >
-                {translations.en.startButton}
-              </button>
-            </div>
+        {/* New Header */}
+        <header className="flex items-center justify-between mb-8 p-4 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-lg border border-gray-200 dark:border-gray-700">
+          <div className="flex-1">
+            <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 animate-pulse">
+              Scroll down to start your journey
+            </p>
           </div>
-        </section>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setLangView("en")}
+              className={`px-3 py-1 rounded-lg border font-semibold ${
+                langView === "en"
+                  ? "bg-sky-600 text-white border-sky-600"
+                  : "bg-white text-gray-700 border-gray-300"
+              } transition`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLangView("hi")}
+              className={`px-3 py-1 rounded-lg border font-semibold ${
+                langView === "hi"
+                  ? "bg-sky-600 text-white border-sky-600"
+                  : "bg-white text-gray-700 border-gray-300"
+              } transition`}
+            >
+              हिं
+            </button>
+          </div>
+        </header>
 
         {/* Acknowledgment Card */}
         <section ref={ackRef} className="space-y-6">
-          {(langView === "en" || langView === "both") && (
+          {langView === "en" && (
             <article className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
               <h3 className="text-xl font-semibold mb-3">{translations.en.heading}</h3>
               {translations.en.paragraphs.map((p, i) => (
@@ -90,7 +98,7 @@ export default function AcknowledgmentComponent({ onStart } = {}) {
             </article>
           )}
 
-          {(langView === "hi" || langView === "both") && (
+          {langView === "hi" && (
             <article className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
               <h3 className="text-xl font-semibold mb-3">{translations.hi.heading}</h3>
               {translations.hi.paragraphs.map((p, i) => (
