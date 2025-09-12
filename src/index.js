@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Acknowledgement from './Components/Acknowledgement';
+import Introduction from './Components/WhatIsIct';
 import Part1 from './Components/Part1'
 import Part2 from './Components/Part2'
 import Part3 from './Components/Part3'
@@ -46,6 +47,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Acknowledgement />} />
+        <Route path="/introduction" element={<Introduction />} />
         <Route path="/home" element={<App />} />
         <Route path="/parts/prt1" element={<Part1 />} />
         <Route path="/parts/prt2" element={<Part2 />} />

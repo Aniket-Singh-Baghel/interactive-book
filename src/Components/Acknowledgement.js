@@ -1,11 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// AcknowledgmentComponent.jsx
-// Default export React component. Tailwind classes used for styling.
-// Props:
-//  - onStart: optional function called when the "Start your journey" button is clicked
-
 const translations = {
   en: {
     heading: "Acknowledgment",
@@ -43,23 +38,16 @@ export default function AcknowledgmentComponent({ onStart } = {}) {
   const [langView, setLangView] = useState("en");
   const navigate = useNavigate() // 'en' | 'hi'
 
-  const scrollToAck = () => {
-    if (ackRef.current) ackRef.current.scrollIntoView({ behavior: "smooth" });
-  };
-   
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-yellow-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       {/* Top hero / CTA */}
 
       <main className="max-w-4xl mx-auto px-4 py-12">
         {/* New Header */}
-        <header className="flex items-center justify-between mb-8 p-4 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-lg border border-gray-200 dark:border-gray-700">
-          <div className="flex-1">
-            <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 animate-pulse">
+        <header className="flex items-center justify-between mb-8 p-4">
+            <p className="text-center text-base font-semibold text-gray-700 dark:text-gray-300 ">
               Scroll down to start your journey
             </p>
-          </div>
           <div className="flex space-x-2">
             <button
               onClick={() => setLangView("en")}
@@ -114,7 +102,7 @@ export default function AcknowledgmentComponent({ onStart } = {}) {
           <div className="flex justify-center mt-6">
             <button
               ref={startBtnRef}
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/introduction')}
               className="px-6 py-3 rounded-lg bg-green-600 text-white font-semibold hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-green-400"
             >
               {langView === "hi" ? translations.hi.startButton : translations.en.startButton}
@@ -123,7 +111,7 @@ export default function AcknowledgmentComponent({ onStart } = {}) {
         </section>
       </main>
 
-      <footer className="text-center py-6 text-sm text-gray-500">Made with ❤️ by Aniket — ICT Instructor, Govt. H.S.S. Ichaul, Satna</footer>
+      <footer className="text-center mb-6 text-sm text-gray-500">ICT connects people, ideas, and knowledge—making the world smarter and closer.</footer>
     </div>
   );
 }
