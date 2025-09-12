@@ -56,6 +56,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 0,
                     title: "What is a programming language?",
+                    shortTitle: "Intro",
                     short:
                         "A programming language is a special way of writing instructions that a computer can understand. Instead of giving direct commands through a keyboard or mouse (like opening a file or clicking a button), a programming language lets us write step-by-step instructions — similar to a recipe — so the computer can automatically follow those steps and solve problems.",
                     analogy:
@@ -66,6 +67,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 1,
                     title: "How code runs — Interpreted vs Compiled",
+                    shortTitle: "How Code Runs",
                     short:
                         "Interpreted: reads & runs line-by-line. Compiled: translates whole program first, then runs fast.",
                     analogy:
@@ -74,6 +76,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 2,
                     title: "Web building blocks — HTML, CSS, JavaScript",
+                    shortTitle: "Web (HTML,CSS,JS)",
                     short:
                         "HTML = Structure → It decides what is on the page (like text, images, buttons).\n" +
                         "CSS = Look & Style → It controls how the page looks (colors, fonts, layout, design).\n" +
@@ -82,6 +85,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 3,
                     title: "Python — first logic language",
+                    shortTitle: "Python",
                     analogy:
                         "Python is like giving instructions to a smart helper who understands simple English.",
                     short:
@@ -95,6 +99,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 4,
                     title: "Java — the power language",
+                    shortTitle: "Java",
                     analogy:
                         "Java is like building with LEGO blocks — once you make something, it can fit anywhere, on almost any computer or device.",
                     short:
@@ -108,6 +113,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 5,
                     title: "Scratch - Visual Programming",
+                    shortTitle: "Scratch",
                     short: "Scratch is a visual programming language where you snap together blocks to create animations, games, and stories. It's designed to be fun and easy for beginners.\n",
                     analogy: "Think of it like building with digital LEGOs. Each block is a piece of code, and you connect them to make something amazing."
                 }
@@ -117,7 +123,7 @@ export default function ProgrammingLanguagesProComponent() {
             run: "Run",
             compiling: "Compiling...",
             running: "Running...",
-            tip: "Tip: use 1–6 to jump stages; Arrow keys to navigate; Ctrl/Cmd+K toggles language.",
+            tip: "Tip: use 1–6 to jump stages; Arrow keys to navigate; Ctrl/Cmd+K toggles language. Press Ctrl+Shift+J to open the developer console.",
             nextSteps: [
                 "Edit small code lines and observe.",
                 "Write one tiny program every day.",
@@ -132,6 +138,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 0,
                     title: "Programming language क्या है?",
+                    shortTitle: "परिचय",
                     short:
                         "प्रोग्रामिंग लैंग्वेज एक विशेष तरीका है जिसमें हम ऐसे निर्देश लिखते हैं जिन्हें कंप्यूटर समझ सके। कीबोर्ड या माउस से सीधे कमांड देने (जैसे फ़ाइल खोलना या बटन क्लिक करना) के बजाय, प्रोग्रामिंग लैंग्वेज हमें स्टेप-बाय-स्टेप निर्देश लिखने देती है — बिल्कुल किसी रेसिपी की तरह — ताकि कंप्यूटर अपने आप उन स्टेप्स को फॉलो करके समस्या का समाधान कर सके।",
                     analogy:
@@ -142,6 +149,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 1,
                     title: "Code कैसे चलता — Interpreted vs Compiled",
+                    shortTitle: "कोड कैसे चलता है",
                     short:
                         "Interpreted: लाइन-बाय-लाइन पढ़कर चलता है. Compiled: पूरा program पहले translate होता है, फिर तेज चलता है.",
                     analogy:
@@ -150,6 +158,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 2,
                     title: "Web के हिस्से — HTML, CSS, JavaScript",
+                    shortTitle: "वेब (HTML,CSS,JS)",
                     short: `HTML = संरचना → यह तय करता है कि पेज पर क्या होगा (जैसे टेक्स्ट, इमेज, बटन).\n
         CSS = रूप और स्टाइल → यह तय करता है कि पेज कैसा दिखेगा (रंग, फॉन्ट, लेआउट, डिज़ाइन).\n
         JavaScript = व्यवहार → यह पेज को इंटरएक्टिव बनाता है (बटन काम करना, ऐनिमेशन, फॉर्म्स).`,
@@ -157,6 +166,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 3,
                     title: "Python — शुरुआती के लिए",
+                    shortTitle: "पाइथन",
                     analogy: "Python ऐसा है जैसे आप किसी स्मार्ट सहायक को सरल अंग्रेज़ी में निर्देश दे रहे हों।",
                     short:
                         "High-level भाषा: कंप्यूटर बाइनरी की जरूरत नहीं, इंसान के लिए आसान शब्द।\n" +
@@ -169,6 +179,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 4,
                     title: "Java — मज़बूत प्रोग्रामिंग भाषा",
+                    shortTitle: "जावा",
                     analogy:
                         "Java वैसा है जैसे LEGO के ब्लॉक्स से कुछ बनाना — एक बार बना लिया तो वही हर जगह, लगभग किसी भी कंप्यूटर या डिवाइस पर इस्तेमाल किया जा सकता है।",
                     short:
@@ -182,6 +193,7 @@ export default function ProgrammingLanguagesProComponent() {
                 {
                     id: 5,
                     title: "स्क्रैच - विजुअल प्रोग्रामिंग",
+                    shortTitle: "स्क्रैच",
                     short: "स्क्रैच एक विजुअल प्रोग्रामिंग भाषा है जहाँ आप एनिमेशन, गेम और कहानियाँ बनाने के लिए ब्लॉक को एक साथ स्नैप करते हैं। इसे शुरुआती लोगों के लिए मजेदार और आसान बनाने के लिए डिज़ाइन किया गया है।\n",
                     analogy: "इसे डिजिटल लेगो के साथ बनाने जैसा समझें। प्रत्येक ब्लॉक कोड का एक टुकड़ा है, और आप कुछ अद्भुत बनाने के लिए उन्हें जोड़ते हैं।"
                 }
@@ -191,7 +203,7 @@ export default function ProgrammingLanguagesProComponent() {
             run: "चलाएँ",
             compiling: "कम्पाइल हो रहा...",
             running: "चालू...",
-            tip: "टिप: 1–6 से स्टेप चुनें; Arrow keys से आगे/पीछे; Ctrl/Cmd+K भाषा बदलता है.",
+            tip: "टिप: 1–6 से स्टेप चुनें; Arrow keys से आगे/पीछे; Ctrl/Cmd+K भाषा बदलता है। डेवलपर कंसोल खोलने के लिए Ctrl+Shift+J दबाएँ।",
             nextSteps: [
                 "छोटे-छोटे बदलाव करके देखें.",
                 "हर दिन एक छोटा प्रोग्राम लिखने की आदत डालें.",
@@ -512,7 +524,7 @@ export default function ProgrammingLanguagesProComponent() {
     );
 
     // Small UI pieces
-    const StageBtn = ({ n }) => (
+    const StageBtn = ({ n, title }) => (
         <button
             onClick={() => setStage(n)}
             className={`px-3 py-1 rounded-full text-xs font-medium ${stage === n
@@ -520,12 +532,12 @@ export default function ProgrammingLanguagesProComponent() {
                 : "bg-white border text-slate-700"
                 }`}
         >
-            {lang === "en" ? `Stage ${n}` : `स्टेप ${n}`}
+            {title}
         </button>
     );
 
     return (
-        <div className="max-w-6xl mx-auto p-6">
+        <div className="max-w-6xl mx-auto p-4 sm:p-6">
             <div className="flex items-center justify-between mb-8">
                 <Link
                     to="/parts/prt2"
@@ -564,7 +576,7 @@ export default function ProgrammingLanguagesProComponent() {
 
             <div className="grid md:grid-cols-12 gap-6 items-start">
                 {/* left visual column */}
-                <div className="md:col-span-5 bg-gradient-to-br from-slate-100 via-slate-50 to-white rounded-2xl p-6 relative overflow-hidden border shadow-xl">
+                <div className="md:col-span-5 bg-gradient-to-br from-slate-100 via-slate-50 to-white rounded-2xl p-6 relative border shadow-xl">
                     <motion.div
                         initial={{ scale: 0.96, opacity: 0.12 }}
                         animate={{ scale: 1.02, opacity: 0.22 }}
@@ -586,10 +598,10 @@ export default function ProgrammingLanguagesProComponent() {
                                     <RobotGlyph />
                                     <div className="text-center">
                                         <div className="text-lg font-semibold">
-                                            {t("stages.1.title")}
+                                            {t("stages.0.title")}
                                         </div>
                                         <div className="text-sm text-slate-600 mt-2 max-w-xs">
-                                            {t("stages.1.analogy")}
+                                            {t("stages.0.analogy")}
                                         </div>
                                     </div>
                                 </motion.div>
@@ -606,10 +618,10 @@ export default function ProgrammingLanguagesProComponent() {
                                     <CodeArrows />
                                     <div className="text-center">
                                         <div className="text-lg font-semibold">
-                                            {t("stages.2.title")}
+                                            {t("stages.1.title")}
                                         </div>
                                         <div className="text-sm text-slate-600 mt-2 max-w-xs">
-                                            {t("stages.2.analogy")}
+                                            {t("stages.1.analogy")}
                                         </div>
                                     </div>
                                 </motion.div>
@@ -630,7 +642,7 @@ export default function ProgrammingLanguagesProComponent() {
                                     </div>
                                     <div className="text-center">
                                         <div className="text-lg font-semibold">
-                                            {t("stages.3.title")}
+                                            {t("stages.2.title")}
                                         </div>
                                         <div className="text-sm text-slate-600 mt-2 max-w-xs">
                                             HTML = शरीर (Body), CSS = कपड़े (Clothes), JavaScript =
@@ -651,10 +663,10 @@ export default function ProgrammingLanguagesProComponent() {
                                     <FaPython className="text-yellow-500 text-5xl" />
                                     <div className="text-center">
                                         <div className="text-lg font-semibold">
-                                            {t("stages.4.title")}
+                                            {t("stages.3.title")}
                                         </div>
                                         <div className="text-sm text-slate-600 mt-2 max-w-xs">
-                                            {t("stages.4.analogy")}
+                                            {t("stages.3.analogy")}
                                         </div>
                                     </div>
                                 </motion.div>
@@ -672,10 +684,10 @@ export default function ProgrammingLanguagesProComponent() {
                                     <h6 className="font-bold text-yellow-500 -mt-2">JAVA</h6>
                                     <div className="text-center">
                                         <div className="text-lg font-semibold">
-                                            {t("stages.5.title")}
+                                            {t("stages.4.title")}
                                         </div>
                                         <div className="text-sm text-slate-600 mt-2 max-w-xs">
-                                            {t("stages.5.analogy")}
+                                            {t("stages.4.analogy")}
                                         </div>
                                     </div>
                                 </motion.div>
@@ -704,8 +716,8 @@ export default function ProgrammingLanguagesProComponent() {
 
                         {/* stage buttons + tip */}
                         <div className="mt-4 flex gap-2 flex-wrap justify-center">
-                            {[1, 2, 3, 4, 5, 6].map((n) => (
-                                <StageBtn key={n} n={n} />
+                            {content[lang].stages.map((s, i) => (
+                                <StageBtn key={s.id} n={i + 1} title={s.shortTitle} />
                             ))}
                         </div>
                         <div className="mt-3 text-xs text-slate-500 text-center max-w-[220px]">
@@ -774,16 +786,16 @@ export default function ProgrammingLanguagesProComponent() {
                                     exit={{ opacity: 0, y: -6 }}
                                 >
                                     <h2 className="text-lg font-bold mb-2">
-                                        {t("stages.1.title")}
+                                        {t("stages.0.title")}
                                     </h2>
-                                    <p className="text-slate-700 mb-3">{t("stages.1.short")}</p>
+                                    <p className="text-slate-700 mb-3">{t("stages.0.short")}</p>
 
                                     <div className="p-3 bg-gray-50 rounded mb-3">
                                         <div className="text-sm font-semibold mb-1">
                                             {lang === "en" ? "Analogy" : "उपमा"}
                                         </div>
                                         <div className="text-sm text-slate-700">
-                                            {t("stages.1.analogy")}
+                                            {t("stages.0.analogy")}
                                         </div>
                                     </div>
 
@@ -793,7 +805,7 @@ export default function ProgrammingLanguagesProComponent() {
                                                 Syntax
                                             </div>
                                             <div className="text-sm text-slate-700 mt-1">
-                                                {t("stages.1.syntax")}
+                                                {t("stages.0.syntax")}
                                             </div>
                                         </div>
                                         <div className="p-3 rounded-lg bg-emerald-50">
@@ -801,14 +813,14 @@ export default function ProgrammingLanguagesProComponent() {
                                                 Semantics
                                             </div>
                                             <div className="text-sm text-slate-700 mt-1">
-                                                {t("stages.1.semantics")}
+                                                {t("stages.0.semantics")}
                                             </div>
                                         </div>
                                     </div>
 
                                     {/* ---- Add Syntax vs Semantics Examples Here ---- */}
-                                    <div className="mt-6 bg-white/5 p-6 rounded-2xl shadow-md border border-white/10 w-full">
-                                        <h3 className="text-2xl font-bold text-black mb-4">
+                                    <div className="mt-6 bg-white/5 p-4 sm:p-6 rounded-2xl shadow-md border border-white/10 w-full">
+                                        <h3 className="text-xl sm:text-2xl font-bold text-black mb-4">
                                             Syntax vs Semantics Examples
                                         </h3>
                                         <p className="text-gray-500 mb-6">
@@ -852,9 +864,9 @@ export default function ProgrammingLanguagesProComponent() {
                                 >
                                     {/* Title + Short Intro */}
                                     <h2 className="text-lg font-bold mb-2">
-                                        {t("stages.2.title")}
+                                        {t("stages.1.title")}
                                     </h2>
-                                    <p className="text-slate-700 mb-3">{t("stages.2.short")}</p>
+                                    <p className="text-slate-700 mb-3">{t("stages.1.short")}</p>
 
                                     {/* Detailed Explanation */}
                                     <div className="grid md:grid-cols-2 gap-4 mt-4">
@@ -940,12 +952,12 @@ export default function ProgrammingLanguagesProComponent() {
                                     exit={{ opacity: 0, y: -6 }}
                                 >
                                     <h2 className="text-lg font-bold mb-2">
-                                        {t("stages.3.title")}
+                                        {t("stages.2.title")}
                                     </h2>
 
                                     {/* Handle multiline text */}
                                     <div className="text-slate-700 mb-3 space-y-1 text-sm">
-                                        {t("stages.3.short")
+                                        {t("stages.2.short")
                                             .split("\n")
                                             .map((line, i) => (
                                                 <div key={i}>{line}</div>
@@ -1031,7 +1043,7 @@ export default function ProgrammingLanguagesProComponent() {
                                                     ? "Preview (safe iframe)"
                                                     : "पूर्वावलोकन (सुरक्षित iframe)"}
                                             </div>
-                                            <div className="rounded-lg border overflow-hidden">
+                                            <div className="rounded-lg border">
                                                 <iframe
                                                     title="preview"
                                                     ref={iframeRef}
@@ -1057,10 +1069,10 @@ export default function ProgrammingLanguagesProComponent() {
                                     exit={{ opacity: 0, y: -6 }}
                                 >
                                     <h2 className="text-lg font-bold mb-2">
-                                        {t("stages.4.title")}
+                                        {t("stages.3.title")}
                                     </h2>
                                     <p className="text-slate-700 mb-3">
-                                        {t("stages.4.short")
+                                        {t("stages.3.short")
                                             .split("\n")
                                             .map((line, i) => (
                                                 <div key={i}>{line}</div>
@@ -1128,7 +1140,7 @@ export default function ProgrammingLanguagesProComponent() {
                                     exit={{ opacity: 0, y: -6 }}
                                 >
                                     <h2 className="text-lg font-bold mb-2">
-                                        {t("stages.5.title")}
+                                        {t("stages.4.title")}
                                     </h2>
                                     <p className="text-slate-700 mb-3">
                                         {t("stages.4.short")

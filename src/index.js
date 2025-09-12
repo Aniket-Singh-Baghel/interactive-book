@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Acknowledgement from './Components/Acknowledgement';
 import Part1 from './Components/Part1'
 import Part2 from './Components/Part2'
 import Part3 from './Components/Part3'
@@ -44,7 +45,8 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<Acknowledgement />} />
+        <Route path="/home" element={<App />} />
         <Route path="/parts/prt1" element={<Part1 />} />
         <Route path="/parts/prt2" element={<Part2 />} />
         <Route path="/parts/prt3" element={<Part3 />} />
