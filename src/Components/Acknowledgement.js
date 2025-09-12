@@ -51,31 +51,12 @@ export default function AcknowledgmentComponent({ onStart } = {}) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       {/* Top hero / CTA */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-20">
-        <div className="max-w-4xl mx-auto px-4 py-5 flex items-center justify-between">
-          <h1 className="text-lg font-semibold">Acknowledgment</h1>
-          <div className="flex items-center space-x-3">
-            <p className="text-sm hidden sm:block">Scroll down and click the button to start your journey</p>
-            <button
-              onClick={scrollToAck}
-              className="px-3 py-2 rounded-md border hover:shadow-sm text-sm bg-sky-600 text-white"
-            >
-              Scroll & Start
-            </button>
-          </div>
-        </div>
-      </header>
 
       <main className="max-w-4xl mx-auto px-4 py-12">
         {/* Intro hero with localized hint */}
         <section className="mb-8 rounded-lg p-6 bg-white dark:bg-gray-800 shadow">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h2 className="text-2xl font-bold">{translations.en.topHint}</h2>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">{translations.en.topHint}</p>
-            </div>
             <div className="flex items-center gap-2">
-              <label className="text-sm">View:</label>
               <select
                 value={langView}
                 onChange={(e) => setLangView(e.target.value)}
