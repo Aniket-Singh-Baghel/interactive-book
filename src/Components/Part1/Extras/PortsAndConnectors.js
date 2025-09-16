@@ -123,82 +123,82 @@ const content = {
 };
 
 const PortCard = ({ port }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+    const [isFlipped, setIsFlipped] = useState(false);
 
-  return (
-    <motion.div
-      className="w-full h-[420px] sm:h-[480px] md:h-[520px]" // bigger, consistent height
-      style={{ perspective: "1200px" }}
-      onClick={() => setIsFlipped(!isFlipped)}
-      whileHover={{ scale: 1.03 }}
-    >
-      <motion.div
-        className="relative w-full h-full"
-        style={{ transformStyle: "preserve-3d" }}
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.7, ease: "easeInOut" }}
-      >
-        {/* Front Side */}
-        <div
-          className="absolute w-full h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col"
-          style={{ backfaceVisibility: "hidden" }}
+    return (
+        <motion.div
+            className="w-full h-[400px] sm:h-[450px] md:h-[480px]" // adjusted height
+            style={{ perspective: "1200px" }}
+            onClick={() => setIsFlipped(!isFlipped)}
+            whileHover={{ scale: 1.03 }}
         >
-          <div className="flex-1 flex flex-col items-center justify-center gap-4">
-            <img
-              src={port.port_image}
-              alt={`${port.name} port`}
-              className="w-28 h-28 object-contain"
-            />
-            <img
-              src={port.connector_image}
-              alt={`${port.name} connector`}
-              className="w-28 h-28 object-contain"
-            />
-          </div>
-          <div className="text-center mt-4">
-            <h3 className="text-lg sm:text-xl font-bold text-gray-800">
-              {port.name}
-            </h3>
-            <p className="text-gray-600 text-sm sm:text-base leading-snug">
-              {port.description}
-            </p>
-            <p className="text-xs sm:text-sm italic text-indigo-500 mt-2">
-              {port.fun_fact}
-            </p>
-          </div>
-        </div>
+            <motion.div
+                className="relative w-full h-full"
+                style={{ transformStyle: "preserve-3d" }}
+                animate={{ rotateY: isFlipped ? 180 : 0 }}
+                transition={{ duration: 0.7, ease: "easeInOut" }}
+            >
+                {/* Front Side */}
+                <div
+                    className="absolute w-full h-full bg-white rounded-2xl shadow-xl p-4 flex flex-col"
+                    style={{ backfaceVisibility: "hidden" }}
+                >
+                    <div className="flex-1 flex flex-col items-center justify-center gap-2">
+                        <img
+                            src={port.port_image}
+                            alt={`${port.name} port`}
+                            className="w-24 h-24 object-contain"
+                        />
+                        <img
+                            src={port.connector_image}
+                            alt={`${port.name} connector`}
+                            className="w-24 h-24 object-contain"
+                        />
+                    </div>
+                    <div className="text-center mt-2">
+                        <h3 className="text-lg sm:text-xl font-bold text-gray-800">
+                            {port.name}
+                        </h3>
+                        <p className="text-gray-600 text-sm leading-snug">
+                            {port.description}
+                        </p>
+                        <p className="text-xs italic text-indigo-500 mt-2">
+                            {port.fun_fact}
+                        </p>
+                    </div>
+                </div>
 
-        {/* Back Side */}
-        <div
-          className="absolute w-full h-full bg-gray-900 rounded-2xl shadow-xl flex flex-col overflow-hidden"
-          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-        >
-          {/* Image section fills most of card */}
-          <div className="flex-1 flex items-center justify-center p-4">
-            <img
-              src={port.device_image}
-              alt={`${port.name} device`}
-              className="max-h-full max-w-full object-contain"
-            />
-          </div>
+                {/* Back Side */}
+                <div
+                    className="absolute w-full h-full bg-gray-900 rounded-2xl shadow-xl flex flex-col overflow-hidden"
+                    style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+                >
+                    {/* Image section fills most of card */}
+                    <div className="flex-1 flex items-center justify-center p-4">
+                        <img
+                            src={port.device_image}
+                            alt={`${port.name} device`}
+                            className="max-h-full max-w-full object-contain"
+                        />
+                    </div>
 
-          {/* Text bar at bottom */}
-          <div className="bg-gray-950 bg-opacity-80 text-center py-3 px-2">
-            <p className="text-white text-base sm:text-lg font-semibold tracking-wide">
-              {port.name}
-            </p>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
+                    {/* Text bar at bottom */}
+                    <div className="bg-gray-950 text-center py-4 px-4 border-t border-gray-700">
+                        <p className="text-white text-base sm:text-lg font-semibold tracking-wide">
+                            {port.name}
+                        </p>
+                    </div>
+                </div>
+            </motion.div>
+        </motion.div>
+    );
 };
 
 const PortsAndConnectors = () => {
     const [lang, setLang] = useState('en');
     const navigate = useNavigate();
     const t = content[lang];
-
+    
     return (
         <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-gradient-to-br from-purple-50 to-indigo-50 font-sans">
             <div className="max-w-5xl mx-auto">
@@ -287,124 +287,56 @@ const PortsAndConnectors = () => {
                         </div>
                     </div>
 
-                    {/* Flow Connection */}
-                    <div className="mt-20">
-                        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">{t.flow_title}</h2>
-                        <div className="relative w-full max-w-3xl mx-auto h-[600px] flex items-center justify-center">
-                            {/* Central CPU Image */}
-                            <motion.img
-                                src="https://www.pcstudio.in/wp-content/uploads/2025/01/Ant-Esports-Crystal-Wood-Atx-Cabinet-With-Type-C-Black-1-1.webp"
-                                alt="CPU"
-                                className="w-40 h-40 z-10"
-                                animate={{
-                                    scale: [1, 1.05, 1],
-                                }}
-                                transition={{
-                                    duration: 2,
-                                    ease: "easeInOut",
-                                    repeat: Infinity,
-                                }}
-                            />
-
-                            {/* Peripherals and connecting lines */}
-                            <div className="absolute top-0 left-0 w-full h-full">
-                                <svg viewBox="0 0 600 600" className="w-full h-full" style={{ transform: "rotate(-90deg)"}}>
-                                    <g transform="translate(300, 300)">
-                                        {t.flow_items.map((item, index) => {
-                                            const angle = (index / t.flow_items.length) * 2 * Math.PI;
-                                            const radius = 250;
-                                            const x = Math.cos(angle) * radius;
-                                            const y = Math.sin(angle) * radius;
-                                            return (
-                                                <motion.path
-                                                    key={`line-${index}`}
-                                                    d={`M 0 0 L ${x} ${y}`}
-                                                    stroke="#a5b4fc"
-                                                    strokeWidth="2"
-                                                    initial={{ pathLength: 0, opacity: 0 }}
-                                                    animate={{ pathLength: 1, opacity: 1 }}
-                                                    transition={{ duration: 1, delay: index * 0.3, ease: "easeInOut" }}
-                                                />
-                                            );
-                                        })}
-                                    </g>
-                                </svg>
-                            </div>
-
-                            <div className="absolute top-0 left-0 w-full h-full">
-                            {t.flow_items.map((item, index) => {
-                                const angle = (index / t.flow_items.length) * 360;
-                                const Icon = item.icon;
-                                return (
-                                    <motion.div
-                                        key={`item-${index}`}
-                                        className="absolute top-1/2 left-1/2 w-40 flex flex-col items-center text-center"
-                                        style={{
-                                            transformOrigin: '0 0',
-                                        }}
-                                        initial={{ rotate: angle, x: '-50%', opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ duration: 0.5, delay: index * 0.3 + 0.8 }}
-                                    >
-                                        <motion.div 
-                                            style={{
-                                                transformOrigin: 'center center',
-                                                rotate: -angle
-                                            }}
-                                            initial={{y: -210, scale: 0}}
-                                            animate={{y: -250, scale: 1}}
-                                            transition={{ duration: 0.5, delay: index * 0.3 + 0.8 }}
-                                        >
-                                            <div className="bg-white p-3 rounded-full shadow-lg">
-                                                <Icon className="text-4xl text-indigo-600" />
-                                            </div>
-                                            <p className="mt-2 text-sm font-semibold text-gray-700">{item.label}</p>
-                                            <p className="text-xs text-gray-500">{item.description}</p>
-                                        </motion.div>
-                                    </motion.div>
-                                );
-                            })}
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Comparison Grid */}
                     <div className="mt-16">
-                        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">{t.comparison_title}</h2>
-                        <div className="flex justify-center">
-                            <div className="grid grid-cols-2 gap-8 w-full max-w-2xl relative">
+                        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+                            {t.comparison_title}
+                        </h2>
+
+                        <div className="flex justify-center px-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-3xl relative">
+
                                 {/* Old Ports */}
-                                <div className="flex flex-col items-center">
-                                    <h3 className="text-2xl font-semibold text-gray-500 mb-4">Old</h3>
+                                <div className="flex flex-col items-center p-4 rounded-xl bg-gray-900 border-2 border-gray-700 shadow-2xl">
+                                    <h3 className="text-2xl font-semibold text-red-400 mb-4 font-mono tracking-wider">
+                                        Old School
+                                    </h3>
                                     {t.old_ports.map((port, index) => (
                                         <motion.div
                                             key={index}
                                             initial={{ opacity: 0, x: -50 }}
-                                            animate={{ opacity: 0.5, x: 0 }}
+                                            animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: 0.2 * index }}
-                                            className="bg-gray-200 text-gray-700 p-4 rounded-lg mb-4 w-full text-center"
+                                            className="bg-gray-800 text-red-300 p-3 rounded-lg mb-3 w-full text-center shadow-inner border border-red-500/30 font-mono"
                                         >
                                             {port}
                                         </motion.div>
                                     ))}
                                 </div>
+
                                 {/* New Ports */}
-                                <div className="flex flex-col items-center">
-                                    <h3 className="text-2xl font-semibold text-green-500 mb-4">New</h3>
+                                <div className="flex flex-col items-center p-4 rounded-xl bg-sky-50 border-2 border-sky-200 shadow-2xl">
+                                    <h3 className="text-2xl font-semibold text-sky-600 mb-4 font-sans tracking-wider">
+                                        New Wave
+                                    </h3>
                                     {t.new_ports.map((port, index) => (
                                         <motion.div
                                             key={index}
                                             initial={{ opacity: 0, x: 50 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: 0.2 * index }}
-                                            className="bg-green-100 text-green-800 p-4 rounded-lg mb-4 w-full text-center"
+                                            className="bg-white text-sky-800 p-3 rounded-lg mb-3 w-full text-center shadow-md border border-sky-300/50"
                                         >
                                             {port}
                                         </motion.div>
                                     ))}
                                 </div>
-                                <div className="absolute h-full w-1 bg-gray-300 left-1/2 top-0 transform -translate-x-1/2 flex items-center justify-center">
-                                    <span className="text-4xl">⏳</span>
+
+                                {/* Divider with Icon */}
+                                <div className="absolute h-full w-1 bg-gray-300 left-1/2 top-0 transform -translate-x-1/2 md:flex items-center justify-center z-10 hidden">
+                                    <span className="text-5xl animate-pulse translate-x-[-0.5rem] sm:translate-x-0">
+                                        ⏳
+                                    </span>
                                 </div>
                             </div>
                         </div>
