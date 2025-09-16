@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FaArrowRight, FaArrowLeft, FaHome, FaKeyboard, FaTv, FaGlobe, FaLightbulb } from "react-icons/fa";
+import { FaArrowRight, FaArrowLeft, FaHome, FaKeyboard, FaTv, FaGlobe, FaLightbulb, FaMouse, FaPrint, FaVolumeUp } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 
 const content = {
@@ -46,9 +46,12 @@ const content = {
         ],
         flow_title: "Connecting to the CPU",
         flow_items: [
-            { icon: FaKeyboard, label: "Keyboard" },
-            { icon: FaTv, label: "Monitor" },
-            { icon: FaGlobe, label: "Internet" },
+            { icon: FaKeyboard, label: "Keyboard", description: "Used for typing text and commands." },
+            { icon: FaTv, label: "Monitor", description: "Displays all the visual output." },
+            { icon: FaGlobe, label: "Internet", description: "Connects you to the world." },
+            { icon: FaMouse, label: "Mouse", description: "For pointing, clicking, and scrolling." },
+            { icon: FaPrint, label: "Printer", description: "To get hard copies of documents." },
+            { icon: FaVolumeUp, label: "Speakers", description: "To hear audio and music." },
         ],
         comparison_title: "Old vs. New Ports",
         old_ports: ["VGA", "PS/2", "Parallel", "Serial"],
@@ -101,9 +104,12 @@ const content = {
         ],
         flow_title: "सीपीयू से कनेक्ट हो रहा है",
         flow_items: [
-            { icon: FaKeyboard, label: "कीबोर्ड" },
-            { icon: FaTv, label: "मॉनिटर" },
-            { icon: FaGlobe, label: "इंटरनेट" },
+            { icon: FaKeyboard, label: "कीबोर्ड", description: "टेक्स्ट और कमांड टाइप करने के लिए उपयोग किया जाता है।" },
+            { icon: FaTv, label: "मॉनिटर", description: "सभी विज़ुअल आउटपुट प्रदर्शित करता है।" },
+            { icon: FaGlobe, label: "इंटरनेट", description: "आपको दुनिया से जोड़ता है।" },
+            { icon: FaMouse, label: "माउस", description: "पॉइंटिंग, क्लिकिंग और स्क्रॉलिंग के लिए।" },
+            { icon: FaPrint, label: "प्रिंटर", description: "दस्तावेजों की हार्ड कॉपी प्राप्त करने के लिए।" },
+            { icon: FaVolumeUp, label: "स्पीकर्स", description: "ऑडियो और संगीत सुनने के लिए।" },
         ],
         comparison_title: "पुराने बनाम नए पोर्ट",
         old_ports: ["वीजीए", "पीएस/2", "पैरेलल", "सीरियल"],
@@ -117,37 +123,75 @@ const content = {
 };
 
 const PortCard = ({ port }) => {
-    const [isFlipped, setIsFlipped] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
-    return (
-        <motion.div
-            className="w-full h-80"
-            style={{ perspective: '1000px' }}
-            onClick={() => setIsFlipped(!isFlipped)}
-            whileHover={{ scale: 1.05 }}
+  return (
+    <motion.div
+      className="w-full h-[420px] sm:h-[480px] md:h-[520px]" // bigger, consistent height
+      style={{ perspective: "1200px" }}
+      onClick={() => setIsFlipped(!isFlipped)}
+      whileHover={{ scale: 1.03 }}
+    >
+      <motion.div
+        className="relative w-full h-full"
+        style={{ transformStyle: "preserve-3d" }}
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.7, ease: "easeInOut" }}
+      >
+        {/* Front Side */}
+        <div
+          className="absolute w-full h-full bg-white rounded-2xl shadow-xl p-6 flex flex-col"
+          style={{ backfaceVisibility: "hidden" }}
         >
-            <motion.div
-                className="relative w-full h-full"
-                style={{ transformStyle: 'preserve-3d' }}
-                animate={{ rotateY: isFlipped ? 180 : 0 }}
-                transition={{ duration: 0.6 }}
-            >
-                {/* Front Side */}
-                <div className="absolute w-full h-full bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-between" style={{ backfaceVisibility: 'hidden' }}>
-                    <img src={port.port_image} alt={`${port.name} port`} className="w-24 h-24 object-contain" />
-                    <img src={port.connector_image} alt={`${port.name} connector`} className="w-24 h-24 object-contain" />
-                    <h3 className="text-xl font-bold text-gray-800 mt-4">{port.name}</h3>
-                    <p className="text-gray-600 text-center">{port.description}</p>
-                    <p className="text-sm italic text-gray-500 mt-2">{port.fun_fact}</p>
-                </div>
-                {/* Back Side */}
-                <div className="absolute w-full h-full bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                    <img src={port.device_image} alt={`${port.name} device`} className="w-48 h-48 object-contain rounded-lg" />
-                    <p className="text-white text-lg font-semibold mt-4">{port.name}</p>
-                </div>
-            </motion.div>
-        </motion.div>
-    );
+          <div className="flex-1 flex flex-col items-center justify-center gap-4">
+            <img
+              src={port.port_image}
+              alt={`${port.name} port`}
+              className="w-28 h-28 object-contain"
+            />
+            <img
+              src={port.connector_image}
+              alt={`${port.name} connector`}
+              className="w-28 h-28 object-contain"
+            />
+          </div>
+          <div className="text-center mt-4">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800">
+              {port.name}
+            </h3>
+            <p className="text-gray-600 text-sm sm:text-base leading-snug">
+              {port.description}
+            </p>
+            <p className="text-xs sm:text-sm italic text-indigo-500 mt-2">
+              {port.fun_fact}
+            </p>
+          </div>
+        </div>
+
+        {/* Back Side */}
+        <div
+          className="absolute w-full h-full bg-gray-900 rounded-2xl shadow-xl flex flex-col overflow-hidden"
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+        >
+          {/* Image section fills most of card */}
+          <div className="flex-1 flex items-center justify-center p-4">
+            <img
+              src={port.device_image}
+              alt={`${port.name} device`}
+              className="max-h-full max-w-full object-contain"
+            />
+          </div>
+
+          {/* Text bar at bottom */}
+          <div className="bg-gray-950 bg-opacity-80 text-center py-3 px-2">
+            <p className="text-white text-base sm:text-lg font-semibold tracking-wide">
+              {port.name}
+            </p>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
 };
 
 const PortsAndConnectors = () => {
@@ -244,35 +288,83 @@ const PortsAndConnectors = () => {
                     </div>
 
                     {/* Flow Connection */}
-                    <div className="mt-16">
+                    <div className="mt-20">
                         <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">{t.flow_title}</h2>
-                        <div className="relative flex items-center justify-center h-96">
+                        <div className="relative w-full max-w-3xl mx-auto h-[600px] flex items-center justify-center">
+                            {/* Central CPU Image */}
                             <motion.img
                                 src="https://www.pcstudio.in/wp-content/uploads/2025/01/Ant-Esports-Crystal-Wood-Atx-Cabinet-With-Type-C-Black-1-1.webp"
                                 alt="CPU"
-                                className="w-32 h-32"
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{ delay: 0.2 }}
+                                className="w-40 h-40 z-10"
+                                animate={{
+                                    scale: [1, 1.05, 1],
+                                }}
+                                transition={{
+                                    duration: 2,
+                                    ease: "easeInOut",
+                                    repeat: Infinity,
+                                }}
                             />
+
+                            {/* Peripherals and connecting lines */}
+                            <div className="absolute top-0 left-0 w-full h-full">
+                                <svg viewBox="0 0 600 600" className="w-full h-full" style={{ transform: "rotate(-90deg)"}}>
+                                    <g transform="translate(300, 300)">
+                                        {t.flow_items.map((item, index) => {
+                                            const angle = (index / t.flow_items.length) * 2 * Math.PI;
+                                            const radius = 250;
+                                            const x = Math.cos(angle) * radius;
+                                            const y = Math.sin(angle) * radius;
+                                            return (
+                                                <motion.path
+                                                    key={`line-${index}`}
+                                                    d={`M 0 0 L ${x} ${y}`}
+                                                    stroke="#a5b4fc"
+                                                    strokeWidth="2"
+                                                    initial={{ pathLength: 0, opacity: 0 }}
+                                                    animate={{ pathLength: 1, opacity: 1 }}
+                                                    transition={{ duration: 1, delay: index * 0.3, ease: "easeInOut" }}
+                                                />
+                                            );
+                                        })}
+                                    </g>
+                                </svg>
+                            </div>
+
+                            <div className="absolute top-0 left-0 w-full h-full">
                             {t.flow_items.map((item, index) => {
-                                const angle = (index / t.flow_items.length) * 2 * Math.PI;
-                                const x = Math.cos(angle) * 150;
-                                const y = Math.sin(angle) * 150;
+                                const angle = (index / t.flow_items.length) * 360;
                                 const Icon = item.icon;
                                 return (
                                     <motion.div
-                                        key={index}
-                                        className="absolute flex flex-col items-center"
-                                        initial={{ x: 0, y: 0, opacity: 0 }}
-                                        animate={{ x, y, opacity: 1 }}
-                                        transition={{ delay: 0.5 + index * 0.2 }}
+                                        key={`item-${index}`}
+                                        className="absolute top-1/2 left-1/2 w-40 flex flex-col items-center text-center"
+                                        style={{
+                                            transformOrigin: '0 0',
+                                        }}
+                                        initial={{ rotate: angle, x: '-50%', opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.5, delay: index * 0.3 + 0.8 }}
                                     >
-                                        <Icon className="text-4xl text-indigo-500" />
-                                        <p className="mt-2 text-gray-700">{item.label}</p>
+                                        <motion.div 
+                                            style={{
+                                                transformOrigin: 'center center',
+                                                rotate: -angle
+                                            }}
+                                            initial={{y: -210, scale: 0}}
+                                            animate={{y: -250, scale: 1}}
+                                            transition={{ duration: 0.5, delay: index * 0.3 + 0.8 }}
+                                        >
+                                            <div className="bg-white p-3 rounded-full shadow-lg">
+                                                <Icon className="text-4xl text-indigo-600" />
+                                            </div>
+                                            <p className="mt-2 text-sm font-semibold text-gray-700">{item.label}</p>
+                                            <p className="text-xs text-gray-500">{item.description}</p>
+                                        </motion.div>
                                     </motion.div>
                                 );
                             })}
+                            </div>
                         </div>
                     </div>
 
