@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import ScrollToTop from './Components/ScrollToTop';
 import Acknowledgement from './Components/Acknowledgement';
 import Introduction from './Components/WhatIsIct';
 import Part1 from './Components/Part1'
@@ -22,6 +23,8 @@ import TertiaryStorage from './Components/Part1/Extras/Tertiary_Storage';
 import OtherStorageTypes from './Components/Part1/Extras/OtherStorageTypes';
 import MemoryComparison from './Components/Part1/Extras/MemoryComaparison';
 import RamVsRom from './Components/Part1/Extras/RamVsRom';
+import MemoryUnits from './Components/Part1/Extras/MemoryUnits';
+import PortsAndConnectors from './Components/Part1/Extras/PortsAndConnectors';
 import Quiz1 from './Components/Part1/Quiz1';
 import Chapter6 from './Components/Part2/Chapter6';
 import Chapter7 from './Components/Part2/Chapter7';
@@ -45,10 +48,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+    <ScrollToTop />
       <Routes>
         <Route path="/" element={<Acknowledgement />} />
         <Route path="/introduction" element={<Introduction />} />
-        <Route path="/home" element={<App />} />
+        <Route path="/station" element={<App />} />
         <Route path="/parts/prt1" element={<Part1 />} />
         <Route path="/parts/prt2" element={<Part2 />} />
         <Route path="/parts/prt3" element={<Part3 />} />
@@ -65,6 +69,8 @@ root.render(
         <Route path="/part1/other-storage-types" element={<OtherStorageTypes />} />
         <Route path="/part1/ram-vs-rom" element={<RamVsRom />} />
         <Route path="/part1/memory-comparison" element={<MemoryComparison />} />
+        <Route path="/part1/memory-units" element={<MemoryUnits />} />
+        <Route path="/part1/ports-and-connectors" element={<PortsAndConnectors />} />
         <Route path="/part1/chapters/qiz1" element={<Quiz1 />} />
         <Route path="/module1/what-is-software" element={<Chapter6 />} />
         <Route path="/module1/operating-system" element={<Chapter7 />} />

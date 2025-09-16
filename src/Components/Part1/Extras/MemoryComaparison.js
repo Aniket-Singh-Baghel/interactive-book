@@ -280,7 +280,7 @@ const MemoryComparison = () => {
                 </button>
 
                 <button
-                    onClick={() => navigate('/parts/prt1')}
+                    onClick={() => navigate('/part1/memory-units')}
                     className="flex items-center gap-2 px-3 py-2 sm:px-4 text-sm sm:text-base bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
                 >
                     {content[language].next}

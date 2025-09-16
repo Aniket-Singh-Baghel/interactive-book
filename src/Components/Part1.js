@@ -217,21 +217,21 @@ const content = {
         id: 13,
         title: "पोर्ट और कनेक्टर",
         concept: "कैसे विभिन्न पोर्ट और कनेक्टर उपकरणों को सीपीयू से जोड़ते हैं।",
-        path: "/part1/ports-and-connectors-hindi",
+        path: "/part1/ports-and-connectors",
         icon: <FaPlug className="text-gray-600 text-3xl" />,
       },
       {
         id: 14,
         title: "कंप्यूटर का इतिहास",
         concept: "प्रारंभिक यांत्रिक उपकरणों से लेकर आज के डिजिटल युग तक कंप्यूटर की यात्रा।",
-        path: "/part1/history-of-computers-hindi",
+        path: "/part1/history-of-computers",
         icon: <FaHistory className="text-orange-500 text-3xl" />,
       },
       {
         id: 15,
         title: "कंप्यूटर के प्रकार",
         concept: "सुपरकंप्यूटर, मेनफ्रेम, मिनीकंप्यूटर और पर्सनल कंप्यूटर जैसी श्रेणियाँ।",
-        path: "/part1/types-of-computers-hindi",
+        path: "/part1/types-of-computers",
         icon: <FaLaptopCode className="text-indigo-500 text-3xl" />,
       },
     ],
@@ -247,7 +247,7 @@ export default function Part1() {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-100 via-pink-100 to-yellow-100 p-4 sm:p-8 font-sans">
       <div className="flex items-center justify-between mb-8">
-        <Link to="/" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
+        <Link to="/station" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
           <FaHome className="mr-2 text-lg text-sky-600" />
           {t.home}
         </Link>

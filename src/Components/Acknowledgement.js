@@ -33,6 +33,7 @@ const translations = {
 };
 
 export default function AcknowledgmentComponent({ onStart } = {}) {
+
   const ackRef = useRef(null);
   const startBtnRef = useRef(null);
   const [langView, setLangView] = useState("en");
