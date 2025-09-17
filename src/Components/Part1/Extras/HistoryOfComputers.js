@@ -476,16 +476,6 @@ export default function HistoryOfComputersComponent() {
                 हिन्दी
               </button>
             </div>
-
-            <div className="ml-3 flex items-center gap-2">
-              <button
-                onClick={() => (storyPlaying ? stopStory() : playStory())}
-                className="px-3 py-2 bg-emerald-600 text-white rounded-lg flex items-center gap-2 hover:bg-emerald-700 transition"
-              >
-                {storyPlaying ? <FaStop /> : <FaPlay />}
-                <span className="text-sm">{storyPlaying ? (lang === "en" ? "Stop" : "रोकें") : data.cta}</span>
-              </button>
-            </div>
           </div>
         </div>
 
