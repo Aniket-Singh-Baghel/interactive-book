@@ -47,7 +47,7 @@ export default function Part3() {
       {/* Title */}
        <div className="flex justify-center mb-6">
         <Link
-          to="/"
+          to="/station"
           className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
         >
           <FaHome className="mr-2 text-lg text-indigo-600" />
