@@ -1,31 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-    FaChevronLeft,
-    FaChevronRight,
-    FaPlay,
-    FaStop,
-    FaDownload,
-    FaClipboard,
     FaGlobe,
-    FaMicrochip,
-    FaBrain,
-    FaClock,
     FaHome,
+    FaArrowLeft,
+    FaArrowRight,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
-
-/**
- * HistoryOfComputersComponent.jsx
- * A long, interactive React component that tells the story of computer history
- * with animated SVGs, timeline, story-mode, multilingual support (en/hi), and
- * interactive controls. Built with Tailwind CSS and Framer Motion.
- *
- * Notes:
- * - Requires: framer-motion, react-icons, tailwindcss in your project.
- * - Does NOT require html2canvas/jspdf. For export we provide JSON export and window.print().
- * - Copy this single file into your React project and import where needed.
- */
+import { Link, useNavigate } from "react-router-dom";
 
 const CONTENT = {
     en: {
@@ -33,7 +14,7 @@ const CONTENT = {
         title: "History of Computers",
         subtitle: "The journey of computers from early mechanical devices to today’s digital age",
         intro:
-            "Join a story-driven animated journey: from the simple Abacus through vacuum tubes, transistors, chips, personal computers and the intelligent systems of today.",
+            "Explore the journey of computers: from the simple Abacus through vacuum tubes, transistors, chips, personal computers and the intelligent systems of today.",
         generations: [
             {
                 id: "pre-mechanical",
@@ -41,7 +22,6 @@ const CONTENT = {
                 title: "Pre-Mechanical & Mechanical (Abacus → Babbage)",
                 years: "Before 1940",
                 icon: "⚙️",
-                svg: "abacus",
                 color: "#64748b",
                 bullets: [
                     "**Abacus**: Counting beads used across ancient civilizations.",
@@ -57,7 +37,6 @@ const CONTENT = {
                 title: "First Generation (Vacuum Tubes)",
                 years: "1940–1956",
                 icon: "💡",
-                svg: "vacuum",
                 color: "#f59e0b",
                 bullets: [
                     "Used **vacuum tubes** for switching and amplification.",
@@ -73,7 +52,6 @@ const CONTENT = {
                 title: "Second Generation (Transistors)",
                 years: "1956–1963",
                 icon: "🔋",
-                svg: "transistor",
                 color: "#0ea5e9",
                 bullets: [
                     "**Transistors** replaced vacuum tubes making machines smaller and more reliable.",
@@ -89,7 +67,6 @@ const CONTENT = {
                 title: "Third Generation (Integrated Circuits)",
                 years: "1964–1971",
                 icon: "📘",
-                svg: "ic",
                 color: "#10b981",
                 bullets: [
                     "**Integrated Circuits (ICs)** put many transistors on a single chip.",
@@ -105,7 +82,6 @@ const CONTENT = {
                 title: "Fourth Generation (Microprocessors & Personal Computers)",
                 years: "1971–1980s",
                 icon: "🖥️",
-                svg: "pc",
                 color: "#3b82f6",
                 bullets: [
                     "**Microprocessors** put the CPU onto a single chip (Intel 4004 and successors).",
@@ -121,7 +97,6 @@ const CONTENT = {
                 title: "Fifth Generation (AI, Internet & Mobile)",
                 years: "1980s–Present",
                 icon: "☁️",
-                svg: "cloud",
                 color: "#8b5cf6",
                 bullets: [
                     "Rise of the **Internet**, **mobile computing**, and massive distributed systems (cloud).",
@@ -137,7 +112,6 @@ const CONTENT = {
                 title: "Future (Quantum & Beyond)",
                 years: "Tomorrow",
                 icon: "🔮",
-                svg: "quantum",
                 color: "#f43f5e",
                 bullets: [
                     "**Quantum computing** promises different ways to compute using quantum bits (qubits).",
@@ -148,7 +122,6 @@ const CONTENT = {
                     "Imagine a computer that doesn't just follow instructions, but explores all possibilities at once. Quantum computers will tackle problems in medicine, materials science, and AI that are impossible today. We're also heading towards brain-computer interfaces, where our thoughts can interact directly with machines, and truly intelligent systems that learn and create alongside us. The future of computing is not just about faster machines, but a deeper integration with humanity.",
             },
         ],
-        cta: "Play story",
         exportLabel: "Export timeline (JSON)",
         printLabel: "Print timeline",
     },
@@ -157,7 +130,7 @@ const CONTENT = {
         title: "कंप्यूटर का इतिहास",
         subtitle: "यांत्रिक उपकरणों से आज के डिजिटल युग तक की यात्रा",
         intro:
-            "एक कहानी-आधारित एनिमेटेड यात्रा में जुड़ें: सरल अबेकस से वैक्यूम ट्यूब, ट्रांजिस्टर, चिप्स, पर्सनल कंप्यूटर और आज के बुद्धिमान सिस्टम तक।",
+            "कंप्यूटर की यात्रा का अन्वेषण करें: सरल अबेकस से वैक्यूम ट्यूब, ट्रांजिस्टर, चिप्स, पर्सनल कंप्यूटर और आज के बुद्धिमान सिस्टम तक।",
         generations: [
             {
                 id: "pre-mechanical",
@@ -165,7 +138,6 @@ const CONTENT = {
                 title: "पूर्व-यांत्रिक और यांत्रिक (अबेकस → बबैज)",
                 years: "1940 से पहले",
                 icon: "⚙️",
-                svg: "abacus",
                 color: "#64748b",
                 bullets: [
                     "**अबेकस**: प्राचीन सभ्यताओं में उपयोग में आने वाले गणना-मोती।",
@@ -181,7 +153,6 @@ const CONTENT = {
                 title: "प्रथम पीढ़ी (वैक्यूम ट्यूब)",
                 years: "1940–1956",
                 icon: "💡",
-                svg: "vacuum",
                 color: "#f59e0b",
                 bullets: [
                     "स्विचिंग और एम्प्लिफिकेशन के लिए **वैक्यूम ट्यूब** का उपयोग किया गया।",
@@ -197,7 +168,6 @@ const CONTENT = {
                 title: "द्वितीय पीढ़ी (ट्रांजिस्टर)",
                 years: "1956–1963",
                 icon: "🔋",
-                svg: "transistor",
                 color: "#0ea5e9",
                 bullets: [
                     "**ट्रांजिस्टर** ने वैक्यूम ट्यूब की जगह ली और मशीनों को छोटा और अधिक विश्वसनीय बनाया।",
@@ -213,7 +183,6 @@ const CONTENT = {
                 title: "तृतीय पीढ़ी (इंटीग्रेटेड सर्किट)",
                 years: "1964–1971",
                 icon: "📘",
-                svg: "ic",
                 color: "#10b981",
                 bullets: [
                     "**इंटीग्रेटेड सर्किट (ICs)** ने कई ट्रांजिस्टर एक ही चिप पर डाले।",
@@ -229,7 +198,6 @@ const CONTENT = {
                 title: "चौथी पीढ़ी (माइक्रोप्रोसेसर और पर्सनल कंप्यूटर)",
                 years: "1971–1980s",
                 icon: "🖥️",
-                svg: "pc",
                 color: "#3b82f6",
                 bullets: [
                     "**माइक्रोप्रोसेसर** ने CPU को एक चिप पर रखा (Intel 4004 आदि)।",
@@ -245,7 +213,6 @@ const CONTENT = {
                 title: "पंचमी पीढ़ी (एआई, इंटरनेट और मोबाइल)",
                 years: "1980s–वर्तमान",
                 icon: "☁️",
-                svg: "cloud",
                 color: "#8b5cf6",
                 bullets: [
                     "**इंटरनेट**, **मोबाइल कंप्यूटिंग** और बड़े वितरित सिस्टम (क्लाउड) का उदय।",
@@ -261,7 +228,6 @@ const CONTENT = {
                 title: "भविष्य (क्वांटम और इसके परे)",
                 years: "कल",
                 icon: "🔮",
-                svg: "quantum",
                 color: "#f43f5e",
                 bullets: [
                     "**क्वांटम कंप्यूटिंग** कुछ समस्याओं के लिए अलग तरह से गणना करने का वादा करती है।",
@@ -272,107 +238,10 @@ const CONTENT = {
                     "एक ऐसे कंप्यूटर की कल्पना करें जो सिर्फ निर्देशों का पालन नहीं करता, बल्कि एक ही बार में सभी संभावनाओं को तलाशता है। क्वांटम कंप्यूटर चिकित्सा, पदार्थ विज्ञान और एआई में उन समस्याओं का समाधान करेंगे जो आज असंभव हैं। हम ब्रेन-कंप्यूटर इंटरफेस की ओर भी बढ़ रहे हैं, जहां हमारे विचार सीधे मशीनों के साथ बातचीत कर सकते हैं, और वास्तव में बुद्धिमान प्रणालियां जो हमारे साथ सीखती और बनाती हैं। कंप्यूटिंग का भविष्य केवल तेज मशीनों के बारे में नहीं है, बल्कि मानवता के साथ गहरे एकीकरण का है।",
             },
         ],
-        cta: "कहानी चलाएँ",
         exportLabel: "समयरेखा निर्यात (JSON)",
         printLabel: "समयरेखा प्रिंट करें",
     },
 };
-
-// Small SVG components used in the timeline — simplified and animated with framer-motion props
-function AbacusSVG({ animate = true, className = "w-36 h-24" }) {
-    return (
-        <svg viewBox="0 0 200 120" className={className} xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="6" width="196" height="12" rx="3" fill="#7c3aed" opacity="0.08" />
-            <g stroke="#c084fc" strokeWidth="2">
-                {[...Array(7)].map((_, i) => (
-                    <line key={i} x1={20 + i * 24} y1="16" x2={20 + i * 24} y2="100" strokeLinecap="round" />
-                ))}
-            </g>
-            {[...Array(7)].map((_, i) => (
-                <motion.circle
-                    key={i}
-                    cx={20 + i * 24}
-                    cy={40 + (i % 2 === 0 ? 6 : -6)}
-                    r="8"
-                    fill="#f97316"
-                    animate={animate ? { y: [0, 10, 0] } : undefined}
-                    transition={{ repeat: Infinity, duration: 2 + (i % 3) * 0.4 }}
-                />
-            ))}
-        </svg>
-    );
-}
-
-function VacuumSVG({ className = "w-36 h-24" }) {
-    return (
-        <svg viewBox="0 0 200 120" className={className} xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="16" width="188" height="84" rx="8" fill="#111827" opacity="0.06" />
-            {[...Array(4)].map((_, i) => (
-                <g key={i} transform={`translate(${30 + i * 36},28)`}>
-                    <rect x="0" y="0" width="20" height="48" rx="3" fill="#fde68a" />
-                    <circle cx="10" cy="12" r="4" fill="#f97316" />
-                </g>
-            ))}
-        </svg>
-    );
-}
-
-function TransistorSVG({ className = "w-36 h-24" }) {
-    return (
-        <svg viewBox="0 0 200 120" className={className} xmlns="http://www.w3.org/2000/svg">
-            <rect x="4" y="8" width="192" height="104" rx="10" fill="#ecfccb" opacity="0.06" />
-            <g transform="translate(40,24)">
-                <rect x="0" y="0" width="120" height="72" rx="8" fill="#bbf7d0" />
-                <circle cx="20" cy="36" r="10" fill="#22c55e" />
-                <rect x="40" y="24" width="60" height="6" rx="3" fill="#65a30d" />
-            </g>
-        </svg>
-    );
-}
-
-function ChipSVG({ className = "w-36 h-24" }) {
-    return (
-        <svg viewBox="0 0 200 120" className={className} xmlns="http://www.w3.org/2000/svg">
-            <rect x="40" y="20" width="120" height="80" rx="12" fill="#0ea5e9" />
-            <g>
-                {[...Array(6)].map((_, i) => (
-                    <rect key={i} x={50 + i * 18} y={30} width={8} height={60} rx={2} fill="#0284c7" />
-                ))}
-            </g>
-        </svg>
-    );
-}
-
-function PcSVG({ className = "w-36 h-24" }) {
-    return (
-        <svg viewBox="0 0 200 120" className={className} xmlns="http://www.w3.org/2000/svg">
-            <rect x="10" y="12" width="180" height="86" rx="12" fill="#eef2ff" />
-            <rect x="28" y="28" width="144" height="56" rx="6" fill="#fff" />
-            <rect x="60" y="92" width="80" height="8" rx="2" fill="#c7d2fe" />
-        </svg>
-    );
-}
-
-function CloudSVG({ className = "w-36 h-24" }) {
-    return (
-        <svg viewBox="0 0 200 120" className={className} xmlns="http://www.w3.org/2000/svg">
-            <path d="M40 70 Q20 50 40 40 Q60 20 100 30 Q140 10 160 36 Q188 46 170 72 Z" fill="#bfdbfe" />
-            <text x="70" y="78" fill="#0f172a" fontSize="10">Cloud</text>
-        </svg>
-    );
-}
-
-function QuantumSVG({ className = "w-36 h-24" }) {
-    return (
-        <svg viewBox="0 0 200 120" className={className} xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="60" r="30" fill="#c084fc" opacity="0.14" />
-            <g stroke="#7c3aed" strokeWidth="1.8" fill="none">
-                <path d="M70 60 q15 -30 60 0" />
-                <path d="M70 60 q15 30 60 0" />
-            </g>
-        </svg>
-    );
-}
 
 // Helpers
 function renderWithBold(text) {
@@ -393,69 +262,9 @@ export default function HistoryOfComputersComponent() {
     const [lang, setLang] = useState("en");
     const data = CONTENT[lang];
     const [activeId, setActiveId] = useState(data.generations[0].id);
-    const [storyPlaying, setStoryPlaying] = useState(false);
-    const [storyStep, setStoryStep] = useState(0);
-    const [futureMode, setFutureMode] = useState(false);
-    const storyTimerRef = useRef(null);
     const timelineRef = useRef(null);
     const stageRefs = useRef({});
-
-    useEffect(() => {
-        // ensure when language changes, active resets
-        setActiveId(CONTENT[lang].generations[0].id);
-        stopStory();
-    }, [lang]);
-
-    useEffect(() => {
-        return () => stopStory();
-    }, []);
-
-    function stopStory() {
-        setStoryPlaying(false);
-        clearTimeout(storyTimerRef.current);
-        storyTimerRef.current = null;
-        setStoryStep(0);
-    }
-
-    function playStory() {
-        // auto-advance through generations, focusing each one
-        stopStory();
-        setStoryPlaying(true);
-        let idx = 0;
-        const gens = CONTENT[lang].generations;
-
-        const next = () => {
-            if (idx >= gens.length) {
-                stopStory();
-                return;
-            }
-            const currentId = gens[idx].id;
-            setActiveId(currentId);
-            stageRefs.current[currentId]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setStoryStep(idx + 1);
-            idx += 1;
-            storyTimerRef.current = setTimeout(next, 4200);
-        };
-
-        next();
-    }
-
-    function exportJSON() {
-        const blob = new Blob([JSON.stringify(CONTENT[lang], null, 2)], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${lang}-history-of-computers.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-    }
-
-    function copyToClipboard() {
-        navigator.clipboard
-            .writeText(JSON.stringify(CONTENT[lang], null, 2))
-            .then(() => alert("Timeline copied to clipboard"))
-            .catch(() => alert("Copy failed"));
-    }
+    const navigate = useNavigate();
 
     const activeIndex = data.generations.findIndex((g) => g.id === activeId);
 
@@ -503,23 +312,7 @@ export default function HistoryOfComputersComponent() {
                     <div className="md:flex md:items-center md:gap-6">
                         <div className="md:flex-1">
                             <p className="text-slate-700 leading-relaxed">{data.intro}</p>
-
-                            <div className="mt-4 flex items-center gap-3">
-                                <button
-                                    onClick={() => playStory()}
-                                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg flex items-center gap-2"
-                                >
-                                    <FaPlay />
-                                    <span>{data.cta}</span>
-                                </button>
-
-                                <button
-                                    onClick={() => timelineRef.current?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="px-4 py-2 border rounded-lg text-slate-700 hover:bg-slate-50 transition"
-                                >
-                                    {lang === "en" ? "Jump to Timeline" : "टाइमलाइन पर जाएँ"}
-                                </button>
-                            </div>
+                            {/* "Play Story" and "Jump to Timeline" buttons removed */}
                         </div>
 
                         <div className="mt-4 md:mt-0 md:w-64 md:flex-none flex justify-center">
@@ -531,7 +324,7 @@ export default function HistoryOfComputersComponent() {
                 </motion.div>
 
                 {/* TIMELINE + DETAILS */}
-                <div className="mt-8 grid gap-6 lg:grid-cols-3" ref={timelineRef}>
+                <div className="mt-8 grid gap-6 lg:grid-cols-2" ref={timelineRef}>
                     {/* Timeline column */}
                     <div className="col-span-1">
                         <div className="sticky top-6 space-y-4">
@@ -542,7 +335,7 @@ export default function HistoryOfComputersComponent() {
                                 </div>
 
                                 <div className="mt-2 text-xs text-slate-500">
-                                    <div>{lang === "en" ? "Tip:" : "टिप:"} {lang === "en" ? "Click a stage to explore. Use play to auto-step through the story." : "किसी स्टेज पर क्लिक करें और प्ले से कहानी ऑटो चलाएं।"}</div>
+                                    <div>{lang === "en" ? "Tip:" : "टिप:"} {lang === "en" ? "Click a stage to explore." : "किसी स्टेज पर क्लिक करें।"}</div>
                                 </div>
 
                                 <div className="mt-4 space-y-2">
@@ -552,8 +345,6 @@ export default function HistoryOfComputersComponent() {
                                             ref={el => stageRefs.current[g.id] = el}
                                             onClick={() => {
                                                 setActiveId(g.id);
-                                                setFutureMode(false);
-                                                stopStory();
                                             }}
                                             className="w-full flex items-center text-left p-3 rounded-lg transition-all duration-300 focus:outline-none focus-visible:ring-2"
                                             style={{ color: g.id === activeId ? 'white' : '#374151' }}
@@ -589,27 +380,18 @@ export default function HistoryOfComputersComponent() {
                     </div>
 
                     {/* Details column */}
-                    <div className="col-span-2">
+                    <div className="col-span-1">
                         <AnimatePresence mode="wait">
                             {data.generations.map((g) => {
                                 if (g.id !== activeId) return null;
-                                const isFuture = g.id === "future" && futureMode;
                                 return (
                                     <motion.div
                                         key={g.id}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
-                                        className={isFuture ? "relative" : ""}
+                                        className=""
                                     >
-                                        {isFuture && (
-                                            <motion.div
-                                                className="absolute -inset-4 bg-purple-300/50 rounded-full blur-3xl"
-                                                initial={{ scale: 0.5, opacity: 0 }}
-                                                animate={{ scale: 1, opacity: 1 }}
-                                                transition={{ duration: 1, ease: "easeOut" }}
-                                            />
-                                        )}
                                         <motion.div
                                             initial={{ opacity: 0, x: 16 }}
                                             animate={{ opacity: 1, x: 0 }}
@@ -621,13 +403,7 @@ export default function HistoryOfComputersComponent() {
                                             <div className="md:flex md:items-start md:gap-6">
                                                 <div className="md:flex-none">
                                                     <div className="w-48 h-36 flex items-center justify-center">
-                                                        {g.svg === "abacus" && <AbacusSVG />}
-                                                        {g.svg === "vacuum" && <VacuumSVG />}
-                                                        {g.svg === "transistor" && <TransistorSVG />}
-                                                        {g.svg === "ic" && <ChipSVG />}
-                                                        {g.svg === "pc" && <PcSVG />}
-                                                        {g.svg === "cloud" && <CloudSVG />}
-                                                        {g.svg === "quantum" && <QuantumSVG />}
+                                                        <img src={`https://placehold.co/200x120?text=${g.short.replace(/ /g, '+')}`} alt={g.title} className="w-full h-full object-cover rounded-lg" />
                                                     </div>
                                                 </div>
 
@@ -640,36 +416,6 @@ export default function HistoryOfComputersComponent() {
                                                             <div className="text-sm text-slate-500 mt-1">{g.years}</div>
                                                         </div>
 
-                                                        <div className="flex items-center gap-2">
-                                                            <button
-                                                                onClick={() => {
-                                                                    const idx = data.generations.findIndex(
-                                                                        (x) => x.id === g.id
-                                                                    );
-                                                                    const nextIdx = Math.max(0, idx - 1);
-                                                                    setActiveId(data.generations[nextIdx].id);
-                                                                }}
-                                                                className="p-2 rounded-lg border"
-                                                            >
-                                                                <FaChevronLeft />
-                                                            </button>
-
-                                                            <button
-                                                                onClick={() => {
-                                                                    const idx = data.generations.findIndex(
-                                                                        (x) => x.id === g.id
-                                                                    );
-                                                                    const nextIdx = Math.min(
-                                                                        data.generations.length - 1,
-                                                                        idx + 1
-                                                                    );
-                                                                    setActiveId(data.generations[nextIdx].id);
-                                                                }}
-                                                                className="p-2 rounded-lg border"
-                                                            >
-                                                                <FaChevronRight />
-                                                            </button>
-                                                        </div>
                                                     </div>
 
                                                     <div className="mt-4 text-slate-700 leading-relaxed">
@@ -691,30 +437,7 @@ export default function HistoryOfComputersComponent() {
                                                     </div>
 
                                                     <div className="mt-6 flex items-center gap-3">
-                                                        <button
-                                                            onClick={() => alert(`${g.title} — ${g.years}`)}
-                                                            className="px-4 py-2 bg-indigo-600 text-white rounded-lg"
-                                                        >
-                                                            {lang === "en" ? "Fun Fact" : "रोचक तथ्य"}
-                                                        </button>
-
-                                                        <button
-                                                            onClick={() => {
-                                                                // scroll to next
-                                                                const idx = data.generations.findIndex(
-                                                                    (x) => x.id === g.id
-                                                                );
-                                                                const nextIdx = Math.min(
-                                                                    data.generations.length - 1,
-                                                                    idx + 1
-                                                                );
-                                                                setActiveId(data.generations[nextIdx].id);
-                                                            }}
-                                                            className="px-4 py-2 border rounded-lg"
-                                                        >
-                                                            {lang === "en" ? "Next" : "अगला"}
-                                                        </button>
-
+                                                      {/* "Fun Fact" and "Next" buttons removed */}
                                                         <div className="text-xs text-slate-400 ml-auto">
                                                             {lang === "en"
                                                                 ? `Stage ${activeIndex + 1}/${data.generations.length}`
@@ -730,82 +453,7 @@ export default function HistoryOfComputersComponent() {
                             })}
                         </AnimatePresence>
 
-                        {/* Comparative chart (simple bars animated) */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 8 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.12 }}
-                            className="mt-6 bg-white rounded-2xl p-6 shadow"
-                        >
-                            <h4 className="font-semibold text-slate-900">
-                                {lang === "en" ? "Comparative View" : "तुलनात्मक दृश्य"}
-                            </h4>
-                            <p className="text-xs text-slate-500 mt-1">
-                                {lang === "en"
-                                    ? "Size, Speed and Cost trends across generations"
-                                    : "पीढ़ियों में आकार, गति और लागत रुझान"}
-                            </p>
-
-                            <div className="mt-4 space-y-3">
-                                {[
-                                    {
-                                        label: lang === "en" ? "Size" : "आकार",
-                                        values: [90, 60, 36, 14, 6, 2],
-                                        color: "bg-red-500",
-                                    },
-                                    {
-                                        label: lang === "en" ? "Speed" : "गति",
-                                        values: [10, 30, 50, 78, 95, 99],
-                                        color: "bg-blue-500",
-                                    },
-                                    {
-                                        label: lang === "en" ? "Cost (relative)" : "लागत (सापेक्ष)",
-                                        values: [95, 70, 40, 30, 20, 25],
-                                        color: "bg-green-500",
-                                    },
-                                ].map((metric, mi) => (
-                                    <div key={mi}>
-                                        <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-                                            <div>{metric.label}</div>
-                                            <div className="text-xs">
-                                                {lang === "en" ? "First → Future" : "प्रथम → भविष्य"}
-                                            </div>
-                                        </div>
-                                        <div className="flex gap-2 items-end h-28">
-                                            {metric.values.map((v, vi) => (
-                                                <motion.div
-                                                    key={vi}
-                                                    initial={{ height: 2 }}
-                                                    whileInView={{ height: `${(v / 100) * 100}%` }}
-                                                    viewport={{ once: true }}
-                                                    transition={{
-                                                        type: "spring",
-                                                        stiffness: 100,
-                                                        damping: 10,
-                                                        delay: vi * 0.1,
-                                                    }}
-                                                    className={`${metric.color} rounded-t-md w-full`}
-                                                    title={`${metric.label}: ${v}`}
-                                                    style={{ width: `${100 / metric.values.length}%` }}
-                                                />
-                                            ))}
-                                        </div>
-                                        <div className="flex text-xs text-slate-400 justify-between mt-1">
-                                            {data.generations.map((g, idx) => (
-                                                <div
-                                                    key={g.id}
-                                                    className="w-full text-center"
-                                                    style={{ width: `${100 / data.generations.length}%` }}
-                                                >
-                                                    {g.short}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
+                        {/* Comparative chart moved to be full-width below */}
 
                         {/* Story wrap up */}
                         <motion.div className="mt-6 bg-gradient-to-r from-indigo-50 to-white p-6 rounded-2xl shadow">
@@ -822,31 +470,127 @@ export default function HistoryOfComputersComponent() {
                                             ? "From beads to brains: every generation made computing smaller, faster, and more useful."
                                             : "मोतियों से दिमाग तक: हर पीढ़ी ने कंप्यूटिंग को छोटा, तेज और अधिक उपयोगी बनाया।"}
                                     </div>
-                                    <div className="mt-3 flex gap-2">
-                                        <button
-                                            onClick={() => {
-                                                setActiveId(data.generations[0].id);
-                                                window.scrollTo({ top: 0, behavior: "smooth" });
-                                            }}
-                                            className="px-3 py-2 rounded-lg border"
-                                        >
-                                            {lang === "en" ? "Start" : "शुरू"}
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                setActiveId("future");
-                                                setFutureMode(true);
-                                            }}
-                                            className="px-3 py-2 rounded-lg border"
-                                        >
-                                            {lang === "en" ? "Jump to Future" : "भविष्य पर जाएँ"}
-                                        </button>
-                                    </div>
+                                    {/* "Start" and "Jump to Future" buttons removed */}
                                 </div>
                             </div>
                         </motion.div>
                     </div>
 
+                </div>
+
+                {/* Comparative chart (simple bars animated) */}
+                <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.12 }}
+                    className="mt-6 bg-white rounded-2xl p-6 shadow"
+                >
+                    <h4 className="font-semibold text-slate-900">
+                        {lang === "en" ? "Comparative View" : "तुलनात्मक दृश्य"}
+                    </h4>
+                    <p className="text-xs text-slate-500 mt-1">
+                        {lang === "en"
+                            ? "Size, Speed and Cost trends across generations"
+                            : "पीढ़ियों में आकार, गति और लागत रुझान"}
+                    </p>
+
+                    <div className="mt-4 space-y-3">
+                        {[
+                            {
+                                label: lang === "en" ? "Size" : "आकार",
+                                values: [90, 60, 36, 14, 6, 2],
+                                color: "bg-red-500",
+                            },
+                            {
+                                label: lang === "en" ? "Speed" : "गति",
+                                values: [10, 30, 50, 78, 95, 99],
+                                color: "bg-blue-500",
+                            },
+                            {
+                                label: lang === "en" ? "Cost (relative)" : "लागत (सापेक्ष)",
+                                values: [95, 70, 40, 30, 20, 25],
+                                color: "bg-green-500",
+                            },
+                        ].map((metric, mi) => (
+                            <div key={mi}>
+                                <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
+                                    <div>{metric.label}</div>
+                                    <div className="text-xs">
+                                        {lang === "en" ? "First → Future" : "प्रथम → भविष्य"}
+                                    </div>
+                                </div>
+                                <div className="flex gap-2 items-end h-28">
+                                    {metric.values.map((v, vi) => (
+                                        <motion.div
+                                            key={vi}
+                                            initial={{ height: 2 }}
+                                            whileInView={{ height: `${(v / 100) * 100}%` }}
+                                            viewport={{ once: true }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 100,
+                                                damping: 10,
+                                                delay: vi * 0.1,
+                                            }}
+                                            className={`${metric.color} rounded-t-md w-full`}
+                                            title={`${metric.label}: ${v}`}
+                                            style={{ width: `${100 / metric.values.length}%` }}
+                                        />
+                                    ))}
+                                </div>
+                                <div className="flex text-xs text-slate-400 justify-between mt-1">
+                                    {data.generations.map((g, idx) => (
+                                        <div
+                                            key={g.id}
+                                            className="w-full text-center"
+                                            style={{ width: `${100 / data.generations.length}%` }}
+                                        >
+                                            {g.short}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </motion.div>
+
+                {/* Page Navigation */}
+                <div className="flex flex-col md:flex-row justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md gap-4 md:gap-0">
+                    {/* Previous Button */}
+                    <button
+                        onClick={() => {
+                            const currentIndex = data.generations.findIndex(g => g.id === activeId);
+                            if (currentIndex === 0) {
+                                navigate('/part1/ports-and-connectors');
+                            } else {
+                                const prevStageId = data.generations[currentIndex - 1].id;
+                                setActiveId(prevStageId);
+                            }
+                        }}
+                        className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+                    >
+                        <FaArrowLeft />
+                        Previous
+                    </button>
+
+                    {/* Next Button */}
+                    <button
+                        onClick={() => {
+                            const currentIndex = data.generations.findIndex(g => g.id === activeId);
+                            if (currentIndex === data.generations.length - 1) {
+                                // The user requested navigation to 'types-of-computer', and will create the component later.
+                                navigate('/part1/types-of-computer');
+                            } else {
+                                const nextStageId = data.generations[currentIndex + 1].id;
+                                setActiveId(nextStageId);
+                            }
+                        }}
+                        className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+                    >
+                        Next
+                        <FaArrowRight />
+                    </button>
                 </div>
             </div>
         </section>
@@ -866,17 +610,6 @@ function StoryPeekSVG() {
                 <rect x="18" y="34" width="110" height="8" rx="4" fill="#e9d5ff" />
                 <rect x="18" y="50" width="80" height="8" rx="4" fill="#bbf7d0" />
             </g>
-        </svg>
-    );
-}
-
-function FaPrintIconFallback() {
-    // Some environments don't like importing FaPrint; fallback to simple svg icon
-    return (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19 8H5V3H19V8Z" stroke="#0f172a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M19 21H5V14H19V21Z" stroke="#0f172a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M7 14V9H17V14" stroke="#0f172a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
     );
 }
