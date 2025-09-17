@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import {
     FaUniversity,
@@ -8,11 +8,19 @@ import {
     FaMusic,
     FaComments,
     FaFlask,
+    FaHome,
+    FaArrowLeft,
+    FaArrowRight,
+    FaRobot,
 } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
 // Multilingual content with 'key' for consistent icon mapping
 const content = {
     en: {
+        home: "Home",
+        previous: "Previous",
+        next: "Next",
         title: "Uses of Computers",
         subtitle: "Where and how computers help us in daily life",
         sections: [
@@ -94,12 +102,26 @@ const content = {
                     "**Space exploration** and **satellite launches** rely heavily on computers.",
                 ],
             },
+            {
+                key: "analogy",
+                icon: "🤖",
+                title: "Analogy: A Helpful Robot",
+                points: [
+                    "Think of a computer as a **super-fast robot** that follows your commands.",
+                    "It can **remember** huge amounts of information, like a robot with a giant brain.",
+                    "It **calculates** numbers in a flash, like a robot solving puzzles instantly.",
+                    "It **connects** you to friends, just like a robot delivering messages anywhere in the world.",
+                ],
+            },
         ],
         conclusion:
             "Computers and ICT systems make education **smarter**, healthcare **safer**, business **faster**, banking **secure**, entertainment **richer**, communication **stronger**, and research **deeper**.",
     },
 
     hi: {
+        home: "होम",
+        previous: "पिछला",
+        next: "अगला",
         title: "कंप्यूटर का उपयोग",
         subtitle: "हमारे दैनिक जीवन में कंप्यूटर कहाँ और कैसे मदद करते हैं",
         sections: [
@@ -184,6 +206,17 @@ const content = {
                     "**अंतरिक्ष अन्वेषण** और **उपग्रह प्रक्षेपण** पूरी तरह कंप्यूटर पर आधारित हैं।",
                 ],
             },
+            {
+                key: "analogy",
+                icon: "🤖",
+                title: "सादृश्य: एक सहायक रोबोट",
+                points: [
+                    "एक कंप्यूटर को एक **सुपर-फास्ट रोबोट** के रूप में सोचें जो आपके आदेशों का पालन करता है।",
+                    "यह एक विशाल मस्तिष्क वाले रोबोट की तरह बड़ी मात्रा में जानकारी **याद रख** सकता है।",
+                    "यह एक फ्लैश में संख्याओं की **गणना करता** है, जैसे एक रोबोट तुरंत पहेलियाँ सुलझाता है।",
+                    "यह आपको दोस्तों से **जोड़ता** है, ठीक उसी तरह जैसे एक रोबोट दुनिया में कहीं भी संदेश पहुंचाता है।",
+                ],
+            },
         ],
         conclusion:
             "कंप्यूटर और ICT सिस्टम शिक्षा को **स्मार्ट**, स्वास्थ्य को **सुरक्षित**, व्यापार को **तेज़**, बैंकिंग को **सुरक्षित**, मनोरंजन को **समृद्ध**, संचार को **मजबूत** और अनुसंधान को **गहरा** बनाते हैं।",
@@ -199,6 +232,7 @@ const iconMap = {
     entertainment: FaMusic,
     communication: FaComments,
     science: FaFlask,
+    analogy: FaRobot,
 };
 
 // Motion variants
@@ -232,13 +266,26 @@ function renderWithBold(text) {
 
 export default function UsesOfComputersComponent() {
     const [lang, setLang] = useState("en");
-    const { title, subtitle, sections, conclusion } = content[lang];
+    const navigate = useNavigate();
+    const t = content[lang];
+    const { title, subtitle, sections, conclusion } = t;
+    const pdfRef = useRef();
 
     return (
-        <section className="py-12 bg-gradient-to-b from-white via-slate-50 to-gray-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* HERO / HEADER */}
-                <div className="relative rounded-3xl overflow-hidden bg-white shadow-2xl p-8 md:p-12">
+        <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-gradient-to-br from-blue-50 to-green-50 font-sans">
+            <div className="max-w-5xl mx-auto" ref={pdfRef}>
+                <div className="flex items-center justify-between mb-8">
+                    <Link to="/parts/prt1" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
+                        <FaHome className="mr-2 text-lg text-sky-600" />
+                        {t.home}
+                    </Link>
+                    <div className="flex space-x-2">
+                        <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
+                        <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
+                    </div>
+                </div>
+
+                <div className="relative rounded-3xl overflow-hidden bg-white shadow-2xl p-8 md:p-12 text-center">
                     {/* Decorative animated SVG - subtle organic blobs and drifting circles */}
                     <motion.div
                         aria-hidden
@@ -280,65 +327,22 @@ export default function UsesOfComputersComponent() {
                         </svg>
                     </motion.div>
 
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-                        <div>
-                            <motion.h1
-                                initial={{ opacity: 0, y: -6, scale: 0.98 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                transition={{ duration: 0.6 }}
-                                className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900"
-                            >
-                                {title}
-                            </motion.h1>
-                            <motion.p
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.12 }}
-                                className="mt-2 text-slate-600 max-w-xl"
-                            >
-                                {subtitle}
-                            </motion.p>
-
-                            <motion.div className="mt-4 flex items-center gap-3">
-                                <span className="text-sm text-slate-500">Language</span>
-                                <div className="flex rounded-lg overflow-hidden border border-slate-200">
-                                    <button
-                                        onClick={() => setLang("en")}
-                                        className={`px-3 py-1 text-sm font-medium ${lang === "en" ? "bg-indigo-600 text-white" : "bg-white text-slate-700"}`}
-                                    >
-                                        English
-                                    </button>
-                                    <button
-                                        onClick={() => setLang("hi")}
-                                        className={`px-3 py-1 text-sm font-medium ${lang === "hi" ? "bg-indigo-600 text-white" : "bg-white text-slate-700"}`}
-                                    >
-                                        हिन्दी
-                                    </button>
-                                </div>
-                            </motion.div>
-                        </div>
-
-                        {/* small summary card */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.6 }}
-                            className="flex-none bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 rounded-2xl p-4 shadow-sm w-full sm:w-auto"
-                        >
-                            <div className="flex items-center gap-3">
-                                <div className="p-3 bg-white rounded-xl shadow flex items-center justify-center">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 2L12 22" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                        <path d="M5 8L12 2L19 8" stroke="#60a5fa" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div className="text-sm font-semibold text-slate-900">Instantly usable</div>
-                                    <div className="text-xs text-slate-500">Animated, responsive & bilingual</div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
+                    <motion.h1
+                        initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900"
+                    >
+                        {title}
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.12 }}
+                        className="mt-2 text-slate-600 max-w-xl mx-auto"
+                    >
+                        {subtitle}
+                    </motion.p>
                 </div>
 
                 {/* CARDS GRID */}
@@ -352,8 +356,8 @@ export default function UsesOfComputersComponent() {
                                 initial="hidden"
                                 whileInView="visible"
                                 viewport={{ once: true, amount: 0.12 }}
-                                whileHover={{ scale: 1.02 }}
-                                className="relative bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all"
+                                whileHover={{ scale: 1.05, y: -5, boxShadow: "0px 10px 20px rgba(0,0,0,0.1)" }}
+                                className="relative bg-white rounded-2xl p-6 shadow-md transition-all"
                             >
                                 <div className="flex items-start gap-4">
                                     <motion.div
@@ -365,7 +369,9 @@ export default function UsesOfComputersComponent() {
                                     </motion.div>
 
                                     <div className="min-w-0 flex-1">
-                                        <h3 className="text-lg font-semibold text-slate-900">{sec.title}</h3>
+                                        <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
+                                            {sec.title} <span className="text-xl">{sec.icon}</span>
+                                        </h3>
                                         <motion.ul
                                             initial="hidden"
                                             whileInView="visible"
@@ -386,9 +392,6 @@ export default function UsesOfComputersComponent() {
                                         </motion.ul>
                                     </div>
                                 </div>
-
-                                {/* small footer tag */}
-                                <div className="absolute -bottom-3 right-4 text-xs text-slate-300">{sec.icon}</div>
                             </motion.article>
                         );
                     })}
@@ -402,14 +405,24 @@ export default function UsesOfComputersComponent() {
                     className="mt-10 rounded-2xl bg-gradient-to-r from-indigo-50/40 to-white p-6 flex flex-col sm:flex-row items-center justify-between gap-4"
                 >
                     <div className="text-slate-900 font-semibold text-sm sm:text-base">{renderWithBold(conclusion)}</div>
-                    <div className="flex items-center gap-3">
-                        <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition">Explore More</button>
-                        <button className="px-4 py-2 border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 transition">Download PDF</button>
-                    </div>
                 </motion.div>
-
-                <p className="mt-6 text-xs text-slate-400">Tip: Replace any text inside the `content` object to customize wording for classrooms or handouts.</p>
             </div>
-        </section>
+            <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
+                <button
+                    onClick={() => navigate('/part1/what-is-computer')}
+                    className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+                >
+                    <FaArrowLeft />
+                    {t.previous}
+                </button>
+                <button
+                    onClick={() => navigate('/part1/computer-hardware')}
+                    className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+                >
+                    {t.next}
+                    <FaArrowRight />
+                </button>
+            </div>
+        </div>
     );
 }

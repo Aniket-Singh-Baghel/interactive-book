@@ -153,7 +153,7 @@ const Chapter2 = () => {
 
         <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
           <button
-            onClick={() => navigate('/part1/what-is-computer')}
+            onClick={() => navigate('/part1/uses-of-computer')}
             className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
           >
             <FaArrowLeft />

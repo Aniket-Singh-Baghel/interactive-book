@@ -139,7 +139,7 @@ const Chapter1 = () => {
                 {t.previous}
             </button>
             <button
-                onClick={() => navigate('/part1/computer-hardware')}
+                onClick={() => navigate('/part1/uses-of-computer')}
                 className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
             >
                 {t.next}
