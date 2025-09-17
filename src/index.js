@@ -13,7 +13,8 @@ import Part3 from './Components/Part3'
 import Part4 from './Components/Part4'
 import Part5 from './Components/Part5'
 import Part6 from './Components/Part6'
-import Chapter1 from './Components/Part1/Chapter1'
+import Chapter1 from './Components/Part1/Chapter1';
+import UsesOfComputers from './Components/Part1/Extras/UsesOfComputers'
 import Chapter2 from './Components/Part1/Chapter2';
 import Chapter3 from './Components/Part1/Chapter3';
 import Chapter4 from './Components/Part1/Chapter4';
@@ -60,6 +61,7 @@ root.render(
         <Route path="/parts/prt5" element={<Part5 />} />
         <Route path="/parts/prt6" element={<Part6 />} />
         <Route path="/part1/what-is-computer" element={<Chapter1 />} />
+        <Route path="/part1/uses-of-computer" element={<UsesOfComputers />} />
         <Route path="/part1/computer-hardware" element={<Chapter2 />} />
         <Route path="/part1/cpu-brain" element={<Chapter3 />} />
         <Route path="/part1/memory-and-storage" element={<Chapter4 />} />
