@@ -1,11 +1,8 @@
-import React, {useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-    FaGlobe,
-    FaHome,
-    FaArrowLeft,
-    FaArrowRight,
-} from "react-icons/fa";
+import { FaGlobe, FaHome, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FiMenu, FiX } from "react-icons/fi";
+import { History } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 const CONTENT = {
@@ -23,6 +20,11 @@ const CONTENT = {
                 years: "Before 1940",
                 icon: "⚙️",
                 color: "#64748b",
+                images: [
+                    "https://images.computerhistory.org/revonline/images/xb93.80p-03-01.jpg?w=600",
+                    "https://images.computerhistory.org/revonline/images/b150.81p-03-01.jpg?w=600",
+                    "https://upload.wikimedia.org/wikipedia/commons/c/cc/Babbages_Analytical_Engine%2C_1834-1871._%289660574685%29.jpg"
+                ],
                 bullets: [
                     "**Abacus**: Counting beads used across ancient civilizations.",
                     "**Pascaline** & **Gears**: Mechanical calculators that used gears to add numbers.",
@@ -38,6 +40,11 @@ const CONTENT = {
                 years: "1940–1956",
                 icon: "💡",
                 color: "#f59e0b",
+                images: [
+                    "https://upload.wikimedia.org/wikipedia/commons/e/e9/Elektronenroehren-auswahl.jpg",
+                    "https://upload.wikimedia.org/wikipedia/commons/6/6c/ENIAC_Penn1.jpg",
+                    "https://images.computerhistory.org/chess/univac-1.1953.102645278.jpg?w=600"
+                ],
                 bullets: [
                     "Used **vacuum tubes** for switching and amplification.",
                     "Large, energy-hungry, and produced lots of heat — like rooms full of glowing lanterns.",
@@ -53,6 +60,10 @@ const CONTENT = {
                 years: "1956–1963",
                 icon: "🔋",
                 color: "#0ea5e9",
+                images: [
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjS8oogp9BQP8BDzOCJru2AMkLxTis5q8zo9r7D3g8D3RiDF4xm4TLmXWaq56L2vxXl3dyILAlPyq0K2DlC4q5oGUCRY1CXxyxs9rL6_o6ajhQGr4kOg62yMP4-FGcDGhGQqyqUvHTLC4-D/w1200-h630-p-k-no-nu/Transistor.jpg",
+                    "https://zjcomputerhistory.weebly.com/uploads/2/2/6/6/22664196/273432971.jpg"
+                ],
                 bullets: [
                     "**Transistors** replaced vacuum tubes making machines smaller and more reliable.",
                     "Lower power consumption, faster switching, and better durability.",
@@ -68,6 +79,11 @@ const CONTENT = {
                 years: "1964–1971",
                 icon: "📘",
                 color: "#10b981",
+                images: [
+                    "https://www.yic-electronics.com/upfile/images/e8/20240823145924342.jpg",
+                    "https://www.avaq.com/files/uploads/editor/b/20230616173549different-types-of-integrated-circuit.webp",
+                    "https://engineering.uiowa.edu/sites/engineering.uiowa.edu/files/styles/ultrawide__1312_x_562/public/2023-06/Blue-circuit-EE-MEng-ind.jpg?h=bde28bee&itok=NhzhvLeo"
+                ],
                 bullets: [
                     "**Integrated Circuits (ICs)** put many transistors on a single chip.",
                     "Computers became even smaller and more affordable.",
@@ -83,6 +99,10 @@ const CONTENT = {
                 years: "1971–1980s",
                 icon: "🖥️",
                 color: "#3b82f6",
+                images: [
+                    "https://electrosome.com/wp-content/uploads/2017/04/Intel-Core-i7.jpg",
+                    "https://cdn.britannica.com/08/23608-004-47D6DC21/IBM-Personal-Computer-machine-Microsoft-MS-DOS-operating-1981.jpg"
+                ],
                 bullets: [
                     "**Microprocessors** put the CPU onto a single chip (Intel 4004 and successors).",
                     "Birth of **personal computers**: Apple, Altair, IBM PCs later.",
@@ -98,6 +118,10 @@ const CONTENT = {
                 years: "1980s–Present",
                 icon: "☁️",
                 color: "#8b5cf6",
+                images: [
+                    "https://cdn.mos.cms.futurecdn.net/v2/t:0,l:240,cw:1440,ch:1080,q:80,w:1440/VFLt5vHV7aCoLrLGjP9Qwm.jpg",
+                    "https://techblog.smc.it/static/c5256a11117134b1d5f3bd35c479db40/a41d1/ml.jpg"
+                ],
                 bullets: [
                     "Rise of the **Internet**, **mobile computing**, and massive distributed systems (cloud).",
                     "**AI and Machine Learning** enable computers to learn from data.",
@@ -113,6 +137,10 @@ const CONTENT = {
                 years: "Tomorrow",
                 icon: "🔮",
                 color: "#f43f5e",
+                images: [
+                    "https://www.azoquantum.com/images/Article_Images/ImageForArticle_519_17140003651563270.jpg",
+                    "https://www.itu.int/hub/wp-content/uploads/sites/4/2024/03/AdobeStock_612060108_resized.jpeg.optimal.jpeg"
+                ],
                 bullets: [
                     "**Quantum computing** promises different ways to compute using quantum bits (qubits).",
                     "**Brain–computer interfaces**, **edge AI**, and more energy-efficient architectures are coming.",
@@ -260,6 +288,7 @@ function renderWithBold(text) {
 
 export default function HistoryOfComputersComponent() {
     const [lang, setLang] = useState("en");
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const data = CONTENT[lang];
     const [activeId, setActiveId] = useState(data.generations[0].id);
     const timelineRef = useRef(null);
@@ -271,6 +300,7 @@ export default function HistoryOfComputersComponent() {
     return (
         <section className="p-6 bg-gradient-to-b from-white via-slate-50 to-gray-50 min-h-screen">
             <div className="max-w-6xl mx-auto">
+
                 {/* HEADER */}
                 <div className="flex items-center justify-between mb-8">
                     <Link to="/parts/prt1" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
@@ -283,6 +313,15 @@ export default function HistoryOfComputersComponent() {
                     </div>
                 </div>
 
+                <div className="lg:hidden flex justify-end mb-4">
+                    <button
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        className="flex items-center justify-center px-4 py-2 bg-white rounded-xl shadow-md text-slate-700 font-semibold"
+                    >
+                        {isMenuOpen ? <FiX className="mr-2" /> : <FiMenu className="mr-2" />}
+                        {isMenuOpen ? "Close Menu" : "Open Menu"}
+                    </button>
+                </div>
                 <div>
                     <motion.h1
                         initial={{ opacity: 0, y: -8 }}
@@ -316,8 +355,8 @@ export default function HistoryOfComputersComponent() {
                         </div>
 
                         <div className="mt-4 md:mt-0 md:w-64 md:flex-none flex justify-center">
-                            <motion.div whileHover={{ rotate: 6 }} className="rounded-xl p-2">
-                                <StoryPeekSVG />
+                            <motion.div whileHover={{ rotate: 6, scale: 1.1 }} className="rounded-xl p-4 bg-indigo-50 text-indigo-500">
+                                <History size={56} />
                             </motion.div>
                         </div>
                     </div>
@@ -326,12 +365,16 @@ export default function HistoryOfComputersComponent() {
                 {/* TIMELINE + DETAILS */}
                 <div className="mt-8 grid gap-6 lg:grid-cols-2" ref={timelineRef}>
                     {/* Timeline column */}
-                    <div className="col-span-1">
+                    <div className={`
+                        col-span-1 lg:block
+                        ${isMenuOpen ? 'block' : 'hidden'}
+                        fixed lg:relative top-0 left-0 w-full h-full bg-white z-40 p-6 lg:p-0 lg:bg-transparent lg:h-auto overflow-y-auto
+                    `}>
                         <div className="sticky top-6 space-y-4">
                             <div className="bg-white p-4 rounded-2xl shadow">
                                 <div className="flex items-center justify-between">
                                     <div className="text-sm text-slate-500">{lang === "en" ? "Timeline" : "समयरेखा"}</div>
-                                    <div className="text-xs text-slate-400">{data.generations.length} {lang === "en" ? "stages" : "स्टेज"}</div>
+                                    <button onClick={() => setIsMenuOpen(false)} className="lg:hidden text-2xl text-slate-500"><FiX /></button>
                                 </div>
 
                                 <div className="mt-2 text-xs text-slate-500">
@@ -345,6 +388,7 @@ export default function HistoryOfComputersComponent() {
                                             ref={el => stageRefs.current[g.id] = el}
                                             onClick={() => {
                                                 setActiveId(g.id);
+                                                setIsMenuOpen(false); // Close menu on selection
                                             }}
                                             className="w-full flex items-center text-left p-3 rounded-lg transition-all duration-300 focus:outline-none focus-visible:ring-2"
                                             style={{ color: g.id === activeId ? 'white' : '#374151' }}
@@ -376,6 +420,37 @@ export default function HistoryOfComputersComponent() {
                                     ))}
                                 </div>
                             </div>
+                            <AnimatePresence>
+                                {data.generations.map((g) => {
+                                    if (g.id !== activeId) return null;
+                                    return (
+                                        <motion.div
+                                            key={`${g.id}-bullets`}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            className="bg-white p-4 rounded-2xl shadow"
+                                        >
+                                            <h4 className="font-bold text-lg mb-2" style={{ color: g.color }}>
+                                                Key Features
+                                            </h4>
+                                            <div className="space-y-2">
+                                                {g.bullets.map((b, i) => (
+                                                    <motion.div
+                                                        key={i}
+                                                        initial={{ opacity: 0, x: -10 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: 0.1 * i }}
+                                                        className="bg-indigo-50/40 border border-indigo-100 rounded-lg p-3 text-sm"
+                                                    >
+                                                        {renderWithBold(b)}
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        </motion.div>
+                                    )
+                                })}
+                            </AnimatePresence>
                         </div>
                     </div>
 
@@ -399,54 +474,41 @@ export default function HistoryOfComputersComponent() {
                                             transition={{ type: "spring", stiffness: 120 }}
                                             className="bg-white rounded-2xl p-6 shadow-lg relative"
                                         >
-                                            {/* ✅ fixed wrapper closing here */}
-                                            <div className="md:flex md:items-start md:gap-6">
-                                                <div className="md:flex-none">
-                                                    <div className="w-48 h-36 flex items-center justify-center">
-                                                        <img src={`https://placehold.co/200x120?text=${g.short.replace(/ /g, '+')}`} alt={g.title} className="w-full h-full object-cover rounded-lg" />
+                                            {/* Image Section */}
+                                            <div className="mb-4">
+                                                {g.images && g.images.map((imgUrl, index) => (
+                                                    <div key={index} className="mb-4">
+                                                        <img src={imgUrl} alt={`${g.short} ${index + 1}`} className="w-full h-auto object-cover rounded-lg shadow-md" />
+                                                        <p className="mt-2 text-center font-bold" style={{ color: g.color }}>
+                                                            {g.short} {g.images.length > 1 ? index + 1 : ''}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            {/* Text Content Section */}
+                                            <div>
+                                                <div className="flex items-center justify-between">
+                                                    <div>
+                                                        <h3 className="text-2xl font-semibold text-slate-900">
+                                                            {g.title}
+                                                        </h3>
+                                                        <div className="text-sm text-slate-500 mt-1">{g.years}</div>
                                                     </div>
                                                 </div>
 
-                                                <div className="md:flex-1">
-                                                    <div className="flex items-center justify-between">
-                                                        <div>
-                                                            <h3 className="text-2xl font-semibold text-slate-900">
-                                                                {g.title}
-                                                            </h3>
-                                                            <div className="text-sm text-slate-500 mt-1">{g.years}</div>
-                                                        </div>
+                                                <div className="mt-4 text-slate-700 leading-relaxed">
+                                                    <p>{g.story}</p>
+                                                </div>
 
-                                                    </div>
-
-                                                    <div className="mt-4 text-slate-700 leading-relaxed">
-                                                        <p>{g.story}</p>
-                                                    </div>
-
-                                                    <div className="mt-4 grid md:grid-cols-2 gap-3">
-                                                        {g.bullets.map((b, i) => (
-                                                            <motion.div
-                                                                key={i}
-                                                                initial={{ opacity: 0, y: 8 }}
-                                                                animate={{ opacity: 1, y: 0 }}
-                                                                transition={{ delay: 0.06 * i }}
-                                                                className="bg-indigo-50/40 border border-indigo-100 rounded-lg p-3 text-sm"
-                                                            >
-                                                                {renderWithBold(b)}
-                                                            </motion.div>
-                                                        ))}
-                                                    </div>
-
-                                                    <div className="mt-6 flex items-center gap-3">
-                                                      {/* "Fun Fact" and "Next" buttons removed */}
-                                                        <div className="text-xs text-slate-400 ml-auto">
-                                                            {lang === "en"
-                                                                ? `Stage ${activeIndex + 1}/${data.generations.length}`
-                                                                : `स्टेज ${activeIndex + 1}/${data.generations.length}`}
-                                                        </div>
+                                                <div className="mt-6 flex items-center gap-3">
+                                                    <div className="text-xs text-slate-400 ml-auto">
+                                                        {lang === "en"
+                                                            ? `Stage ${activeIndex + 1}/${data.generations.length}`
+                                                            : `स्टेज ${activeIndex + 1}/${data.generations.length}`}
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* ✅ wrapper closes here */}
                                         </motion.div>
                                     </motion.div>
                                 );
@@ -597,19 +659,3 @@ export default function HistoryOfComputersComponent() {
     );
 }
 
-/**
- * Small helper components used above but defined after export to keep file tidy.
- */
-
-function StoryPeekSVG() {
-    return (
-        <svg viewBox="0 0 160 120" className="w-36 h-28" xmlns="http://www.w3.org/2000/svg">
-            <rect x="4" y="6" width="152" height="108" rx="10" fill="#eef2ff" />
-            <g>
-                <rect x="18" y="18" width="60" height="10" rx="4" fill="#c7d2fe" />
-                <rect x="18" y="34" width="110" height="8" rx="4" fill="#e9d5ff" />
-                <rect x="18" y="50" width="80" height="8" rx="4" fill="#bbf7d0" />
-            </g>
-        </svg>
-    );
-}
