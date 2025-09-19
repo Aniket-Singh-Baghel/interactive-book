@@ -27,6 +27,7 @@ import RamVsRom from './Components/Part1/Extras/RamVsRom';
 import MemoryUnits from './Components/Part1/Extras/MemoryUnits';
 import PortsAndConnectors from './Components/Part1/Extras/PortsAndConnectors';
 import HistoryOfComputers from './Components/Part1/Extras/HistoryOfComputers';
+import TypesOfComputers from './Components/Part1/Extras/TypesOfComputers';
 import Quiz1 from './Components/Part1/Quiz1';
 import Chapter6 from './Components/Part2/Chapter6';
 import Chapter7 from './Components/Part2/Chapter7';
@@ -75,7 +76,10 @@ root.render(
         <Route path="/part1/memory-units" element={<MemoryUnits />} />
         <Route path="/part1/ports-and-connectors" element={<PortsAndConnectors />} />
         <Route path="/part1/history-of-computers" element={<HistoryOfComputers />} />
+        <Route path="/part1/types-of-computers" element={<TypesOfComputers />} />
         <Route path="/part1/chapters/qiz1" element={<Quiz1 />} />
+        
+        
         <Route path="/module1/what-is-software" element={<Chapter6 />} />
         <Route path="/module1/operating-system" element={<Chapter7 />} />
         <Route path="/module1/types-of-software" element={<Chapter8 />} />

@@ -22,7 +22,7 @@ const CONTENT = {
                 color: "#64748b",
                 images: [
                     "https://images.computerhistory.org/revonline/images/xb93.80p-03-01.jpg?w=600",
-                    "https://images.computerhistory.org/revonline/images/b150.81p-03-01.jpg?w=600",
+                    "https://secondary.com.ng/images/me.jpg",
                     "https://upload.wikimedia.org/wikipedia/commons/c/cc/Babbages_Analytical_Engine%2C_1834-1871._%289660574685%29.jpg"
                 ],
                 bullets: [
@@ -300,7 +300,7 @@ export default function HistoryOfComputersComponent() {
     return (
         <section className="p-6 bg-gradient-to-b from-white via-slate-50 to-gray-50 min-h-screen">
             <div className="max-w-6xl mx-auto">
-
+               
                 {/* HEADER */}
                 <div className="flex items-center justify-between mb-8">
                     <Link to="/parts/prt1" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
@@ -313,6 +313,7 @@ export default function HistoryOfComputersComponent() {
                     </div>
                 </div>
 
+                 {/* Mobile Menu Toggle */}
                 <div className="lg:hidden flex justify-end mb-4">
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -322,6 +323,7 @@ export default function HistoryOfComputersComponent() {
                         {isMenuOpen ? "Close Menu" : "Open Menu"}
                     </button>
                 </div>
+                
                 <div>
                     <motion.h1
                         initial={{ opacity: 0, y: -8 }}
@@ -351,7 +353,6 @@ export default function HistoryOfComputersComponent() {
                     <div className="md:flex md:items-center md:gap-6">
                         <div className="md:flex-1">
                             <p className="text-slate-700 leading-relaxed">{data.intro}</p>
-                            {/* "Play Story" and "Jump to Timeline" buttons removed */}
                         </div>
 
                         <div className="mt-4 md:mt-0 md:w-64 md:flex-none flex justify-center">
@@ -388,7 +389,7 @@ export default function HistoryOfComputersComponent() {
                                             ref={el => stageRefs.current[g.id] = el}
                                             onClick={() => {
                                                 setActiveId(g.id);
-                                                setIsMenuOpen(false); // Close menu on selection
+                                                setIsMenuOpen(false);
                                             }}
                                             className="w-full flex items-center text-left p-3 rounded-lg transition-all duration-300 focus:outline-none focus-visible:ring-2"
                                             style={{ color: g.id === activeId ? 'white' : '#374151' }}
@@ -420,37 +421,39 @@ export default function HistoryOfComputersComponent() {
                                     ))}
                                 </div>
                             </div>
-                            <AnimatePresence>
-                                {data.generations.map((g) => {
-                                    if (g.id !== activeId) return null;
-                                    return (
-                                        <motion.div
-                                            key={`${g.id}-bullets`}
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -10 }}
-                                            className="bg-white p-4 rounded-2xl shadow"
-                                        >
-                                            <h4 className="font-bold text-lg mb-2" style={{ color: g.color }}>
-                                                Key Features
-                                            </h4>
-                                            <div className="space-y-2">
-                                                {g.bullets.map((b, i) => (
-                                                    <motion.div
-                                                        key={i}
-                                                        initial={{ opacity: 0, x: -10 }}
-                                                        animate={{ opacity: 1, x: 0 }}
-                                                        transition={{ delay: 0.1 * i }}
-                                                        className="bg-indigo-50/40 border border-indigo-100 rounded-lg p-3 text-sm"
-                                                    >
-                                                        {renderWithBold(b)}
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-                                        </motion.div>
-                                    )
-                                })}
-                            </AnimatePresence>
+                            <div className="hidden lg:block">
+                                <AnimatePresence>
+                                    {data.generations.map((g) => {
+                                        if (g.id !== activeId) return null;
+                                        return (
+                                            <motion.div
+                                                key={`${g.id}-bullets-desktop`}
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                className="bg-white p-4 rounded-2xl shadow"
+                                            >
+                                                <h4 className="font-bold text-lg mb-2" style={{ color: g.color }}>
+                                                    Key Features
+                                                </h4>
+                                                <div className="space-y-2">
+                                                    {g.bullets.map((b, i) => (
+                                                        <motion.div
+                                                            key={i}
+                                                            initial={{ opacity: 0, x: -10 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ delay: 0.1 * i }}
+                                                            className="bg-indigo-50/40 border border-indigo-100 rounded-lg p-3 text-sm"
+                                                        >
+                                                            {renderWithBold(b)}
+                                                        </motion.div>
+                                                    ))}
+                                                </div>
+                                            </motion.div>
+                                        )
+                                    })}
+                                </AnimatePresence>
+                            </div>
                         </div>
                     </div>
 
@@ -501,6 +504,25 @@ export default function HistoryOfComputersComponent() {
                                                     <p>{g.story}</p>
                                                 </div>
 
+                                                <div className="lg:hidden mt-4">
+                                                    <h4 className="font-bold text-lg mb-2" style={{ color: g.color }}>
+                                                        Key Features
+                                                    </h4>
+                                                    <div className="space-y-2">
+                                                        {g.bullets.map((b, i) => (
+                                                            <motion.div
+                                                                key={i}
+                                                                initial={{ opacity: 0, x: -10 }}
+                                                                animate={{ opacity: 1, x: 0 }}
+                                                                transition={{ delay: 0.1 * i }}
+                                                                className="bg-indigo-50/40 border border-indigo-100 rounded-lg p-3 text-sm"
+                                                            >
+                                                                {renderWithBold(b)}
+                                                            </motion.div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
                                                 <div className="mt-6 flex items-center gap-3">
                                                     <div className="text-xs text-slate-400 ml-auto">
                                                         {lang === "en"
@@ -514,9 +536,7 @@ export default function HistoryOfComputersComponent() {
                                 );
                             })}
                         </AnimatePresence>
-
-                        {/* Comparative chart moved to be full-width below */}
-
+                        
                         {/* Story wrap up */}
                         <motion.div className="mt-6 bg-gradient-to-r from-indigo-50 to-white p-6 rounded-2xl shadow">
                             <div className="flex items-start gap-4">
@@ -532,12 +552,10 @@ export default function HistoryOfComputersComponent() {
                                             ? "From beads to brains: every generation made computing smaller, faster, and more useful."
                                             : "मोतियों से दिमाग तक: हर पीढ़ी ने कंप्यूटिंग को छोटा, तेज और अधिक उपयोगी बनाया।"}
                                     </div>
-                                    {/* "Start" and "Jump to Future" buttons removed */}
                                 </div>
                             </div>
                         </motion.div>
                     </div>
-
                 </div>
 
                 {/* Comparative chart (simple bars animated) */}
@@ -658,4 +676,3 @@ export default function HistoryOfComputersComponent() {
         </section>
     );
 }
-
