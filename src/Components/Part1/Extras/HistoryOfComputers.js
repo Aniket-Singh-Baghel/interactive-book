@@ -640,13 +640,7 @@ export default function HistoryOfComputersComponent() {
                     {/* Previous Button */}
                     <button
                         onClick={() => {
-                            const currentIndex = data.generations.findIndex(g => g.id === activeId);
-                            if (currentIndex === 0) {
                                 navigate('/part1/ports-and-connectors');
-                            } else {
-                                const prevStageId = data.generations[currentIndex - 1].id;
-                                setActiveId(prevStageId);
-                            }
                         }}
                         className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
                     >
@@ -657,14 +651,7 @@ export default function HistoryOfComputersComponent() {
                     {/* Next Button */}
                     <button
                         onClick={() => {
-                            const currentIndex = data.generations.findIndex(g => g.id === activeId);
-                            if (currentIndex === data.generations.length - 1) {
-                                // The user requested navigation to 'types-of-computer', and will create the component later.
-                                navigate('/part1/types-of-computer');
-                            } else {
-                                const nextStageId = data.generations[currentIndex + 1].id;
-                                setActiveId(nextStageId);
-                            }
+                                navigate('/part1/types-of-computers');
                         }}
                         className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
                     >
