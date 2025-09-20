@@ -137,12 +137,21 @@ const InstructionsOverlay = ({ onUnderstood, lang, setLang }) => {
 
 const ICTComponent = () => {
   const [lang, setLang] = useState("en");
-  const [showInstructions, setShowInstructions] = useState(true);
+  const [showInstructions, setShowInstructions] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" }); // 👈 scroll to top when page loads
+    const hasSeenOverlay = sessionStorage.getItem('hasSeenIctOverlay');
+    if (!hasSeenOverlay) {
+      setShowInstructions(true);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  const handleUnderstood = () => {
+    sessionStorage.setItem('hasSeenIctOverlay', 'true');
+    setShowInstructions(false);
+  };
 
 
   const content = {
@@ -203,7 +212,7 @@ const ICTComponent = () => {
   };
 
   if (showInstructions) {
-    return <InstructionsOverlay onUnderstood={() => setShowInstructions(false)} lang={lang} setLang={setLang} />;
+    return <InstructionsOverlay onUnderstood={handleUnderstood} lang={lang} setLang={setLang} />;
   }
 
   return (
