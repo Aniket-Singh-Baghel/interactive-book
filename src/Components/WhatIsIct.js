@@ -1,11 +1,143 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FaGlobe, FaWifi, FaLaptopCode, FaMobileAlt, FaBook, FaHeartbeat, FaBriefcase, FaUniversity, FaComments, FaFilm, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaGlobe, FaWifi, FaLaptopCode, FaMobileAlt, FaBook, FaHeartbeat, FaBriefcase, FaUniversity, FaComments, FaFilm, FaArrowLeft, FaArrowRight, FaHome, FaLanguage } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+
+const instructionsContent = {
+  en: {
+    title: "Welcome! Let’s learn how to use this journey.",
+    home_button:
+      "The Home button is always at the top-left. Tap it anytime to safely return to the main menu.",
+    language_toggle:
+      "At the top-right, you’ll find the EN/हिं button. Use it to switch between English and Hindi whenever you like.",
+    navigation:
+      "At the bottom of the page, the Previous and Next buttons will guide you step by step through the adventure. Please read each page carefully before moving on.",
+    understand_button: "I Understand, Let’s Begin!"
+  },
+  hi: {
+    title: "नमस्ते! आइए जानें कि इस यात्रा का उपयोग कैसे करें।",
+    home_button:
+      "ऊपर-बाएँ कोने में होम बटन दिया गया है। इसे दबाकर आप किसी भी समय मुख्य पृष्ठ पर आराम से वापस जा सकते हैं।",
+    language_toggle:
+      "ऊपर-दाएँ कोने में EN/हिं बटन है। इसकी मदद से आप अपनी पसंद की भाषा — हिंदी या अंग्रेज़ी — चुन सकते हैं।",
+    navigation:
+      "पेज के सबसे नीचे 'पिछला' और 'अगला' बटन दिए गए हैं। ये आपको एक-एक कदम करके आगे बढ़ने में मदद करेंगे। ध्यान रखिए, हर पेज को अच्छे से पढ़ने के बाद ही आगे बढ़ें।",
+    understand_button: "ठीक है, मैंने समझ लिया!"
+  }
+};
+
+const InstructionsOverlay = ({ onUnderstood, lang, setLang }) => {
+  const t = instructionsContent[lang];
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+        className="bg-white rounded-2xl shadow-2xl p-6 max-w-4xl w-[90%] max-h-[85vh] overflow-y-auto text-center"
+      >
+        {/* Top Right Language Toggle */}
+        <div className="flex justify-end mb-4">
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setLang("en")}
+              className={`px-3 py-1 rounded-lg border font-semibold ${
+                lang === "en"
+                  ? "bg-sky-600 text-white border-sky-600"
+                  : "bg-white text-gray-700 border-gray-300"
+              } transition`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang("hi")}
+              className={`px-3 py-1 rounded-lg border font-semibold ${
+                lang === "hi"
+                  ? "bg-sky-600 text-white border-sky-600"
+                  : "bg-white text-gray-700 border-gray-300"
+              } transition`}
+            >
+              हिं
+            </button>
+          </div>
+        </div>
+
+        {/* Title */}
+        <h1 className="text-3xl font-extrabold text-indigo-700 mb-6">
+          {t.title}
+        </h1>
+
+        {/* Instructions */}
+        <div className="space-y-6 text-left px-2 sm:px-6">
+          {/* Home Button */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center justify-center w-14 h-14 bg-blue-100 rounded-full">
+              <FaHome className="text-2xl text-sky-600" />
+            </div>
+            <div>
+              <p className="text-lg text-gray-800">{t.home_button}</p>
+              <div className="inline-flex items-center px-4 py-1 mt-2 bg-white rounded-full shadow-md border border-gray-200">
+                <FaHome className="mr-2 text-lg text-sky-600" />
+                {lang === "en" ? "Home" : "होम"}
+              </div>
+            </div>
+          </div>
+
+          {/* Language Toggle */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center justify-center w-14 h-14 bg-blue-100 rounded-full">
+              <FaLanguage className="text-2xl text-sky-600" />
+            </div>
+            <div>
+              <p className="text-lg text-gray-800">{t.language_toggle}</p>
+              <div className="flex space-x-2 mt-2">
+                <button className="px-3 py-1 rounded-lg border font-semibold bg-sky-600 text-white border-sky-600">
+                  EN
+                </button>
+                <button className="px-3 py-1 rounded-lg border font-semibold bg-white text-gray-700 border-gray-300">
+                  हिं
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center justify-center w-14 h-14 bg-blue-100 rounded-full">
+              <FaArrowRight className="text-2xl text-green-600" />
+            </div>
+            <div>
+              <p className="text-lg text-gray-800">{t.navigation}</p>
+              <div className="flex gap-4 mt-2">
+                <button className="flex items-center gap-2 px-4 py-2 bg-purple-200 text-purple-900 rounded-lg shadow">
+                  <FaArrowLeft />
+                  {lang === "en" ? "Previous" : "पिछला"}
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2 bg-green-200 text-green-900 rounded-lg shadow">
+                  {lang === "en" ? "Next" : "अगला"}
+                  <FaArrowRight />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Understood Button */}
+        <button
+          onClick={onUnderstood}
+          className="mt-8 px-8 py-3 bg-indigo-600 text-white font-bold rounded-lg shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-105"
+        >
+          {t.understand_button}
+        </button>
+      </motion.div>
+    </div>
+  );
+};
 
 const ICTComponent = () => {
   const [lang, setLang] = useState("en");
-
+  const [showInstructions, setShowInstructions] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,6 +201,10 @@ const ICTComponent = () => {
       button_next: "चलो विस्तार से जानें"
     },
   };
+
+  if (showInstructions) {
+    return <InstructionsOverlay onUnderstood={() => setShowInstructions(false)} lang={lang} setLang={setLang} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 p-4 sm:p-6 md:p-8">

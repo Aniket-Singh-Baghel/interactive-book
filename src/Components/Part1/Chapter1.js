@@ -6,7 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 const content = {
   en: {
     home: "Home",
-    scroll: 'Read through the full chapter, then press Next to move ahead.',
     title: "What is a Computer? 🤖",
     subtitle: "Let's understand what a computer is with a simple real-life example and a formal definition.",
     simple_machine_title: "A Simple Machine",
@@ -25,7 +24,6 @@ const content = {
   },
   hi: {
     home: "होम",
-    scroll: "पूरा अध्याय ध्यान से पढ़ें, फिर आगे बढ़ने के लिए ‘अगला’ दबाएँ।",
     title: "कंप्यूटर क्या है? 🤖",
     subtitle: "आइए एक सरल वास्तविक जीवन के उदाहरण और एक औपचारिक परिभाषा के साथ समझें कि कंप्यूटर क्या है।",
     simple_machine_title: "एक सरल मशीन",
@@ -62,9 +60,6 @@ const Chapter1 = () => {
             <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
           </div>
         </div>
-        <p className="text-center text-base font-semibold bg-green-400 text-gray-700 dark:text-gray-300  mb-3">
-          {t.scroll}
-        </p>
         <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}

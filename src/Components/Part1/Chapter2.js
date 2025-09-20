@@ -6,7 +6,6 @@ import { FaHome, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 const content = {
     en: {
         home: "Home",
-        scroll:'Read through the full chapter, then press Next to move ahead.',
         title: "The Main Parts (Hardware) ⚙️",
         subtitle: "A computer is made of many physical parts. These are called <strong>hardware</strong>. Below are the key parts with cartoon visuals and simple analogies to help students remember.",
         memory_trick_title: "Memory Trick — Robot Friend 🤖",
@@ -30,7 +29,6 @@ const content = {
     },
     hi: {
         home: "होम",
-        scroll:"पूरा अध्याय ध्यान से पढ़ें, फिर आगे बढ़ने के लिए ‘अगला’ दबाएँ।",
         title: "मुख्य भाग (हार्डवेयर) ⚙️",
         subtitle: "एक कंप्यूटर कई भौतिक भागों से बना होता है। इन्हें <strong>हार्डवेयर</strong> कहा जाता है। नीचे छात्रों को याद रखने में मदद करने के लिए कार्टून दृश्यों और सरल उपमाओं के साथ प्रमुख भाग दिए गए हैं।",
         memory_trick_title: "याद रखने की ट्रिक - रोबोट दोस्त 🤖",
@@ -99,10 +97,6 @@ const Chapter2 = () => {
                 <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
             </div>
         </div>
-
-         <p className="text-center text-base font-semibold bg-green-400 text-gray-700 dark:text-gray-300  mb-3">
-          {t.scroll}
-        </p>
         <header className="text-center mb-10">
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
