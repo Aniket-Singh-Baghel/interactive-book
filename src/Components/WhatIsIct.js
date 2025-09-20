@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FaGlobe, FaWifi, FaLaptopCode, FaMobileAlt, FaBook, FaHeartbeat, FaBriefcase, FaUniversity, FaComments, FaFilm, FaArrowLeft, FaArrowRight, FaHome, FaLanguage } from "react-icons/fa";
+import { FaGlobe, FaWifi, FaLaptopCode, FaLaptop, FaMobileAlt, FaBook, FaHeartbeat, FaBriefcase, FaUniversity, FaComments, FaFilm, FaArrowLeft, FaArrowRight, FaHome, FaLanguage } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const instructionsContent = {
@@ -12,6 +12,8 @@ const instructionsContent = {
       "At the top-right, you’ll find the EN/हिं button. Use it to switch between English and Hindi whenever you like.",
     navigation:
       "At the bottom of the page, the Previous and Next buttons will guide you step by step through the adventure. Please read each page carefully before moving on.",
+    device_note:
+      "📢 <b>For the best experience, open this book on a laptop or computer screen. It works on mobile too, but a bigger screen makes it more clear and engaging.</b>",
     understand_button: "I Understand, Let’s Begin!"
   },
   hi: {
@@ -22,6 +24,8 @@ const instructionsContent = {
       "ऊपर-दाएँ कोने में EN/हिं बटन है। इसकी मदद से आप अपनी पसंद की भाषा — हिंदी या अंग्रेज़ी — चुन सकते हैं।",
     navigation:
       "पेज के सबसे नीचे 'पिछला' और 'अगला' बटन दिए गए हैं। ये आपको एक-एक कदम करके आगे बढ़ने में मदद करेंगे। ध्यान रखिए, हर पेज को अच्छे से पढ़ने के बाद ही आगे बढ़ें।",
+    device_note:
+      "📢 <b>इस ई बुक का सबसे अच्छा अनुभव आपको लैपटॉप या कंप्यूटर स्क्रीन पर मिलेगा। मोबाइल पर भी काम करेगी, लेकिन बड़े स्क्रीन पर पढ़ना और समझना और भी आसान और रोचक होगा।</b>",
     understand_button: "ठीक है, मैंने समझ लिया!"
   }
 };
@@ -30,33 +34,31 @@ const InstructionsOverlay = ({ onUnderstood, lang, setLang }) => {
   const t = instructionsContent[lang];
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
-        className="bg-white rounded-2xl shadow-2xl p-6 max-w-4xl w-[90%] max-h-[85vh] overflow-y-auto text-center"
+        className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-5xl max-h-[90vh] overflow-y-auto text-center"
       >
         {/* Top Right Language Toggle */}
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end mb-2">
           <div className="flex space-x-2">
             <button
               onClick={() => setLang("en")}
-              className={`px-3 py-1 rounded-lg border font-semibold ${
-                lang === "en"
+              className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en"
                   ? "bg-sky-600 text-white border-sky-600"
                   : "bg-white text-gray-700 border-gray-300"
-              } transition`}
+                } transition`}
             >
               EN
             </button>
             <button
               onClick={() => setLang("hi")}
-              className={`px-3 py-1 rounded-lg border font-semibold ${
-                lang === "hi"
+              className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi"
                   ? "bg-sky-600 text-white border-sky-600"
                   : "bg-white text-gray-700 border-gray-300"
-              } transition`}
+                } transition`}
             >
               हिं
             </button>
@@ -64,33 +66,33 @@ const InstructionsOverlay = ({ onUnderstood, lang, setLang }) => {
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl font-extrabold text-indigo-700 mb-6">
+        <h1 className="text-2xl md:text-3xl font-extrabold text-indigo-700 mb-2">
           {t.title}
         </h1>
 
-        {/* Instructions */}
-        <div className="space-y-6 text-left px-2 sm:px-6">
+        {/* Instructions in responsive layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
           {/* Home Button */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center justify-center w-14 h-14 bg-blue-100 rounded-full">
-              <FaHome className="text-2xl text-sky-600" />
+          <div className="flex items-start gap-4">
+            <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full shrink-0">
+              <FaHome className="text-xl md:text-2xl text-sky-600" />
             </div>
             <div>
-              <p className="text-lg text-gray-800">{t.home_button}</p>
-              <div className="inline-flex items-center px-4 py-1 mt-2 bg-white rounded-full shadow-md border border-gray-200">
-                <FaHome className="mr-2 text-lg text-sky-600" />
+              <p className="text-base md:text-lg text-gray-800">{t.home_button}</p>
+              <div className="inline-flex items-center px-3 md:px-4 py-1 mt-2 bg-white rounded-full shadow-md border border-gray-200">
+                <FaHome className="mr-2 text-sky-600" />
                 {lang === "en" ? "Home" : "होम"}
               </div>
             </div>
           </div>
 
           {/* Language Toggle */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center justify-center w-14 h-14 bg-blue-100 rounded-full">
-              <FaLanguage className="text-2xl text-sky-600" />
+          <div className="flex items-start gap-4">
+            <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full shrink-0">
+              <FaLanguage className="text-xl md:text-2xl text-sky-600" />
             </div>
             <div>
-              <p className="text-lg text-gray-800">{t.language_toggle}</p>
+              <p className="text-base md:text-lg text-gray-800">{t.language_toggle}</p>
               <div className="flex space-x-2 mt-2">
                 <button className="px-3 py-1 rounded-lg border font-semibold bg-sky-600 text-white border-sky-600">
                   EN
@@ -103,30 +105,44 @@ const InstructionsOverlay = ({ onUnderstood, lang, setLang }) => {
           </div>
 
           {/* Navigation Buttons */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center justify-center w-14 h-14 bg-blue-100 rounded-full">
-              <FaArrowRight className="text-2xl text-green-600" />
+          <div className="flex items-start gap-4">
+            <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full shrink-0">
+              <FaArrowRight className="text-xl md:text-2xl text-green-600" />
             </div>
             <div>
-              <p className="text-lg text-gray-800">{t.navigation}</p>
-              <div className="flex gap-4 mt-2">
-                <button className="flex items-center gap-2 px-4 py-2 bg-purple-200 text-purple-900 rounded-lg shadow">
+              <p className="text-base md:text-lg text-gray-800">{t.navigation}</p>
+              <div className="flex flex-wrap gap-3 mt-2">
+                <button className="flex items-center gap-2 px-3 md:px-4 py-2 bg-purple-200 text-purple-900 rounded-lg shadow text-sm md:text-base">
                   <FaArrowLeft />
                   {lang === "en" ? "Previous" : "पिछला"}
                 </button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-green-200 text-green-900 rounded-lg shadow">
+                <button className="flex items-center gap-2 px-3 md:px-4 py-2 bg-green-200 text-green-900 rounded-lg shadow text-sm md:text-base">
                   {lang === "en" ? "Next" : "अगला"}
                   <FaArrowRight />
                 </button>
               </div>
             </div>
           </div>
+
+          {/* Device Note Highlight */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="p-4 bg-gradient-to-r from-green-100 to-green-200 rounded-xl shadow-inner flex items-start gap-4 border border-green-300"
+          >
+            <FaLaptop className="text-2xl md:text-3xl text-green-600 mt-1" />
+            <p
+              className="text-base md:text-lg font-semibold text-green-800"
+              dangerouslySetInnerHTML={{ __html: t.device_note }}
+            />
+          </motion.div>
         </div>
 
         {/* Understood Button */}
         <button
           onClick={onUnderstood}
-          className="mt-8 px-8 py-3 bg-indigo-600 text-white font-bold rounded-lg shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-105"
+          className="mt-8 px-6 md:px-8 py-2 md:py-3 bg-indigo-600 text-white font-bold rounded-lg shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 text-sm md:text-base"
         >
           {t.understand_button}
         </button>
@@ -134,6 +150,7 @@ const InstructionsOverlay = ({ onUnderstood, lang, setLang }) => {
     </div>
   );
 };
+
 
 const ICTComponent = () => {
   const [lang, setLang] = useState("en");
