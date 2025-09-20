@@ -94,7 +94,7 @@ const content = {
         "यह पुस्तक कई भागों में विभाजित है, और प्रत्येक भाग में एक विशिष्ट विषय के बारे में अध्याय हैं।",
         "नेविगेट करने के लिए, <strong>पिछला</strong>, <strong>अगला</strong>, और <strong>होम</strong> बटन का उपयोग करें।",
         "उदाहरण के लिए, यदि आप पहले भाग में प्रवेश करते हैं, जो हार्डवेयर के बारे में है, तो आप आईसीटी में हार्डवेयर और उसके घटकों के बारे में जानेंगे।",
-        "इस मुख्य पृष्ठ पर लौटने के लिए किसी भी समय <strong>होम</strong> बटन दबाएं।"
+        "मुख्य पृष्ठ पर लौटने के लिए किसी भी समय <strong>होम</strong> बटन दबाएं।"
       ],
       button: "समझ गया!"
     },
@@ -226,9 +226,33 @@ const StationPage = () => {
     setShowOverlay(false);
   };
 
-  const InstructionOverlay = () => (
+  const InstructionOverlay = ({ lang, setLang }) => (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white p-8 rounded-lg shadow-2xl max-w-2xl w-11/12 text-gray-800 relative">
+        <div className="flex justify-end mb-4">
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setLang("en")}
+              className={`px-3 py-1 rounded-lg border font-semibold ${
+                lang === "en"
+                  ? "bg-sky-600 text-white border-sky-600"
+                  : "bg-white text-gray-700 border-gray-300"
+              } transition`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang("hi")}
+              className={`px-3 py-1 rounded-lg border font-semibold ${
+                lang === "hi"
+                  ? "bg-sky-600 text-white border-sky-600"
+                  : "bg-white text-gray-700 border-gray-300"
+              } transition`}
+            >
+              हिं
+            </button>
+          </div>
+        </div>
         <h2 className="text-3xl font-bold mb-6 text-indigo-700">{t.overlay.title}</h2>
         <ol className="list-decimal list-inside space-y-4 text-lg">
           {t.overlay.instructions.map((text, index) => (
@@ -248,7 +272,7 @@ const StationPage = () => {
   return (
     <>
       {loading && <LoadingSpinner progress={progress} />}
-      {showOverlay && <InstructionOverlay />}
+      {showOverlay && <InstructionOverlay lang={lang} setLang={setLang} />}
       <div style={{ visibility: loading ? "hidden" : "visible" }}>
         <div className="min-h-screen bg-gradient-to-b from-blue-100 to-indigo-200 p-8">
 
