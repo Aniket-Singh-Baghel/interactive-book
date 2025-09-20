@@ -30,7 +30,7 @@ const content = {
         balance_title: "The Balancing Act",
         balance_desc: "Both types of software are essential and work together. System software runs the hardware, and application software gives the user powerful tools to use that hardware.",
         previous: "Previous",
-        next: "Next",
+        next: "Module 1 Completed",
     },
     hi: {
         home: "होम",
@@ -58,7 +58,7 @@ const content = {
         balance_title: "संतुलन का कार्य",
         balance_desc: "दोनों प्रकार के सॉफ्टवेयर आवश्यक हैं और एक साथ काम करते हैं। सिस्टम सॉफ्टवेयर हार्डवेयर चलाता है, और एप्लिकेशन सॉफ्टवेयर उपयोगकर्ता को उस हार्डवेयर का उपयोग करने के लिए शक्तिशाली उपकरण देता है।",
         previous: "पिछला",
-        next: "अगला",
+        next: "माडूल 1 पूरा हुआ",
     }
 };
 

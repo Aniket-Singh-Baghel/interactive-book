@@ -153,7 +153,7 @@ const CONTENT = {
     ],
     engagement: "Which type of computer do you find most fascinating?",
     previous: "Previous",
-    next: "Next",
+    next: "Part 1 Completed",
   },
 
   hi: {
@@ -292,7 +292,7 @@ const CONTENT = {
     ],
     engagement: "आपको कौन सा कंप्यूटर सबसे आकर्षक लगता है?",
     previous: "पिछला",
-    next: "अगला",
+    next: "पार्ट 1 पूरा हुआ",
   },
 };
 

@@ -18,6 +18,16 @@ const content = {
     tip_end: "and work your way to",
     tip_ahead: "Looking Ahead",
     tip_full: "for the full adventure!",
+    overlay: {
+      title: "How to Use This Book",
+      instructions: [
+        "This book is divided into multiple parts, and each part has chapters about a specific topic.",
+        "To navigate, use the <strong>Previous</strong>, <strong>Next</strong>, and <strong>Home</strong> buttons.",
+        "For example, if you enter the first part, which is about hardware, you will learn about hardware and its components in ICT.",
+        "Press the <strong>Home</strong> button at any time to return to this main page."
+      ],
+      button: "Got it!"
+    },
     topics: [
       {
         id: 1,
@@ -78,6 +88,16 @@ const content = {
     tip_end: "से शुरू करें और",
     tip_ahead: "आगे बढ़ते हुए",
     tip_full: "पूरे एडवेंचर का आनंद लें!",
+    overlay: {
+      title: "इस पुस्तक का उपयोग कैसे करें",
+      instructions: [
+        "यह पुस्तक कई भागों में विभाजित है, और प्रत्येक भाग में एक विशिष्ट विषय के बारे में अध्याय हैं।",
+        "नेविगेट करने के लिए, <strong>पिछला</strong>, <strong>अगला</strong>, और <strong>होम</strong> बटन का उपयोग करें।",
+        "उदाहरण के लिए, यदि आप पहले भाग में प्रवेश करते हैं, जो हार्डवेयर के बारे में है, तो आप आईसीटी में हार्डवेयर और उसके घटकों के बारे में जानेंगे।",
+        "इस मुख्य पृष्ठ पर लौटने के लिए किसी भी समय <strong>होम</strong> बटन दबाएं।"
+      ],
+      button: "समझ गया!"
+    },
     topics: [
       {
         id: 1,
@@ -166,7 +186,15 @@ const StationPage = () => {
   const [loading, setLoading] = useState(true);
   const [imagesLoaded, setImagesLoaded] = useState(0);
   const [lang, setLang] = useState('en');
+  const [showOverlay, setShowOverlay] = useState(false);
   const t = content[lang];
+
+  useEffect(() => {
+    const hasSeenOverlay = sessionStorage.getItem('hasSeenStationOverlay');
+    if (!hasSeenOverlay) {
+      setShowOverlay(true);
+    }
+  }, []);
 
   const handleImageLoad = () => {
     setImagesLoaded((prev) => prev + 1);
@@ -180,16 +208,47 @@ const StationPage = () => {
   }, [imagesLoaded, t.topics.length]);
 
   useEffect(() => {
-  if (loading) {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }
-}, [loading]);
+    if (loading || showOverlay) {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [loading, showOverlay]);
 
   const progress = (imagesLoaded / t.topics.length) * 100;
+
+  const handleCloseOverlay = () => {
+    sessionStorage.setItem('hasSeenStationOverlay', 'true');
+    setShowOverlay(false);
+  };
+
+  const InstructionOverlay = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div className="bg-white p-8 rounded-lg shadow-2xl max-w-2xl w-11/12 text-gray-800 relative">
+        <h2 className="text-3xl font-bold mb-6 text-indigo-700">{t.overlay.title}</h2>
+        <ol className="list-decimal list-inside space-y-4 text-lg">
+          {t.overlay.instructions.map((text, index) => (
+            <li key={index} dangerouslySetInnerHTML={{ __html: text }} />
+          ))}
+        </ol>
+        <button
+          onClick={handleCloseOverlay}
+          className="mt-8 bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-indigo-700 transition-all duration-300"
+        >
+          {t.overlay.button}
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <>
       {loading && <LoadingSpinner progress={progress} />}
+      {showOverlay && <InstructionOverlay />}
       <div style={{ visibility: loading ? "hidden" : "visible" }}>
         <div className="min-h-screen bg-gradient-to-b from-blue-100 to-indigo-200 p-8">
 
