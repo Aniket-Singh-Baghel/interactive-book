@@ -29,6 +29,7 @@ import PortsAndConnectors from './Components/Part1/Extras/PortsAndConnectors';
 import HistoryOfComputers from './Components/Part1/Extras/HistoryOfComputers';
 import TypesOfComputers from './Components/Part1/Extras/TypesOfComputers';
 import Quiz1 from './Components/Part1/Quiz1';
+
 import Chapter6 from './Components/Part2/Chapter6';
 import Chapter7 from './Components/Part2/Chapter7';
 import Chapter8 from './Components/Part2/Chapter8';
@@ -38,7 +39,9 @@ import ProgrammingLanguage from './Components/Part2/ProgrammingLanguage'
 import DataStructures from './Components/Part2/DataStructures';
 import Algorithms from './Components/Part2/Algorithms';
 import DesignPrinciples from './Components/Part2/DesignPrinciples';
+import Ui_Ux from './Components/Part2/Ui_Ux';
 import Quiz2 from './Components/Part2/Quiz2';
+
 import Chapter9 from './Components/Part3/Chapter9';
 import Chapter10 from './Components/Part3/Chapter10';
 import Chapter11 from './Components/Part3/Chapter11';
@@ -62,6 +65,7 @@ root.render(
         <Route path="/parts/prt4" element={<Part4 />} />
         <Route path="/parts/prt5" element={<Part5 />} />
         <Route path="/parts/prt6" element={<Part6 />} />
+
         <Route path="/part1/what-is-computer" element={<Chapter1 />} />
         <Route path="/part1/uses-of-computer" element={<UsesOfComputers />} />
         <Route path="/part1/computer-hardware" element={<Chapter2 />} />
@@ -89,7 +93,9 @@ root.render(
         <Route path="//module2/data-structures" element={<DataStructures />} />
         <Route path="/module2/algorithms" element={<Algorithms />} />
         <Route path="/module3/design-principles" element={<DesignPrinciples />} />
+        <Route path="/module3/ui-ux" element={<Ui_Ux />} />
         <Route path="/part2/chapters/qiz2" element={<Quiz2 />} />
+
         <Route path="/part3/chapters/ch9" element={<Chapter9 />} />
         <Route path="/part3/chapters/ch10" element={<Chapter10 />} />
         <Route path="/part3/chapters/ch11" element={<Chapter11 />} />
