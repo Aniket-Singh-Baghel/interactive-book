@@ -32,73 +32,90 @@ const StepVisuals = ({ step, content }) => {
         transition={{ duration: 0.4 }}
         className="flex justify-center items-center h-96"
       >
-        <div 
-          className={`w-64 rounded-2xl p-4 flex flex-col transition-all duration-500
-            ${isWireframe ? 'border-2 border-dashed border-gray-400' : 'shadow-lg bg-white'}
-          `}
+        <motion.div 
+          className={`w-64 transition-all duration-500`}
+          animate={{
+            padding: showCss ? '1rem' : '0rem',
+            backgroundColor: showCss ? '#ffffff' : 'transparent',
+          }}
         >
-          <div className="h-32 rounded-lg bg-gray-200 flex items-center justify-center relative overflow-hidden">
-            {isWireframe && (
-              <div className="w-full h-full border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
-                <span className="text-gray-400 text-sm">Image</span>
-              </div>
-            )}
-            {showHtml && !isWireframe && (
-              <motion.img
-                src="https://cdn.moglix.com/p/13JDkCzbv6uhD-xxlarge.jpg"
-                alt="Gadget"
-                className="w-full"
-                initial={{ scale: 1.1, opacity: 0 }}
-                animate={{ scale: showCss ? 1 : 1.1, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              />
-            )}
+          <div 
+            className={`
+              ${isWireframe ? 'border-2 border-dashed border-gray-400 p-4' : ''}
+              ${showCss ? 'shadow-lg rounded-2xl' : ''}
+            `}
+          >
+            <div className="h-32 rounded-lg bg-gray-200 flex items-center justify-center relative overflow-hidden">
+              {isWireframe && (
+                <div className="w-full h-full border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400 text-sm">Image</span>
+                </div>
+              )}
+              {showHtml && !isWireframe && (
+                <motion.img
+                  src="https://cdn.moglix.com/p/13JDkCzbv6uhD-xxlarge.jpg"
+                  alt="Gadget"
+                  className="w-full h-full object-cover"
+                  initial={{ scale: 1.1, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                />
+              )}
+            </div>
+            
+            <motion.div 
+              className="mt-4"
+              animate={{
+                paddingLeft: showCss ? '1rem' : '0rem',
+                paddingRight: showCss ? '1rem' : '0rem',
+                paddingBottom: showCss ? '1rem' : '0rem',
+              }}
+            >
+              {isWireframe && (
+                <>
+                  <div className="h-6 w-3/4 rounded bg-gray-300 border-2 border-dashed border-gray-400"></div>
+                  <div className="h-4 w-full mt-2 rounded bg-gray-300 border-2 border-dashed border-gray-400"></div>
+                  <div className="h-4 w-5/6 mt-1 rounded bg-gray-300 border-2 border-dashed border-gray-400"></div>
+                  <div className="w-full mt-4 h-12 rounded-lg bg-gray-300 border-2 border-dashed border-gray-400"></div>
+                </>
+              )}
+              {showHtml && !isWireframe && (
+                <>
+                  <motion.h3 
+                    className={`font-bold text-lg`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0, color: showCss ? '#1f2937' : '#000000' }}
+                  >
+                    {content.card.title}
+                  </motion.h3>
+                  <motion.p 
+                    className={`text-sm mt-1`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0, transition: { delay: 0.1 }, color: showCss ? '#4b5563' : '#000000' }}
+                  >
+                    {content.card.description}
+                  </motion.p>
+                  
+                  <motion.button
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
+                    whileHover={{ scale: step === 3 ? 1.05 : 1 }}
+                    whileTap={{ scale: step === 3 ? 0.95 : 1 }}
+                    onClick={handleButtonClick}
+                    className={`w-full mt-4 h-12 font-bold text-lg flex items-center justify-center transition-colors duration-300
+                      ${!showCss && 'bg-gray-300 text-gray-700 cursor-not-allowed rounded-none'}
+                      ${showCss && 'rounded-lg'}
+                      ${showCss && !addedToCart && 'bg-blue-500 text-white'}
+                      ${showCss && addedToCart && 'bg-green-500 text-white'}
+                    `}
+                  >
+                    {addedToCart ? content.card.buttonAdded : content.card.button}
+                  </motion.button>
+                </>
+              )}
+            </motion.div>
           </div>
-          
-          <div className="mt-4 flex-grow flex flex-col">
-            {isWireframe && (
-              <>
-                <div className="h-6 w-3/4 rounded bg-gray-300 border-2 border-dashed border-gray-400"></div>
-                <div className="h-4 w-full mt-2 rounded bg-gray-300 border-2 border-dashed border-gray-400"></div>
-                <div className="h-4 w-5/6 mt-1 rounded bg-gray-300 border-2 border-dashed border-gray-400"></div>
-                <div className="w-full mt-auto h-12 rounded-lg bg-gray-300 border-2 border-dashed border-gray-400"></div>
-              </>
-            )}
-            {showHtml && !isWireframe && (
-              <>
-                <motion.h3 
-                  className={`font-bold text-lg ${!showCss && 'text-gray-700'}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0, color: showCss ? '#1f2937' : '#374151' }}
-                >
-                  {content.card.title}
-                </motion.h3>
-                <motion.p 
-                  className={`text-sm mt-1 flex-grow ${!showCss && 'text-gray-500'}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0, transition: { delay: 0.1 }, color: showCss ? '#4b5563' : '#6b7282' }}
-                >
-                  {content.card.description}
-                </motion.p>
-                
-                <motion.button
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
-                  whileHover={{ scale: step === 3 ? 1.05 : 1 }}
-                  whileTap={{ scale: step === 3 ? 0.95 : 1 }}
-                  onClick={handleButtonClick}
-                  className={`w-full mt-4 h-12 rounded-lg font-bold text-lg flex items-center justify-center transition-colors duration-300
-                    ${!showCss && 'bg-gray-300 text-gray-500 cursor-not-allowed'}
-                    ${showCss && !addedToCart && 'bg-blue-500 text-white'}
-                    ${showCss && addedToCart && 'bg-green-500 text-white'}
-                  `}
-                >
-                  {addedToCart ? content.card.buttonAdded : content.card.button}
-                </motion.button>
-              </>
-            )}
-          </div>
-        </div>
+        </motion.div>
       </motion.div>
     </AnimatePresence>
   );

@@ -287,7 +287,7 @@ export default function FrontendDevelopment() {
       <div className="max-w-5xl mx-auto">
         <header className="flex items-center justify-between mb-8">
           <Link
-            to="/station"
+            to="/parts/prt2"
             className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
           >
             <FaHome className="mr-2 text-lg text-sky-600" />
