@@ -1,464 +1,441 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import {
   Monitor,
   MousePointerClick,
   Paintbrush,
-  Store,
-  Star,
   Sparkles,
-  DoorOpen,
   Lightbulb,
-  Sun,
-  Moon,
 } from "lucide-react";
+import { FaHome, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import InteractiveWorkflow from "./InteractiveWorkflow";
 
-// --- Small UI primitives (self-contained, replaceable) ---
+const content = {
+  en: {
+    home: "Home",
+    title: "Frontend Development",
+    subtitle:
+      "Building the visual, interactive part of an app — like designing a shop's storefront, signs, and lights that make people smile.",
+    badges: ["Visual", "Interactive", "Playful"],
+    cards: [
+      {
+        icon: <Monitor size={22} className="text-sky-500" />,
+        title: "What you see",
+        desc: "Screens, buttons, colors — frontend draws the stage where app stories happen.",
+      },
+      {
+        icon: <MousePointerClick size={22} className="text-green-500" />,
+        title: "What you do",
+        desc: "Click, type, swipe — frontend makes these actions delightful and clear.",
+      },
+      {
+        icon: <Paintbrush size={22} className="text-pink-500" />,
+        title: "Design",
+        desc: "Colors, spacing and friendly text guide people to explore and have fun.",
+      },
+      {
+        icon: <Lightbulb size={22} className="text-yellow-500" />,
+        title: "Why it matters",
+        desc: "Good frontend turns ideas into joyful experiences — like turning a blank shop into a welcoming place.",
+      },
+    ],
+    howItWorksTitle: "How Frontend Builds an App — A Simple Analogy",
+    howItWorksSteps: [
+      "<b>Architect's Blueprint (UI/UX Design):</b> Before building a house, an architect draws a blueprint. Similarly, designers create wireframes and mockups that show where buttons, text, and images will go.",
+      "<b>Building the Structure (HTML):</b> This is like building the walls and rooms of the house. HTML (HyperText Markup Language) provides the basic structure of a webpage.",
+      "<b>Painting and Decorating (CSS):</b> Once the walls are up, you paint them, add furniture, and hang decorations. CSS (Cascading Style Sheets) is used to style the webpage with colors, fonts, and layouts.",
+      "<b>Making it Interactive (JavaScript):</b> This is like adding electricity to the house so you can turn on lights, open the garage door, and use appliances. JavaScript brings the webpage to life, making buttons clickable and adding animations.",
+    ],
+    comparisonTitle: "Frontend vs. Backend: The Restaurant Analogy",
+    comparison: [
+      {
+        role: "Frontend (The Dining Area)",
+        desc: "This is everything the customer sees and interacts with: the decor, the menu, the seating, and the waiters. It’s all about presentation and user experience.",
+        color: "bg-sky-100",
+      },
+      {
+        role: "Backend (The Kitchen)",
+        desc: "This is where the food is actually cooked and prepared. Customers don't see the kitchen, but it's essential for the restaurant to function. The backend handles the database, servers, and application logic.",
+        color: "bg-green-100",
+      },
+    ],
+    quizTitle: "Quick Quiz",
+    quizQuestion: "Which technology is like the 'paint and furniture' of a website?",
+    quizOptions: ["HTML", "CSS", "JavaScript"],
+    correctAnswer: "CSS",
+    interactiveWorkflow: {
+      title: "From Idea to Interactive: A Mini-Project",
+      card: {
+        title: "Cool Gadget",
+        description: "A very useful tool for your daily tasks.",
+        button: "Add to Cart",
+        buttonAdded: "Added!",
+      },
+      steps: [
+        {
+          title: "Blueprint",
+          description: "First, we sketch a blueprint (wireframe). It's a simple plan showing where everything goes, without any colors or styles.",
+          code: null,
+        },
+        {
+          title: "HTML: The Structure",
+          description: "Next, we build the skeleton with HTML. These tags create the basic structure, like adding walls and rooms to a house.",
+          code: `
+<div class="card">
+  <img src="gadget.jpg" alt="Gadget">
+  <h3>Cool Gadget</h3>
+  <p>A very useful tool...</p>
+  <button>Add to Cart</button>
+</div>
+          `,
+        },
+        {
+          title: "CSS: The Style",
+          description: "Now, we add style with CSS. We set colors, fonts, and spacing to make it look great. It's like painting and decorating the house.",
+          code: `
+.card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+button {
+  background-color: #3b82f6; /* blue-500 */
+  color: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+          `,
+        },
+        {
+          title: "JS: The Magic",
+          description: "Finally, we add JavaScript to make it interactive. Now, when you click the button, it changes its text and color!",
+          code: `
+const button = document.querySelector('button');
+
+button.addEventListener('click', () => {
+  button.textContent = 'Added!';
+  button.style.backgroundColor = '#22c55e'; // green-500
+});
+          `,
+        },
+      ],
+    },
+    previous: "Previous",
+    next: "Next",
+  },
+  hi: {
+    home: "होम",
+    title: "फ्रंटएंड डेवलपमेंट",
+    subtitle:
+      "ऐप का विज़ुअल, इंटरैक्टिव हिस्सा बनाना - जैसे किसी दुकान के 🧿, संकेत, और रोशनी डिज़ाइन करना जो लोगों को मुस्कुराने पर मजबूर कर दे।",
+    badges: ["दृश्य", "इंटरैक्टिव", "मनोहर"],
+    cards: [
+      {
+        icon: <Monitor size={22} className="text-sky-500" />,
+        title: "आप क्या देखते हैं",
+        desc: "स्क्रीन, बटन, रंग - फ्रंटएंड वह मंच बनाता है जहां ऐप की कहानियां होती हैं।",
+      },
+      {
+        icon: <MousePointerClick size={22} className="text-green-500" />,
+        title: "आप क्या करते हैं",
+        desc: "क्लिक करें, टाइप करें, स्वाइप करें - फ्रंटएंड इन क्रियाओं को रमणीय और स्पष्ट बनाता है।",
+      },
+      {
+        icon: <Paintbrush size={22} className="text-pink-500" />,
+        title: "डिज़ाइन",
+        desc: "रंग, स्पेसिंग और मैत्रीपूर्ण टेक्स्ट लोगों को खोजने और मज़े करने के लिए मार्गदर्शन करते हैं।",
+      },
+      {
+        icon: <Lightbulb size={22} className="text-yellow-500" />,
+        title: "यह क्यों मायने रखता है",
+        desc: "अच्छा फ्रंटएंड विचारों को आनंदमय अनुभवों में बदल देता है - जैसे एक खाली दुकान को एक स्वागत योग्य जगह में बदलना।",
+      },
+    ],
+    howItWorksTitle: "फ्रंटएंड एक ऐप कैसे बनाता है - एक सरल सादृश्य",
+    howItWorksSteps: [
+      "<b>वास्तुकार का ब्लूप्रिंट (UI/UX डिज़ाइन):</b> घर बनाने से पहले, एक वास्तुकार एक ब्लूप्रिंट बनाता है। इसी तरह, डिज़ाइनर वायरफ्रेम और मॉकअप बनाते हैं जो दिखाते हैं कि बटन, टेक्स्ट और चित्र कहाँ जाएंगे।",
+      "<b>संरचना का निर्माण (HTML):</b> यह घर की दीवारों और कमरों के निर्माण की तरह है। HTML (हाइपरटेक्स्ट मार्कअप लैंग्वेज) एक वेबपेज की मूल संरचना प्रदान करता है।",
+      "<b>पेंटिंग और सजावट (CSS):</b> दीवारें बन जाने के बाद, आप उन्हें पेंट करते हैं, फर्नीचर जोड़ते हैं, और सजावट लटकाते हैं। CSS (कैस्केडिंग स्टाइल शीट्स) का उपयोग वेबपेज को रंगों, फोंट और लेआउट के साथ स्टाइल करने के लिए किया जाता है।",
+      "<b>इसे इंटरैक्टिव बनाना (JavaScript):</b> यह घर में बिजली जोड़ने जैसा है ताकि आप लाइट चालू कर सकें, गैरेज का दरवाज़ा खोल सकें और उपकरणों का उपयोग कर सकें। जावास्क्रिप्ट वेबपेज को जीवंत करता है, बटन को क्लिक करने योग्य बनाता है और एनिमेशन जोड़ता है।",
+    ],
+    comparisonTitle: "फ्रंटएंड बनाम बैकएंड: रेस्तरां सादृश्य",
+    comparison: [
+      {
+        role: "फ्रंटएंड (भोजन क्षेत्र)",
+        desc: "यह वह सब कुछ है जो ग्राहक देखता है और जिसके साथ इंटरैक्ट करता है: सजावट, मेनू, बैठने की जगह और वेटर। यह सब प्रस्तुति और उपयोगकर्ता अनुभव के बारे में है।",
+        color: "bg-sky-100",
+      },
+      {
+        role: "बैकएंड (रसोई)",
+        desc: "यह वह जगह है जहाँ खाना वास्तव में पकाया और तैयार किया जाता है। ग्राहक रसोई नहीं देखते हैं, लेकिन रेस्तरां के कामकाज के लिए यह आवश्यक है। बैकएंड डेटाबेस, सर्वर और एप्लिकेशन लॉजिक को संभालता है।",
+        color: "bg-green-100",
+      },
+    ],
+    quizTitle: "क्विक क्विज़",
+    quizQuestion: "कौन सी तकनीक किसी वेबसाइट के 'पेंट और फर्नीचर' की तरह है?",
+    quizOptions: ["HTML", "CSS", "JavaScript"],
+    correctAnswer: "CSS",
+    interactiveWorkflow: {
+      title: "विचार से इंटरैक्टिव तक: एक मिनी-प्रोजेक्ट",
+      card: {
+        title: "कूल गैजेट",
+        description: "आपके दैनिक कार्यों के लिए एक बहुत ही उपयोगी उपकरण।",
+        button: "कार्ट में जोड़ें",
+        buttonAdded: "जोड़ा गया!",
+      },
+      steps: [
+        {
+          title: "ब्लूप्रिंट",
+          description: "सबसे पहले, हम एक ब्लूप्रिंट (वायरफ्रेम) स्केच करते हैं। यह एक सरल योजना है जो दिखाती है कि सब कुछ कहाँ जाएगा, बिना किसी रंग या स्टाइल के।",
+          code: null,
+        },
+        {
+          title: "HTML: संरचना",
+          description: "इसके बाद, हम HTML के साथ कंकाल बनाते हैं। ये टैग मूल संरचना बनाते हैं, जैसे घर में दीवारें और कमरे जोड़ना।",
+          code: `
+<div class="card">
+  <img src="gadget.jpg" alt="Gadget">
+  <h3>कूल गैजेट</h3>
+  <p>एक बहुत ही उपयोगी उपकरण...</p>
+  <button>कार्ट में जोड़ें</button>
+</div>
+          `,
+        },
+        {
+          title: "CSS: स्टाइल",
+          description: "अब, हम CSS के साथ स्टाइल जोड़ते हैं। हम इसे शानदार दिखाने के लिए रंग, फ़ॉन्ट और स्पेसिंग सेट करते हैं। यह घर को पेंट करने और सजाने जैसा है।",
+          code: `
+.card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+button {
+  background-color: #3b82f6; /* नीला-500 */
+  color: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+          `,
+        },
+        {
+          title: "JS: जादू",
+          description: "अंत में, हम इसे इंटरैक्टिव बनाने के लिए जावास्क्रिप्ट जोड़ते हैं। अब, जब आप बटन पर क्लिक करते हैं, तो इसका टेक्स्ट और रंग बदल जाता है!",
+          code: `
+const button = document.querySelector('button');
+
+button.addEventListener('click', () => {
+  button.textContent = 'जोड़ा गया!';
+  button.style.backgroundColor = '#22c55e'; // हरा-500
+});
+          `,
+        },
+      ],
+    },
+    previous: "पिछला",
+    next: "अगला",
+  },
+};
+
 const Card = ({ children, className = "" }) => (
-  <div className={`rounded-2xl shadow-lg bg-white p-5 ${className}`}>{children}</div>
-);
-
-const Button = ({ children, className = "", ...props }) => (
-  <button
-    {...props}
-    className={`inline-flex items-center gap-2 px-4 py-2 rounded-2xl font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 ${className}`}
-  >
+  <div className={`rounded-2xl shadow-lg bg-white p-5 ${className}`}>
     {children}
-  </button>
+  </div>
 );
 
 const Badge = ({ children }) => (
-  <span className="px-3 py-1 rounded-full bg-gradient-to-r from-sky-100 to-emerald-100 text-sm font-semibold shadow">{children}</span>
+  <span className="px-3 py-1 rounded-full bg-sky-100 text-sky-800 text-sm font-semibold shadow">
+    {children}
+  </span>
 );
 
-// --- Confetti component (fixed & improved) ---
-function Confetti({ count = 28, active = false }) {
-  const colors = [
-    "#FF6B6B",
-    "#FFD93D",
-    "#6BE4A6",
-    "#6BD3FF",
-    "#A78BFA",
-    "#FF9BB3",
-  ];
-
-  const pieces = Array.from({ length: count }).map((_, i) => ({
-    id: i,
-    left: Math.random() * 100,
-    delay: Math.random() * 0.6,
-    rot: Math.random() * 360,
-    size: Math.random() * 12 + 8,
-    color: colors[Math.floor(Math.random() * colors.length)],
-  }));
-
-  return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden z-50">
-      <AnimatePresence>
-        {active && (
-          <div className="absolute inset-0">
-            {pieces.map((p) => (
-              <motion.div
-                key={p.id}
-                initial={{ opacity: 0, y: -20, x: `${p.left}%`, rotate: p.rot }}
-                animate={{ opacity: [1, 1, 0], y: [0, 160 + Math.random() * 220], rotate: p.rot + 360 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: p.delay, duration: 1.6, ease: "easeOut" }}
-                style={{ left: `${p.left}%` }}
-                className="absolute top-8 rounded-sm"
-              >
-                <div style={{ width: p.size, height: p.size, background: p.color }} className="rounded-sm" />
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-// --- Simple Shop preview tile ---
-function ShopPreview({ color = "#FFD1A6", open = false, decorations = [] }) {
-  return (
-    <motion.div
-      layout
-      initial={{ scale: 0.98, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      className="relative w-72 md:w-96 p-4 rounded-2xl shadow-2xl bg-gradient-to-br from-white/80 to-white/60"
-    >
-      <motion.div
-        className="absolute -top-6 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-full shadow-md flex items-center gap-3"
-        animate={{ rotate: [0, 2, 0, -2, 0] }}
-        transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-        style={{ background: color }}
-      >
-        <Store size={18} />
-        <div className="font-extrabold text-sm">My Cool Shop</div>
-      </motion.div>
-
-      <div className="mt-8 bg-white rounded-xl p-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-bold">Sunny Snacks</h3>
-            <p className="text-xs text-gray-500">A friendly place built with Frontend magic</p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className="text-sm text-gray-600">Lights</div>
-            <div className="w-12 h-6 rounded-full bg-yellow-200 flex items-center p-1">
-              <div
-                className={`w-5 h-5 rounded-full bg-yellow-400 transition-transform ${open ? "translate-x-6" : "translate-x-0"}`}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-3 grid grid-cols-3 gap-3 items-end">
-          <motion.div className="col-span-2 rounded-lg h-28 bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center relative overflow-hidden">
-            <motion.div animate={{ scale: open ? 1.02 : 1 }} transition={{ type: "spring", stiffness: 60 }}>
-              <div className="text-center">
-                <div className="text-5xl">🏪</div>
-                <div className="text-xs text-gray-500">Welcome!</div>
-              </div>
-            </motion.div>
-
-            <div className="absolute bottom-2 right-2 flex gap-1">
-              {decorations.map((d, i) => (
-                <div key={i} className="p-1 rounded bg-white/90 shadow text-xs">{d}</div>
-              ))}
-            </div>
-          </motion.div>
-
-          <div className="rounded-lg h-28 bg-gradient-to-b from-rose-50 to-rose-100 flex items-center justify-center">
-            <div className="text-sm text-rose-700">Signboard</div>
-          </div>
-        </div>
-
-        <div className="mt-4 flex gap-3 items-center justify-between">
-          <div className="text-sm text-gray-600">Door</div>
-          <motion.div animate={{ x: open ? 6 : 0 }} transition={{ type: "spring", stiffness: 100 }} className="p-2 bg-slate-50 rounded">
-            <DoorOpen size={18} />
-          </motion.div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// --- Main component ---
 export default function FrontendDevelopment() {
-  // core visual / behavior states
-  const [themeColor, setThemeColor] = useState("#FFD1A6");
-  const [shopOpen, setShopOpen] = useState(true);
-  const [decorations, setDecorations] = useState([]);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(false);
-  const [kidsMode, setKidsMode] = useState(true);
+  const [lang, setLang] = useState("en");
+  const [quizFeedback, setQuizFeedback] = useState(null);
+  const navigate = useNavigate();
+  const t = content[lang];
 
-  // audio via ref (no external hook)
-  const audioRef = useRef(null);
   useEffect(() => {
-    // guard for SSR
-    if (typeof window !== "undefined") {
-      try {
-        audioRef.current = new Audio("/sounds/chime.mp3");
-        audioRef.current.volume = 0.65;
-      } catch (e) {
-        audioRef.current = null;
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === "k") {
+        event.preventDefault();
+        setLang((prevLang) => (prevLang === "en" ? "hi" : "en"));
       }
-    }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
-  // parallax for hero
-  const y = useMotionValue(0);
-  const yTransform = useTransform(y, [0, 260], [0, -30]);
-
-  // play chime when confetti shows
-  useEffect(() => {
-    let t;
-    if (showConfetti) {
-      if (soundEnabled && audioRef.current) {
-        audioRef.current.currentTime = 0;
-        const p = audioRef.current.play();
-        if (p && p.catch) p.catch(() => {}); // ignore promise rejections
-      }
-      t = setTimeout(() => setShowConfetti(false), 1600);
+  const handleQuizOptionClick = (option) => {
+    if (option === t.correctAnswer) {
+      setQuizFeedback({ type: "correct", message: "Correct! CSS is for styling." });
+    } else {
+      setQuizFeedback({ type: "incorrect", message: "Not quite. Try again!" });
     }
-
-    return () => clearTimeout(t);
-  }, [showConfetti, soundEnabled]);
-
-  // helpers
-  const addDecoration = (emoji) => setDecorations((s) => [...s, emoji]);
-  const clearDecorations = () => setDecorations([]);
-  const triggerCelebrate = (extra = null) => {
-    if (extra) addDecoration(extra);
-    setShowConfetti(true);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-rose-50 to-emerald-50 p-6 md:p-12">
-      <Confetti active={showConfetti} />
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-5xl mx-auto">
+        <header className="flex items-center justify-between mb-8">
+          <Link
+            to="/station"
+            className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
+          >
+            <FaHome className="mr-2 text-lg text-sky-600" />
+            {t.home}
+          </Link>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setLang("en")}
+              className={`px-3 py-1 rounded-lg border font-semibold ${
+                lang === "en"
+                  ? "bg-sky-600 text-white border-sky-600"
+                  : "bg-white text-gray-700 border-gray-300"
+              } transition`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang("hi")}
+              className={`px-3 py-1 rounded-lg border font-semibold ${
+                lang === "hi"
+                  ? "bg-sky-600 text-white border-sky-600"
+                  : "bg-white text-gray-700 border-gray-300"
+              } transition`}
+            >
+              हिं
+            </button>
+          </div>
+        </header>
 
-      <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        {/* HERO / LEFT */}
-        <motion.header className="md:col-span-7 p-6 bg-white/80 rounded-3xl shadow-2xl backdrop-blur" style={{ y: yTransform }}>
-          <motion.div initial={{ opacity: 0, y: -18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-3xl bg-gradient-to-br from-yellow-200 to-pink-200 shadow-md">
-                <Sparkles size={28} className="text-orange-600" />
-              </div>
-
-              <div>
-                <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">Frontend Development</h1>
-                <p className="text-gray-600 mt-2 max-w-xl">Building the visual, interactive part of an app — like designing a shop's storefront, signs, and lights that make people smile.</p>
-              </div>
-            </div>
-
-            <div className="mt-6 flex gap-3 flex-wrap">
-              <Badge>Visual</Badge>
-              <Badge>Interactive</Badge>
-              <Badge>Playful</Badge>
-            </div>
-
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Card>
-                <div className="flex items-start gap-4">
-                  <Monitor size={22} className="text-sky-500" />
-                  <div>
-                    <h4 className="font-bold">What kids see</h4>
-                    <p className="text-sm text-gray-600">Screens, buttons, colors — frontend draws the stage where app stories happen.</p>
-                  </div>
+        <main className="space-y-12">
+          <section>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 rounded-2xl bg-yellow-200 shadow-md">
+                  <Sparkles size={28} className="text-orange-600" />
                 </div>
-              </Card>
-
-              <Card>
-                <div className="flex items-start gap-4">
-                  <MousePointerClick size={22} className="text-green-500" />
-                  <div>
-                    <h4 className="font-bold">What they do</h4>
-                    <p className="text-sm text-gray-600">Click, type, swipe — frontend makes these actions delightful and clear.</p>
-                  </div>
-                </div>
-              </Card>
-
-              <Card>
-                <div className="flex items-start gap-4">
-                  <Paintbrush size={22} className="text-pink-500" />
-                  <div>
-                    <h4 className="font-bold">Design</h4>
-                    <p className="text-sm text-gray-600">Colors, spacing and friendly text guide people to explore and have fun.</p>
-                  </div>
-                </div>
-              </Card>
-
-              <Card>
-                <div className="flex items-start gap-4">
-                  <Lightbulb size={22} className="text-yellow-500" />
-                  <div>
-                    <h4 className="font-bold">Why it matters</h4>
-                    <p className="text-sm text-gray-600">Good frontend turns ideas into joyful experiences — like turning a blank shop into a welcoming place.</p>
-                  </div>
-                </div>
-              </Card>
-            </div>
-
-            <div className="mt-6 flex items-center gap-4">
-              <Button onClick={() => triggerCelebrate()} className="bg-gradient-to-r from-pink-500 to-yellow-400 text-white">Start the Magic ✨</Button>
-
-              <div className="ml-auto flex items-center gap-3">
-                <div className="text-sm text-gray-600">Kids Mode</div>
-                <button onClick={() => setKidsMode((s) => !s)} aria-pressed={kidsMode} className={`w-14 h-7 rounded-full p-1 ${kidsMode ? "bg-emerald-400" : "bg-gray-300"}`}>
-                  <div className={`h-5 w-5 bg-white rounded-full shadow transform ${kidsMode ? "translate-x-7" : "translate-x-0"} transition-transform`} />
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </motion.header>
-
-        {/* RIGHT: Live preview + controls */}
-        <aside className="md:col-span-5 p-4 rounded-3xl shadow-lg bg-white/60 backdrop-blur">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Star size={18} className="text-amber-500" />
                 <div>
-                  <div className="text-sm font-semibold">Live Shop Preview</div>
-                  <div className="text-xs text-gray-500">Change colors, open doors, decorate!</div>
+                  <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
+                    {t.title}
+                  </h1>
+                  <p className="text-gray-600 mt-1 max-w-2xl">{t.subtitle}</p>
                 </div>
               </div>
-
-              <div className="flex items-center gap-2">
-                <button title="Toggle sound" onClick={() => setSoundEnabled((s) => !s)} className={`p-2 rounded ${soundEnabled ? "bg-yellow-100" : "bg-gray-100"}`}>
-                  {soundEnabled ? <Sun size={16} /> : <Moon size={16} />}
-                </button>
-
-                <div className="flex items-center gap-2">
-                  <label htmlFor="color" className="text-xs text-gray-600">Color</label>
-                  <input id="color" type="color" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} className="w-10 h-7 p-0 border-none" />
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <ShopPreview color={themeColor} open={shopOpen} decorations={decorations} />
-
-              <div className="mt-4 flex gap-2 items-center">
-                <Button onClick={() => setShopOpen((s) => !s)} className="bg-white">{shopOpen ? "Close Shop" : "Open Shop"}</Button>
-                <Button onClick={() => { triggerCelebrate("🎈"); addDecoration("🎈"); }} className="bg-white">Add 🎈</Button>
-                <Button onClick={() => { clearDecorations(); triggerCelebrate(); }} className="bg-white">Clear</Button>
-              </div>
-
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                { ["🎈","🌟","🎁","🍭","🍪","🌈"].map((e) => (
-                  <motion.button key={e} whileTap={{ scale: 0.92 }} onClick={() => addDecoration(e)} className="py-2 px-3 rounded-lg bg-white shadow">{e}</motion.button>
-                )) }
-              </div>
-            </div>
-          </motion.div>
-        </aside>
-      </section>
-
-      {/* DENSE CONTENT AREA */}
-      <section className="max-w-7xl mx-auto mt-12 p-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-
-          <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { title: "Buttons", icon: <MousePointerClick size={28} className="text-white"/>, desc: "Buttons respond with bounces and tiny sounds." },
-              { title: "Forms", icon: <Monitor size={28} className="text-white"/>, desc: "Inputs guide you with friendly messages and animated helpers." },
-              { title: "Menus", icon: <Paintbrush size={28} className="text-white"/>, desc: "Menus slide and show playful pointers." }
-            ].map((c) => (
-              <motion.div key={c.title} whileHover={{ scale: 1.04 }} className="bg-gradient-to-br from-white to-white/90 p-4 rounded-2xl shadow-md">
-                <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 rounded-lg flex items-center justify-center bg-gradient-to-br from-indigo-500 to-emerald-400 text-white shadow-lg">{c.icon}</div>
-                  <div>
-                    <h4 className="font-bold">{c.title}</h4>
-                    <div className="text-xs text-gray-600">{c.desc}</div>
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  {c.title === "Buttons" && (
-                    <motion.button whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.96 }} onClick={() => triggerCelebrate()} className="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-400 to-yellow-400 text-white font-bold shadow">Click me!</motion.button>
-                  )}
-
-                  {c.title === "Forms" && (
-                    <div className="mt-2">
-                      <input placeholder="Type your name" className="w-full px-3 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-amber-300" />
-                    </div>
-                  )}
-
-                  {c.title === "Menus" && (
-                    <div className="mt-2 inline-block relative">
-                      <motion.div whileHover={{ scale: 1.03 }} className="px-3 py-2 rounded-lg bg-white shadow">Menu ▾</motion.div>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <Card>
-            <h3 className="text-xl font-extrabold">How Frontend Builds an App — step by step (kid version)</h3>
-            <ol className="mt-3 list-decimal list-inside space-y-2 text-sm text-gray-700">
-              <li><b>Plan the shop:</b> choose colors, signs, and what goes on the shelves.</li>
-              <li><b>Draw the windows:</b> make simple mockups that show where things go.</li>
-              <li><b>Make it interactive:</b> add buttons, menus and little animations so people know what to do.</li>
-              <li><b>Test with friends:</b> watch how kids play — then make it easier and more fun.</li>
-              <li><b>Ship it:</b> put the shop on the internet so everyone can visit!</li>
-            </ol>
-
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="p-4 rounded-xl bg-sky-50">
-                <h4 className="font-bold">Micro-interaction</h4>
-                <p className="text-xs text-gray-600">Small responses like a button wiggle or a tiny sound — these make apps feel alive.</p>
-              </div>
-              <div className="p-4 rounded-xl bg-rose-50">
-                <h4 className="font-bold">Accessibility</h4>
-                <p className="text-xs text-gray-600">Big labels, good contrast and keyboard support so all kids can play.</p>
-              </div>
-            </div>
-          </Card>
-
-          <Card>
-            <h3 className="text-lg font-bold">Mini Build: Make a sign</h3>
-            <p className="text-xs text-gray-600 mt-2">Pick a background color and an icon to create a magical sign for your shop.</p>
-
-            <div className="mt-3 flex gap-3 items-center">
-              <input type="color" value={themeColor} onChange={(e) => setThemeColor(e.target.value)} className="w-14 h-10 p-0 border-none" />
-
-              <div className="flex gap-2">
-                {["🌟","🍭","🎈","🍪"].map((s) => (
-                  <button key={s} onClick={() => addDecoration(s)} className="px-3 py-2 rounded bg-white shadow">{s}</button>
+              <div className="flex gap-2 flex-wrap">
+                {t.badges.map((badge, index) => (
+                  <Badge key={index}>{badge}</Badge>
                 ))}
               </div>
+            </motion.div>
 
-              <div className="ml-auto">
-                <Button onClick={() => triggerCelebrate()} className="bg-gradient-to-r from-rose-500 to-yellow-400 text-white">Make Sign</Button>
-              </div>
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {t.cards.map((card, index) => (
+                <Card key={index}>
+                  <div className="flex items-start gap-4">
+                    {card.icon}
+                    <div>
+                      <h4 className="font-bold">{card.title}</h4>
+                      <p className="text-sm text-gray-600">{card.desc}</p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
             </div>
+          </section>
 
-            <div className="mt-4">
-              <div className="inline-block p-4 rounded-2xl shadow" style={{ background: themeColor }}>
-                <div className="text-2xl">{decorations.slice(-1)[0] ?? "✨"}</div>
-              </div>
+          <section>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">{t.howItWorksTitle}</h2>
+            <div className="space-y-4">
+              {t.howItWorksSteps.map((step, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-start gap-4 p-4 bg-white rounded-lg shadow"
+                >
+                  <div className="text-2xl font-bold text-sky-500">{index + 1}</div>
+                  <p className="text-gray-700" dangerouslySetInnerHTML={{ __html: step }} />
+                </motion.div>
+              ))}
             </div>
-          </Card>
+          </section>
 
-        </div>
+          <section>
+            <InteractiveWorkflow content={t.interactiveWorkflow} />
+          </section>
 
-        <aside className="space-y-6">
-          <Card>
-            <h3 className="font-bold">Quick Glossary</h3>
-            <ul className="mt-3 text-sm text-gray-700 space-y-2">
-              <li><b>UI</b>: The look and layout — buttons, colors, text.</li>
-              <li><b>UX</b>: The whole feeling — was it easy and fun?</li>
-              <li><b>Micro-interaction</b>: Tiny animations that say "good job".</li>
-              <li><b>Responsive</b>: Works on phones and tablets too.</li>
-            </ul>
-          </Card>
-
-          <Card>
-            <h3 className="font-bold">Tiny Quiz</h3>
-            <div className="mt-2 text-sm">
-              <p>Which part makes a button wiggle?</p>
-              <div className="mt-2 flex gap-2">
-                <button onClick={() => triggerCelebrate("🎉")} className="px-3 py-2 rounded bg-white shadow">A. Backend</button>
-                <button onClick={() => triggerCelebrate("🎉")} className="px-3 py-2 rounded bg-white shadow">B. Frontend</button>
-              </div>
+          <section>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">{t.comparisonTitle}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {t.comparison.map((item, index) => (
+                <Card key={index} className={item.color}>
+                  <h3 className="font-bold text-lg mb-2">{item.role}</h3>
+                  <p className="text-sm text-gray-700">{item.desc}</p>
+                </Card>
+              ))}
             </div>
-          </Card>
+          </section>
 
-          <Card>
-            <h3 className="font-bold">Tips for grown-ups</h3>
-            <ul className="text-xs text-gray-600 mt-2 space-y-2">
-              <li>Keep interactions simple and discoverable.</li>
-              <li>Use clear labels and large tap targets for kids.</li>
-              <li>Test on real devices and watch how children use it.</li>
-            </ul>
-          </Card>
-        </aside>
-      </section>
+          <section>
+            <Card>
+              <h3 className="text-lg font-bold">{t.quizTitle}</h3>
+              <p className="mt-2 text-sm text-gray-600">{t.quizQuestion}</p>
+              <div className="mt-3 flex gap-2">
+                {t.quizOptions.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => handleQuizOptionClick(option)}
+                    className="px-4 py-2 rounded-lg bg-white shadow hover:bg-gray-100 transition"
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+              {quizFeedback && (
+                <p
+                  className={`mt-3 text-sm font-semibold ${
+                    quizFeedback.type === "correct" ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {quizFeedback.message}
+                </p>
+              )}
+            </Card>
+          </section>
+        </main>
 
-      {/* Footer CTA */}
-      <footer className="max-w-7xl mx-auto mt-12 p-6 rounded-3xl bg-white/80 shadow-2xl flex flex-col md:flex-row items-center gap-4">
-        <div>
-          <h3 className="text-2xl font-extrabold">Ready to build a storefront?</h3>
-          <p className="text-gray-600">Try changing the color, add decorations, then press the big glowing button to celebrate.</p>
-        </div>
-
-        <div className="ml-auto flex items-center gap-4">
-          <Button onClick={() => triggerCelebrate()} className="bg-gradient-to-r from-rose-500 to-yellow-400 text-white font-extrabold">Let's Build the Magic ✨</Button>
-
-          <Button onClick={() => { clearDecorations(); setThemeColor('#FFD1A6'); setShopOpen(true); }} className="bg-white">Reset</Button>
-        </div>
-      </footer>
-
-      <style>{`
-        .rounded-3xl { border-radius: 1.5rem; }
-        .rounded-2xl { border-radius: 1rem; }
-        .shadow-2xl { box-shadow: 0 25px 50px rgba(16,24,40,0.08); }
-      `}</style>
+        <footer className="w-full flex justify-between items-center mt-12 p-4 bg-gray-100 rounded-lg shadow-md">
+          <button
+            onClick={() => navigate("/module3/ui-ux")}
+            className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+          >
+            <FaArrowLeft />
+            {t.previous}
+          </button>
+          <button
+            onClick={() => navigate("/module3/backend")}
+            className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+          >
+            {t.next}
+            <FaArrowRight />
+          </button>
+        </footer>
+      </div>
     </div>
   );
 }
