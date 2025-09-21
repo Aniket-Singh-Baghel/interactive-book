@@ -7,22 +7,11 @@ import {
   Store,
   Star,
   Sparkles,
-  Gift,
   DoorOpen,
   Lightbulb,
   Sun,
   Moon,
-  Coffee
 } from "lucide-react";
-
-/*
-  FrontendDevelopment
-  - Single-file React component intended for a Tailwind + Framer Motion project
-  - No shadcn/ui imports (Card & Button implemented inline)
-  - No conditional hooks (no useSound hook). Uses HTMLAudio via ref for sound.
-  - Fixed Confetti generation bug (removed stray 'n')
-  - Rich, dense content and high-fidelity animations suitable for kids
-*/
 
 // --- Small UI primitives (self-contained, replaceable) ---
 const Card = ({ children, className = "" }) => (
