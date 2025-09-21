@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { motion } from "framer-motion";
-import { FaPepperHot, FaBlender, FaCheckCircle, FaArrowRight, FaArrowLeft, FaHome } from "react-icons/fa";
-import { Link, useNavigate } from 'react-router-dom';
+import { FaPepperHot, FaBlender, FaCheckCircle, FaArrowRight, FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import { LanguageContext } from '../LanguageContext';
+import Menu from '../Menu';
 
 const content = {
   en: {
-    home: "Home",
     title: "What is a Computer? 🤖",
     subtitle: "Let's understand what a computer is with a simple real-life example and a formal definition.",
     simple_machine_title: "A Simple Machine",
@@ -23,7 +24,6 @@ const content = {
     next: "Next",
   },
   hi: {
-    home: "होम",
     title: "कंप्यूटर क्या है? 🤖",
     subtitle: "आइए एक सरल वास्तविक जीवन के उदाहरण और एक औपचारिक परिभाषा के साथ समझें कि कंप्यूटर क्या है।",
     simple_machine_title: "एक सरल मशीन",
@@ -43,24 +43,15 @@ const content = {
 };
 
 const Chapter1 = () => {
-  const [lang, setLang] = useState('en');
+  const { language } = useContext(LanguageContext);
   const navigate = useNavigate();
-  const t = content[lang];
+  const t = content[language];
 
   return (
     <div className="bg-gradient-to-br from-blue-50 to-green-50 font-sans">
+      <Menu />
       <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-gradient-to-br from-blue-50 to-green-50 font-sans">
         <div className="max-w-5xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <Link to="/parts/prt1" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
-              <FaHome className="mr-2 text-lg text-sky-600" />
-              {t.home}
-            </Link>
-            <div className="flex space-x-2">
-              <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
-              <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
-            </div>
-          </div>
           <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl">
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
