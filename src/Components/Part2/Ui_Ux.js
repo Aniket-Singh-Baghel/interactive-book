@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion}  from "framer-motion";
 import { FaHome, FaArrowLeft, FaArrowRight, FaPaintBrush } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
@@ -112,6 +112,21 @@ export default function UiUx() {
   const navigate = useNavigate();
   const t = content[lang];
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+        event.preventDefault();
+        setLang(prevLang => (prevLang === 'en' ? 'hi' : 'en'));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const container = {
     hidden: { opacity: 0, y: 12 },
     show: { opacity: 1, y: 0, transition: { staggerChildren: 0.06 } },
@@ -127,7 +142,7 @@ export default function UiUx() {
       <header className="max-w-6xl mx-auto px-6 py-8 relative z-10">
         <div className="flex items-center justify-between">
           <Link
-            to="/"
+            to="/parts/prt2"
             className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
           >
             <FaHome className="mr-2 text-lg text-sky-600" />
