@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { LanguageProvider } from './LanguageContext';
+import { LanguageProvider } from './Components/LanguageContext';
 import ScrollToTop from './Components/ScrollToTop';
 import Acknowledgement from './Components/Acknowledgement';
 import Introduction from './Components/WhatIsIct';

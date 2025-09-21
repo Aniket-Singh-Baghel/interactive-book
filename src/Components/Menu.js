@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaBars, FaTimes, FaBook, FaChevronRight } from 'react-icons/fa';
-import { LanguageContext } from '../../LanguageContext';
+import { LanguageContext } from './LanguageContext';
 
 const menuContent = {
     en: {
