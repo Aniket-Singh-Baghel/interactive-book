@@ -41,6 +41,7 @@ import Algorithms from './Components/Part2/Algorithms';
 import DesignPrinciples from './Components/Part2/DesignPrinciples';
 import UiUx from './Components/Part2/Ui_Ux';
 import FrontendDevelopment from './Components/Part2/FrontendDevelopment';
+import Databases from './Components/Part2/Databases';
 import Quiz2 from './Components/Part2/Quiz2';
 
 import Chapter9 from './Components/Part3/Chapter9';
@@ -96,6 +97,8 @@ root.render(
         <Route path="/module3/design-principles" element={<DesignPrinciples />} />
         <Route path="/module3/ui-ux" element={<UiUx />} />
         <Route path="/module3/frontend" element={<FrontendDevelopment />} />
+
+        <Route path="/module3/databases" element={<Databases />} />
         <Route path="/part2/chapters/qiz2" element={<Quiz2 />} />
 
         <Route path="/part3/chapters/ch9" element={<Chapter9 />} />
