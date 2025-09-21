@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaPepperHot, FaBlender, FaCheckCircle, FaArrowRight, FaArrowLeft, FaHome } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
-import Menu from "../Menu";
 
 const content = {
   en: {
@@ -50,7 +49,6 @@ const Chapter1 = () => {
 
   return (
     <div className="bg-gradient-to-br from-blue-50 to-green-50 font-sans">
-      <Menu lang={lang} setLang={setLang} />
       <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-gradient-to-br from-blue-50 to-green-50 font-sans">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-between mb-8">
