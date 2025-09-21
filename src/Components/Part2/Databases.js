@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FaDatabase, FaServer, FaLaptopCode, FaArrowRight, FaArrowLeft, FaHome, FaShapes, FaFileAlt, FaBolt, FaProjectDiagram, FaChartLine } from "react-icons/fa";
+import { FaDatabase, FaArrowRight, FaArrowLeft, FaHome, FaShapes, FaFileAlt, FaBolt, FaProjectDiagram, FaChartLine } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 
 const content = {
@@ -480,14 +480,14 @@ const Databases = () => {
 
         <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
           <button
-            onClick={() => navigate('/module3/ui-ux')}
+            onClick={() => navigate('/module3/backend')}
             className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
           >
             <FaArrowLeft />
             {t.previous}
           </button>
           <button
-            onClick={() => navigate('/module3/backend')}
+            onClick={() => navigate('/parts/prt2')}
             className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
           >
             {t.next}
