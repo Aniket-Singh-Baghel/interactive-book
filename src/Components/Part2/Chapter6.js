@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaHome, FaMobileAlt, FaTv, FaLightbulb, FaArrowLeft, FaArrowRight, FaTimes } from "react-icons/fa";
 import { MdLocalLaundryService, MdOutlineRouter, MdVideogameAsset, MdWatch } from "react-icons/md";
@@ -120,6 +120,18 @@ export default function Chapter6() {
   const t = content[lang];
   const examples = examplesData[lang];
   const modalExamples = funExamples[lang];
+
+  useEffect(() => {
+      const handleKeyDown = (event) => {
+        if (event.ctrlKey && event.key === 'k') {
+          event.preventDefault();
+          setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+  
 
   return (
     <div className="min-h-screen relative bg-gradient-to-br from-pink-50 via-purple-50 to-yellow-50 p-4 sm:p-8 md:px-12 font-sans overflow-hidden">

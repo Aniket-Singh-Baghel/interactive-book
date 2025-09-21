@@ -1,319 +1,213 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Server, Database, Settings, Music, Headphones, Users, Speaker } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
+import { FaHome, FaArrowLeft, FaArrowRight, FaServer, FaDatabase, FaCode, FaUserShield, FaBrain } from "react-icons/fa";
+import { Link, useNavigate } from 'react-router-dom';
 
-const Card = ({ children, className = "" }) => (
-  <div className={`rounded-2xl shadow-lg bg-white p-6 ${className}`}>{children}</div>
-);
-const Button = ({ children, className = "", ...props }) => (
-  <button
-    {...props}
-    className={`inline-flex items-center gap-2 px-4 py-2 rounded-2xl font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 ${className}`}
-  >
-    {children}
-  </button>
-);
-
-// --- Translations (English + Hindi) ---
-const TEXT = {
+const content = {
   en: {
-    title: "Backend Development",
-    concept: "Building the server, database, and logic that works behind the scenes to power the frontend.",
-    analogyShort: "Analogy: An orchestra — conductor, musicians, sheet music, and stage crew that make the show run.",
-    analogyLong:
-      "The backend is like an orchestra: the conductor (server) directs the musicians (services), the sheet music (database) holds the notes, and the crew (ops) makes sure the lights and instruments work. Together they create the final performance the audience (frontend) sees.",
-    startMagic: "Start the Symphony",
-    showAll: "Show All Sections",
-    instruments: "Instruments (Services)",
-    conductor: "Conductor (Server)",
-    sheetMusic: "Sheet Music (Database)",
-    stageCrew: "Stage Crew (Ops)",
-    whyBackend: "Why Backend Matters",
-    tips: "Tips for Building Backend",
-    funFacts: "Fun Backend Facts",
-    celebrate: "Celebrate Backend 🎉",
-    languages: "Languages",
-    open: "Open",
-    close: "Close",
+    home: "Home",
+    title: "Backend Development: The Digital Brain 🧠",
+    subtitle: "Explore the powerful server-side that handles data, security, and the logic that makes applications work seamlessly.",
+    main_analogy_title: "The Restaurant Kitchen Analogy",
+    main_analogy_desc: "A web application is like a restaurant. The frontend is the dining area where you enjoy your meal. The backend is the bustling kitchen where chefs (servers) prepare food (process data) using ingredients from a well-stocked pantry (database).",
+    server_title: "The Server: The Master Chef",
+    server_desc: "The server acts as the head chef, orchestrating the entire kitchen. It takes orders (requests), manages the cooking process, and ensures every dish (response) is perfect.",
+    database_title: "The Database: The Pantry",
+    database_desc: "The database is a vast, organized pantry. It stores every ingredient (data) imaginable, from user profiles to content, all neatly labeled and ready for the chef.",
+    api_title: "The API: The Waiter",
+    api_desc: "The API is the diligent waiter, shuttling orders between the dining room (frontend) and the kitchen (backend). It's the vital communication link that ensures you get what you asked for.",
+    auth_title: "Authentication & Authorization",
+    auth_desc: "This is like the restaurant's security. Authentication is checking your ID at the door to see who you are. Authorization is checking the guest list to see what areas you're allowed to access.",
+    clarification_title: "Frontend vs. Backend vs. Database",
+    clarification_frontend: "<strong>Frontend:</strong> What you see and interact with (the dining area). It's all about the user experience, design, and presentation.",
+    clarification_backend: "<strong>Backend:</strong> The hidden engine (the kitchen). It handles the logic, calculations, and data management that you don't see.",
+    clarification_database: "<strong>Database:</strong> The organized storage (the pantry). It's where all the application's data is kept securely.",
+    live_example_title: "Live Backend Example: User Login",
+    live_example_desc: "Enter a username below to see how the backend 'authenticates' a user. This is a simplified simulation.",
+    live_example_button: "Login",
+    live_example_loading: "Checking credentials...",
+    live_example_success: "Welcome, ",
+    live_example_error: "User not found. Try 'admin' or 'guest'.",
+    previous: "previous",
+    next: "Next",
   },
   hi: {
-    title: "बैकएंड डेवलपमेंट",
-    concept: "सर्वर, डेटाबेस, और लॉजिक बनाना जो फ्रंटएंड को पीछे से पॉवर देता है।",
-    analogyShort: "उपमा: एक ऑर्केस्ट्रा — कंडक्टर, वादक, शीट-म्यूजिक और स्टेज क्रू जो शो चलाते हैं।",
-    analogyLong:
-      "बैकएंड एक ऑर्केस्ट्रा की तरह है: कंडक्टर (सर्वर) वादकों (सर्विसेस) का निर्देशन करता है, शीट-म्यूजिक (डेटाबेस) ताल और नोट्स रखता है, और स्टेज क्रू (ऑप्स) सुनिश्चित करता है कि लाइट और उपकरण सही काम कर रहे हों। मिलकर वे वह परफॉर्मेंस बनाते हैं जिसे ऑडियंस (फ्रंटएंड) देखती है।",
-    startMagic: "सिम्फनी शुरू करें",
-    showAll: "सभी सेक्शन दिखाएँ",
-    instruments: "वाद्य (सर्विसेस)",
-    conductor: "कंडक्टर (सर्वर)",
-    sheetMusic: "शीट-म्यूजिक (डेटाबेस)",
-    stageCrew: "स्टेज क्रू (ऑप्स)",
-    whyBackend: "बैकएंड क्यों मायने रखता है",
-    tips: "बैकएंड बनाने के सुझाव",
-    funFacts: "मज़ेदार तथ्य",
-    celebrate: "बैकएंड का जश्न 🎉",
-    languages: "भाषाएँ",
-    open: "खोलें",
-    close: "बंद करें",
-  },
+    home: "होम",
+    title: "बैकएंड डेवलपमेंट: डिजिटल मस्तिष्क 🧠",
+    subtitle: "शक्तिशाली सर्वर-साइड का अन्वेषण करें जो डेटा, सुरक्षा और उस तर्क को संभालता है जो अनुप्रयोगों को सहजता से काम करता है।",
+    main_analogy_title: "रेस्टोरेंट की रसोई की उपमा",
+    main_analogy_desc: "एक वेब एप्लिकेशन एक रेस्टोरेंट की तरह है। फ्रंटएंड डाइनिंग एरिया है जहाँ आप अपने भोजन का आनंद लेते हैं। बैकएंड व्यस्त रसोई है जहाँ शेफ (सर्वर) एक अच्छी तरह से स्टॉक की गई पेंट्री (डेटाबेस) से सामग्री का उपयोग करके भोजन (डेटा प्रोसेस) तैयार करते हैं।",
+    server_title: "सर्वर: मास्टर शेफ",
+    server_desc: "सर्वर हेड शेफ के रूप में काम करता है, जो पूरी रसोई का संचालन करता है। यह ऑर्डर (अनुरोध) लेता है, खाना पकाने की प्रक्रिया का प्रबंधन करता है, और यह सुनिश्चित करता है कि हर व्यंजन (प्रतिक्रिया) एकदम सही हो।",
+    database_title: "डेटाबेस: पैंट्री",
+    database_desc: "डेटाबेस एक विशाल, संगठित पेंट्री है। यह उपयोगकर्ता प्रोफाइल से लेकर सामग्री तक, हर कल्पनीय घटक (डेटा) को संग्रहीत करता है, सभी बड़े करीने से लेबल किए गए और शेफ के लिए तैयार हैं।",
+    api_title: "एपीआई: वेटर",
+    api_desc: "एपीआई मेहनती वेटर है, जो डाइनिंग रूम (फ्रंटएंड) और किचन (बैकएंड) के बीच ऑर्डर भेजता है। यह महत्वपूर्ण संचार लिंक है जो यह सुनिश्चित करता है कि आपको वही मिले जो आपने मांगा था।",
+    auth_title: "प्रमाणीकरण और प्राधिकरण",
+    auth_desc: "यह रेस्टोरेंट की सुरक्षा की तरह है। प्रमाणीकरण यह देखने के लिए दरवाजे पर आपकी आईडी की जाँच कर रहा है कि आप कौन हैं। प्राधिकरण यह देखने के लिए अतिथि सूची की जाँच कर रहा है कि आपको किन क्षेत्रों तक पहुँचने की अनुमति है।",
+    clarification_title: "फ्रंटएंड बनाम बैकएंड बनाम डेटाबेस",
+    clarification_frontend: "<strong>फ्रंटएंड:</strong> जो आप देखते हैं और जिसके साथ इंटरैक्ट करते हैं (डाइनिंग एरिया)। यह सब उपयोगकर्ता अनुभव, डिजाइन और प्रस्तुति के बारे में है।",
+    clarification_backend: "<strong>बैकएंड:</strong> छिपा हुआ इंजन (रसोई)। यह उस तर्क, गणना और डेटा प्रबंधन को संभालता है जिसे आप नहीं देखते हैं।",
+    clarification_database: "<strong>डेटाबेस:</strong> संगठित भंडारण (पेंट्री)। यहीं पर एप्लिकेशन का सारा डेटा सुरक्षित रूप से रखा जाता है।",
+    live_example_title: "लाइव बैकएंड उदाहरण: उपयोगकर्ता लॉगिन",
+    live_example_desc: "यह देखने के लिए नीचे एक उपयोगकर्ता नाम दर्ज करें कि बैकएंड उपयोगकर्ता को कैसे 'प्रमाणित' करता है। यह एक सरलीकृत सिमुलेशन है।",
+    live_example_button: "लॉग इन करें",
+    live_example_loading: "क्रेडेंशियल्स की जाँच हो रही है...",
+    live_example_success: "आपका स्वागत है, ",
+    live_example_error: "उपयोगकर्ता नहीं मिला। 'admin' या 'guest' का प्रयास करें।",
+    previous: "पिछला",
+    next: "अगला",
+  }
 };
 
-// --- Confetti ---
-function Confetti({ active = false, count = 28 }) {
-  const colors = ["#FF6B6B", "#FFD93D", "#6BE4A6", "#6BD3FF", "#A78BFA", "#FF9BB3"];
-  const pieces = Array.from({ length: count }).map((_, i) => ({
-    id: i,
-    left: Math.random() * 100,
-    delay: Math.random() * 0.6,
-    rot: Math.random() * 360,
-    size: Math.random() * 12 + 8,
-    color: colors[Math.floor(Math.random() * colors.length)],
-  }));
-
-  return (
-    <div className="pointer-events-none fixed inset-0 overflow-hidden z-50">
-      <AnimatePresence>
-        {active && (
-          <div className="absolute inset-0">
-            {pieces.map((p) => (
-              <motion.div
-                key={p.id}
-                initial={{ opacity: 0, y: -20, x: `${p.left}%`, rotate: p.rot }}
-                animate={{ opacity: [1, 1, 0], y: [0, 180 + Math.random() * 250], rotate: p.rot + 360 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: p.delay, duration: 1.8, ease: "easeOut" }}
-                className="absolute top-8 rounded-sm"
-              >
-                <div style={{ width: p.size, height: p.size, background: p.color }} className="rounded-sm" />
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-// --- Orchestra Preview (interactive) ---
-function OrchestraPreview({ locale, openParts = [] }) {
-  const L = TEXT[locale];
-  const parts = [
-    { key: "conductor", title: L.conductor, icon: <Music size={18} /> },
-    { key: "instruments", title: L.instruments, icon: <Headphones size={18} /> },
-    { key: "sheet", title: L.sheetMusic, icon: <Database size={18} /> },
-    { key: "crew", title: L.stageCrew, icon: <Settings size={18} /> },
-  ];
-
-  return (
-    <motion.div className="relative w-full p-4 rounded-2xl shadow-2xl bg-gradient-to-br from-white/80 to-white/60">
-      <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><Server size={18} /> {L.analogyShort}</h3>
-
-      <div className="grid grid-cols-1 gap-3">
-        {parts.map((p, i) => {
-          const isOpen = openParts.includes(p.key);
-          return (
-            <motion.div key={p.key} whileHover={{ scale: 1.02 }} className={`p-3 rounded-xl shadow-md ${isOpen ? 'bg-green-50' : 'bg-gray-50'}`}>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 text-white flex items-center justify-center">{p.icon}</div>
-                <div>
-                  <div className="font-semibold text-sm">{p.title}</div>
-                  {isOpen && (
-                    <motion.p initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} className="text-xs text-gray-600 mt-2">
-                      {p.key === "conductor" && (locale === 'hi' ?
-                        "कंडक्टर सर्वर होता है — जो सभी वादकों को निर्देश देता है और समय पर सही नोट्स भेजता है।" :
-                        "The conductor is the server — directing services and keeping time, ensuring everything happens when it should.")}
-
-                      {p.key === "instruments" && (locale === 'hi' ?
-                        "वाद्य सेवाएँ हैं — छोटे-छोटे प्रोग्राम जो गीत के हिस्से निभाते हैं (जैसे ऑथ, पेमेंट)।" :
-                        "Instruments are the services — small programs playing parts of the song (like auth, payments).")}
-
-                      {p.key === "sheet" && (locale === 'hi' ?
-                        "शीट-म्यूजिक (डेटाबेस) सभी नोट्स और जानकारी रखता है ताकि वादक सही सुर में बजा सकें।" :
-                        "The sheet music (database) keeps all the notes and information so the musicians play the right tune.")}
-
-                      {p.key === "crew" && (locale === 'hi' ?
-                        "स्टेज क्रू ऑप्स/डिप्लॉयमेंट है — वे पृष्ठभूमि में उपकरण लगाते और ठीक रखते हैं।" :
-                        "The stage crew are ops/deployment — they set up instruments and keep the stage working behind-the-scenes.")}
-                    </motion.p>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
+const Card = ({ icon, title, description, children }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.5 }}
+    transition={{ duration: 0.6, ease: "easeOut" }}
+    className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-pink-100 transition-all duration-300"
+  >
+    <div className="flex items-center mb-4">
+      <div className="p-3 bg-pink-100 text-pink-500 rounded-full mr-4">
+        {icon}
       </div>
-    </motion.div>
-  );
-}
+      <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+    </div>
+    <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: description }} />
+    {children}
+  </motion.div>
+);
 
-// --- Main: BackendOrchestra ---
-export default function BackendDevelopment() {
-  const [locale, setLocale] = useState('en');
-  const L = TEXT[locale];
-
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [openParts, setOpenParts] = useState([]);
-  const audioRef = useRef(null);
+const BackendDevelopment = () => {
+  const [lang, setLang] = useState('en');
+  const [username, setUsername] = useState('');
+  const [loginStatus, setLoginStatus] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const t = content[lang];
 
   useEffect(() => {
-    // initialize optional sound (guarded)
-    if (typeof window !== 'undefined') {
-      try {
-        audioRef.current = new Audio('/sounds/symphony-chime.mp3');
-        audioRef.current.volume = 0.6;
-      } catch (e) {
-        audioRef.current = null;
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
       }
-    }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  useEffect(() => {
-    let t;
-    if (showConfetti) {
-      if (audioRef.current) {
-        const p = audioRef.current.play();
-        if (p && p.catch) p.catch(() => {});
+  const handleLogin = useCallback(() => {
+    setLoading(true);
+    setLoginStatus('');
+    setTimeout(() => {
+      if (username.toLowerCase() === 'admin' || username.toLowerCase() === 'guest') {
+        setLoginStatus(`${t.live_example_success}${username}!`);
+      } else {
+        setLoginStatus(t.live_example_error);
       }
-      t = setTimeout(() => setShowConfetti(false), 1600);
-    }
-    return () => clearTimeout(t);
-  }, [showConfetti]);
-
-  const togglePart = (key) => {
-    setOpenParts((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
-  };
-
-  const openAll = () => setOpenParts(['conductor', 'instruments', 'sheet', 'crew']);
-  const closeAll = () => setOpenParts([]);
+      setLoading(false);
+    }, 1500);
+  }, [username, t]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 p-6 md:p-12">
-      <Confetti active={showConfetti} />
-
-      <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        <motion.header className="md:col-span-7 p-6 bg-white/80 rounded-3xl shadow-2xl backdrop-blur">
-          <motion.div initial={{ opacity: 0, y: -18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-3xl bg-gradient-to-br from-yellow-200 to-pink-200 shadow-md">
-                <Music size={28} className="text-orange-600" />
-              </div>
-              <div>
-                <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">{L.title}</h1>
-                <p className="text-gray-700 mt-3 max-w-xl">{L.concept}</p>
-                <p className="text-sm text-gray-600 mt-3 italic">{L.analogyShort}</p>
-              </div>
-            </div>
-
-            <div className="mt-6 flex gap-3 items-center">
-              <div className="flex gap-2">
-                <Button onClick={() => setShowConfetti(true)} className="bg-gradient-to-r from-orange-500 to-red-500 text-white">{L.celebrate}</Button>
-                <Button onClick={openAll} className="bg-gradient-to-r from-green-400 to-emerald-500 text-white">{L.showAll}</Button>
-              </div>
-
-              <div className="ml-auto flex items-center gap-3">
-                <label className="text-sm text-gray-600 mr-2">{TEXT[locale].languages}:</label>
-                <select
-                  aria-label="Select language"
-                  value={locale}
-                  onChange={(e) => setLocale(e.target.value)}
-                  className="rounded px-2 py-1 border"
-                >
-                  <option value="en">English</option>
-                  <option value="hi">हिन्दी</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Card>
-                <h3 className="font-bold">{L.conductor}</h3>
-                <p className="text-sm text-gray-600 mt-2">{locale === 'hi' ? 'कंडक्टर सर्वर है — वह अनुरोधों का निर्देशन करता है और सेवाओं को बताता है कब बजना है।' : 'The conductor (server) directs requests and tells services when to play their part.'}</p>
-                <div className="mt-3 flex gap-2">
-                  <Button onClick={() => togglePart('conductor')} className="bg-white text-gray-700 text-sm">{openParts.includes('conductor') ? L.close : L.open}</Button>
-                </div>
-              </Card>
-
-              <Card>
-                <h3 className="font-bold">{L.instruments}</h3>
-                <p className="text-sm text-gray-600 mt-2">{locale === 'hi' ? 'वाद्य छोटे-छोटे सर्विसेस हैं — वे ऑथ, पेमेंट और नोटिफिकेशन जैसे काम करते हैं।' : 'Instruments are services — they handle auth, payments, notifications and more.'}</p>
-                <div className="mt-3 flex gap-2">
-                  <Button onClick={() => togglePart('instruments')} className="bg-white text-gray-700 text-sm">{openParts.includes('instruments') ? L.close : L.open}</Button>
-                </div>
-              </Card>
-
-              <Card>
-                <h3 className="font-bold">{L.sheetMusic}</h3>
-                <p className="text-sm text-gray-600 mt-2">{locale === 'hi' ? 'शीट-म्यूजिक डेटाबेस है — इसमें सारे नोट्स और रिकॉर्ड्स को सुरक्षित रखा जाता है।' : 'The sheet music is the database — it stores all the notes and records.'}</p>
-                <div className="mt-3 flex gap-2">
-                  <Button onClick={() => togglePart('sheet')} className="bg-white text-gray-700 text-sm">{openParts.includes('sheet') ? L.close : L.open}</Button>
-                </div>
-              </Card>
-
-              <Card>
-                <h3 className="font-bold">{L.stageCrew}</h3>
-                <p className="text-sm text-gray-600 mt-2">{locale === 'hi' ? 'स्टेज क्रू ऑप्स और डिप्लॉयमेंट है — वे सबकुछ चालू और सुरक्षित रखते हैं।' : 'Stage crew are ops/deployments — they keep everything running and secure.'}</p>
-                <div className="mt-3 flex gap-2">
-                  <Button onClick={() => togglePart('crew')} className="bg-white text-gray-700 text-sm">{openParts.includes('crew') ? L.close : L.open}</Button>
-                </div>
-              </Card>
-            </div>
-          </motion.div>
-        </motion.header>
-
-        <aside className="md:col-span-5 p-4 rounded-3xl shadow-lg bg-white/60 backdrop-blur">
-          <OrchestraPreview locale={locale} openParts={openParts} />
-          <div className="mt-4 grid grid-cols-2 gap-2">
-            <Button onClick={() => { setShowConfetti(true); }} className="bg-white text-gray-700 text-xs">{L.celebrate}</Button>
-            <Button onClick={closeAll} className="bg-white text-gray-700 text-xs">{locale === 'hi' ? 'सभी बंद करें' : 'Close All'}</Button>
+    <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-pink-50 text-gray-800 font-sans">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-center justify-between mb-12">
+          <Link to="/parts/prt2" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
+            <FaHome className="mr-2 text-lg text-pink-500" />
+            {t.home}
+          </Link>
+          <div className="flex space-x-2">
+            <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-pink-500 text-white border-pink-500" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
+            <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-pink-500 text-white border-pink-500" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
           </div>
-        </aside>
-      </section>
-
-      {/* Deep-dive sections */}
-      <section className="max-w-7xl mx-auto mt-12 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card>
-          <h3 className="font-bold text-lg">{L.whyBackend}</h3>
-          <p className="mt-2 text-sm text-gray-700">{locale === 'hi' ? 'बैकएंड वह हिस्सा है जो डेटा संभालता है, सुरक्षा करता है और लॉजिक चलाता है। यह फ्रंटएंड को वह सब देता है जो देखने में आता है।' : 'Backend handles data, security, and logic. It gives the frontend what it needs to show and interact.'}</p>
-        </Card>
-
-        <Card>
-          <h3 className="font-bold text-lg">{L.tips}</h3>
-          <ul className="mt-2 text-sm text-gray-700 space-y-2">
-            <li>{locale === 'hi' ? 'मॉड्यूलर सर्विसेस बनाएं (छोटे वादक).' : 'Build modular services (small musicians).'}</li>
-            <li>{locale === 'hi' ? 'डेटा को व्यवस्थित रखें (शीट-म्यूजिक साफ रखें).' : 'Keep data organized (keep sheet music clean).'}</li>
-            <li>{locale === 'hi' ? 'ऑटोमेट करें और बैकअप रखें (दूसरा मैनुअल कॉपी).' : 'Automate and backup (keep a spare copy).'} </li>
-            <li>{locale === 'hi' ? 'सुरक्षा और पहुंच नियंत्रण का ध्यान रखें.' : 'Mind security and access control.'}</li>
-          </ul>
-        </Card>
-
-        <Card>
-          <h3 className="font-bold text-lg">{L.funFacts}</h3>
-          <ul className="mt-2 text-sm text-gray-700 space-y-2">
-            <li>{locale === 'hi' ? 'कई बड़े सिस्टम्स में हज़ारों सर्विसेस साथ मिलकर काम करते हैं।' : 'Many large systems run thousands of services together.'}</li>
-            <li>{locale === 'hi' ? 'API वेटर की तरह होते हैं — वे ऑर्डर ले कर किचन तक पहुँचाते हैं।' : 'APIs are like waiters — they deliver requests to the kitchen.'}</li>
-            <li>{locale === 'hi' ? 'रोलबैक संभव है: बदलाव गलत हो तो पुरानी सीट पर वापस जाएँ।' : 'Rollbacks let you return to a previous state if an update breaks things.'}</li>
-          </ul>
-        </Card>
-      </section>
-
-      {/* Footer CTA */}
-      <footer className="max-w-7xl mx-auto mt-12 p-6 rounded-3xl bg-white/80 shadow-2xl flex flex-col md:flex-row items-center gap-4">
-        <div>
-          <h3 className="text-2xl font-extrabold">{L.title} — {locale === 'hi' ? 'ऑर्केस्ट्रा उपमा' : 'Orchestra Analogy'}</h3>
-          <p className="text-gray-600">{locale === 'hi' ? 'कंडक्टर, वादक, शीट-म्यूजिक और स्टेज क्रू मिलकर एक सुन्दर परफॉर्मेंस बनाते हैं।' : 'Conductor, musicians, sheet music and crew make a beautiful performance together.'}</p>
         </div>
 
-        <div className="ml-auto flex items-center gap-4">
-          <Button onClick={() => setShowConfetti(true)} className="bg-gradient-to-r from-rose-500 to-yellow-400 text-white font-extrabold">{L.startMagic}</Button>
-          <Button onClick={() => { setLocale(locale === 'en' ? 'hi' : 'en'); }} className="bg-white">{locale === 'en' ? 'हिन्दी में देखें' : 'View in English'}</Button>
+        <div className="text-center mb-12">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-3"
+          >
+            {t.title}
+          </motion.h1>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            {t.subtitle}
+          </p>
         </div>
-      </footer>
 
-      <style>{`
-        .rounded-3xl { border-radius: 1.5rem; }
-        .rounded-2xl { border-radius: 1rem; }
-        .shadow-2xl { box-shadow: 0 25px 50px rgba(16,24,40,0.08); }
-      `}</style>
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <Card icon={<FaServer size={22} />} title={t.server_title} description={t.server_desc} />
+          <Card icon={<FaDatabase size={22} />} title={t.database_title} description={t.database_desc} />
+          <Card icon={<FaCode size={22} />} title={t.api_title} description={t.api_desc} />
+        </div>
+
+        <div className="grid md:grid-cols-1 gap-8 mb-12">
+          <Card icon={<FaUserShield size={22} />} title={t.auth_title} description={t.auth_desc} />
+        </div>
+
+        <Card icon={<FaBrain size={22} />} title={t.clarification_title}>
+          <div className="mt-4 space-y-4">
+            <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: t.clarification_frontend }} />
+            <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: t.clarification_backend }} />
+            <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: t.clarification_database }} />
+          </div>
+        </Card>
+
+        <div className="mt-12">
+          <Card icon={<FaCode size={22} />} title={t.live_example_title} description={t.live_example_desc}>
+            <div className="mt-4 flex flex-col sm:flex-row gap-4 items-center">
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter username"
+                className="w-full sm:w-auto flex-grow bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-400"
+              />
+              <motion.button
+                onClick={handleLogin}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto px-6 py-2 bg-pink-500 text-white font-bold rounded-lg shadow-lg hover:bg-pink-600 transition"
+                disabled={loading}
+              >
+                {loading ? t.live_example_loading : t.live_example_button}
+              </motion.button>
+            </div>
+            {loginStatus && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className={`mt-4 text-center font-semibold ${loginStatus.includes(t.live_example_success) ? 'text-green-600' : 'text-red-600'}`}
+              >
+                {loginStatus}
+              </motion.p>
+            )}
+          </Card>
+        </div>
+
+
+        <div className="w-full flex justify-between items-center mt-12 p-4 bg-white rounded-lg shadow-md border border-gray-200">
+          <button
+            onClick={() => navigate('/module3/frontend')}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-pink-600 rounded-lg shadow transition"
+          >
+            <FaArrowLeft />
+            {t.previous}
+          </button>
+          <button
+            onClick={() => navigate('/module3/databases')}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-pink-600 rounded-lg shadow transition"
+          >
+            {t.next}
+            <FaArrowRight />
+          </button>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default BackendDevelopment;

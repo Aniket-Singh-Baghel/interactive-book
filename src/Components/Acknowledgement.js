@@ -12,6 +12,7 @@ const translations = {
       "I would like to express my gratitude to all the teachers, friends, and family members who directly or indirectly encouraged and guided me in this work.",
     ],
     signature: "— Aniket Singh Baghel,\n ICT Instructor\nGovt. H.S.S. Ichaul, Satna",
+    email: "aniketsinghbaghel45@gmail.com",
     startButton: "Start your journey",
     topHint: "Scroll down and click the button to start your journey",
     langOptions: { en: "English", hi: "हिन्दी", both: "Both" },
@@ -26,6 +27,7 @@ const translations = {
       "मैं उन सभी शिक्षकों, मित्रों और परिवारजनों का आभार प्रकट करता हूँ जिन्होंने प्रत्यक्ष या परोक्ष रूप से इस कार्य में मेरा उत्साह बढ़ाया और मेरा मार्गदर्शन किया।",
     ],
     signature: "— Aniket Singh Baghel,\n ICT Instructor\nGovt. H.S.S. Ichaul, Satna",
+    email: "aniketsinghbaghel45@gmail.com",
     startButton: "अपना सफर शुरू करें",
     topHint: "नीचे स्क्रॉल करें और अपना सफर शुरू करने के लिए बटन पर क्लिक करें",
     langOptions: { en: "English", hi: "हिन्दी", both: "दोनों" },
@@ -84,6 +86,7 @@ export default function AcknowledgmentComponent({ onStart } = {}) {
                 </p>
               ))}
               <p className="mt-4 whitespace-pre-line text-sm font-medium">{translations.en.signature}</p>
+              <a href={`mailto:${translations.en.email}`} className="text-sm text-blue-600 hover:underline">{translations.en.email}</a>
             </article>
           )}
 
