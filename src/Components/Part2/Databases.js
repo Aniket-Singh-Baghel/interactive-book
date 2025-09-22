@@ -113,7 +113,7 @@ const content = {
         "<strong>Graph database</strong> is a map showing who is friends with whom.",
         "<strong>Time-series</strong> is the daily diary logging everything the students do."
     ],
-    interactive_showcase_title: "Interactive Database Showcase",
+    interactive_showcase_title: "Database Types Explorer",
     previous: "Previous",
     next: "Next",
   },
@@ -226,7 +226,7 @@ const content = {
         "<strong>ग्राफ डेटाबेस</strong> एक नक्शा है जो दिखाता है कि कौन किसके साथ दोस्त है।",
         "<strong>टाइम-सीरीज़</strong> दैनिक डायरी है जो छात्रों द्वारा की जाने वाली हर चीज को लॉग करती है।"
     ],
-    interactive_showcase_title: "इंटरैक्टिव डेटाबेस शोकेस",
+    interactive_showcase_title: "डेटाबेस प्रकार एक्सप्लोरर",
     previous: "पिछला",
     next: "अगला",
   }
@@ -260,6 +260,16 @@ const Databases = () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  useEffect(() => {
+    const newContent = content[lang];
+    const newSelectedDb = newContent.db_types.find(db => db.name === selectedDb.name);
+    if (newSelectedDb) {
+      setSelectedDb(newSelectedDb);
+    } else {
+      setSelectedDb(newContent.db_types[0]);
+    }
+  }, [lang]);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-gray-50 font-sans">

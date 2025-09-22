@@ -1,0 +1,553 @@
+import React, { useState, useMemo, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaGlobe, FaHistory, FaCodeBranch, FaClock, FaClipboard } from "react-icons/fa";
+
+/*
+  VersionControlModule.jsx
+  - Default-exported React component (single-file) for a module about Version Control Systems.
+  - Tailwind CSS required for styling.
+  - Framer Motion used for micro-animations.
+  - Multilingual: English (en) and Hindi (hi).
+  - Interactive "Live Sandbox" simulates commits, branches, merges and rewind so learners can *see* how VCS works.
+  - Use this component inside any route e.g. /module4/version-control
+
+  How to use:
+    import VersionControlModule from './VersionControlModule';
+    <VersionControlModule />
+
+  Notes:
+    - This is a frontend simulation (educational). It isn't running a real Git process but demonstrates the core ideas
+      (commits as snapshots, branches as named pointers, merging, conflicts, and rewinding history).
+    - The component includes copy-to-clipboard buttons for real git commands so learners can try them in their terminals.
+*/
+
+const PATH = "/module4/version-control";
+
+const translations = {
+  en: {
+    title: "Version Control Systems",
+    concept:
+      "Software (like Git) that tracks and manages changes to code, enabling collaboration.",
+    analogy: "A magic history book for your project that lets you rewind to any previous version.",
+    pathLabel: "Module Path",
+    liveSandbox: "Live Sandbox",
+    instructions:
+      "Edit files on the right, then commit. Create branches, switch branches, merge, and rewind to understand how VCS preserves history.",
+    newCommitMsg: "Commit message...",
+    commitBtn: "Commit",
+    createBranch: "Create Branch",
+    checkout: "Checkout",
+    mergeBtn: "Merge into",
+    revertBtn: "Rewind to this commit",
+    conflictTitle: "Merge conflict — choose how to resolve:",
+    resolved: "Resolved",
+    cheatTitle: "Cheat Sheet — common Git commands",
+    examplesTitle: "Live Examples & Use-cases",
+    bestPracticesTitle: "Best Practices",
+    copy: "Copy",
+    history: "History",
+    branches: "Branches",
+  },
+  hi: {
+    title: "वर्ज़न कंट्रोल सिस्टम्स",
+    concept: "सॉफ्टवेयर (जैसे Git) जो कोड में बदलावों को ट्रैक और मैनेज करता है, जिससे सहयोग संभव होता है।",
+    analogy: "आपकी प्रोजेक्ट की एक जादुई इतिहास की किताब जो किसी भी पिछले वर्ज़न पर वापस जाने देती है।",
+    pathLabel: "मॉड्यूल पाथ",
+    liveSandbox: "लाइव सैंडबॉक्स",
+    instructions:
+      "दाईं ओर फ़ाइलें एडिट करें, फिर कमिट करें। ब्रांच बनाएं, स्विच करें, मर्ज करें, और इतिहास को रिवाइंड करके VCS कैसे काम करता है समझें।",
+    newCommitMsg: "कमीट संदेश...",
+    commitBtn: "कमिट करें",
+    createBranch: "ब्रांच बनाएँ",
+    checkout: "चेकआउट",
+    mergeBtn: "मर्ज करें",
+    revertBtn: "इस कमीट पर लौटें",
+    conflictTitle: "मर्ज कॉन्फ्लिक्ट — समाधान चुनें:",
+    resolved: "समाधान किया गया",
+    cheatTitle: "चीट शीट — सामान्य Git कमांड",
+    examplesTitle: "लाइव उदाहरण और उपयोग",
+    bestPracticesTitle: "सर्वोत्तम प्रथाएँ",
+    copy: "कॉपी",
+    history: "इतिहास",
+    branches: "ब्रांचेज़",
+  },
+};
+
+function shortId() {
+  return Math.random().toString(16).slice(2, 8);
+}
+
+function now() {
+  return new Date().toLocaleTimeString();
+}
+
+export default function VersionControlModule({ initialLang = "en" }) {
+  const [lang, setLang] = useState(initialLang);
+  const t = (k) => translations[lang][k] || translations.en[k];
+
+  // --- Simulation state ---
+  const [files, setFiles] = useState({
+    "README.md": "# Magic App\nThis project demonstrates version control concepts.",
+    "index.js": "console.log('Hello, world!');",
+  });
+
+  const initialCommit = {
+    id: shortId(),
+    message: "Initial commit",
+    files: JSON.parse(JSON.stringify(files)),
+    parent: null,
+    branch: "main",
+    time: now(),
+  };
+
+  const [commits, setCommits] = useState([initialCommit]);
+  const [branches, setBranches] = useState({ main: initialCommit.id });
+  const [currentBranch, setCurrentBranch] = useState("main");
+  const [head, setHead] = useState(initialCommit.id); // HEAD points to commit id
+
+  const [selectedFile, setSelectedFile] = useState("README.md");
+  const [editorText, setEditorText] = useState(files[selectedFile]);
+  const [commitMsg, setCommitMsg] = useState("");
+  const [newBranchName, setNewBranchName] = useState("");
+  const [mergeSource, setMergeSource] = useState(null);
+  const [conflict, setConflict] = useState(null); // {file, ours, theirs}
+
+  useEffect(() => {
+    setEditorText(files[selectedFile] || "");
+  }, [selectedFile, files]);
+
+  // helper to find commit by id
+  const findCommit = (id) => commits.find((c) => c.id === id);
+
+  // Commit: snapshot files
+  function doCommit(message) {
+    if (!message || message.trim().length === 0) message = "(no message)";
+    const snapshot = JSON.parse(JSON.stringify(files));
+    const c = {
+      id: shortId(),
+      message,
+      files: snapshot,
+      parent: branches[currentBranch],
+      branch: currentBranch,
+      time: now(),
+    };
+    const nextCommits = [...commits, c];
+    setCommits(nextCommits);
+    // update branch pointer
+    setBranches((b) => ({ ...b, [currentBranch]: c.id }));
+    setHead(c.id);
+    setCommitMsg("");
+  }
+
+  // Create branch pointing at current HEAD
+  function createBranch(name) {
+    if (!name) return;
+    if (branches[name]) {
+      alert("Branch already exists");
+      return;
+    }
+    setBranches((b) => ({ ...b, [name]: head }));
+    setNewBranchName("");
+  }
+
+  // Checkout branch
+  function checkoutBranch(name) {
+    if (!branches[name]) return;
+    setCurrentBranch(name);
+    const branchHead = branches[name];
+    const c = findCommit(branchHead);
+    if (c) {
+      setFiles(JSON.parse(JSON.stringify(c.files)));
+      setHead(c.id);
+      setSelectedFile(Object.keys(c.files)[0]);
+    }
+  }
+
+  // Simple merge: merge source branch into currentBranch
+  function startMerge(sourceBranch) {
+    if (!branches[sourceBranch]) return;
+    setMergeSource(sourceBranch);
+    const sourceCommit = findCommit(branches[sourceBranch]);
+    const targetCommit = findCommit(branches[currentBranch]);
+
+    // Detect conflicts (same file changed differently)
+    const conflicts = [];
+    const mergedFiles = { ...(targetCommit?.files || {}) };
+    Object.keys(sourceCommit.files).forEach((fname) => {
+      const ours = targetCommit.files[fname];
+      const theirs = sourceCommit.files[fname];
+      if (ours !== undefined && ours !== theirs) {
+        // naive detection
+        conflicts.push({ file: fname, ours, theirs });
+      } else {
+        mergedFiles[fname] = theirs;
+      }
+    });
+
+    if (conflicts.length > 0) {
+      setConflict(conflicts[0]);
+    } else {
+      // fast-forward-like merge: create a merge commit
+      const mergeMsg = `Merge ${sourceBranch} into ${currentBranch}`;
+      const c = {
+        id: shortId(),
+        message: mergeMsg,
+        files: mergedFiles,
+        parent: branches[currentBranch],
+        branch: currentBranch,
+        time: now(),
+      };
+      const nextCommits = [...commits, c];
+      setCommits(nextCommits);
+      setBranches((b) => ({ ...b, [currentBranch]: c.id }));
+      setHead(c.id);
+      setFiles(JSON.parse(JSON.stringify(mergedFiles)));
+      setMergeSource(null);
+    }
+  }
+
+  function resolveConflictWith(choice) {
+    if (!conflict) return;
+    const { file } = conflict;
+    const targetCommit = findCommit(branches[currentBranch]);
+    const sourceCommit = findCommit(branches[mergeSource]);
+    const mergedFiles = { ...(targetCommit?.files || {}) };
+    mergedFiles[file] = choice === "ours" ? targetCommit.files[file] : sourceCommit.files[file];
+
+    // create merge commit
+    const mergeMsg = `Merge ${mergeSource} into ${currentBranch} (conflict resolved)`;
+    const c = {
+      id: shortId(),
+      message: mergeMsg,
+      files: mergedFiles,
+      parent: branches[currentBranch],
+      branch: currentBranch,
+      time: now(),
+    };
+    const nextCommits = [...commits, c];
+    setCommits(nextCommits);
+    setBranches((b) => ({ ...b, [currentBranch]: c.id }));
+    setHead(c.id);
+    setFiles(JSON.parse(JSON.stringify(mergedFiles)));
+    setConflict(null);
+    setMergeSource(null);
+  }
+
+  // Rewind to commit (checkout a past commit as HEAD but keep branch pointer to it)
+  function rewindTo(commitId) {
+    const c = findCommit(commitId);
+    if (!c) return;
+    setHead(c.id);
+    setFiles(JSON.parse(JSON.stringify(c.files)));
+    // Move current branch pointer to this commit (like a hard reset)
+    setBranches((b) => ({ ...b, [currentBranch]: c.id }));
+  }
+
+  // UI helpers
+  function updateFileInEditor(text) {
+    setEditorText(text);
+    setFiles((f) => ({ ...f, [selectedFile]: text }));
+  }
+
+  function copyToClipboard(text) {
+    if (navigator && navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(
+        () => {
+          // small feedback handled by brief toast-like visual
+          // we'll just flash a small animation
+        },
+        () => alert("Copy failed — try manually")
+      );
+    } else {
+      alert("Clipboard not available in this browser");
+    }
+  }
+
+  const commitNodes = useMemo(() => {
+    return commits.map((c, idx) => ({ ...c, idx }));
+  }, [commits]);
+
+  // Command cheat sheet strings
+  const cheatCommands = [
+    { label: "Init repo", cmd: "git init" },
+    { label: "Clone", cmd: "git clone <url>" },
+    { label: "Check status", cmd: "git status" },
+    { label: "Add", cmd: "git add <file>" },
+    { label: "Commit", cmd: "git commit -m \"message\"" },
+    { label: "Create branch", cmd: "git branch <name>" },
+    { label: "Checkout branch", cmd: "git checkout <name>" },
+    { label: "Merge", cmd: "git merge <branch>" },
+    { label: "Revert", cmd: "git revert <commit>" },
+  ];
+
+  return (
+    <div className="w-full min-h-screen p-6 bg-gradient-to-br from-sky-50 to-white text-slate-900">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row items-start gap-6">
+          {/* Left column: Intro / Controls */}
+          <div className="md:w-1/3 w-full space-y-4">
+            <div className="p-4 rounded-2xl shadow-md bg-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-2xl font-extrabold">{t("title")}</h1>
+                  <p className="mt-1 text-sm text-slate-600">{t("concept")}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    className={`px-3 py-1 rounded-lg text-sm font-medium ${lang === "en" ? "bg-sky-600 text-white" : "bg-white text-slate-700 border"}`}
+                    onClick={() => setLang("en")}
+                  >
+                    EN
+                  </button>
+                  <button
+                    className={`px-3 py-1 rounded-lg text-sm font-medium ${lang === "hi" ? "bg-sky-600 text-white" : "bg-white text-slate-700 border"}`}
+                    onClick={() => setLang("hi")}
+                  >
+                    हिन्दी
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <div className="rounded-lg p-3 bg-sky-50 border border-sky-100">
+                  <p className="text-slate-700 text-sm">📚 <strong>{t("analogy")}</strong></p>
+                </div>
+
+                <div className="mt-3 text-sm text-slate-600">
+                  <p>{t("instructions")}</p>
+                </div>
+
+                <div className="mt-4 text-xs text-slate-500">
+                  <div className="flex items-center justify-between">
+                    <span>{t("pathLabel")}</span>
+                    <code className="text-xs px-2 py-1 bg-slate-100 rounded">{PATH}</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl shadow-md bg-white space-y-3">
+              <h3 className="font-semibold">{t("cheatTitle")}</h3>
+              <div className="grid grid-cols-1 gap-2">
+                {cheatCommands.map((c) => (
+                  <div key={c.cmd} className="flex items-center justify-between gap-2">
+                    <div className="text-xs text-slate-700">{c.label}</div>
+                    <div className="flex items-center gap-2">
+                      <code className="text-xs px-2 py-1 bg-slate-100 rounded">{c.cmd}</code>
+                      <button
+                        className="text-xs px-2 py-1 rounded bg-sky-600 text-white"
+                        onClick={() => copyToClipboard(c.cmd)}
+                      >
+                        {t("copy")}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl shadow-md bg-white space-y-3">
+              <h3 className="font-semibold">{t("examplesTitle")}</h3>
+              <ul className="text-sm text-slate-700 list-disc ml-5">
+                <li>Collaborative coding — multiple devs merge features safely.</li>
+                <li>Experiment safely — feature branches let you try ideas without breaking main.</li>
+                <li>Reproducibility — roll back to a known good state when bugs arrive.</li>
+              </ul>
+            </div>
+
+            <div className="p-4 rounded-2xl shadow-md bg-white">
+              <h3 className="font-semibold">{t("bestPracticesTitle")}</h3>
+              <ol className="text-sm text-slate-700 list-decimal ml-5">
+                <li>Commit early, commit often with clear messages.</li>
+                <li>Use small feature branches & PRs for review.</li>
+                <li>Keep master/main stable — deploy from it.</li>
+              </ol>
+            </div>
+          </div>
+
+          {/* Right column: Live Sandbox */}
+          <div className="md:w-2/3 w-full space-y-4">
+            <div className="rounded-2xl shadow-md bg-white p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-sky-100 rounded-full"><FaHistory className="text-sky-600" /></div>
+                  <div>
+                    <div className="text-sm text-slate-500">{t("liveSandbox")}</div>
+                    <h2 className="text-lg font-semibold">Interactive VCS Playground</h2>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <div className="text-xs text-slate-500">{t("branches")}: </div>
+                  <div className="flex items-center gap-1">
+                    {Object.keys(branches).map((b) => (
+                      <button
+                        key={b}
+                        onClick={() => checkoutBranch(b)}
+                        className={`text-xs px-2 py-1 rounded ${currentBranch === b ? "bg-sky-600 text-white" : "bg-slate-100 text-slate-700"}`}
+                      >
+                        {b}
+                      </button>
+                    ))}
+                    <input
+                      value={newBranchName}
+                      onChange={(e) => setNewBranchName(e.target.value)}
+                      placeholder={t("createBranch")}
+                      className="text-xs px-2 py-1 rounded border ml-2"
+                    />
+                    <button
+                      onClick={() => createBranch(newBranchName.trim())}
+                      className="text-xs px-2 py-1 rounded bg-emerald-500 text-white ml-1"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* commit timeline */}
+              <div className="mt-4 overflow-x-auto py-3">
+                <div className="flex items-center gap-6 min-w-max">
+                  {commitNodes.map((c) => (
+                    <motion.div
+                      key={c.id}
+                      whileHover={{ scale: 1.03 }}
+                      onClick={() => rewindTo(c.id)}
+                      className={`cursor-pointer p-3 rounded-xl border ${head === c.id ? "ring-2 ring-sky-200" : "bg-white"}`}
+                    >
+                      <div className="text-xs text-slate-500">{c.time}</div>
+                      <div className="font-medium mt-1">{c.message}</div>
+                      <div className="text-xs text-slate-400">{c.id} • {c.branch}</div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* conflict box */}
+              {conflict && (
+                <div className="mt-3 p-3 bg-amber-50 border rounded">
+                  <div className="font-semibold">{t("conflictTitle")}</div>
+                  <div className="mt-2 text-sm">
+                    <div className="font-medium">{conflict.file}</div>
+                    <div className="mt-2 grid md:grid-cols-2 gap-2">
+                      <div className="p-2 bg-white rounded shadow-sm">
+                        <div className="text-xs text-slate-500">Ours</div>
+                        <pre className="text-sm whitespace-pre-wrap">{conflict.ours}</pre>
+                        <button className="mt-2 text-xs px-2 py-1 rounded bg-sky-600 text-white" onClick={() => resolveConflictWith("ours")}>
+                          Keep ours
+                        </button>
+                      </div>
+
+                      <div className="p-2 bg-white rounded shadow-sm">
+                        <div className="text-xs text-slate-500">Theirs</div>
+                        <pre className="text-sm whitespace-pre-wrap">{conflict.theirs}</pre>
+                        <button className="mt-2 text-xs px-2 py-1 rounded bg-sky-600 text-white" onClick={() => resolveConflictWith("theirs")}>
+                          Keep theirs
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-4 grid md:grid-cols-3 gap-4">
+                {/* File explorer & file list */}
+                <div className="col-span-1 bg-slate-50 p-3 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm font-medium">Files</div>
+                    <div className="text-xs text-slate-500">{Object.keys(files).length}</div>
+                  </div>
+                  <div className="mt-2 space-y-2">
+                    {Object.keys(files).map((fname) => (
+                      <button
+                        key={fname}
+                        onClick={() => setSelectedFile(fname)}
+                        className={`w-full text-left px-2 py-1 rounded ${selectedFile === fname ? "bg-white ring-1 ring-sky-200" : "hover:bg-white"}`}
+                      >
+                        {fname}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Editor */}
+                <div className="col-span-2 bg-white p-3 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-sm text-slate-500">Editing</div>
+                      <div className="font-medium">{selectedFile}</div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        value={commitMsg}
+                        onChange={(e) => setCommitMsg(e.target.value)}
+                        placeholder={t("newCommitMsg")}
+                        className="text-sm px-2 py-1 rounded border"
+                      />
+                      <button className="px-3 py-1 rounded bg-sky-600 text-white" onClick={() => doCommit(commitMsg)}>
+                        {t("commitBtn")}
+                      </button>
+                    </div>
+                  </div>
+
+                  <textarea
+                    value={editorText}
+                    onChange={(e) => updateFileInEditor(e.target.value)}
+                    className="mt-3 w-full min-h-[220px] font-mono text-sm p-3 rounded border"
+                  />
+
+                  <div className="mt-3 flex items-center gap-2">
+                    <select value={mergeSource || ""} onChange={(e) => setMergeSource(e.target.value)} className="text-sm px-2 py-1 rounded border">
+                      <option value="">Select branch to merge</option>
+                      {Object.keys(branches)
+                        .filter((b) => b !== currentBranch)
+                        .map((b) => (
+                          <option key={b} value={b}>{b}</option>
+                        ))}
+                    </select>
+                    <button
+                      className="px-3 py-1 rounded bg-indigo-600 text-white"
+                      onClick={() => startMerge(mergeSource)}
+                      disabled={!mergeSource}
+                    >
+                      {t("mergeBtn")} {mergeSource}
+                    </button>
+
+                    <div className="ml-auto flex items-center gap-2">
+                      <div className="text-xs text-slate-500">HEAD: {head}</div>
+                      <button className="text-xs px-2 py-1 rounded bg-rose-500 text-white" onClick={() => rewindTo(head)}>
+                        {t("revertBtn")}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Footer: timeline details */}
+            <div className="rounded-2xl shadow-md bg-white p-4">
+              <div className="text-sm font-medium">{t("history")}</div>
+              <div className="mt-3 grid gap-2">
+                {commitNodes.slice().reverse().map((c) => (
+                  <div key={c.id} className="p-3 rounded-lg border flex items-start justify-between">
+                    <div>
+                      <div className="text-sm font-semibold">{c.message}</div>
+                      <div className="text-xs text-slate-500">{c.id} • {c.branch} • {c.time}</div>
+                      <div className="mt-2 text-xs text-slate-700 whitespace-pre-wrap">{Object.keys(c.files).slice(0,3).map(fn => `• ${fn}`).join('\n')}</div>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <button className="text-xs px-2 py-1 rounded bg-sky-600 text-white" onClick={() => rewindTo(c.id)}>Checkout</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -5,14 +5,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ScrollToTop from './Components/ScrollToTop';
+
 import Acknowledgement from './Components/Acknowledgement';
 import Introduction from './Components/WhatIsIct';
+
 import Part1 from './Components/Part1'
 import Part2 from './Components/Part2'
 import Part3 from './Components/Part3'
 import Part4 from './Components/Part4'
 import Part5 from './Components/Part5'
 import Part6 from './Components/Part6'
+
 import Chapter1 from './Components/Part1/Chapter1';
 import UsesOfComputers from './Components/Part1/Extras/UsesOfComputers'
 import Chapter2 from './Components/Part1/Chapter2';
@@ -43,6 +46,7 @@ import UiUx from './Components/Part2/Ui_Ux';
 import FrontendDevelopment from './Components/Part2/FrontendDevelopment';
 import BackendDevelopment from './Components/Part2/Backend';
 import Databases from './Components/Part2/Databases';
+import VersionControl from './Components/Part2/VersionControl';
 import Quiz2 from './Components/Part2/Quiz2';
 
 import Chapter9 from './Components/Part3/Chapter9';
@@ -90,16 +94,20 @@ root.render(
         <Route path="/module1/what-is-software" element={<Chapter6 />} />
         <Route path="/module1/operating-system" element={<Chapter7 />} />
         <Route path="/module1/types-of-software" element={<Chapter8 />} />
+
         <Route path="/module2/developer-role" element={<DevloperRole />} />
         <Route path="/module2/sdlc" element={<Sdlc />} />
         <Route path="/module2/programming-languages" element={<ProgrammingLanguage />} />
         <Route path="//module2/data-structures" element={<DataStructures />} />
         <Route path="/module2/algorithms" element={<Algorithms />} />
+
         <Route path="/module3/design-principles" element={<DesignPrinciples />} />
         <Route path="/module3/ui-ux" element={<UiUx />} />
         <Route path="/module3/frontend" element={<FrontendDevelopment />} />
         <Route path="/module3/backend" element={<BackendDevelopment />} />
         <Route path="/module3/databases" element={<Databases />} />
+        
+        <Route path="/module4/version-control" element={<VersionControl />} />
         <Route path="/part2/chapters/qiz2" element={<Quiz2 />} />
 
         <Route path="/part3/chapters/ch9" element={<Chapter9 />} />
