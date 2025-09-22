@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaFileAlt, FaImage, FaVideo, FaDatabase, FaArrowRight, FaArrowLeft, FaHome, FaLightbulb } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
@@ -88,6 +88,17 @@ const MemoryUnits = () => {
         hidden: { y: 20, opacity: 0 },
         visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
     };
+
+    useEffect(() => {
+            const handleKeyDown = (event) => {
+                if (event.ctrlKey && event.key === 'k') {
+                    event.preventDefault();
+                    setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+                }
+            };
+            window.addEventListener('keydown', handleKeyDown);
+            return () => window.removeEventListener('keydown', handleKeyDown);
+        }, []);
 
     return (
         <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 font-sans">

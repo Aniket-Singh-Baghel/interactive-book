@@ -4,8 +4,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { LanguageProvider } from './Components/LanguageContext';
-import Layout from "./Layout";
 import ScrollToTop from './Components/ScrollToTop';
 import Acknowledgement from './Components/Acknowledgement';
 import Introduction from './Components/WhatIsIct';
@@ -58,11 +56,9 @@ import ErrorAnimation from './Components/error';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <LanguageProvider>
-    <BrowserRouter>
+    <BrowserRouter> 
     <ScrollToTop />
       <Routes>
-        <Route element={<Layout />}></Route>
         <Route path="/" element={<Acknowledgement />} />
         <Route path="/introduction" element={<Introduction />} />
         <Route path="/station" element={<App />} />
@@ -115,7 +111,6 @@ root.render(
         <Route path="/error404" element={<ErrorAnimation />} />
       </Routes>
     </BrowserRouter>
-    </LanguageProvider>
   </React.StrictMode>
 );
 

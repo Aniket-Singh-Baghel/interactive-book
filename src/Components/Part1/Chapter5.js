@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaKeyboard, FaMicrophone, FaMouse, FaDesktop, FaPrint, FaVolumeUp, FaHome, FaArrowLeft, FaArrowRight, FaArrowDown, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
@@ -92,6 +92,17 @@ const Chapter5 = () => {
     const t = content[lang];
     const inputs = inputDevices[lang];
     const outputs = outputDevices[lang];
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+          if (event.ctrlKey && event.key === 'k') {
+            event.preventDefault();
+            setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+          }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, []);
 
     const handlePracticeClick = () => {
         confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });

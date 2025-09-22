@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Server, Router, Home as HomeIcon, Cpu } from "lucide-react";
 import { Link, useNavigate } from 'react-router-dom';
 import { FaKeyboard, FaMouse, FaHeadphones, FaDesktop, FaBrain, FaHandPaper, FaHome, FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const content = {
     en: {
@@ -90,6 +90,17 @@ export default function PeripheralsLesson() {
     const [lang, setLang] = useState('en');
     const navigate = useNavigate();
     const t = content[lang];
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.ctrlKey && event.key === 'k') {
+                event.preventDefault();
+                setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-100 flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8 font-sans">

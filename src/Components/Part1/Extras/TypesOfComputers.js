@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FaRocket,
@@ -146,10 +146,10 @@ const CONTENT = {
     serversNote:
       "Where do server computers occur? Servers can be small (like minicomputers) or very large (like mainframes). By use, they are special-purpose machines that share data with many users — web servers, mail servers, database servers and game servers.",
     funFacts: [
-        "The first gigabyte hard drive, the IBM 3380, was released in 1980, weighed over 500 pounds, and cost $40,000.",
-        "The word 'bug' in computer jargon comes from a real bug! In 1947, a moth was found trapped in a relay of the Harvard Mark II computer, causing a malfunction.",
-        "More than 5 billion people use the internet, but the first billion was only reached in 2005.",
-        "The computer in your smartphone is millions of times more powerful than all of NASA's combined computing power in 1969 that was used to send astronauts to the moon."
+      "The first gigabyte hard drive, the IBM 3380, was released in 1980, weighed over 500 pounds, and cost $40,000.",
+      "The word 'bug' in computer jargon comes from a real bug! In 1947, a moth was found trapped in a relay of the Harvard Mark II computer, causing a malfunction.",
+      "More than 5 billion people use the internet, but the first billion was only reached in 2005.",
+      "The computer in your smartphone is millions of times more powerful than all of NASA's combined computing power in 1969 that was used to send astronauts to the moon."
     ],
     engagement: "Which type of computer do you find most fascinating?",
     previous: "Previous",
@@ -160,7 +160,7 @@ const CONTENT = {
     home: "होम",
     heading: "कंप्यूटर के प्रकार",
     intro:
-        "कंप्यूटर सहायकों के एक जादुई परिवार की तरह हैं, जिनमें से प्रत्येक की अपनी विशेष प्रतिभा है। मौसम की भविष्यवाणी करने वाले विशाल दिमाग से लेकर आपकी जेब में फिट होने वाले छोटे दिमाग तक, आइए इस अद्भुत डिजिटल परिवार के सदस्यों से मिलें और उनकी कहानियों की खोज करें!",
+      "कंप्यूटर सहायकों के एक जादुई परिवार की तरह हैं, जिनमें से प्रत्येक की अपनी विशेष प्रतिभा है। मौसम की भविष्यवाणी करने वाले विशाल दिमाग से लेकर आपकी जेब में फिट होने वाले छोटे दिमाग तक, आइए इस अद्भुत डिजिटल परिवार के सदस्यों से मिलें और उनकी कहानियों की खोज करें!",
     sections: {
       size: {
         title: "परिवार से मिलें: सबसे बड़े से सबसे छोटे तक",
@@ -221,63 +221,63 @@ const CONTENT = {
         items: [
           {
             id: "general",
-                title: "सामान्य प्रयोजन कंप्यूटर: ऑल-राउंडर",
-                story: "ये वे कंप्यूटर हैं जिनका हम हर दिन उपयोग करते हैं। एक प्रतिभाशाली कलाकार की तरह जो पेंट, ड्रॉ और मूर्तिकला कर सकता है, एक सामान्य-उद्देश्य वाला कंप्यूटर आपके द्वारा फेंके गए लगभग किसी भी कार्य को संभाल सकता है, एक निबंध लिखने और इंटरनेट ब्राउज़ करने से लेकर गेम खेलने और वीडियो संपादित करने तक। आपका लैपटॉप या फोन इस बहुमुखी सहायक का एक आदर्श उदाहरण है।",
-                functionalities: ["विभिन्न प्रकार के सॉफ़्टवेयर चलाता है", "विविध डेटा प्रकारों (पाठ, चित्र, ध्वनि) को संभालता है", "उपयोगकर्ता-प्रोग्राम करने योग्य"],
-                pros: ["अत्यधिक बहुमुखी और लचीला", "विभिन्न सॉफ़्टवेयर के साथ अनुकूलित किया जा सकता है", "व्यापक रूप से उपलब्ध और सस्ती"],
-                cons: ["किसी विशिष्ट कार्य के लिए एक विशेष कंप्यूटर जितना कुशल नहीं हो सकता है"],
-                usageSectors: ["घर", "शिक्षा", "व्यवसाय", "मनोरंजन"],
-                examples: ["लैपटॉप", "डेस्कटॉप", "स्मार्टफोन", "टैबलेट"],
-                imageUrl: "https://pix4free.org/assets/library/2021/01/21/pix4free-creative-commons-computer-image-laptop-1-22361-large.jpg",
+            title: "सामान्य प्रयोजन कंप्यूटर: ऑल-राउंडर",
+            story: "ये वे कंप्यूटर हैं जिनका हम हर दिन उपयोग करते हैं। एक प्रतिभाशाली कलाकार की तरह जो पेंट, ड्रॉ और मूर्तिकला कर सकता है, एक सामान्य-उद्देश्य वाला कंप्यूटर आपके द्वारा फेंके गए लगभग किसी भी कार्य को संभाल सकता है, एक निबंध लिखने और इंटरनेट ब्राउज़ करने से लेकर गेम खेलने और वीडियो संपादित करने तक। आपका लैपटॉप या फोन इस बहुमुखी सहायक का एक आदर्श उदाहरण है।",
+            functionalities: ["विभिन्न प्रकार के सॉफ़्टवेयर चलाता है", "विविध डेटा प्रकारों (पाठ, चित्र, ध्वनि) को संभालता है", "उपयोगकर्ता-प्रोग्राम करने योग्य"],
+            pros: ["अत्यधिक बहुमुखी और लचीला", "विभिन्न सॉफ़्टवेयर के साथ अनुकूलित किया जा सकता है", "व्यापक रूप से उपलब्ध और सस्ती"],
+            cons: ["किसी विशिष्ट कार्य के लिए एक विशेष कंप्यूटर जितना कुशल नहीं हो सकता है"],
+            usageSectors: ["घर", "शिक्षा", "व्यवसाय", "मनोरंजन"],
+            examples: ["लैपटॉप", "डेस्कटॉप", "स्मार्टफोन", "टैबलेट"],
+            imageUrl: "https://pix4free.org/assets/library/2021/01/21/pix4free-creative-commons-computer-image-laptop-1-22361-large.jpg",
           },
           {
             id: "special",
-                title: "विशेष प्रयोजन कंप्यूटर: विशेषज्ञ",
-                story: "एक मास्टर शेफ की कल्पना करें जो केवल एक आदर्श व्यंजन बनाता है। वह एक विशेष प्रयोजन वाला कंप्यूटर है। यह एक काम को अविश्वसनीय दक्षता और विश्वसनीयता के साथ करने के लिए डिज़ाइन किया गया है। एक बैंक में एक एटीएम, एक वॉशिंग मशीन, या ट्रैफिक लाइट को नियंत्रित करने वाली प्रणाली के बारे में सोचें। वे अपना एक काम पूरी तरह से करते हैं।",
-                functionalities: ["एक एकल, समर्पित कार्य करता है", "हार्डवेयर और सॉफ्टवेयर एक विशिष्ट कार्य के लिए अनुकूलित हैं"],
-                pros: ["अपने विशिष्ट कार्य पर बहुत कुशल और तेज़", "उच्च विश्वसनीयता", "अक्सर एक सरल उपयोगकर्ता इंटरफ़ेस होता है"],
-                cons: ["बहुमुखी नहीं; अन्य कार्यों के लिए उपयोग नहीं किया जा सकता है"],
-                usageSectors: ["बैंकिंग (एटीएम)", "घरेलू उपकरण", "यातायात नियंत्रण", "चिकित्सा उपकरण"],
-                examples: ["एटीएम", "वॉशिंग मशीन नियंत्रक", "यातायात प्रकाश नियंत्रक", "चिकित्सा इमेजिंग उपकरण"],
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Automated_teller_machine.jpg/800px-Automated_teller_machine.jpg",
+            title: "विशेष प्रयोजन कंप्यूटर: विशेषज्ञ",
+            story: "एक मास्टर शेफ की कल्पना करें जो केवल एक आदर्श व्यंजन बनाता है। वह एक विशेष प्रयोजन वाला कंप्यूटर है। यह एक काम को अविश्वसनीय दक्षता और विश्वसनीयता के साथ करने के लिए डिज़ाइन किया गया है। एक बैंक में एक एटीएम, एक वॉशिंग मशीन, या ट्रैफिक लाइट को नियंत्रित करने वाली प्रणाली के बारे में सोचें। वे अपना एक काम पूरी तरह से करते हैं।",
+            functionalities: ["एक एकल, समर्पित कार्य करता है", "हार्डवेयर और सॉफ्टवेयर एक विशिष्ट कार्य के लिए अनुकूलित हैं"],
+            pros: ["अपने विशिष्ट कार्य पर बहुत कुशल और तेज़", "उच्च विश्वसनीयता", "अक्सर एक सरल उपयोगकर्ता इंटरफ़ेस होता है"],
+            cons: ["बहुमुखी नहीं; अन्य कार्यों के लिए उपयोग नहीं किया जा सकता है"],
+            usageSectors: ["बैंकिंग (एटीएम)", "घरेलू उपकरण", "यातायात नियंत्रण", "चिकित्सा उपकरण"],
+            examples: ["एटीएम", "वॉशिंग मशीन नियंत्रक", "यातायात प्रकाश नियंत्रक", "चिकित्सा इमेजिंग उपकरण"],
+            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Automated_teller_machine.jpg/800px-Automated_teller_machine.jpg",
           },
         ],
       },
       functionality: {
-            title: "कार्यक्षमता के अनुसार प्रकार",
+        title: "कार्यक्षमता के अनुसार प्रकार",
         items: [
           {
             id: "analog",
-                title: "एनालॉग कंप्यूटर: मापक",
-                story: "इससे पहले कि सब कुछ 1 और 0 के बारे में था, एनालॉग कंप्यूटर थे। उन्हें मास्टर मेजरर्स के रूप में सोचें। तापमान को मापने के लिए पारा का उपयोग करने वाले एक क्लासिक थर्मामीटर की तरह, एनालॉग कंप्यूटर डेटा का प्रतिनिधित्व करने के लिए वोल्टेज या दबाव जैसी निरंतर भौतिक मात्राओं का उपयोग करते हैं। वे वास्तविक दुनिया की घटनाओं को मापने और अनुकरण करने के लिए बहुत अच्छे हैं।",
-                functionalities: ["निरंतर डेटा संसाधित करता है", "भौतिक प्रणालियों का अनुकरण करता है", "भौतिक गुणों का उपयोग करके गणना करता है"],
-                pros: ["वास्तविक समय के परिणाम प्रदान करता है", "विशिष्ट प्रकार की गणनाओं के लिए बहुत तेज़ हो सकता है"],
-                cons: ["डिजिटल कंप्यूटरों की तुलना में कम सटीक", "सीमित मेमोरी और बहुमुखी प्रतिभा", "शोर और हस्तक्षेप के प्रति संवेदनशील"],
-                usageSectors: ["वैज्ञानिक अनुसंधान (ऐतिहासिक)", "इंजीनियरिंग (नियंत्रण प्रणाली)", "विमानन (उड़ान सिमुलेटर)"],
-                examples: ["स्लाइड रूल", "एस्ट्रोलैब", "ऑपरेशनल एम्पलीफायर्स", "मैकेनिकल इंटीग्रेटर्स"],
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Rechenschieber-Aristo-Studio-0968-crop.jpg/1920px-Rechenschieber-Aristo-Studio-0968-crop.jpg",
+            title: "एनालॉग कंप्यूटर: मापक",
+            story: "इससे पहले कि सब कुछ 1 और 0 के बारे में था, एनालॉग कंप्यूटर थे। उन्हें मास्टर मेजरर्स के रूप में सोचें। तापमान को मापने के लिए पारा का उपयोग करने वाले एक क्लासिक थर्मामीटर की तरह, एनालॉग कंप्यूटर डेटा का प्रतिनिधित्व करने के लिए वोल्टेज या दबाव जैसी निरंतर भौतिक मात्राओं का उपयोग करते हैं। वे वास्तविक दुनिया की घटनाओं को मापने और अनुकरण करने के लिए बहुत अच्छे हैं।",
+            functionalities: ["निरंतर डेटा संसाधित करता है", "भौतिक प्रणालियों का अनुकरण करता है", "भौतिक गुणों का उपयोग करके गणना करता है"],
+            pros: ["वास्तविक समय के परिणाम प्रदान करता है", "विशिष्ट प्रकार की गणनाओं के लिए बहुत तेज़ हो सकता है"],
+            cons: ["डिजिटल कंप्यूटरों की तुलना में कम सटीक", "सीमित मेमोरी और बहुमुखी प्रतिभा", "शोर और हस्तक्षेप के प्रति संवेदनशील"],
+            usageSectors: ["वैज्ञानिक अनुसंधान (ऐतिहासिक)", "इंजीनियरिंग (नियंत्रण प्रणाली)", "विमानन (उड़ान सिमुलेटर)"],
+            examples: ["स्लाइड रूल", "एस्ट्रोलैब", "ऑपरेशनल एम्पलीफायर्स", "मैकेनिकल इंटीग्रेटर्स"],
+            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Rechenschieber-Aristo-Studio-0968-crop.jpg/1920px-Rechenschieber-Aristo-Studio-0968-crop.jpg",
           },
           {
             id: "digital",
-                title: "डिजिटल कंप्यूटर: काउंटर",
-                story: "यह वह कंप्यूटर है जो हमारी आधुनिक दुनिया को शक्ति प्रदान करता है। यह पाठ और संख्याओं से लेकर तस्वीरों और वीडियो तक सब कुछ का प्रतिनिधित्व करने के लिए 1 और 0 (बाइनरी) की भाषा बोलता है। आपके द्वारा देखा जाने वाला हर स्मार्टफोन, लैपटॉप और डेस्कटॉप कंप्यूटर एक डिजिटल कंप्यूटर है, जो प्रति सेकंड लाखों गणनाओं को अविश्वसनीय सटीकता के साथ करता है।",
-                functionalities: ["असतत डेटा (बाइनरी) संसाधित करता है", "तार्किक और अंकगणितीय संचालन करता है", "बड़ी मात्रा में डेटा संग्रहीत करता है"],
-                pros: ["अत्यधिक सटीक और विश्वसनीय", "बड़ी मात्रा में डेटा संग्रहीत और संसाधित कर सकता है", "बहुमुखी और प्रोग्राम करने योग्य"],
-                cons: ["एनालॉग कंप्यूटरों की तुलना में अधिक जटिल हो सकता है", "एनालॉग संकेतों को डिजिटल में बदलने की आवश्यकता है"],
-                usageSectors: ["आधुनिक जीवन के लगभग सभी क्षेत्र"],
-                examples: ["स्मार्टफोन", "लैपटॉप", "डेस्कटॉप पीसी", "डिजिटल कैलकुलेटर", "सर्वर"],
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/HTC_Desire_smartphone.jpg/800px-HTC_Desire_smartphone.jpg",
+            title: "डिजिटल कंप्यूटर: काउंटर",
+            story: "यह वह कंप्यूटर है जो हमारी आधुनिक दुनिया को शक्ति प्रदान करता है। यह पाठ और संख्याओं से लेकर तस्वीरों और वीडियो तक सब कुछ का प्रतिनिधित्व करने के लिए 1 और 0 (बाइनरी) की भाषा बोलता है। आपके द्वारा देखा जाने वाला हर स्मार्टफोन, लैपटॉप और डेस्कटॉप कंप्यूटर एक डिजिटल कंप्यूटर है, जो प्रति सेकंड लाखों गणनाओं को अविश्वसनीय सटीकता के साथ करता है।",
+            functionalities: ["असतत डेटा (बाइनरी) संसाधित करता है", "तार्किक और अंकगणितीय संचालन करता है", "बड़ी मात्रा में डेटा संग्रहीत करता है"],
+            pros: ["अत्यधिक सटीक और विश्वसनीय", "बड़ी मात्रा में डेटा संग्रहीत और संसाधित कर सकता है", "बहुमुखी और प्रोग्राम करने योग्य"],
+            cons: ["एनालॉग कंप्यूटरों की तुलना में अधिक जटिल हो सकता है", "एनालॉग संकेतों को डिजिटल में बदलने की आवश्यकता है"],
+            usageSectors: ["आधुनिक जीवन के लगभग सभी क्षेत्र"],
+            examples: ["स्मार्टफोन", "लैपटॉप", "डेस्कटॉप पीसी", "डिजिटल कैलकुलेटर", "सर्वर"],
+            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/HTC_Desire_smartphone.jpg/800px-HTC_Desire_smartphone.jpg",
           },
           {
             id: "hybrid",
-                title: "हाइब्रिड कंप्यूटर: दोनों दुनिया के सर्वश्रेष्ठ",
-                story: "क्या होगा यदि आप एक एनालॉग कंप्यूटर की रीयल-टाइम मापने की शक्ति को एक डिजिटल की सटीकता और मेमोरी के साथ जोड़ सकते हैं? वह एक हाइब्रिड कंप्यूटर है! उनका उपयोग विशेष स्थितियों में किया जाता है जहां आपको दोनों की आवश्यकता होती है। उदाहरण के लिए, एक अस्पताल के आईसीयू में, एक हाइब्रिड कंप्यूटर एक मरीज की हृदय गति (एनालॉग) को माप सकता है और फिर उस डेटा को ठीक (डिजिटल) रूप से संग्रहीत कर सकता है।",
-                functionalities: ["एनालॉग और डिजिटल प्रसंस्करण को जोड़ती है", "एनालॉग और डिजिटल प्रारूपों के बीच डेटा परिवर्तित करता है"],
-                pros: ["एनालॉग की गति को डिजिटल की सटीकता के साथ जोड़ती है", "वास्तविक समय में जटिल समस्याओं का समाधान कर सकती है"],
-                cons: ["डिजाइन और रखरखाव के लिए महंगा और जटिल", "बहुत विशिष्ट अनुप्रयोगों के लिए उपयोग किया जाता है"],
-                usageSectors: ["अस्पताल (आईसीयू, ईसीजी)", "वैज्ञानिक प्रयोगशालाएं", "विमानन", "औद्योगिक नियंत्रण"],
-                examples: ["ईसीजी मशीनें", "डायलिसिस मशीनें", "मौसम पूर्वानुमान प्रणाली"],
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/ECG_Machine.jpeg/1280px-ECG_Machine.jpeg",
+            title: "हाइब्रिड कंप्यूटर: दोनों दुनिया के सर्वश्रेष्ठ",
+            story: "क्या होगा यदि आप एक एनालॉग कंप्यूटर की रीयल-टाइम मापने की शक्ति को एक डिजिटल की सटीकता और मेमोरी के साथ जोड़ सकते हैं? वह एक हाइब्रिड कंप्यूटर है! उनका उपयोग विशेष स्थितियों में किया जाता है जहां आपको दोनों की आवश्यकता होती है। उदाहरण के लिए, एक अस्पताल के आईसीयू में, एक हाइब्रिड कंप्यूटर एक मरीज की हृदय गति (एनालॉग) को माप सकता है और फिर उस डेटा को ठीक (डिजिटल) रूप से संग्रहीत कर सकता है।",
+            functionalities: ["एनालॉग और डिजिटल प्रसंस्करण को जोड़ती है", "एनालॉग और डिजिटल प्रारूपों के बीच डेटा परिवर्तित करता है"],
+            pros: ["एनालॉग की गति को डिजिटल की सटीकता के साथ जोड़ती है", "वास्तविक समय में जटिल समस्याओं का समाधान कर सकती है"],
+            cons: ["डिजाइन और रखरखाव के लिए महंगा और जटिल", "बहुत विशिष्ट अनुप्रयोगों के लिए उपयोग किया जाता है"],
+            usageSectors: ["अस्पताल (आईसीयू, ईसीजी)", "वैज्ञानिक प्रयोगशालाएं", "विमानन", "औद्योगिक नियंत्रण"],
+            examples: ["ईसीजी मशीनें", "डायलिसिस मशीनें", "मौसम पूर्वानुमान प्रणाली"],
+            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/ECG_Machine.jpeg/1280px-ECG_Machine.jpeg",
           },
         ],
       },
@@ -285,10 +285,10 @@ const CONTENT = {
     serversNote:
       "सर्वर कंप्यूटर कहाँ आते हैं? सर्वर छोटे (मिनी) भी हो सकते हैं और बहुत बड़े (मेनफ्रेम) भी। उपयोग के अनुसार ये विशेष-उद्देश्य मशीनें हैं जो कई उपयोगकर्ताओं को डेटा शेयर करती हैं — वेब सर्वर, मेल सर्वर, डेटाबेस सर्वर और गेम सर्वर।",
     funFacts: [
-        "पहला गीगाबाइट हार्ड ड्राइव, आईबीएम 3380, 1980 में जारी किया गया था, जिसका वजन 500 पाउंड से अधिक था, और इसकी लागत $40,000 थी।",
-        "कंप्यूटर शब्दजाल में 'बग' शब्द एक वास्तविक बग से आया है! 1947 में, हार्वर्ड मार्क II कंप्यूटर के एक रिले में एक कीट फंसा हुआ पाया गया, जिससे खराबी आ गई।",
-        "5 अरब से अधिक लोग इंटरनेट का उपयोग करते हैं, लेकिन पहला अरब केवल 2005 में पहुंचा था।",
-        "आपके स्मार्टफोन में कंप्यूटर 1969 में नासा की संयुक्त कंप्यूटिंग शक्ति से लाखों गुना अधिक शक्तिशाली है जिसका उपयोग अंतरिक्ष यात्रियों को चंद्रमा पर भेजने के लिए किया गया था।"
+      "पहला गीगाबाइट हार्ड ड्राइव, आईबीएम 3380, 1980 में जारी किया गया था, जिसका वजन 500 पाउंड से अधिक था, और इसकी लागत $40,000 थी।",
+      "कंप्यूटर शब्दजाल में 'बग' शब्द एक वास्तविक बग से आया है! 1947 में, हार्वर्ड मार्क II कंप्यूटर के एक रिले में एक कीट फंसा हुआ पाया गया, जिससे खराबी आ गई।",
+      "5 अरब से अधिक लोग इंटरनेट का उपयोग करते हैं, लेकिन पहला अरब केवल 2005 में पहुंचा था।",
+      "आपके स्मार्टफोन में कंप्यूटर 1969 में नासा की संयुक्त कंप्यूटिंग शक्ति से लाखों गुना अधिक शक्तिशाली है जिसका उपयोग अंतरिक्ष यात्रियों को चंद्रमा पर भेजने के लिए किया गया था।"
     ],
     engagement: "आपको कौन सा कंप्यूटर सबसे आकर्षक लगता है?",
     previous: "पिछला",
@@ -311,17 +311,28 @@ export default function TypesOfComputers() {
   const navigate = useNavigate();
   const t = CONTENT[lang];
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <div className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
       <div className="flex items-center justify-between mb-8">
-          <Link to="/parts/prt1" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
-              <FaHome className="mr-2 text-lg text-sky-600" />
-              {t.home}
-          </Link>
-          <div className="flex space-x-2">
-              <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
-              <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
-          </div>
+        <Link to="/parts/prt1" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
+          <FaHome className="mr-2 text-lg text-sky-600" />
+          {t.home}
+        </Link>
+        <div className="flex space-x-2">
+          <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
+          <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
+        </div>
       </div>
 
       <motion.h1
@@ -333,13 +344,13 @@ export default function TypesOfComputers() {
         {t.heading}
       </motion.h1>
 
-      <motion.p 
+      <motion.p
         className="text-center text-gray-600 mt-4 max-w-2xl mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-          {t.intro}
+        {t.intro}
       </motion.p>
 
       {/* Computer Types Section */}
@@ -358,7 +369,7 @@ export default function TypesOfComputers() {
             <div className="p-6">
               <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">{it.title}</h3>
               <p className="text-gray-600 mt-2 text-sm sm:text-base">{it.story}</p>
-              
+
               <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-bold text-lg text-gray-700">Functionalities</h4>
@@ -394,128 +405,128 @@ export default function TypesOfComputers() {
       <div className="mt-12">
         <h2 className="text-3xl font-bold text-center mb-8">{t.sections.use.title}</h2>
         <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
-            {t.sections.use.items.map((it, i) => (
-              <motion.article
-                key={it.id}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden"
-                variants={cardVariant}
-                custom={i}
-                initial="hidden"
-                animate="visible"
-                whileHover={{ scale: 1.02, shadow: "2xl" }}
-              >
-                <img src={it.imageUrl} alt={it.title} className="w-full h-auto object-contain" />
-                <div className="p-6">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">{it.title}</h3>
-                  <p className="text-gray-600 mt-2 text-sm sm:text-base">{it.story}</p>
-                  
-                  <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-bold text-lg text-gray-700">Functionalities</h4>
-                      <ul className="mt-2 list-disc list-inside text-gray-600 space-y-1">
-                        {it.functionalities.map(f => <li key={f}>{f}</li>)}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-gray-700">Usage Sectors</h4>
-                      <p className="mt-2 text-gray-600">{it.usageSectors.join(", ")}</p>
-                      <h4 className="font-bold text-lg text-gray-700 mt-4">Examples</h4>
-                      <p className="mt-2 text-gray-600">{it.examples.join(", ")}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-green-600">Pros</h4>
-                      <ul className="mt-2 list-disc list-inside text-green-700 space-y-1">
-                        {it.pros.map(p => <li key={p}>{p}</li>)}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-red-600">Cons</h4>
-                      <ul className="mt-2 list-disc list-inside text-red-700 space-y-1">
-                        {it.cons.map(c => <li key={c}>{c}</li>)}
-                      </ul>
-                    </div>
+          {t.sections.use.items.map((it, i) => (
+            <motion.article
+              key={it.id}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden"
+              variants={cardVariant}
+              custom={i}
+              initial="hidden"
+              animate="visible"
+              whileHover={{ scale: 1.02, shadow: "2xl" }}
+            >
+              <img src={it.imageUrl} alt={it.title} className="w-full h-auto object-contain" />
+              <div className="p-6">
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">{it.title}</h3>
+                <p className="text-gray-600 mt-2 text-sm sm:text-base">{it.story}</p>
+
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-bold text-lg text-gray-700">Functionalities</h4>
+                    <ul className="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                      {it.functionalities.map(f => <li key={f}>{f}</li>)}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-gray-700">Usage Sectors</h4>
+                    <p className="mt-2 text-gray-600">{it.usageSectors.join(", ")}</p>
+                    <h4 className="font-bold text-lg text-gray-700 mt-4">Examples</h4>
+                    <p className="mt-2 text-gray-600">{it.examples.join(", ")}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-green-600">Pros</h4>
+                    <ul className="mt-2 list-disc list-inside text-green-700 space-y-1">
+                      {it.pros.map(p => <li key={p}>{p}</li>)}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-red-600">Cons</h4>
+                    <ul className="mt-2 list-disc list-inside text-red-700 space-y-1">
+                      {it.cons.map(c => <li key={c}>{c}</li>)}
+                    </ul>
                   </div>
                 </div>
-              </motion.article>
-            ))}
+              </div>
+            </motion.article>
+          ))}
         </div>
       </div>
-      
+
       <div className="mt-12">
         <h2 className="text-3xl font-bold text-center mb-8">{t.sections.functionality.title}</h2>
         <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
-            {t.sections.functionality.items.map((it, i) => (
-              <motion.article
-                key={it.id}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden"
-                variants={cardVariant}
-                custom={i}
-                initial="hidden"
-                animate="visible"
-                whileHover={{ scale: 1.02, shadow: "2xl" }}
-              >
-                <img src={it.imageUrl} alt={it.title} className="w-full h-auto object-contain" />
-                <div className="p-6">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">{it.title}</h3>
-                  <p className="text-gray-600 mt-2 text-sm sm:text-base">{it.story}</p>
-                  
-                  <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-bold text-lg text-gray-700">Functionalities</h4>
-                      <ul className="mt-2 list-disc list-inside text-gray-600 space-y-1">
-                        {it.functionalities.map(f => <li key={f}>{f}</li>)}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-gray-700">Usage Sectors</h4>
-                      <p className="mt-2 text-gray-600">{it.usageSectors.join(", ")}</p>
-                      <h4 className="font-bold text-lg text-gray-700 mt-4">Examples</h4>
-                      <p className="mt-2 text-gray-600">{it.examples.join(", ")}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-green-600">Pros</h4>
-                      <ul className="mt-2 list-disc list-inside text-green-700 space-y-1">
-                        {it.pros.map(p => <li key={p}>{p}</li>)}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-red-600">Cons</h4>
-                      <ul className="mt-2 list-disc list-inside text-red-700 space-y-1">
-                        {it.cons.map(c => <li key={c}>{c}</li>)}
-                      </ul>
-                    </div>
+          {t.sections.functionality.items.map((it, i) => (
+            <motion.article
+              key={it.id}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden"
+              variants={cardVariant}
+              custom={i}
+              initial="hidden"
+              animate="visible"
+              whileHover={{ scale: 1.02, shadow: "2xl" }}
+            >
+              <img src={it.imageUrl} alt={it.title} className="w-full h-auto object-contain" />
+              <div className="p-6">
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">{it.title}</h3>
+                <p className="text-gray-600 mt-2 text-sm sm:text-base">{it.story}</p>
+
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-bold text-lg text-gray-700">Functionalities</h4>
+                    <ul className="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                      {it.functionalities.map(f => <li key={f}>{f}</li>)}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-gray-700">Usage Sectors</h4>
+                    <p className="mt-2 text-gray-600">{it.usageSectors.join(", ")}</p>
+                    <h4 className="font-bold text-lg text-gray-700 mt-4">Examples</h4>
+                    <p className="mt-2 text-gray-600">{it.examples.join(", ")}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-green-600">Pros</h4>
+                    <ul className="mt-2 list-disc list-inside text-green-700 space-y-1">
+                      {it.pros.map(p => <li key={p}>{p}</li>)}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-red-600">Cons</h4>
+                    <ul className="mt-2 list-disc list-inside text-red-700 space-y-1">
+                      {it.cons.map(c => <li key={c}>{c}</li>)}
+                    </ul>
                   </div>
                 </div>
-              </motion.article>
-            ))}
+              </div>
+            </motion.article>
+          ))}
         </div>
       </div>
-      
+
       {/* Fun & Engagement */}
       <motion.div className="mt-12 p-6 rounded-2xl bg-white shadow-lg" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <h3 className="text-2xl font-bold text-center">{lang === "en" ? "Interesting Fun Facts" : "रोचक तथ्य"}</h3>
         <ul className="mt-4 text-gray-700 list-disc list-inside space-y-2 max-w-2xl mx-auto">
-            {t.funFacts.map((fact, index) => (
-                <li key={index}>{fact}</li>
-            ))}
+          {t.funFacts.map((fact, index) => (
+            <li key={index}>{fact}</li>
+          ))}
         </ul>
       </motion.div>
 
       <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
-          <button
-              onClick={() => navigate('/part1/history-of-computers')}
-              className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
-          >
-              <FaArrowLeft />
-              {t.previous}
-          </button>
-          <button
-              onClick={() => navigate('/parts/prt1')}
-              className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
-          >
-              {t.next}
-              <FaArrowRight />
-          </button>
+        <button
+          onClick={() => navigate('/part1/history-of-computers')}
+          className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+        >
+          <FaArrowLeft />
+          {t.previous}
+        </button>
+        <button
+          onClick={() => navigate('/parts/prt1')}
+          className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+        >
+          {t.next}
+          <FaArrowRight />
+        </button>
       </div>
     </div>
   );

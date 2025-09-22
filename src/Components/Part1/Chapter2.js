@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHome, FaArrowLeft, FaArrowRight } from "react-icons/fa";
@@ -83,6 +83,17 @@ const Chapter2 = () => {
   const [lang, setLang] = useState('en');
   const navigate = useNavigate();
   const t = content[lang];
+
+  useEffect(() => {
+      const handleKeyDown = (event) => {
+        if (event.ctrlKey && event.key === 'k') {
+          event.preventDefault();
+          setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-gradient-to-br from-blue-50 to-pink-50 font-sans">

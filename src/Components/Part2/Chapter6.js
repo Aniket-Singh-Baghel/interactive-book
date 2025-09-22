@@ -121,7 +121,7 @@ export default function Chapter6() {
   const examples = examplesData[lang];
   const modalExamples = funExamples[lang];
 
-  useEffect(() => {
+ useEffect(() => {
       const handleKeyDown = (event) => {
         if (event.ctrlKey && event.key === 'k') {
           event.preventDefault();
@@ -130,7 +130,7 @@ export default function Chapter6() {
       };
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
-    }, []);
+    }, []); 
   
 
   return (

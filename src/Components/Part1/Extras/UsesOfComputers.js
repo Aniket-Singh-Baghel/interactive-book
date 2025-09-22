@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
     FaUniversity,
@@ -270,6 +270,17 @@ export default function UsesOfComputersComponent() {
     const t = content[lang];
     const { title, subtitle, sections, conclusion } = t;
     const pdfRef = useRef();
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.ctrlKey && event.key === 'k') {
+                event.preventDefault();
+                setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     return (
         <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-gradient-to-br from-blue-50 to-green-50 font-sans">

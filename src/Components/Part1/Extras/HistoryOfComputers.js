@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGlobe, FaHome, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -294,6 +294,17 @@ export default function HistoryOfComputersComponent() {
     const timelineRef = useRef(null);
     const stageRefs = useRef({});
     const navigate = useNavigate();
+
+    useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
     const activeIndex = data.generations.findIndex((g) => g.id === activeId);
 

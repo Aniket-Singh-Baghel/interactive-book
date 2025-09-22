@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import { FaHome, FaArrowLeft, FaArrowRight } from 'react-icons/fa'
@@ -133,12 +133,6 @@ const content = {
     }
 };
 
-/**
- * An interactive React component that showcases different types of computer storage
- * with entry and hover animations powered by Framer Motion.
- *
- * This component is a full-page application, using a single main component.
- */
 const MemoryComparison = () => {
     const [language, setLanguage] = useState('en');
     const navigate = useNavigate()
@@ -160,7 +154,17 @@ const MemoryComparison = () => {
         show: { opacity: 1, y: 0, scale: 1, transition: { ease: "easeOut" } },
     };
 
-    // Main JSX structure
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.ctrlKey && event.key === 'k') {
+                event.preventDefault();
+                setLanguage(prevLang => prevLang === 'en' ? 'hi' : 'en');
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
     return (
         <>
             <style>
@@ -179,115 +183,113 @@ const MemoryComparison = () => {
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="bg-gray-50 min-h-screen font-sans"
-        >
-            <div className="max-w-7xl mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center mb-8">
-                    <Link
-                        to="/parts/prt1"
-                        className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
+                transition={{ duration: 0.5 }}
+                className="bg-gray-50 min-h-screen font-sans"
+            >
+                <div className="max-w-7xl mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center mb-8">
+                        <Link
+                            to="/parts/prt1"
+                            className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
+                        >
+                            <FaHome className="mr-2 text-lg text-indigo-600 animate-bounce" />
+                            {content[language].home}
+                        </Link>
+                        <div className="flex space-x-2">
+                            <button
+                                onClick={() => setLanguage('en')}
+                                className={`px-3 py-1 rounded-lg border font-semibold ${language === 'en' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300'
+                                    } transition`}
+                            >
+                                EN
+                            </button>
+                            <button
+                                onClick={() => setLanguage('hi')}
+                                className={`px-3 py-1 rounded-lg border font-semibold ${language === 'hi' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300'
+                                    } transition`}
+                            >
+                                हिं
+                            </button>
+                        </div>
+                    </div>
+                    <motion.div
+                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className="text-center"
                     >
-                        <FaHome className="mr-2 text-lg text-indigo-600 animate-bounce" />
-                        {content[language].home}
-                    </Link>
-                    <div className="flex space-x-2">
-                        <button
-                            onClick={() => setLanguage('en')}
-                            className={`px-3 py-1 rounded-lg border font-semibold ${
-                                language === 'en' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300'
-                            } transition`}
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-indigo-700 mb-4">
+                            {content[language].title}
+                        </h1>
+                        <p className="text-gray-600 mb-12 text-base sm:text-lg md:text-xl max-w-3xl mx-auto">
+                            {content[language].subtitle}
+                        </p>
+                    </motion.div>
+
+                    <div className="overflow-x-auto">
+                        <motion.table
+                            initial="hidden"
+                            animate="show"
+                            variants={containerVariants}
+                            className="min-w-full divide-y divide-gray-200 bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-100"
                         >
-                            EN
-                        </button>
-                        <button
-                            onClick={() => setLanguage('hi')}
-                            className={`px-3 py-1 rounded-lg border font-semibold ${
-                                language === 'hi' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300'
-                            } transition`}
-                        >
-                            हिं
-                        </button>
+                            <thead className="bg-gray-100 hidden md:table-header-group">
+                                <tr>
+                                    <th className="px-4 py-3 sm:px-6 sm:py-4 text-left font-bold text-sm sm:text-base md:text-lg text-gray-800">{content[language].tableHeaderType}</th>
+                                    <th className="px-4 py-3 sm:px-6 sm:py-4 text-left font-bold text-sm sm:text-base md:text-lg text-gray-800">{content[language].tableHeaderDescription}</th>
+                                    <th className="px-4 py-3 sm:px-6 sm:py-4 text-left font-bold text-sm sm:text-base md:text-lg text-gray-800">{content[language].tableHeaderOtherNames}</th>
+                                    <th className="px-4 py-3 sm:px-6 sm:py-4 text-left font-bold text-sm sm:text-base md:text-lg text-gray-800">{content[language].tableHeaderExamples}</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-200 md:divide-y-0">
+                                {content[language].storageTypes.map((storage) => (
+                                    <motion.tr
+                                        key={storage.id}
+                                        variants={itemVariants}
+                                        whileHover={{ scale: 1.02, boxShadow: "0 5px 20px rgba(0,0,0,0.1)" }}
+                                        className="block md:table-row mb-4 md:mb-0 border rounded-lg md:border-none"
+                                    >
+                                        <td className="px-4 py-3 sm:px-6 sm:py-4 font-semibold flex items-center gap-2 text-sm sm:text-base text-gray-800 md:table-cell" data-label={content[language].tableHeaderType}>
+                                            {storage.icon} {storage.type}
+                                        </td>
+                                        <td className="px-4 py-3 sm:px-6 sm:py-4 text-sm sm:text-base text-gray-700 block md:table-cell" data-label={content[language].tableHeaderDescription}>{storage.description}</td>
+                                        <td className="px-4 py-3 sm:px-6 sm:py-4 text-sm sm:text-base text-gray-700 block md:table-cell" data-label={content[language].tableHeaderOtherNames}>{storage.otherNames}</td>
+                                        <td className="px-4 py-3 sm:px-6 sm:py-4 text-sm sm:text-base text-gray-700 block md:table-cell" data-label={content[language].tableHeaderExamples}>
+                                            {storage.examplesAndFacts}
+                                            <br />
+                                            <span className="text-xs sm:text-sm text-gray-500">{storage.factText}</span>
+                                            <div className="mt-2 flex gap-2 flex-wrap">
+                                                {storage.tags.map(tag => (
+                                                    <span key={tag.text} className={`${tag.color} px-2 py-1 rounded-full text-xs`}>
+                                                        {tag.text}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </td>
+                                    </motion.tr>
+                                ))}
+                            </tbody>
+                        </motion.table>
                     </div>
                 </div>
-                <motion.div
-                    initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="text-center"
-                >
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-indigo-700 mb-4">
-                        {content[language].title}
-                    </h1>
-                    <p className="text-gray-600 mb-12 text-base sm:text-lg md:text-xl max-w-3xl mx-auto">
-                        {content[language].subtitle}
-                    </p>
-                </motion.div>
-
-                <div className="overflow-x-auto">
-                    <motion.table
-                        initial="hidden"
-                        animate="show"
-                        variants={containerVariants}
-                        className="min-w-full divide-y divide-gray-200 bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-100"
+                <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md max-w-7xl mx-auto">
+                    <button
+                        onClick={() => navigate('/part1/ram-vs-rom')}
+                        className="flex items-center gap-2 px-3 py-2 sm:px-4 text-sm sm:text-base bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
                     >
-                        <thead className="bg-gray-100 hidden md:table-header-group">
-                            <tr>
-                                <th className="px-4 py-3 sm:px-6 sm:py-4 text-left font-bold text-sm sm:text-base md:text-lg text-gray-800">{content[language].tableHeaderType}</th>
-                                <th className="px-4 py-3 sm:px-6 sm:py-4 text-left font-bold text-sm sm:text-base md:text-lg text-gray-800">{content[language].tableHeaderDescription}</th>
-                                <th className="px-4 py-3 sm:px-6 sm:py-4 text-left font-bold text-sm sm:text-base md:text-lg text-gray-800">{content[language].tableHeaderOtherNames}</th>
-                                <th className="px-4 py-3 sm:px-6 sm:py-4 text-left font-bold text-sm sm:text-base md:text-lg text-gray-800">{content[language].tableHeaderExamples}</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-200 md:divide-y-0">
-                            {content[language].storageTypes.map((storage) => (
-                                <motion.tr
-                                    key={storage.id}
-                                    variants={itemVariants}
-                                    whileHover={{ scale: 1.02, boxShadow: "0 5px 20px rgba(0,0,0,0.1)" }}
-                                    className="block md:table-row mb-4 md:mb-0 border rounded-lg md:border-none"
-                                >
-                                    <td className="px-4 py-3 sm:px-6 sm:py-4 font-semibold flex items-center gap-2 text-sm sm:text-base text-gray-800 md:table-cell" data-label={content[language].tableHeaderType}>
-                                        {storage.icon} {storage.type}
-                                    </td>
-                                    <td className="px-4 py-3 sm:px-6 sm:py-4 text-sm sm:text-base text-gray-700 block md:table-cell" data-label={content[language].tableHeaderDescription}>{storage.description}</td>
-                                    <td className="px-4 py-3 sm:px-6 sm:py-4 text-sm sm:text-base text-gray-700 block md:table-cell" data-label={content[language].tableHeaderOtherNames}>{storage.otherNames}</td>
-                                    <td className="px-4 py-3 sm:px-6 sm:py-4 text-sm sm:text-base text-gray-700 block md:table-cell" data-label={content[language].tableHeaderExamples}>
-                                        {storage.examplesAndFacts}
-                                        <br />
-                                        <span className="text-xs sm:text-sm text-gray-500">{storage.factText}</span>
-                                        <div className="mt-2 flex gap-2 flex-wrap">
-                                            {storage.tags.map(tag => (
-                                                <span key={tag.text} className={`${tag.color} px-2 py-1 rounded-full text-xs`}>
-                                                    {tag.text}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </td>
-                                </motion.tr>
-                            ))}
-                        </tbody>
-                    </motion.table>
-                </div>
-            </div>
-            <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md max-w-7xl mx-auto">
-                <button
-                    onClick={() => navigate('/part1/ram-vs-rom')}
-                    className="flex items-center gap-2 px-3 py-2 sm:px-4 text-sm sm:text-base bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
-                >
-                    <FaArrowLeft />
-                    {content[language].previous}
-                </button>
+                        <FaArrowLeft />
+                        {content[language].previous}
+                    </button>
 
-                <button
-                    onClick={() => navigate('/part1/memory-units')}
-                    className="flex items-center gap-2 px-3 py-2 sm:px-4 text-sm sm:text-base bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
-                >
-                    {content[language].next}
-                    <FaArrowRight />
-                </button>
-            </div>
-        </motion.div>
+                    <button
+                        onClick={() => navigate('/part1/memory-units')}
+                        className="flex items-center gap-2 px-3 py-2 sm:px-4 text-sm sm:text-base bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+                    >
+                        {content[language].next}
+                        <FaArrowRight />
+                    </button>
+                </div>
+            </motion.div>
         </>
     );
 };

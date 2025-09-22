@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { FaKeyboard, FaMicrochip, FaDesktop, FaDatabase, FaArrowRight, FaArrowLeft, FaHome, FaArrowDown } from "react-icons/fa";
@@ -72,6 +72,17 @@ const Chapter3 = () => {
     const [lang, setLang] = useState('en');
     const navigate = useNavigate();
     const t = content[lang];
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+          if (event.ctrlKey && event.key === 'k') {
+            event.preventDefault();
+            setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+          }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, []);
 
     return (
         <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-gray-50 font-sans">
