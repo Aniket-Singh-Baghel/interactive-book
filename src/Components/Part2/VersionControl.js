@@ -1,75 +1,56 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaGlobe, FaHistory, FaCodeBranch, FaClock, FaClipboard } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { FaHistory, FaCodeBranch, FaClipboard, FaArrowLeft, FaArrowRight, FaHome } from "react-icons/fa";
+import { Link, useNavigate } from 'react-router-dom';
 
-/*
-  VersionControlModule.jsx
-  - Default-exported React component (single-file) for a module about Version Control Systems.
-  - Tailwind CSS required for styling.
-  - Framer Motion used for micro-animations.
-  - Multilingual: English (en) and Hindi (hi).
-  - Interactive "Live Sandbox" simulates commits, branches, merges and rewind so learners can *see* how VCS works.
-  - Use this component inside any route e.g. /module4/version-control
-
-  How to use:
-    import VersionControlModule from './VersionControlModule';
-    <VersionControlModule />
-
-  Notes:
-    - This is a frontend simulation (educational). It isn't running a real Git process but demonstrates the core ideas
-      (commits as snapshots, branches as named pointers, merging, conflicts, and rewinding history).
-    - The component includes copy-to-clipboard buttons for real git commands so learners can try them in their terminals.
-*/
-
-const PATH = "/module4/version-control";
-
-const translations = {
+const content = {
   en: {
-    title: "Version Control Systems",
-    concept:
-      "Software (like Git) that tracks and manages changes to code, enabling collaboration.",
-    analogy: "A magic history book for your project that lets you rewind to any previous version.",
-    pathLabel: "Module Path",
-    liveSandbox: "Live Sandbox",
-    instructions:
-      "Edit files on the right, then commit. Create branches, switch branches, merge, and rewind to understand how VCS preserves history.",
-    newCommitMsg: "Commit message...",
-    commitBtn: "Commit",
-    createBranch: "Create Branch",
-    checkout: "Checkout",
-    mergeBtn: "Merge into",
-    revertBtn: "Rewind to this commit",
-    conflictTitle: "Merge conflict — choose how to resolve:",
+    home: "Home",
+    title: "Understanding Version Control",
+    concept: "Version Control Systems (VCS) are tools that track changes to files over time. Think of it as a 'save' button for your entire project, but with the ability to go back to any previous save.",
+    analogy: "Imagine you're writing a story. A VCS is like having a magical notebook that saves a copy of your story every time you make a change. You can look at old versions, see what you changed, and even go back to a previous version if you don't like your new ideas. <strong>Git</strong> is the most popular VCS.",
+    liveSandbox: "Interactive Git Simulation",
+    instructions: "This sandbox simulates a simple version control system. Here’s how to use it: <ul><li><strong>Edit Files:</strong> Click on a file name to open it in the editor.</li><li><strong>Commit Changes:</strong> After editing, write a short message describing your changes and click 'Commit'. This saves a snapshot of your files.</li><li><strong>Create Branches:</strong> Give a new branch a name and click '+' to create a parallel timeline for your work.</li><li><strong>Switch Branches:</strong> Click on a branch name to switch to it. The files will change to how they were last saved in that branch.</li><li><strong>Merge Branches:</strong> Select a branch to merge into your current one. This combines the changes from both branches.</li><li><strong>Rewind History:</strong> Click on any commit in the timeline to go back to that point in time.</li></ul>",
+    newCommitMsg: "Enter commit message...",
+    commitBtn: "Commit Changes",
+    createBranch: "New Branch Name",
+    checkout: "Switch to",
+    mergeBtn: "Merge into current branch",
+    revertBtn: "Go to this commit",
+    conflictTitle: "Merge Conflict!",
     resolved: "Resolved",
-    cheatTitle: "Cheat Sheet — common Git commands",
-    examplesTitle: "Live Examples & Use-cases",
-    bestPracticesTitle: "Best Practices",
+    cheatTitle: "Common Git Commands",
+    examplesTitle: "Why is VCS so useful?",
+    bestPracticesTitle: "Pro Tips for Version Control",
     copy: "Copy",
-    history: "History",
+    history: "Commit History",
     branches: "Branches",
+    previous: "Previous",
+    next: "Next",
   },
   hi: {
-    title: "वर्ज़न कंट्रोल सिस्टम्स",
-    concept: "सॉफ्टवेयर (जैसे Git) जो कोड में बदलावों को ट्रैक और मैनेज करता है, जिससे सहयोग संभव होता है।",
-    analogy: "आपकी प्रोजेक्ट की एक जादुई इतिहास की किताब जो किसी भी पिछले वर्ज़न पर वापस जाने देती है।",
-    pathLabel: "मॉड्यूल पाथ",
-    liveSandbox: "लाइव सैंडबॉक्स",
-    instructions:
-      "दाईं ओर फ़ाइलें एडिट करें, फिर कमिट करें। ब्रांच बनाएं, स्विच करें, मर्ज करें, और इतिहास को रिवाइंड करके VCS कैसे काम करता है समझें।",
-    newCommitMsg: "कमीट संदेश...",
-    commitBtn: "कमिट करें",
-    createBranch: "ब्रांच बनाएँ",
-    checkout: "चेकआउट",
-    mergeBtn: "मर्ज करें",
-    revertBtn: "इस कमीट पर लौटें",
-    conflictTitle: "मर्ज कॉन्फ्लिक्ट — समाधान चुनें:",
-    resolved: "समाधान किया गया",
-    cheatTitle: "चीट शीट — सामान्य Git कमांड",
-    examplesTitle: "लाइव उदाहरण और उपयोग",
-    bestPracticesTitle: "सर्वोत्तम प्रथाएँ",
+    home: "होम",
+    title: "वर्जन कंट्रोल को समझना",
+    concept: "वर्जन कंट्रोल सिस्टम (VCS) ऐसे टूल होते हैं जो समय के साथ फाइलों में हुए बदलावों को ट्रैक करते हैं। इसे अपने पूरे प्रोजेक्ट के लिए एक 'सेव' बटन की तरह समझें, लेकिन किसी भी पिछले सेव पर वापस जाने की क्षमता के साथ।",
+    analogy: "कल्पना कीजिए कि आप एक कहानी लिख रहे हैं। एक VCS एक जादुई नोटबुक की तरह है जो हर बार जब आप कोई बदलाव करते हैं तो आपकी कहानी की एक कॉपी सहेजता है। आप पुराने संस्करण देख सकते हैं, देख सकते हैं कि आपने क्या बदला है, और यदि आपको अपने नए विचार पसंद नहीं हैं तो पिछले संस्करण पर वापस भी जा सकते हैं। <strong>गिट</strong> सबसे लोकप्रिय VCS है।",
+    liveSandbox: "इंटरैक्टिव गिट सिमुलेशन",
+    instructions: "यह सैंडबॉक्स एक सरल संस्करण नियंत्रण प्रणाली का अनुकरण करता है। इसका उपयोग कैसे करें: <ul><li><strong>फ़ाइलें संपादित करें:</strong> संपादक में खोलने के लिए फ़ाइल नाम पर क्लिक करें।</li><li><strong>बदलाव सहेजें (कमिट):</strong> संपादन के बाद, अपने परिवर्तनों का वर्णन करते हुए एक संक्षिप्त संदेश लिखें और 'कमिट' पर क्लिक करें। यह आपकी फ़ाइलों का एक स्नैपशॉट सहेजता है।</li><li><strong>शाखाएँ बनाएँ:</strong> एक नई शाखा को एक नाम दें और अपने काम के लिए एक समानांतर टाइमलाइन बनाने के लिए '+' पर क्लिक करें।</li><li><strong>शाखाएँ बदलें:</strong> उस पर स्विच करने के लिए एक शाखा के नाम पर क्लिक करें। उस शाखा में अंतिम बार सहेजे जाने पर फ़ाइलें बदल जाएँगी।</li><li><strong>शाखाओं को मिलाएं (मर्ज):</strong> अपनी वर्तमान शाखा में विलय करने के लिए एक शाखा का चयन करें। यह दोनों शाखाओं के परिवर्तनों को जोड़ता है।</li><li><strong>इतिहास में वापस जाएं (रिवाइंड):</strong> उस समय के उस बिंदु पर वापस जाने के लिए टाइमलाइन में किसी भी कमिट पर क्लिक करें।</li></ul>",
+    newCommitMsg: "कमिट संदेश दर्ज करें...",
+    commitBtn: "बदलाव सहेजें",
+    createBranch: "नई शाखा का नाम",
+    checkout: "इस पर जाएं",
+    mergeBtn: "वर्तमान शाखा में मर्ज करें",
+    revertBtn: "इस कमिट पर जाएं",
+    conflictTitle: "मर्ज में समस्या!",
+    resolved: "हल हो गया",
+    cheatTitle: "आम गिट कमांड्स",
+    examplesTitle: "VCS इतना उपयोगी क्यों है?",
+    bestPracticesTitle: "वर्जन कंट्रोल के लिए प्रो टिप्स",
     copy: "कॉपी",
-    history: "इतिहास",
-    branches: "ब्रांचेज़",
+    history: "कमिट का इतिहास",
+    branches: "शाखाएँ",
+    previous: "पिछला",
+    next: "अगला",
   },
 };
 
@@ -81,9 +62,21 @@ function now() {
   return new Date().toLocaleTimeString();
 }
 
-export default function VersionControlModule({ initialLang = "en" }) {
-  const [lang, setLang] = useState(initialLang);
-  const t = (k) => translations[lang][k] || translations.en[k];
+export default function VersionControlModule() {
+  const [lang, setLang] = useState('en');
+  const navigate = useNavigate();
+  const t = (k) => content[lang][k] || content.en[k];
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // --- Simulation state ---
   const [files, setFiles] = useState({
@@ -281,8 +274,18 @@ export default function VersionControlModule({ initialLang = "en" }) {
   ];
 
   return (
-    <div className="w-full min-h-screen p-6 bg-gradient-to-br from-sky-50 to-white text-slate-900">
+    <div className="w-full min-h-screen p-6 bg-gray-50 text-slate-900">
       <div className="max-w-6xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+            <Link to="/" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
+              <FaHome className="mr-2 text-lg text-sky-600" />
+              {t("home")}
+            </Link>
+            <div className="flex space-x-2">
+              <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
+              <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
+            </div>
+        </div>
         <div className="flex flex-col md:flex-row items-start gap-6">
           {/* Left column: Intro / Controls */}
           <div className="md:w-1/3 w-full space-y-4">
@@ -292,37 +295,14 @@ export default function VersionControlModule({ initialLang = "en" }) {
                   <h1 className="text-2xl font-extrabold">{t("title")}</h1>
                   <p className="mt-1 text-sm text-slate-600">{t("concept")}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    className={`px-3 py-1 rounded-lg text-sm font-medium ${lang === "en" ? "bg-sky-600 text-white" : "bg-white text-slate-700 border"}`}
-                    onClick={() => setLang("en")}
-                  >
-                    EN
-                  </button>
-                  <button
-                    className={`px-3 py-1 rounded-lg text-sm font-medium ${lang === "hi" ? "bg-sky-600 text-white" : "bg-white text-slate-700 border"}`}
-                    onClick={() => setLang("hi")}
-                  >
-                    हिन्दी
-                  </button>
-                </div>
               </div>
 
               <div className="mt-4">
                 <div className="rounded-lg p-3 bg-sky-50 border border-sky-100">
-                  <p className="text-slate-700 text-sm">📚 <strong>{t("analogy")}</strong></p>
+                  <p className="text-slate-700 text-sm" dangerouslySetInnerHTML={{ __html: t("analogy") }} />
                 </div>
 
-                <div className="mt-3 text-sm text-slate-600">
-                  <p>{t("instructions")}</p>
-                </div>
-
-                <div className="mt-4 text-xs text-slate-500">
-                  <div className="flex items-center justify-between">
-                    <span>{t("pathLabel")}</span>
-                    <code className="text-xs px-2 py-1 bg-slate-100 rounded">{PATH}</code>
-                  </div>
-                </div>
+                <div className="mt-3 text-sm text-slate-600" dangerouslySetInnerHTML={{ __html: t("instructions") }} />
               </div>
             </div>
 
@@ -349,18 +329,18 @@ export default function VersionControlModule({ initialLang = "en" }) {
             <div className="p-4 rounded-2xl shadow-md bg-white space-y-3">
               <h3 className="font-semibold">{t("examplesTitle")}</h3>
               <ul className="text-sm text-slate-700 list-disc ml-5">
-                <li>Collaborative coding — multiple devs merge features safely.</li>
-                <li>Experiment safely — feature branches let you try ideas without breaking main.</li>
-                <li>Reproducibility — roll back to a known good state when bugs arrive.</li>
+                <li><strong>Teamwork:</strong> Multiple developers can work on the same project without overwriting each other's work.</li>
+                <li><strong>Experimentation:</strong> You can create a 'branch' to try out a new feature. If it doesn't work, you can just delete the branch without affecting the main project.</li>
+                <li><strong>Bug Tracking:</strong> When a bug appears, you can look back through the history to see exactly when it was introduced.</li>
               </ul>
             </div>
 
             <div className="p-4 rounded-2xl shadow-md bg-white">
               <h3 className="font-semibold">{t("bestPracticesTitle")}</h3>
               <ol className="text-sm text-slate-700 list-decimal ml-5">
-                <li>Commit early, commit often with clear messages.</li>
-                <li>Use small feature branches & PRs for review.</li>
-                <li>Keep master/main stable — deploy from it.</li>
+                <li><strong>Commit Often:</strong> Save your work frequently with clear, descriptive messages.</li>
+                <li><strong>Use Branches:</strong> Always work on a new feature or bug fix in its own branch.</li>
+                <li><strong>Review Code:</strong> Before merging changes, have someone else on your team review them.</li>
               </ol>
             </div>
           </div>
@@ -373,7 +353,7 @@ export default function VersionControlModule({ initialLang = "en" }) {
                   <div className="p-3 bg-sky-100 rounded-full"><FaHistory className="text-sky-600" /></div>
                   <div>
                     <div className="text-sm text-slate-500">{t("liveSandbox")}</div>
-                    <h2 className="text-lg font-semibold">Interactive VCS Playground</h2>
+                    <h2 className="text-lg font-semibold">{t("title")}</h2>
                   </div>
                 </div>
 
@@ -397,9 +377,9 @@ export default function VersionControlModule({ initialLang = "en" }) {
                     />
                     <button
                       onClick={() => createBranch(newBranchName.trim())}
-                      className="text-xs px-2 py-1 rounded bg-emerald-500 text-white ml-1"
+                        className="text-xs px-2 py-1 rounded bg-emerald-500 text-white ml-1 hover:bg-emerald-600 transition"
                     >
-                      +
+                        Create
                     </button>
                   </div>
                 </div>
@@ -409,16 +389,15 @@ export default function VersionControlModule({ initialLang = "en" }) {
               <div className="mt-4 overflow-x-auto py-3">
                 <div className="flex items-center gap-6 min-w-max">
                   {commitNodes.map((c) => (
-                    <motion.div
+                    <div
                       key={c.id}
-                      whileHover={{ scale: 1.03 }}
                       onClick={() => rewindTo(c.id)}
-                      className={`cursor-pointer p-3 rounded-xl border ${head === c.id ? "ring-2 ring-sky-200" : "bg-white"}`}
+                      className={`cursor-pointer p-3 rounded-xl border ${head === c.id ? "ring-2 ring-sky-200" : "bg-white"} transition-shadow hover:shadow-md`}
                     >
                       <div className="text-xs text-slate-500">{c.time}</div>
                       <div className="font-medium mt-1">{c.message}</div>
                       <div className="text-xs text-slate-400">{c.id} • {c.branch}</div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -506,7 +485,7 @@ export default function VersionControlModule({ initialLang = "en" }) {
                         ))}
                     </select>
                     <button
-                      className="px-3 py-1 rounded bg-indigo-600 text-white"
+                      className="px-3 py-1 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition disabled:bg-gray-400"
                       onClick={() => startMerge(mergeSource)}
                       disabled={!mergeSource}
                     >
@@ -515,9 +494,6 @@ export default function VersionControlModule({ initialLang = "en" }) {
 
                     <div className="ml-auto flex items-center gap-2">
                       <div className="text-xs text-slate-500">HEAD: {head}</div>
-                      <button className="text-xs px-2 py-1 rounded bg-rose-500 text-white" onClick={() => rewindTo(head)}>
-                        {t("revertBtn")}
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -538,7 +514,7 @@ export default function VersionControlModule({ initialLang = "en" }) {
                       <div className="mt-2 text-xs text-slate-700 whitespace-pre-wrap">{Object.keys(c.files).slice(0,3).map(fn => `• ${fn}`).join('\n')}</div>
                     </div>
                     <div className="flex flex-col gap-2">
-                      <button className="text-xs px-2 py-1 rounded bg-sky-600 text-white" onClick={() => rewindTo(c.id)}>Checkout</button>
+                      <button className="text-xs px-2 py-1 rounded bg-sky-600 text-white hover:bg-sky-700 transition" onClick={() => rewindTo(c.id)}>Checkout</button>
                     </div>
                   </div>
                 ))}
@@ -547,6 +523,22 @@ export default function VersionControlModule({ initialLang = "en" }) {
 
           </div>
         </div>
+        <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
+            <button
+              onClick={() => navigate('/module3/ui-ux')}
+              className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+            >
+              <FaArrowLeft />
+              {t("previous")}
+            </button>
+            <button
+              onClick={() => navigate('/module4/testing')}
+              className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+            >
+              {t("next")}
+              <FaArrowRight />
+            </button>
+          </div>
       </div>
     </div>
   );
