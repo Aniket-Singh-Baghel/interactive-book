@@ -1,15 +1,15 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { motion } from "framer-motion";
-import { FaHistory, FaCodeBranch, FaClipboard, FaArrowLeft, FaArrowRight, FaHome } from "react-icons/fa";
+import { FaHistory, FaCodeBranch, FaArrowLeft, FaArrowRight, FaHome } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 
 const content = {
   en: {
     home: "Home",
     title: "Understanding Version Control",
-    concept: "Version Control Systems (VCS) are tools that track changes to files over time. Think of it as a 'save' button for your entire project, but with the ability to go back to any previous save.",
-    analogy: "Imagine you're writing a story. A VCS is like having a magical notebook that saves a copy of your story every time you make a change. You can look at old versions, see what you changed, and even go back to a previous version if you don't like your new ideas. <strong>Git</strong> is the most popular VCS.",
+    concept: "A Version Control System (VCS) is a tool that saves the history of your changes in files. Instead of just saving a file, a VCS takes a 'snapshot' of all your files at a specific moment. This is incredibly useful for big projects.",
+    analogy: "Think of it like a video game with many save slots. Each time you reach a new level, you save the game. If you make a mistake, you can always load a previous save. A VCS does this for your project files. It lets you create different 'timelines' (called <strong>branches</strong>) to try new ideas without affecting the main game. The most popular VCS is <strong>Git</strong>.",
     liveSandbox: "Interactive Git Simulation",
+    sandboxExplanation: "This simulation shows you how a VCS works. <strong>What you're seeing:</strong> The timeline at the top shows your 'commits' (saved snapshots). The files on the left are your project files. <strong>How it works:</strong> When you edit a file and click 'Commit', you create a new snapshot in your history. Creating a 'branch' lets you work on a new feature without changing your main 'main' branch. 'Merging' combines your changes back together. This is exactly how developers use Git every day!",
     instructions: "This sandbox simulates a simple version control system. Here’s how to use it: <ul><li><strong>Edit Files:</strong> Click on a file name to open it in the editor.</li><li><strong>Commit Changes:</strong> After editing, write a short message describing your changes and click 'Commit'. This saves a snapshot of your files.</li><li><strong>Create Branches:</strong> Give a new branch a name and click '+' to create a parallel timeline for your work.</li><li><strong>Switch Branches:</strong> Click on a branch name to switch to it. The files will change to how they were last saved in that branch.</li><li><strong>Merge Branches:</strong> Select a branch to merge into your current one. This combines the changes from both branches.</li><li><strong>Rewind History:</strong> Click on any commit in the timeline to go back to that point in time.</li></ul>",
     newCommitMsg: "Enter commit message...",
     commitBtn: "Commit Changes",
@@ -21,7 +21,17 @@ const content = {
     resolved: "Resolved",
     cheatTitle: "Common Git Commands",
     examplesTitle: "Why is VCS so useful?",
+    examples: [
+        "<strong>Teamwork:</strong> Multiple developers can work on the same project without overwriting each other's work.",
+        "<strong>Experimentation:</strong> You can create a 'branch' to try out a new feature. If it doesn't work, you can just delete the branch without affecting the main project.",
+        "<strong>Bug Tracking:</strong> When a bug appears, you can look back through the history to see exactly when it was introduced."
+    ],
     bestPracticesTitle: "Pro Tips for Version Control",
+    bestPractices: [
+        "<strong>Commit Often:</strong> Save your work frequently with clear, descriptive messages.",
+        "<strong>Use Branches:</strong> Always work on a new feature or bug fix in its own branch.",
+        "<strong>Review Code:</strong> Before merging changes, have someone else on your team review them."
+    ],
     copy: "Copy",
     history: "Commit History",
     branches: "Branches",
@@ -31,9 +41,10 @@ const content = {
   hi: {
     home: "होम",
     title: "वर्जन कंट्रोल को समझना",
-    concept: "वर्जन कंट्रोल सिस्टम (VCS) ऐसे टूल होते हैं जो समय के साथ फाइलों में हुए बदलावों को ट्रैक करते हैं। इसे अपने पूरे प्रोजेक्ट के लिए एक 'सेव' बटन की तरह समझें, लेकिन किसी भी पिछले सेव पर वापस जाने की क्षमता के साथ।",
-    analogy: "कल्पना कीजिए कि आप एक कहानी लिख रहे हैं। एक VCS एक जादुई नोटबुक की तरह है जो हर बार जब आप कोई बदलाव करते हैं तो आपकी कहानी की एक कॉपी सहेजता है। आप पुराने संस्करण देख सकते हैं, देख सकते हैं कि आपने क्या बदला है, और यदि आपको अपने नए विचार पसंद नहीं हैं तो पिछले संस्करण पर वापस भी जा सकते हैं। <strong>गिट</strong> सबसे लोकप्रिय VCS है।",
+    concept: "वर्जन कंट्रोल सिस्टम (VCS) एक ऐसा टूल है जो फाइलों में आपके बदलावों का इतिहास सहेजता है। केवल एक फाइल को सहेजने के बजाय, एक VCS एक विशिष्ट क्षण में आपकी सभी फाइलों का 'स्नैपशॉट' लेता है। यह बड़े प्रोजेक्ट्स के लिए अविश्वसनीय रूप से उपयोगी है।",
+    analogy: "इसे कई सेव स्लॉट वाले वीडियो गेम की तरह समझें। हर बार जब आप एक नए स्तर पर पहुँचते हैं, तो आप गेम को सहेजते हैं। यदि आप कोई गलती करते हैं, तो आप हमेशा पिछले सेव को लोड कर सकते हैं। एक VCS आपकी प्रोजेक्ट फ़ाइलों के लिए ऐसा ही करता है। यह आपको मुख्य गेम को प्रभावित किए बिना नए विचारों को आज़माने के लिए अलग-अलग 'टाइमलाइन' (जिन्हें <strong>ब्रांच</strong> कहा जाता है) बनाने देता है। सबसे लोकप्रिय VCS <strong>गिट</strong> है।",
     liveSandbox: "इंटरैक्टिव गिट सिमुलेशन",
+    sandboxExplanation: "यह सिमुलेशन आपको दिखाता है कि VCS कैसे काम करता है। <strong>आप जो देख रहे हैं:</strong> शीर्ष पर टाइमलाइन आपके 'कमिट्स' (सहेजे गए स्नैपशॉट) को दिखाती है। बाईं ओर की फाइलें आपकी प्रोजेक्ट फाइलें हैं। <strong>यह कैसे काम करता है:</strong> जब आप किसी फ़ाइल को संपादित करते हैं और 'कमिट' पर क्लिक करते हैं, तो आप अपने इतिहास में एक नया स्नैपशॉट बनाते हैं। एक 'ब्रांच' बनाने से आप अपनी मुख्य 'main' ब्रांच को बदले बिना एक नई सुविधा पर काम कर सकते हैं। 'मर्जिंग' आपके परिवर्तनों को एक साथ वापस जोड़ती है। डेवलपर्स हर दिन गिट का इसी तरह उपयोग करते हैं!",
     instructions: "यह सैंडबॉक्स एक सरल संस्करण नियंत्रण प्रणाली का अनुकरण करता है। इसका उपयोग कैसे करें: <ul><li><strong>फ़ाइलें संपादित करें:</strong> संपादक में खोलने के लिए फ़ाइल नाम पर क्लिक करें।</li><li><strong>बदलाव सहेजें (कमिट):</strong> संपादन के बाद, अपने परिवर्तनों का वर्णन करते हुए एक संक्षिप्त संदेश लिखें और 'कमिट' पर क्लिक करें। यह आपकी फ़ाइलों का एक स्नैपशॉट सहेजता है।</li><li><strong>शाखाएँ बनाएँ:</strong> एक नई शाखा को एक नाम दें और अपने काम के लिए एक समानांतर टाइमलाइन बनाने के लिए '+' पर क्लिक करें।</li><li><strong>शाखाएँ बदलें:</strong> उस पर स्विच करने के लिए एक शाखा के नाम पर क्लिक करें। उस शाखा में अंतिम बार सहेजे जाने पर फ़ाइलें बदल जाएँगी।</li><li><strong>शाखाओं को मिलाएं (मर्ज):</strong> अपनी वर्तमान शाखा में विलय करने के लिए एक शाखा का चयन करें। यह दोनों शाखाओं के परिवर्तनों को जोड़ता है।</li><li><strong>इतिहास में वापस जाएं (रिवाइंड):</strong> उस समय के उस बिंदु पर वापस जाने के लिए टाइमलाइन में किसी भी कमिट पर क्लिक करें।</li></ul>",
     newCommitMsg: "कमिट संदेश दर्ज करें...",
     commitBtn: "बदलाव सहेजें",
@@ -45,7 +56,17 @@ const content = {
     resolved: "हल हो गया",
     cheatTitle: "आम गिट कमांड्स",
     examplesTitle: "VCS इतना उपयोगी क्यों है?",
+    examples: [
+        "<strong>टीम वर्क:</strong> कई डेवलपर्स एक ही प्रोजेक्ट पर एक-दूसरे के काम को ओवरराइट किए बिना काम कर सकते हैं।",
+        "<strong>प्रयोग:</strong> आप एक नई सुविधा को आज़माने के लिए एक 'शाखा' बना सकते हैं। यदि यह काम नहीं करता है, तो आप मुख्य प्रोजेक्ट को प्रभावित किए बिना बस शाखा को हटा सकते हैं।",
+        "<strong>बग ट्रैकिंग:</strong> जब कोई बग दिखाई देता है, तो आप इतिहास में वापस देख सकते हैं कि यह वास्तव में कब पेश किया गया था।"
+    ],
     bestPracticesTitle: "वर्जन कंट्रोल के लिए प्रो टिप्स",
+    bestPractices: [
+        "<strong>बार-बार कमिट करें:</strong> स्पष्ट, वर्णनात्मक संदेशों के साथ अपने काम को बार-बार सहेजें।",
+        "<strong>शाखाओं का उपयोग करें:</strong> हमेशा एक नई सुविधा या बग फिक्स पर अपनी शाखा में काम करें।",
+        "<strong>कोड की समीक्षा करें:</strong> परिवर्तनों को मर्ज करने से पहले, अपनी टीम के किसी अन्य व्यक्ति से उनकी समीक्षा करवाएं।"
+    ],
     copy: "कॉपी",
     history: "कमिट का इतिहास",
     branches: "शाखाएँ",
@@ -283,245 +304,215 @@ export default function VersionControlModule() {
             </Link>
             <div className="flex space-x-2">
               <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
-              <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
+              <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिन्दी</button>
             </div>
         </div>
-        <div className="flex flex-col md:flex-row items-start gap-6">
-          {/* Left column: Intro / Controls */}
-          <div className="md:w-1/3 w-full space-y-4">
-            <div className="p-4 rounded-2xl shadow-md bg-white">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h1 className="text-2xl font-extrabold">{t("title")}</h1>
-                  <p className="mt-1 text-sm text-slate-600">{t("concept")}</p>
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <div className="rounded-lg p-3 bg-sky-50 border border-sky-100">
-                  <p className="text-slate-700 text-sm" dangerouslySetInnerHTML={{ __html: t("analogy") }} />
-                </div>
-
-                <div className="mt-3 text-sm text-slate-600" dangerouslySetInnerHTML={{ __html: t("instructions") }} />
-              </div>
-            </div>
-
-            <div className="p-4 rounded-2xl shadow-md bg-white space-y-3">
-              <h3 className="font-semibold">{t("cheatTitle")}</h3>
-              <div className="grid grid-cols-1 gap-2">
-                {cheatCommands.map((c) => (
-                  <div key={c.cmd} className="flex items-center justify-between gap-2">
-                    <div className="text-xs text-slate-700">{c.label}</div>
-                    <div className="flex items-center gap-2">
-                      <code className="text-xs px-2 py-1 bg-slate-100 rounded">{c.cmd}</code>
-                      <button
-                        className="text-xs px-2 py-1 rounded bg-sky-600 text-white"
-                        onClick={() => copyToClipboard(c.cmd)}
-                      >
-                        {t("copy")}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="p-4 rounded-2xl shadow-md bg-white space-y-3">
-              <h3 className="font-semibold">{t("examplesTitle")}</h3>
-              <ul className="text-sm text-slate-700 list-disc ml-5">
-                <li><strong>Teamwork:</strong> Multiple developers can work on the same project without overwriting each other's work.</li>
-                <li><strong>Experimentation:</strong> You can create a 'branch' to try out a new feature. If it doesn't work, you can just delete the branch without affecting the main project.</li>
-                <li><strong>Bug Tracking:</strong> When a bug appears, you can look back through the history to see exactly when it was introduced.</li>
-              </ul>
-            </div>
-
-            <div className="p-4 rounded-2xl shadow-md bg-white">
-              <h3 className="font-semibold">{t("bestPracticesTitle")}</h3>
-              <ol className="text-sm text-slate-700 list-decimal ml-5">
-                <li><strong>Commit Often:</strong> Save your work frequently with clear, descriptive messages.</li>
-                <li><strong>Use Branches:</strong> Always work on a new feature or bug fix in its own branch.</li>
-                <li><strong>Review Code:</strong> Before merging changes, have someone else on your team review them.</li>
-              </ol>
+        <div className="w-full space-y-8">
+          {/* Introduction Section */}
+          <div className="p-6 rounded-2xl shadow-lg bg-white">
+            <h1 className="text-3xl font-bold text-slate-800">{t("title")}</h1>
+            <p className="mt-2 text-slate-600">{t("concept")}</p>
+            <div className="mt-4 rounded-lg p-4 bg-sky-50 border border-sky-100">
+              <p className="text-slate-700" dangerouslySetInnerHTML={{ __html: t("analogy") }} />
             </div>
           </div>
 
-          {/* Right column: Live Sandbox */}
-          <div className="md:w-2/3 w-full space-y-4">
-            <div className="rounded-2xl shadow-md bg-white p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-sky-100 rounded-full"><FaHistory className="text-sky-600" /></div>
-                  <div>
-                    <div className="text-sm text-slate-500">{t("liveSandbox")}</div>
-                    <h2 className="text-lg font-semibold">{t("title")}</h2>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <div className="text-xs text-slate-500">{t("branches")}: </div>
-                  <div className="flex items-center gap-1">
-                    {Object.keys(branches).map((b) => (
-                      <button
-                        key={b}
-                        onClick={() => checkoutBranch(b)}
-                        className={`text-xs px-2 py-1 rounded ${currentBranch === b ? "bg-sky-600 text-white" : "bg-slate-100 text-slate-700"}`}
-                      >
-                        {b}
-                      </button>
-                    ))}
-                    <input
-                      value={newBranchName}
-                      onChange={(e) => setNewBranchName(e.target.value)}
-                      placeholder={t("createBranch")}
-                      className="text-xs px-2 py-1 rounded border ml-2"
-                    />
-                    <button
-                      onClick={() => createBranch(newBranchName.trim())}
-                        className="text-xs px-2 py-1 rounded bg-emerald-500 text-white ml-1 hover:bg-emerald-600 transition"
-                    >
-                        Create
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* commit timeline */}
-              <div className="mt-4 overflow-x-auto py-3">
-                <div className="flex items-center gap-6 min-w-max">
-                  {commitNodes.map((c) => (
-                    <div
-                      key={c.id}
-                      onClick={() => rewindTo(c.id)}
-                      className={`cursor-pointer p-3 rounded-xl border ${head === c.id ? "ring-2 ring-sky-200" : "bg-white"} transition-shadow hover:shadow-md`}
-                    >
-                      <div className="text-xs text-slate-500">{c.time}</div>
-                      <div className="font-medium mt-1">{c.message}</div>
-                      <div className="text-xs text-slate-400">{c.id} • {c.branch}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* conflict box */}
-              {conflict && (
-                <div className="mt-3 p-3 bg-amber-50 border rounded">
-                  <div className="font-semibold">{t("conflictTitle")}</div>
-                  <div className="mt-2 text-sm">
-                    <div className="font-medium">{conflict.file}</div>
-                    <div className="mt-2 grid md:grid-cols-2 gap-2">
-                      <div className="p-2 bg-white rounded shadow-sm">
-                        <div className="text-xs text-slate-500">Ours</div>
-                        <pre className="text-sm whitespace-pre-wrap">{conflict.ours}</pre>
-                        <button className="mt-2 text-xs px-2 py-1 rounded bg-sky-600 text-white" onClick={() => resolveConflictWith("ours")}>
-                          Keep ours
-                        </button>
-                      </div>
-
-                      <div className="p-2 bg-white rounded shadow-sm">
-                        <div className="text-xs text-slate-500">Theirs</div>
-                        <pre className="text-sm whitespace-pre-wrap">{conflict.theirs}</pre>
-                        <button className="mt-2 text-xs px-2 py-1 rounded bg-sky-600 text-white" onClick={() => resolveConflictWith("theirs")}>
-                          Keep theirs
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className="mt-4 grid md:grid-cols-3 gap-4">
-                {/* File explorer & file list */}
-                <div className="col-span-1 bg-slate-50 p-3 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm font-medium">Files</div>
-                    <div className="text-xs text-slate-500">{Object.keys(files).length}</div>
-                  </div>
-                  <div className="mt-2 space-y-2">
-                    {Object.keys(files).map((fname) => (
-                      <button
-                        key={fname}
-                        onClick={() => setSelectedFile(fname)}
-                        className={`w-full text-left px-2 py-1 rounded ${selectedFile === fname ? "bg-white ring-1 ring-sky-200" : "hover:bg-white"}`}
-                      >
-                        {fname}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Editor */}
-                <div className="col-span-2 bg-white p-3 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm text-slate-500">Editing</div>
-                      <div className="font-medium">{selectedFile}</div>
-                    </div>
+          {/* Interactive Simulation Section */}
+          <div className="p-6 rounded-2xl shadow-lg bg-white">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-sky-100 rounded-full"><FaHistory className="text-sky-600" /></div>
+              <h2 className="text-2xl font-bold text-slate-800">{t("liveSandbox")}</h2>
+            </div>
+            <div className="mt-4 text-slate-600" dangerouslySetInnerHTML={{ __html: t("sandboxExplanation") }} />
+            
+            <div className="mt-4 border-t pt-4">
+                <div className="flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
-                      <input
-                        value={commitMsg}
-                        onChange={(e) => setCommitMsg(e.target.value)}
-                        placeholder={t("newCommitMsg")}
-                        className="text-sm px-2 py-1 rounded border"
-                      />
-                      <button className="px-3 py-1 rounded bg-sky-600 text-white" onClick={() => doCommit(commitMsg)}>
-                        {t("commitBtn")}
-                      </button>
-                    </div>
-                  </div>
-
-                  <textarea
-                    value={editorText}
-                    onChange={(e) => updateFileInEditor(e.target.value)}
-                    className="mt-3 w-full min-h-[220px] font-mono text-sm p-3 rounded border"
-                  />
-
-                  <div className="mt-3 flex items-center gap-2">
-                    <select value={mergeSource || ""} onChange={(e) => setMergeSource(e.target.value)} className="text-sm px-2 py-1 rounded border">
-                      <option value="">Select branch to merge</option>
-                      {Object.keys(branches)
-                        .filter((b) => b !== currentBranch)
-                        .map((b) => (
-                          <option key={b} value={b}>{b}</option>
+                        <span className="text-sm font-medium">{t("branches")}:</span>
+                        {Object.keys(branches).map((b) => (
+                        <button
+                            key={b}
+                            onClick={() => checkoutBranch(b)}
+                            className={`px-3 py-1 text-sm rounded-lg transition ${currentBranch === b ? "bg-sky-600 text-white shadow-md" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+                        >
+                            {b}
+                        </button>
                         ))}
-                    </select>
-                    <button
-                      className="px-3 py-1 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition disabled:bg-gray-400"
-                      onClick={() => startMerge(mergeSource)}
-                      disabled={!mergeSource}
-                    >
-                      {t("mergeBtn")} {mergeSource}
-                    </button>
-
-                    <div className="ml-auto flex items-center gap-2">
-                      <div className="text-xs text-slate-500">HEAD: {head}</div>
                     </div>
-                  </div>
+                    <div className="flex items-center gap-2">
+                        <input
+                        value={newBranchName}
+                        onChange={(e) => setNewBranchName(e.target.value)}
+                        placeholder={t("createBranch")}
+                        className="px-3 py-1 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500"
+                        />
+                        <button
+                        onClick={() => createBranch(newBranchName.trim())}
+                        className="px-3 py-1 text-sm rounded-lg bg-emerald-500 text-white hover:bg-emerald-600 transition shadow"
+                        >
+                        Create
+                        </button>
+                    </div>
                 </div>
 
-              </div>
-
-            </div>
-
-            {/* Footer: timeline details */}
-            <div className="rounded-2xl shadow-md bg-white p-4">
-              <div className="text-sm font-medium">{t("history")}</div>
-              <div className="mt-3 grid gap-2">
-                {commitNodes.slice().reverse().map((c) => (
-                  <div key={c.id} className="p-3 rounded-lg border flex items-start justify-between">
-                    <div>
-                      <div className="text-sm font-semibold">{c.message}</div>
-                      <div className="text-xs text-slate-500">{c.id} • {c.branch} • {c.time}</div>
-                      <div className="mt-2 text-xs text-slate-700 whitespace-pre-wrap">{Object.keys(c.files).slice(0,3).map(fn => `• ${fn}`).join('\n')}</div>
+                {/* Commit Timeline */}
+                <div className="mt-6 overflow-x-auto py-3">
+                    <div className="flex items-center gap-6 min-w-max">
+                        {commitNodes.map((c) => (
+                        <div
+                            key={c.id}
+                            onClick={() => rewindTo(c.id)}
+                            className={`cursor-pointer p-4 rounded-xl border-2 transition-all hover:shadow-xl ${head === c.id ? "border-sky-500 scale-105" : "bg-white"}`}
+                        >
+                            <div className="text-xs text-slate-500">{c.time}</div>
+                            <div className="font-semibold mt-1">{c.message}</div>
+                            <div className="text-xs text-slate-400 mt-1">{c.id} • {c.branch}</div>
+                        </div>
+                        ))}
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <button className="text-xs px-2 py-1 rounded bg-sky-600 text-white hover:bg-sky-700 transition" onClick={() => rewindTo(c.id)}>Checkout</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+                </div>
 
+                {/* Conflict Box */}
+                {conflict && (
+                    <div className="mt-4 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
+                        <h3 className="font-bold text-amber-800">{t("conflictTitle")}</h3>
+                        <div className="mt-2 text-sm">
+                            <p>Conflict in file: <code className="font-mono bg-slate-200 p-1 rounded">{conflict.file}</code></p>
+                            <div className="mt-3 grid md:grid-cols-2 gap-4">
+                                <div className="p-3 bg-white rounded-lg shadow">
+                                    <h4 className="text-xs font-semibold text-slate-500">Your changes (ours)</h4>
+                                    <pre className="mt-1 text-sm whitespace-pre-wrap font-mono">{conflict.ours}</pre>
+                                    <button className="mt-2 w-full text-sm px-3 py-1 rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition" onClick={() => resolveConflictWith("ours")}>
+                                        Keep Your Changes
+                                    </button>
+                                </div>
+                                <div className="p-3 bg-white rounded-lg shadow">
+                                    <h4 className="text-xs font-semibold text-slate-500">Incoming changes (theirs)</h4>
+                                    <pre className="mt-1 text-sm whitespace-pre-wrap font-mono">{conflict.theirs}</pre>
+                                    <button className="mt-2 w-full text-sm px-3 py-1 rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition" onClick={() => resolveConflictWith("theirs")}>
+                                        Keep Incoming Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* File Explorer & Editor */}
+                <div className="mt-6 grid md:grid-cols-12 gap-6">
+                    <div className="md:col-span-3 bg-slate-50 p-4 rounded-lg">
+                        <h3 className="text-sm font-semibold">Project Files</h3>
+                        <div className="mt-3 space-y-2">
+                            {Object.keys(files).map((fname) => (
+                            <button
+                                key={fname}
+                                onClick={() => setSelectedFile(fname)}
+                                className={`w-full text-left px-3 py-2 text-sm rounded-lg transition ${selectedFile === fname ? "bg-sky-200 text-sky-800" : "hover:bg-slate-200"}`}
+                            >
+                                {fname}
+                            </button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="md:col-span-9 bg-white p-4 rounded-lg border">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                            <h4 className="text-sm font-semibold">Editing: <code className="font-mono bg-slate-200 p-1 rounded">{selectedFile}</code></h4>
+                            <div className="flex items-center gap-2">
+                                <input
+                                value={commitMsg}
+                                onChange={(e) => setCommitMsg(e.target.value)}
+                                placeholder={t("newCommitMsg")}
+                                className="px-3 py-1 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500"
+                                />
+                                <button className="px-4 py-1 text-sm rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition shadow" onClick={() => doCommit(commitMsg)}>
+                                {t("commitBtn")}
+                                </button>
+                            </div>
+                        </div>
+                        <textarea
+                            value={editorText}
+                            onChange={(e) => updateFileInEditor(e.target.value)}
+                            className="mt-4 w-full min-h-[200px] font-mono text-sm p-3 rounded-lg border bg-slate-900 text-slate-100 focus:ring-2 focus:ring-sky-500"
+                        />
+                         <div className="mt-4 flex items-center gap-2">
+                            <select value={mergeSource || ""} onChange={(e) => setMergeSource(e.target.value)} className="px-3 py-1 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500">
+                                <option value="">Select branch to merge</option>
+                                {Object.keys(branches)
+                                    .filter((b) => b !== currentBranch)
+                                    .map((b) => (
+                                    <option key={b} value={b}>{b}</option>
+                                    ))}
+                            </select>
+                            <button
+                                className="px-4 py-1 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition shadow disabled:bg-gray-400"
+                                onClick={() => startMerge(mergeSource)}
+                                disabled={!mergeSource}
+                            >
+                                {t("mergeBtn")}
+                            </button>
+                            <div className="ml-auto text-xs text-slate-500">HEAD: {head.slice(0, 7)}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
           </div>
+
+          {/* Commit History Section */}
+            <div className="p-6 rounded-2xl shadow-lg bg-white">
+                <h3 className="text-2xl font-bold text-slate-800">{t("history")}</h3>
+                <div className="mt-4 space-y-3">
+                    {commitNodes.slice().reverse().map((c) => (
+                    <div key={c.id} className="p-4 rounded-lg border flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                        <div className="font-semibold">{c.message}</div>
+                        <div className="text-sm text-slate-500">{c.id} • <span className="font-medium text-indigo-600">{c.branch}</span> • {c.time}</div>
+                        </div>
+                        <button className="px-3 py-1 text-sm rounded-lg bg-sky-100 text-sky-800 hover:bg-sky-200 transition" onClick={() => rewindTo(c.id)}>
+                            Go to this commit
+                        </button>
+                    </div>
+                    ))}
+                </div>
+            </div>
+
+          {/* Additional Info Sections */}
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="p-6 rounded-2xl shadow-lg bg-sky-50">
+                <h3 className="text-xl font-bold text-slate-800">{t("examplesTitle")}</h3>
+                <ul className="mt-4 text-slate-700 list-disc ml-5 space-y-2">
+                    {t("examples").map((example, index) => (
+                    <li key={index} dangerouslySetInnerHTML={{ __html: example }} />
+                    ))}
+                </ul>
+            </div>
+            <div className="p-6 rounded-2xl shadow-lg bg-emerald-50">
+                <h3 className="text-xl font-bold text-slate-800">{t("bestPracticesTitle")}</h3>
+                <ol className="mt-4 text-slate-700 list-decimal ml-5 space-y-2">
+                    {t("bestPractices").map((practice, index) => (
+                    <li key={index} dangerouslySetInnerHTML={{ __html: practice }} />
+                    ))}
+                </ol>
+            </div>
+          </div>
+
+            <div className="p-6 rounded-2xl shadow-lg bg-slate-800 text-white">
+                <h3 className="text-xl font-bold">{t("cheatTitle")}</h3>
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {cheatCommands.map((c) => (
+                    <div key={c.cmd} className="flex items-center justify-between gap-2 bg-slate-700 p-3 rounded-lg">
+                        <div className="text-sm text-slate-300">{c.label}</div>
+                        <div className="flex items-center gap-2">
+                        <code className="text-sm px-2 py-1 bg-slate-900 rounded">{c.cmd}</code>
+                        <button
+                            className="text-xs px-2 py-1 rounded bg-sky-500 text-white hover:bg-sky-600"
+                        >
+                            {t("copy")}
+                        </button>
+                        </div>
+                    </div>
+                    ))}
+                </div>
+            </div>
         </div>
         <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
             <button
