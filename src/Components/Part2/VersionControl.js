@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { FaHistory, FaCodeBranch, FaArrowLeft, FaArrowRight, FaHome } from "react-icons/fa";
+import { FaHistory, FaArrowLeft, FaArrowRight, FaHome } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 
 const content = {
@@ -262,21 +262,7 @@ export default function VersionControlModule() {
     setEditorText(text);
     setFiles((f) => ({ ...f, [selectedFile]: text }));
   }
-
-  function copyToClipboard(text) {
-    if (navigator && navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(
-        () => {
-          // small feedback handled by brief toast-like visual
-          // we'll just flash a small animation
-        },
-        () => alert("Copy failed — try manually")
-      );
-    } else {
-      alert("Clipboard not available in this browser");
-    }
-  }
-
+  
   const commitNodes = useMemo(() => {
     return commits.map((c, idx) => ({ ...c, idx }));
   }, [commits]);
