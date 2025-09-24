@@ -285,7 +285,7 @@ export default function VersionControlModule() {
     <div className="w-full min-h-screen p-4 sm:p-6 bg-gray-900 text-slate-100 font-mono">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-            <Link to="/" className="inline-flex items-center px-4 py-2 bg-slate-800 rounded-full shadow-md border border-slate-700 hover:bg-slate-700 transition">
+            <Link to="/parts/prt2" className="inline-flex items-center px-4 py-2 bg-slate-800 rounded-full shadow-md border border-slate-700 hover:bg-slate-700 transition">
               <FaHome className="mr-2 text-lg text-cyan-400" />
               {t("home")}
             </Link>

@@ -231,7 +231,7 @@ const DebuggingTestingModule = () => {
       <div className="p-4 sm:p-6 lg:p-8 min-h-screen">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-between mb-8">
-            <Link to="/station" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
+            <Link to="/parts/prt2" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
               <FaHome className="mr-2 text-lg text-sky-600" />
               {t.home}
             </Link>
