@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { FaHistory, FaArrowLeft, FaArrowRight, FaHome } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from "framer-motion";
 
 const content = {
   en: {
@@ -281,48 +282,50 @@ export default function VersionControlModule() {
   ];
 
   return (
-    <div className="w-full min-h-screen p-6 bg-gray-50 text-slate-900">
-      <div className="max-w-6xl mx-auto">
+    <div className="w-full min-h-screen p-4 sm:p-6 bg-gray-900 text-slate-100 font-mono">
+      <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-            <Link to="/" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
-              <FaHome className="mr-2 text-lg text-sky-600" />
+            <Link to="/" className="inline-flex items-center px-4 py-2 bg-slate-800 rounded-full shadow-md border border-slate-700 hover:bg-slate-700 transition">
+              <FaHome className="mr-2 text-lg text-cyan-400" />
               {t("home")}
             </Link>
             <div className="flex space-x-2">
-              <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
-              <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिन्दी</button>
+              <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-cyan-500 text-white border-cyan-500" : "bg-slate-800 text-gray-300 border-slate-700"} transition`}>EN</button>
+              <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-cyan-500 text-white border-cyan-500" : "bg-slate-800 text-gray-300 border-slate-700"} transition`}>हिन्दी</button>
             </div>
         </div>
         <div className="w-full space-y-8">
           {/* Introduction Section */}
-          <div className="p-6 rounded-2xl shadow-lg bg-white">
-            <h1 className="text-3xl font-bold text-slate-800">{t("title")}</h1>
-            <p className="mt-2 text-slate-600">{t("concept")}</p>
-            <div className="mt-4 rounded-lg p-4 bg-sky-50 border border-sky-100">
-              <p className="text-slate-700" dangerouslySetInnerHTML={{ __html: t("analogy") }} />
+          <div className="p-6 rounded-2xl shadow-lg bg-slate-800 border border-slate-700">
+            <h1 className="text-3xl font-bold text-cyan-400">{t("title")}</h1>
+            <p className="mt-2 text-slate-400">{t("concept")}</p>
+            <div className="mt-4 rounded-lg p-4 bg-slate-900 border border-slate-700">
+              <p className="text-slate-300" dangerouslySetInnerHTML={{ __html: t("analogy") }} />
             </div>
           </div>
 
           {/* Interactive Simulation Section */}
-          <div className="p-6 rounded-2xl shadow-lg bg-white">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="p-4 sm:p-6 rounded-2xl shadow-lg bg-slate-800 border border-slate-700">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-sky-100 rounded-full"><FaHistory className="text-sky-600" /></div>
-              <h2 className="text-2xl font-bold text-slate-800">{t("liveSandbox")}</h2>
+              <div className="p-3 bg-cyan-900/50 rounded-full"><FaHistory className="text-cyan-400" /></div>
+              <h2 className="text-2xl font-bold text-cyan-400">{t("liveSandbox")}</h2>
             </div>
-            <div className="mt-4 text-slate-600" dangerouslySetInnerHTML={{ __html: t("sandboxExplanation") }} />
+            <div className="mt-4 text-slate-400" dangerouslySetInnerHTML={{ __html: t("sandboxExplanation") }} />
             
-            <div className="mt-4 border-t pt-4">
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex items-center gap-2">
+            <div className="mt-4 border-t border-slate-700 pt-4">
+                <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-sm font-medium">{t("branches")}:</span>
                         {Object.keys(branches).map((b) => (
-                        <button
+                        <motion.button
                             key={b}
                             onClick={() => checkoutBranch(b)}
-                            className={`px-3 py-1 text-sm rounded-lg transition ${currentBranch === b ? "bg-sky-600 text-white shadow-md" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={`px-3 py-1 text-sm rounded-lg transition ${currentBranch === b ? "bg-cyan-500 text-white shadow-md" : "bg-slate-700 text-slate-300 hover:bg-slate-600"}`}
                         >
                             {b}
-                        </button>
+                        </motion.button>
                         ))}
                     </div>
                     <div className="flex items-center gap-2">
@@ -330,98 +333,126 @@ export default function VersionControlModule() {
                         value={newBranchName}
                         onChange={(e) => setNewBranchName(e.target.value)}
                         placeholder={t("createBranch")}
-                        className="px-3 py-1 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500"
+                        className="px-3 py-1 text-sm rounded-lg border bg-slate-900 border-slate-600 focus:ring-2 focus:ring-cyan-500 text-white"
                         />
-                        <button
+                        <motion.button
                         onClick={() => createBranch(newBranchName.trim())}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         className="px-3 py-1 text-sm rounded-lg bg-emerald-500 text-white hover:bg-emerald-600 transition shadow"
                         >
                         Create
-                        </button>
+                        </motion.button>
                     </div>
                 </div>
 
                 {/* Commit Timeline */}
-                <div className="mt-6 overflow-x-auto py-3">
-                    <div className="flex items-center gap-6 min-w-max">
-                        {commitNodes.map((c) => (
-                        <div
-                            key={c.id}
-                            onClick={() => rewindTo(c.id)}
-                            className={`cursor-pointer p-4 rounded-xl border-2 transition-all hover:shadow-xl ${head === c.id ? "border-sky-500 scale-105" : "bg-white"}`}
-                        >
-                            <div className="text-xs text-slate-500">{c.time}</div>
-                            <div className="font-semibold mt-1">{c.message}</div>
-                            <div className="text-xs text-slate-400 mt-1">{c.id} • {c.branch}</div>
-                        </div>
-                        ))}
-                    </div>
-                </div>
+                <div className="mt-6">
+                    <h3 className="text-lg font-semibold text-cyan-400 mb-2">Commit Graph</h3>
+                    <div className="relative overflow-x-auto p-4 bg-slate-900 rounded-lg border border-slate-700">
+                        <svg className="absolute top-0 left-0 w-full h-full" style={{ zIndex: 0 }}>
+                            {commitNodes.map((c, idx) => {
+                                const parent = c.parent ? findCommit(c.parent) : null;
+                                if (!parent) return null;
+                                const parentIdx = commitNodes.findIndex(pc => pc.id === parent.id);
+                                if (parentIdx === -1) return null;
 
-                {/* Conflict Box */}
-                {conflict && (
-                    <div className="mt-4 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
-                        <h3 className="font-bold text-amber-800">{t("conflictTitle")}</h3>
-                        <div className="mt-2 text-sm">
-                            <p>Conflict in file: <code className="font-mono bg-slate-200 p-1 rounded">{conflict.file}</code></p>
-                            <div className="mt-3 grid md:grid-cols-2 gap-4">
-                                <div className="p-3 bg-white rounded-lg shadow">
-                                    <h4 className="text-xs font-semibold text-slate-500">Your changes (ours)</h4>
-                                    <pre className="mt-1 text-sm whitespace-pre-wrap font-mono">{conflict.ours}</pre>
-                                    <button className="mt-2 w-full text-sm px-3 py-1 rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition" onClick={() => resolveConflictWith("ours")}>
-                                        Keep Your Changes
-                                    </button>
-                                </div>
-                                <div className="p-3 bg-white rounded-lg shadow">
-                                    <h4 className="text-xs font-semibold text-slate-500">Incoming changes (theirs)</h4>
-                                    <pre className="mt-1 text-sm whitespace-pre-wrap font-mono">{conflict.theirs}</pre>
-                                    <button className="mt-2 w-full text-sm px-3 py-1 rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition" onClick={() => resolveConflictWith("theirs")}>
-                                        Keep Incoming Changes
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                                const x1 = (parentIdx * 150) + 75;
+                                const y1 = 50;
+                                const x2 = (idx * 150) + 75;
+                                const y2 = 50;
 
-                {/* File Explorer & Editor */}
-                <div className="mt-6 grid md:grid-cols-12 gap-6">
-                    <div className="md:col-span-3 bg-slate-50 p-4 rounded-lg">
-                        <h3 className="text-sm font-semibold">Project Files</h3>
-                        <div className="mt-3 space-y-2">
-                            {Object.keys(files).map((fname) => (
-                            <button
-                                key={fname}
-                                onClick={() => setSelectedFile(fname)}
-                                className={`w-full text-left px-3 py-2 text-sm rounded-lg transition ${selectedFile === fname ? "bg-sky-200 text-sky-800" : "hover:bg-slate-200"}`}
+                                return (
+                                    <line key={`${c.id}-line`} x1={x1} y1={y1} x2={x2} y2={y2} stroke={c.branch === 'main' ? '#22d3ee' : '#a78bfa'} strokeWidth="2" />
+                                );
+                            })}
+                        </svg>
+                        <div className="relative flex items-center gap-8 min-w-max" style={{ zIndex: 1 }}>
+                            {commitNodes.map((c) => (
+                            <motion.div
+                                key={c.id}
+                                onClick={() => rewindTo(c.id)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className={`cursor-pointer p-3 rounded-xl border-2 transition-all hover:shadow-xl w-36 text-center ${head === c.id ? "border-cyan-400 scale-105 bg-slate-700" : "bg-slate-800 border-slate-600"}`}
                             >
-                                {fname}
-                            </button>
+                                <div className="text-xs text-slate-400">{c.time}</div>
+                                <div className="font-semibold mt-1 truncate text-sm">{c.message}</div>
+                                <div className="text-xs text-slate-500 mt-1 truncate">{c.id}</div>
+                                <div className={`text-xs mt-1 px-2 py-0.5 rounded-full inline-block ${c.branch === 'main' ? 'bg-cyan-800 text-cyan-200' : 'bg-purple-800 text-purple-200'}`}>{c.branch}</div>
+                            </motion.div>
                             ))}
                         </div>
                     </div>
-                    <div className="md:col-span-9 bg-white p-4 rounded-lg border">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                            <h4 className="text-sm font-semibold">Editing: <code className="font-mono bg-slate-200 p-1 rounded">{selectedFile}</code></h4>
+                </div>
+
+
+                {/* Conflict Box */}
+                {conflict && (
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 bg-amber-900/50 border-l-4 border-amber-400 rounded-r-lg">
+                        <h3 className="font-bold text-amber-300">{t("conflictTitle")}</h3>
+                        <div className="mt-2 text-sm">
+                            <p>Conflict in file: <code className="font-mono bg-slate-700 p-1 rounded">{conflict.file}</code></p>
+                            <div className="mt-3 grid md:grid-cols-2 gap-4">
+                                <div className="p-3 bg-slate-800 rounded-lg shadow">
+                                    <h4 className="text-xs font-semibold text-slate-400">Your changes (ours)</h4>
+                                    <pre className="mt-1 text-sm whitespace-pre-wrap font-mono bg-slate-900 p-2 rounded">{conflict.ours}</pre>
+                                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="mt-2 w-full text-sm px-3 py-1 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700 transition" onClick={() => resolveConflictWith("ours")}>
+                                        Keep Your Changes
+                                    </motion.button>
+                                </div>
+                                <div className="p-3 bg-slate-800 rounded-lg shadow">
+                                    <h4 className="text-xs font-semibold text-slate-400">Incoming changes (theirs)</h4>
+                                    <pre className="mt-1 text-sm whitespace-pre-wrap font-mono bg-slate-900 p-2 rounded">{conflict.theirs}</pre>
+                                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="mt-2 w-full text-sm px-3 py-1 rounded-lg bg-cyan-600 text-white hover:bg-cyan-700 transition" onClick={() => resolveConflictWith("theirs")}>
+                                        Keep Incoming Changes
+                                    </motion.button>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+
+                {/* File Explorer & Editor */}
+                <div className="mt-6 grid lg:grid-cols-12 gap-6">
+                    <div className="lg:col-span-3 bg-slate-900 p-4 rounded-lg border border-slate-700">
+                        <h3 className="text-sm font-semibold text-cyan-400">Project Files</h3>
+                        <div className="mt-3 space-y-2">
+                            {Object.keys(files).map((fname) => (
+                            <motion.button
+                                key={fname}
+                                onClick={() => setSelectedFile(fname)}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className={`w-full text-left px-3 py-2 text-sm rounded-lg transition ${selectedFile === fname ? "bg-cyan-800 text-cyan-200" : "hover:bg-slate-700"}`}
+                            >
+                                {fname}
+                            </motion.button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="lg:col-span-9 bg-slate-900 p-4 rounded-lg border border-slate-700">
+                        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-2">
+                            <h4 className="text-sm font-semibold">Editing: <code className="font-mono bg-slate-700 p-1 rounded">{selectedFile}</code></h4>
                             <div className="flex items-center gap-2">
                                 <input
                                 value={commitMsg}
                                 onChange={(e) => setCommitMsg(e.target.value)}
                                 placeholder={t("newCommitMsg")}
-                                className="px-3 py-1 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500"
+                                className="px-3 py-1 text-sm rounded-lg border bg-slate-800 border-slate-600 focus:ring-2 focus:ring-cyan-500 text-white"
                                 />
-                                <button className="px-4 py-1 text-sm rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition shadow" onClick={() => doCommit(commitMsg)}>
+                                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-4 py-1 text-sm rounded-lg bg-cyan-600 text-white hover:bg-cyan-700 transition shadow" onClick={() => doCommit(commitMsg)}>
                                 {t("commitBtn")}
-                                </button>
+                                </motion.button>
                             </div>
                         </div>
                         <textarea
                             value={editorText}
                             onChange={(e) => updateFileInEditor(e.target.value)}
-                            className="mt-4 w-full min-h-[200px] font-mono text-sm p-3 rounded-lg border bg-slate-900 text-slate-100 focus:ring-2 focus:ring-sky-500"
+                            className="mt-4 w-full min-h-[200px] font-mono text-sm p-3 rounded-lg border bg-black/50 border-slate-700 text-green-300 focus:ring-2 focus:ring-cyan-500"
                         />
-                         <div className="mt-4 flex items-center gap-2">
-                            <select value={mergeSource || ""} onChange={(e) => setMergeSource(e.target.value)} className="px-3 py-1 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500">
+                         <div className="mt-4 flex flex-col sm:flex-row items-center gap-2">
+                            <select value={mergeSource || ""} onChange={(e) => setMergeSource(e.target.value)} className="px-3 py-1 text-sm rounded-lg border bg-slate-800 border-slate-600 focus:ring-2 focus:ring-cyan-500 text-white">
                                 <option value="">Select branch to merge</option>
                                 {Object.keys(branches)
                                     .filter((b) => b !== currentBranch)
@@ -429,88 +460,91 @@ export default function VersionControlModule() {
                                     <option key={b} value={b}>{b}</option>
                                     ))}
                             </select>
-                            <button
-                                className="px-4 py-1 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition shadow disabled:bg-gray-400"
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="px-4 py-1 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition shadow disabled:bg-gray-600"
                                 onClick={() => startMerge(mergeSource)}
                                 disabled={!mergeSource}
                             >
                                 {t("mergeBtn")}
-                            </button>
+                            </motion.button>
                             <div className="ml-auto text-xs text-slate-500">HEAD: {head.slice(0, 7)}</div>
                         </div>
                     </div>
                 </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Commit History Section */}
-            <div className="p-6 rounded-2xl shadow-lg bg-white">
-                <h3 className="text-2xl font-bold text-slate-800">{t("history")}</h3>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-4 sm:p-6 rounded-2xl shadow-lg bg-slate-800 border border-slate-700">
+                <h3 className="text-2xl font-bold text-cyan-400">{t("history")}</h3>
                 <div className="mt-4 space-y-3">
                     {commitNodes.slice().reverse().map((c) => (
-                    <div key={c.id} className="p-4 rounded-lg border flex flex-wrap items-center justify-between gap-2">
+                    <motion.div whileHover={{ scale: 1.02 }} key={c.id} className="p-4 rounded-lg border border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-2">
                         <div>
                         <div className="font-semibold">{c.message}</div>
-                        <div className="text-sm text-slate-500">{c.id} • <span className="font-medium text-indigo-600">{c.branch}</span> • {c.time}</div>
+                        <div className="text-sm text-slate-400">{c.id} • <span className="font-medium text-indigo-400">{c.branch}</span> • {c.time}</div>
                         </div>
-                        <button className="px-3 py-1 text-sm rounded-lg bg-sky-100 text-sky-800 hover:bg-sky-200 transition" onClick={() => rewindTo(c.id)}>
+                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-3 py-1 text-sm rounded-lg bg-cyan-800 text-cyan-200 hover:bg-cyan-700 transition" onClick={() => rewindTo(c.id)}>
                             Go to this commit
-                        </button>
-                    </div>
+                        </motion.button>
+                    </motion.div>
                     ))}
                 </div>
-            </div>
+            </motion.div>
 
           {/* Additional Info Sections */}
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="p-6 rounded-2xl shadow-lg bg-sky-50">
-                <h3 className="text-xl font-bold text-slate-800">{t("examplesTitle")}</h3>
-                <ul className="mt-4 text-slate-700 list-disc ml-5 space-y-2">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="p-6 rounded-2xl shadow-lg bg-slate-800 border border-slate-700">
+                <h3 className="text-xl font-bold text-cyan-400">{t("examplesTitle")}</h3>
+                <ul className="mt-4 text-slate-400 list-disc ml-5 space-y-2">
                     {t("examples").map((example, index) => (
                     <li key={index} dangerouslySetInnerHTML={{ __html: example }} />
                     ))}
                 </ul>
-            </div>
-            <div className="p-6 rounded-2xl shadow-lg bg-emerald-50">
-                <h3 className="text-xl font-bold text-slate-800">{t("bestPracticesTitle")}</h3>
-                <ol className="mt-4 text-slate-700 list-decimal ml-5 space-y-2">
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="p-6 rounded-2xl shadow-lg bg-slate-800 border border-slate-700">
+                <h3 className="text-xl font-bold text-cyan-400">{t("bestPracticesTitle")}</h3>
+                <ol className="mt-4 text-slate-400 list-decimal ml-5 space-y-2">
                     {t("bestPractices").map((practice, index) => (
                     <li key={index} dangerouslySetInnerHTML={{ __html: practice }} />
                     ))}
                 </ol>
-            </div>
+            </motion.div>
           </div>
 
-            <div className="p-6 rounded-2xl shadow-lg bg-slate-800 text-white">
-                <h3 className="text-xl font-bold">{t("cheatTitle")}</h3>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-6 rounded-2xl shadow-lg bg-slate-800 text-white border border-slate-700">
+                <h3 className="text-xl font-bold text-cyan-400">{t("cheatTitle")}</h3>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {cheatCommands.map((c) => (
-                    <div key={c.cmd} className="flex items-center justify-between gap-2 bg-slate-700 p-3 rounded-lg">
+                    <motion.div whileHover={{ scale: 1.03 }} key={c.cmd} className="flex items-center justify-between gap-2 bg-slate-700 p-3 rounded-lg">
                         <div className="text-sm text-slate-300">{c.label}</div>
                         <div className="flex items-center gap-2">
                         <code className="text-sm px-2 py-1 bg-slate-900 rounded">{c.cmd}</code>
-                        <button
-                            className="text-xs px-2 py-1 rounded bg-sky-500 text-white hover:bg-sky-600"
+                        <motion.button
+                            whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+                            className="text-xs px-2 py-1 rounded bg-cyan-500 text-white hover:bg-cyan-600"
                         >
                             {t("copy")}
-                        </button>
+                        </motion.button>
                         </div>
-                    </div>
+                    </motion.div>
                     ))}
                 </div>
-            </div>
+            </motion.div>
         </div>
-        <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
+        <div className="w-full flex justify-between items-center mt-10 p-4 bg-slate-800 rounded-lg shadow-md border border-slate-700">
             <button
               onClick={() => navigate('/module3/ui-ux')}
-              className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+              className="flex items-center gap-2 px-4 py-2 bg-purple-800 hover:bg-purple-700 text-purple-200 rounded-lg shadow transition"
             >
               <FaArrowLeft />
               {t("previous")}
             </button>
             <button
               onClick={() => navigate('/module4/testing')}
-              className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+              className="flex items-center gap-2 px-4 py-2 bg-green-800 hover:bg-green-700 text-green-200 rounded-lg shadow transition"
             >
               {t("next")}
               <FaArrowRight />
