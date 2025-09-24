@@ -30,88 +30,88 @@ const content = {
     interactive_showcase_instruction: "Click on a database name to know more about it.",
     db_types_title: "Types of Databases",
     db_types: [
-        { 
-            name: "Relational (RDBMS)", 
-            analogy: "A giant Lego set where each block (table) connects to other blocks in a precise way.", 
-            examples: "MySQL, PostgreSQL, Oracle", 
-            use: "Storing structured data like users, products, orders.", 
-            icon: FaShapes,
-            characteristics: "Data is stored in tables with rows and columns. Enforces a strict schema. Uses SQL (Structured Query Language).",
-            when_to_use: "When data integrity and consistency are critical, like in financial transactions or e-commerce orders.",
-            when_to_avoid: "When dealing with large volumes of unstructured data or when you need high scalability and flexibility.",
-            popular_dbms: "MySQL, PostgreSQL, Microsoft SQL Server, Oracle Database."
-        },
-        { 
-            name: "NoSQL", 
-            analogy: "A magical filing cabinet that can reshape itself — folders can have different sizes and types of files.", 
-            examples: "MongoDB, Firebase, Cassandra", 
-            use: "Flexible, unstructured data like messages, social media posts, IoT data.", 
-            icon: FaFileAlt,
-            characteristics: "Schema-less, allowing for flexible data models (key-value, document, column-family, graph). Horizontally scalable.",
-            when_to_use: "For big data applications, real-time web apps, and when you need to store varied data types.",
-            when_to_avoid: "When you require complex queries and transactions with strict consistency.",
-            popular_dbms: "MongoDB, Cassandra, Couchbase, Amazon DynamoDB."
-        },
-        { 
-            name: "In-Memory", 
-            analogy: "Super-fast sticky notes that keep data ready to grab instantly.", 
-            examples: "Redis, Memcached", 
-            use: "Caching data to make apps faster.", 
-            icon: FaBolt,
-            characteristics: "Stores data in RAM instead of on a disk, providing extremely fast read/write operations.",
-            when_to_use: "For caching, real-time analytics, session management, and gaming leaderboards.",
-            when_to_avoid: "For permanent, large-scale data storage, as it can be expensive and data is lost on power failure.",
-            popular_dbms: "Redis, Memcached, Hazelcast."
-        },
-        { 
-            name: "Graph", 
-            analogy: "A map of cities and roads — shows connections clearly.", 
-            examples: "Neo4j, Amazon Neptune", 
-            use: "Social networks, recommendation systems.", 
-            icon: FaProjectDiagram,
-            characteristics: "Stores data as nodes (entities) and edges (relationships). Optimized for querying relationships.",
-            when_to_use: "For social networks, fraud detection, and recommendation engines where connections are key.",
-            when_to_avoid: "When data is not highly interconnected or when you need to perform complex analytical queries on the entire dataset.",
-            popular_dbms: "Neo4j, ArangoDB, Amazon Neptune."
-        },
-        { 
-            name: "Time-Series", 
-            analogy: "A diary that records events over time in perfect order.", 
-            examples: "InfluxDB, TimescaleDB", 
-            use: "Monitoring, analytics, IoT sensors.", 
-            icon: FaChartLine,
-            characteristics: "Optimized for time-stamped or time-series data. High write and query performance for time-based data.",
-            when_to_use: "For monitoring systems, IoT sensor data, and financial trading data.",
-            when_to_avoid: "When data does not have a time-series nature.",
-            popular_dbms: "InfluxDB, TimescaleDB, Prometheus."
-        }
+      {
+        name: "Relational (RDBMS)",
+        analogy: "A giant Lego set where each block (table) connects to other blocks in a precise way.",
+        examples: "MySQL, PostgreSQL, Oracle",
+        use: "Storing structured data like users, products, orders.",
+        icon: FaShapes,
+        characteristics: "Data is stored in tables with rows and columns. Enforces a strict schema. Uses SQL (Structured Query Language).",
+        when_to_use: "When data integrity and consistency are critical, like in financial transactions or e-commerce orders.",
+        when_to_avoid: "When dealing with large volumes of unstructured data or when you need high scalability and flexibility.",
+        popular_dbms: "MySQL, PostgreSQL, Microsoft SQL Server, Oracle Database."
+      },
+      {
+        name: "NoSQL",
+        analogy: "A magical filing cabinet that can reshape itself — folders can have different sizes and types of files.",
+        examples: "MongoDB, Firebase, Cassandra",
+        use: "Flexible, unstructured data like messages, social media posts, IoT data.",
+        icon: FaFileAlt,
+        characteristics: "Schema-less, allowing for flexible data models (key-value, document, column-family, graph). Horizontally scalable.",
+        when_to_use: "For big data applications, real-time web apps, and when you need to store varied data types.",
+        when_to_avoid: "When you require complex queries and transactions with strict consistency.",
+        popular_dbms: "MongoDB, Cassandra, Couchbase, Amazon DynamoDB."
+      },
+      {
+        name: "In-Memory",
+        analogy: "Super-fast sticky notes that keep data ready to grab instantly.",
+        examples: "Redis, Memcached",
+        use: "Caching data to make apps faster.",
+        icon: FaBolt,
+        characteristics: "Stores data in RAM instead of on a disk, providing extremely fast read/write operations.",
+        when_to_use: "For caching, real-time analytics, session management, and gaming leaderboards.",
+        when_to_avoid: "For permanent, large-scale data storage, as it can be expensive and data is lost on power failure.",
+        popular_dbms: "Redis, Memcached, Hazelcast."
+      },
+      {
+        name: "Graph",
+        analogy: "A map of cities and roads — shows connections clearly.",
+        examples: "Neo4j, Amazon Neptune",
+        use: "Social networks, recommendation systems.",
+        icon: FaProjectDiagram,
+        characteristics: "Stores data as nodes (entities) and edges (relationships). Optimized for querying relationships.",
+        when_to_use: "For social networks, fraud detection, and recommendation engines where connections are key.",
+        when_to_avoid: "When data is not highly interconnected or when you need to perform complex analytical queries on the entire dataset.",
+        popular_dbms: "Neo4j, ArangoDB, Amazon Neptune."
+      },
+      {
+        name: "Time-Series",
+        analogy: "A diary that records events over time in perfect order.",
+        examples: "InfluxDB, TimescaleDB",
+        use: "Monitoring, analytics, IoT sensors.",
+        icon: FaChartLine,
+        characteristics: "Optimized for time-stamped or time-series data. High write and query performance for time-based data.",
+        when_to_use: "For monitoring systems, IoT sensor data, and financial trading data.",
+        when_to_avoid: "When data does not have a time-series nature.",
+        popular_dbms: "InfluxDB, TimescaleDB, Prometheus."
+      }
     ],
     db_comparison_title: "Database Type Comparison",
     db_comparison_table: {
-        headers: ["Type", "Best For", "Data Structure", "Flexibility", "Example"],
-        rows: [
-            ["Relational", "Structured data, transactions", "Tables with rows and columns", "Low", "MySQL"],
-            ["NoSQL", "Unstructured data, scalability", "Key-value, document, column-family", "High", "MongoDB"],
-            ["In-Memory", "Caching, real-time apps", "Key-value, in-memory", "High", "Redis"],
-            ["Graph", "Relationships, networks", "Nodes and edges", "Medium", "Neo4j"],
-            ["Time-Series", "Time-stamped data, IoT", "Time-indexed series", "Medium", "InfluxDB"]
-        ]
+      headers: ["Type", "Best For", "Data Structure", "Flexibility", "Example"],
+      rows: [
+        ["Relational", "Structured data, transactions", "Tables with rows and columns", "Low", "MySQL"],
+        ["NoSQL", "Unstructured data, scalability", "Key-value, document, column-family", "High", "MongoDB"],
+        ["In-Memory", "Caching, real-time apps", "Key-value, in-memory", "High", "Redis"],
+        ["Graph", "Relationships, networks", "Nodes and edges", "Medium", "Neo4j"],
+        ["Time-Series", "Time-stamped data, IoT", "Time-indexed series", "Medium", "InfluxDB"]
+      ]
     },
     how_companies_handle_db_title: "How Companies Handle Databases",
     how_companies_handle_db_points: [
-        { title: "Multiple Database Strategy", desc: "Big companies often use different types of databases for different purposes: Relational for transactions, NoSQL for social media data, In-memory for real-time features." },
-        { title: "Backups and Redundancy", desc: "Data is backed up daily, sometimes hourly. Extra copies are stored in multiple locations — like magical twins of your filing cabinet." },
-        { title: "Scaling", desc: "Vertical Scaling: Making one database server stronger (like adding more drawers). Horizontal Scaling: Adding more servers/folders to handle more data and users." },
-        { title: "Security and Access Control", desc: "Companies use roles and permissions so only the right people can see/edit certain folders." },
-        { title: "Monitoring and Maintenance", desc: "Automatic alerts if something goes wrong. Regular cleanup and indexing to keep searches fast." }
+      { title: "Multiple Database Strategy", desc: "Big companies often use different types of databases for different purposes: Relational for transactions, NoSQL for social media data, In-memory for real-time features." },
+      { title: "Backups and Redundancy", desc: "Data is backed up daily, sometimes hourly. Extra copies are stored in multiple locations — like magical twins of your filing cabinet." },
+      { title: "Scaling", desc: "Vertical Scaling: Making one database server stronger (like adding more drawers). Horizontal Scaling: Adding more servers/folders to handle more data and users." },
+      { title: "Security and Access Control", desc: "Companies use roles and permissions so only the right people can see/edit certain folders." },
+      { title: "Monitoring and Maintenance", desc: "Automatic alerts if something goes wrong. Regular cleanup and indexing to keep searches fast." }
     ],
     kid_friendly_title: "Kid-Friendly Example: A Magical School Library",
     kid_friendly_points: [
-        "<strong>Relational databases</strong> are the neatly labeled shelves.",
-        "<strong>NoSQL</strong> is the creative reading corner where kids can put books anywhere.",
-        "<strong>In-memory</strong> is a teacher keeping sticky notes with urgent info.",
-        "<strong>Graph database</strong> is a map showing who is friends with whom.",
-        "<strong>Time-series</strong> is the daily diary logging everything the students do."
+      "<strong>Relational databases</strong> are the neatly labeled shelves.",
+      "<strong>NoSQL</strong> is the creative reading corner where kids can put books anywhere.",
+      "<strong>In-memory</strong> is a teacher keeping sticky notes with urgent info.",
+      "<strong>Graph database</strong> is a map showing who is friends with whom.",
+      "<strong>Time-series</strong> is the daily diary logging everything the students do."
     ],
     interactive_showcase_title: "Database Types Explorer",
     previous: "Previous",
@@ -143,88 +143,88 @@ const content = {
     interactive_showcase_instruction: "इसके बारे में अधिक जानने के लिए डेटाबेस नाम पर क्लिक करें।",
     db_types_title: "डेटाबेस के प्रकार",
     db_types: [
-        {
-            name: "रिलेशनल (RDBMS)",
-            analogy: "एक विशाल लेगो सेट जहां प्रत्येक ब्लॉक (तालिका) अन्य ब्लॉकों से एक सटीक तरीके से जुड़ता है।",
-            examples: "MySQL, PostgreSQL, Oracle",
-            use: "उपयोगकर्ताओं, उत्पादों, आदेशों जैसे संरचित डेटा को संग्रहीत करना।",
-            icon: FaShapes,
-            characteristics: "डेटा तालिकाओं में पंक्तियों और स्तंभों में संग्रहीत होता है। एक सख्त स्कीमा लागू करता है। SQL (स्ट्रक्चर्ड क्वेरी लैंग्वेज) का उपयोग करता है।",
-            when_to_use: "जब डेटा अखंडता और स्थिरता महत्वपूर्ण हो, जैसे वित्तीय लेनदेन या ई-कॉमर्स ऑर्डर में।",
-            when_to_avoid: "बड़ी मात्रा में असंरचित डेटा से निपटने या जब आपको उच्च मापनीयता और लचीलेपन की आवश्यकता होती है।",
-            popular_dbms: "MySQL, PostgreSQL, Microsoft SQL Server, Oracle Database."
-        },
-        {
-            name: "नो-एसक्यूएल (NoSQL)",
-            analogy: "एक जादुई फाइलिंग कैबिनेट जो खुद को फिर से आकार दे सकती है - फ़ोल्डरों में विभिन्न आकार और प्रकार की फाइलें हो सकती हैं।",
-            examples: "MongoDB, Firebase, Cassandra",
-            use: "संदेश, सोशल मीडिया पोस्ट, IoT डेटा जैसे लचीले, असंरचित डेटा।",
-            icon: FaFileAlt,
-            characteristics: "स्कीमा-रहित, लचीले डेटा मॉडल (की-वैल्यू, दस्तावेज़, कॉलम-फ़ैमिली, ग्राफ़) की अनुमति देता है। क्षैतिज रूप से मापनीय।",
-            when_to_use: "बड़े डेटा अनुप्रयोगों, रीयल-टाइम वेब ऐप्स के लिए, और जब आपको विभिन्न डेटा प्रकारों को संग्रहीत करने की आवश्यकता होती है।",
-            when_to_avoid: "जब आपको सख्त स्थिरता के साथ जटिल प्रश्नों और लेनदेन की आवश्यकता होती है।",
-            popular_dbms: "MongoDB, Cassandra, Couchbase, Amazon DynamoDB."
-        },
-        {
-            name: "इन-मेमोरी",
-            analogy: "सुपर-फास्ट स्टिकी नोट्स जो डेटा को तुरंत पकड़ने के लिए तैयार रखते हैं।",
-            examples: "Redis, Memcached",
-            use: "ऐप्स को तेज बनाने के लिए डेटा कैश करना।",
-            icon: FaBolt,
-            characteristics: "डिस्क के बजाय रैम में डेटा संग्रहीत करता है, जिससे अत्यंत तेज़ पढ़ने/लिखने की कार्रवाई होती है।",
-            when_to_use: "कैशिंग, रीयल-टाइम एनालिटिक्स, सत्र प्रबंधन और गेमिंग लीडरबोर्ड के लिए।",
-            when_to_avoid: "स्थायी, बड़े पैमाने पर डेटा भंडारण के लिए, क्योंकि यह महंगा हो सकता है और बिजली की विफलता पर डेटा खो जाता है।",
-            popular_dbms: "Redis, Memcached, Hazelcast."
-        },
-        {
-            name: "ग्राफ",
-            analogy: "शहरों और सड़कों का नक्शा - कनेक्शन स्पष्ट रूप से दिखाता है।",
-            examples: "Neo4j, Amazon Neptune",
-            use: "सोशल नेटवर्क, सिफारिश प्रणाली।",
-            icon: FaProjectDiagram,
-            characteristics: "डेटा को नोड्स (इकाइयों) और किनारों (संबंधों) के रूप में संग्रहीत करता है। संबंधों की पूछताछ के लिए अनुकूलित।",
-            when_to_use: "सोशल नेटवर्क, धोखाधड़ी का पता लगाने और सिफारिश इंजनों के लिए जहां कनेक्शन महत्वपूर्ण हैं।",
-            when_to_avoid: "जब डेटा अत्यधिक परस्पर जुड़ा नहीं होता है या जब आपको पूरे डेटासेट पर जटिल विश्लेषणात्मक प्रश्न करने की आवश्यकता होती है।",
-            popular_dbms: "Neo4j, ArangoDB, Amazon Neptune."
-        },
-        {
-            name: "टाइम-सीरीज़",
-            analogy: "एक डायरी जो समय के साथ घटनाओं को सही क्रम में रिकॉर्ड करती है।",
-            examples: "InfluxDB, TimescaleDB",
-            use: "निगरानी, ​​विश्लेषिकी, IoT सेंसर।",
-            icon: FaChartLine,
-            characteristics: "समय-मुद्रांकित या समय-श्रृंखला डेटा के लिए अनुकूलित। समय-आधारित डेटा के लिए उच्च लिखने और क्वेरी प्रदर्शन।",
-            when_to_use: "सिस्टम, IoT सेंसर डेटा और वित्तीय ट्रेडिंग डेटा की निगरानी के लिए।",
-            when_to_avoid: "जब डेटा में समय-श्रृंखला प्रकृति नहीं होती है।",
-            popular_dbms: "InfluxDB, TimescaleDB, Prometheus."
-        }
+      {
+        name: "रिलेशनल (RDBMS)",
+        analogy: "एक विशाल लेगो सेट जहां प्रत्येक ब्लॉक (तालिका) अन्य ब्लॉकों से एक सटीक तरीके से जुड़ता है।",
+        examples: "MySQL, PostgreSQL, Oracle",
+        use: "उपयोगकर्ताओं, उत्पादों, आदेशों जैसे संरचित डेटा को संग्रहीत करना।",
+        icon: FaShapes,
+        characteristics: "डेटा तालिकाओं में पंक्तियों और स्तंभों में संग्रहीत होता है। एक सख्त स्कीमा लागू करता है। SQL (स्ट्रक्चर्ड क्वेरी लैंग्वेज) का उपयोग करता है।",
+        when_to_use: "जब डेटा अखंडता और स्थिरता महत्वपूर्ण हो, जैसे वित्तीय लेनदेन या ई-कॉमर्स ऑर्डर में।",
+        when_to_avoid: "बड़ी मात्रा में असंरचित डेटा से निपटने या जब आपको उच्च मापनीयता और लचीलेपन की आवश्यकता होती है।",
+        popular_dbms: "MySQL, PostgreSQL, Microsoft SQL Server, Oracle Database."
+      },
+      {
+        name: "नो-एसक्यूएल (NoSQL)",
+        analogy: "एक जादुई फाइलिंग कैबिनेट जो खुद को फिर से आकार दे सकती है - फ़ोल्डरों में विभिन्न आकार और प्रकार की फाइलें हो सकती हैं।",
+        examples: "MongoDB, Firebase, Cassandra",
+        use: "संदेश, सोशल मीडिया पोस्ट, IoT डेटा जैसे लचीले, असंरचित डेटा।",
+        icon: FaFileAlt,
+        characteristics: "स्कीमा-रहित, लचीले डेटा मॉडल (की-वैल्यू, दस्तावेज़, कॉलम-फ़ैमिली, ग्राफ़) की अनुमति देता है। क्षैतिज रूप से मापनीय।",
+        when_to_use: "बड़े डेटा अनुप्रयोगों, रीयल-टाइम वेब ऐप्स के लिए, और जब आपको विभिन्न डेटा प्रकारों को संग्रहीत करने की आवश्यकता होती है।",
+        when_to_avoid: "जब आपको सख्त स्थिरता के साथ जटिल प्रश्नों और लेनदेन की आवश्यकता होती है।",
+        popular_dbms: "MongoDB, Cassandra, Couchbase, Amazon DynamoDB."
+      },
+      {
+        name: "इन-मेमोरी",
+        analogy: "सुपर-फास्ट स्टिकी नोट्स जो डेटा को तुरंत पकड़ने के लिए तैयार रखते हैं।",
+        examples: "Redis, Memcached",
+        use: "ऐप्स को तेज बनाने के लिए डेटा कैश करना।",
+        icon: FaBolt,
+        characteristics: "डिस्क के बजाय रैम में डेटा संग्रहीत करता है, जिससे अत्यंत तेज़ पढ़ने/लिखने की कार्रवाई होती है।",
+        when_to_use: "कैशिंग, रीयल-टाइम एनालिटिक्स, सत्र प्रबंधन और गेमिंग लीडरबोर्ड के लिए।",
+        when_to_avoid: "स्थायी, बड़े पैमाने पर डेटा भंडारण के लिए, क्योंकि यह महंगा हो सकता है और बिजली की विफलता पर डेटा खो जाता है।",
+        popular_dbms: "Redis, Memcached, Hazelcast."
+      },
+      {
+        name: "ग्राफ",
+        analogy: "शहरों और सड़कों का नक्शा - कनेक्शन स्पष्ट रूप से दिखाता है।",
+        examples: "Neo4j, Amazon Neptune",
+        use: "सोशल नेटवर्क, सिफारिश प्रणाली।",
+        icon: FaProjectDiagram,
+        characteristics: "डेटा को नोड्स (इकाइयों) और किनारों (संबंधों) के रूप में संग्रहीत करता है। संबंधों की पूछताछ के लिए अनुकूलित।",
+        when_to_use: "सोशल नेटवर्क, धोखाधड़ी का पता लगाने और सिफारिश इंजनों के लिए जहां कनेक्शन महत्वपूर्ण हैं।",
+        when_to_avoid: "जब डेटा अत्यधिक परस्पर जुड़ा नहीं होता है या जब आपको पूरे डेटासेट पर जटिल विश्लेषणात्मक प्रश्न करने की आवश्यकता होती है।",
+        popular_dbms: "Neo4j, ArangoDB, Amazon Neptune."
+      },
+      {
+        name: "टाइम-सीरीज़",
+        analogy: "एक डायरी जो समय के साथ घटनाओं को सही क्रम में रिकॉर्ड करती है।",
+        examples: "InfluxDB, TimescaleDB",
+        use: "निगरानी, ​​विश्लेषिकी, IoT सेंसर।",
+        icon: FaChartLine,
+        characteristics: "समय-मुद्रांकित या समय-श्रृंखला डेटा के लिए अनुकूलित। समय-आधारित डेटा के लिए उच्च लिखने और क्वेरी प्रदर्शन।",
+        when_to_use: "सिस्टम, IoT सेंसर डेटा और वित्तीय ट्रेडिंग डेटा की निगरानी के लिए।",
+        when_to_avoid: "जब डेटा में समय-श्रृंखला प्रकृति नहीं होती है।",
+        popular_dbms: "InfluxDB, TimescaleDB, Prometheus."
+      }
     ],
     db_comparison_title: "डेटाबेस प्रकार की तुलना",
     db_comparison_table: {
-        headers: ["प्रकार", "के लिए सर्वश्रेष्ठ", "डेटा संरचना", "लचीलापन", "उदाहरण"],
-        rows: [
-            ["रिलेशनल", "संरचित डेटा, लेनदेन", "पंक्तियों और स्तंभों के साथ तालिकाएँ", "कम", "MySQL"],
-            ["नो-एसक्यूएल", "असंरचित डेटा, मापनीयता", "कुंजी-मूल्य, दस्तावेज़, स्तंभ-परिवार", "उच्च", "MongoDB"],
-            ["इन-मेमोरी", "कैशिंग, रीयल-टाइम ऐप्स", "कुंजी-मूल्य, इन-मेमोरी", "उच्च", "Redis"],
-            ["ग्राफ", "रिश्ते, नेटवर्क", "नोड्स और किनारे", "मध्यम", "Neo4j"],
-            ["टाइम-सीरीज़", "समय-मुद्रांकित डेटा, IoT", "समय-अनुक्रमित श्रृंखला", "मध्यम", "InfluxDB"]
-        ]
+      headers: ["प्रकार", "के लिए सर्वश्रेष्ठ", "डेटा संरचना", "लचीलापन", "उदाहरण"],
+      rows: [
+        ["रिलेशनल", "संरचित डेटा, लेनदेन", "पंक्तियों और स्तंभों के साथ तालिकाएँ", "कम", "MySQL"],
+        ["नो-एसक्यूएल", "असंरचित डेटा, मापनीयता", "कुंजी-मूल्य, दस्तावेज़, स्तंभ-परिवार", "उच्च", "MongoDB"],
+        ["इन-मेमोरी", "कैशिंग, रीयल-टाइम ऐप्स", "कुंजी-मूल्य, इन-मेमोरी", "उच्च", "Redis"],
+        ["ग्राफ", "रिश्ते, नेटवर्क", "नोड्स और किनारे", "मध्यम", "Neo4j"],
+        ["टाइम-सीरीज़", "समय-मुद्रांकित डेटा, IoT", "समय-अनुक्रमित श्रृंखला", "मध्यम", "InfluxDB"]
+      ]
     },
     how_companies_handle_db_title: "कंपनियां डेटाबेस को कैसे संभालती हैं",
     how_companies_handle_db_points: [
-        { title: "एकाधिक डेटाबेस रणनीति", desc: "बड़ी कंपनियाँ अक्सर विभिन्न उद्देश्यों के लिए विभिन्न प्रकार के डेटाबेस का उपयोग करती हैं: लेनदेन के लिए रिलेशनल, सोशल मीडिया डेटा के लिए नो-एसक्यूएल, रीयल-टाइम सुविधाओं के लिए इन-मेमोरी।" },
-        { title: "बैकअप और अतिरेक", desc: "डेटा का दैनिक, कभी-कभी प्रति घंटा बैकअप लिया जाता है। अतिरिक्त प्रतियां कई स्थानों पर संग्रहीत की जाती हैं - जैसे आपकी फाइलिंग कैबिनेट के जादुई जुड़वां।" },
-        { title: "स्केलिंग", desc: "वर्टिकल स्केलिंग: एक डेटाबेस सर्वर को मजबूत बनाना (जैसे अधिक दराज जोड़ना)। हॉरिजॉन्टल स्केलिंग: अधिक डेटा और उपयोगकर्ताओं को संभालने के लिए अधिक सर्वर/फ़ोल्डर जोड़ना।" },
-        { title: "सुरक्षा और पहुँच नियंत्रण", desc: "कंपनियाँ भूमिकाओं और अनुमतियों का उपयोग करती हैं ताकि केवल सही लोग ही कुछ फ़ोल्डरों को देख/संपादित कर सकें।" },
-        { title: "निगरानी और रखरखाव", desc: "कुछ गलत होने पर स्वचालित अलर्ट। खोजों को तेज रखने के लिए नियमित सफाई और अनुक्रमण।" }
+      { title: "एकाधिक डेटाबेस रणनीति", desc: "बड़ी कंपनियाँ अक्सर विभिन्न उद्देश्यों के लिए विभिन्न प्रकार के डेटाबेस का उपयोग करती हैं: लेनदेन के लिए रिलेशनल, सोशल मीडिया डेटा के लिए नो-एसक्यूएल, रीयल-टाइम सुविधाओं के लिए इन-मेमोरी।" },
+      { title: "बैकअप और अतिरेक", desc: "डेटा का दैनिक, कभी-कभी प्रति घंटा बैकअप लिया जाता है। अतिरिक्त प्रतियां कई स्थानों पर संग्रहीत की जाती हैं - जैसे आपकी फाइलिंग कैबिनेट के जादुई जुड़वां।" },
+      { title: "स्केलिंग", desc: "वर्टिकल स्केलिंग: एक डेटाबेस सर्वर को मजबूत बनाना (जैसे अधिक दराज जोड़ना)। हॉरिजॉन्टल स्केलिंग: अधिक डेटा और उपयोगकर्ताओं को संभालने के लिए अधिक सर्वर/फ़ोल्डर जोड़ना।" },
+      { title: "सुरक्षा और पहुँच नियंत्रण", desc: "कंपनियाँ भूमिकाओं और अनुमतियों का उपयोग करती हैं ताकि केवल सही लोग ही कुछ फ़ोल्डरों को देख/संपादित कर सकें।" },
+      { title: "निगरानी और रखरखाव", desc: "कुछ गलत होने पर स्वचालित अलर्ट। खोजों को तेज रखने के लिए नियमित सफाई और अनुक्रमण।" }
     ],
     kid_friendly_title: "बच्चों के अनुकूल उदाहरण: एक जादुई स्कूल पुस्तकालय",
     kid_friendly_points: [
-        "<strong>रिलेशनल डेटाबेस</strong> बड़े करीने से लेबल की गई अलमारियां हैं।",
-        "<strong>नो-एसक्यूएल</strong> रचनात्मक वाचन कोना है जहां बच्चे कहीं भी किताबें रख सकते हैं।",
-        "<strong>इन-मेमोरी</strong> एक शिक्षक है जो तत्काल जानकारी के साथ स्टिकी नोट्स रखता है।",
-        "<strong>ग्राफ डेटाबेस</strong> एक नक्शा है जो दिखाता है कि कौन किसके साथ दोस्त है।",
-        "<strong>टाइम-सीरीज़</strong> दैनिक डायरी है जो छात्रों द्वारा की जाने वाली हर चीज को लॉग करती है।"
+      "<strong>रिलेशनल डेटाबेस</strong> बड़े करीने से लेबल की गई अलमारियां हैं।",
+      "<strong>नो-एसक्यूएल</strong> रचनात्मक वाचन कोना है जहां बच्चे कहीं भी किताबें रख सकते हैं।",
+      "<strong>इन-मेमोरी</strong> एक शिक्षक है जो तत्काल जानकारी के साथ स्टिकी नोट्स रखता है।",
+      "<strong>ग्राफ डेटाबेस</strong> एक नक्शा है जो दिखाता है कि कौन किसके साथ दोस्त है।",
+      "<strong>टाइम-सीरीज़</strong> दैनिक डायरी है जो छात्रों द्वारा की जाने वाली हर चीज को लॉग करती है।"
     ],
     interactive_showcase_title: "डेटाबेस प्रकार एक्सप्लोरर",
     previous: "पिछला",
@@ -261,15 +261,19 @@ const Databases = () => {
     };
   }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const newContent = content[lang];
-    const newSelectedDb = newContent.db_types.find(db => db.name === selectedDb.name);
+    const newSelectedDb = newContent.db_types.find(
+      db => db.name === selectedDb.name
+    );
     if (newSelectedDb) {
       setSelectedDb(newSelectedDb);
     } else {
       setSelectedDb(newContent.db_types[0]);
     }
   }, [lang]);
+
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 min-h-screen bg-gray-50 font-sans">
@@ -357,18 +361,18 @@ const Databases = () => {
             <h2 className="text-xl sm:text-2xl font-bold mb-3 text-center text-green-800">{t.comparison_title}</h2>
             <p className="text-gray-700 text-center mb-6" dangerouslySetInnerHTML={{ __html: t.comparison_desc }} />
             <div className="space-y-4 md:space-y-0">
-                <div className="hidden md:grid md:grid-cols-3 gap-4 text-xs text-gray-700 uppercase bg-gray-200 p-4 rounded-t-lg">
-                    <div className="font-bold">Feature</div>
-                    <div className="font-bold">Spreadsheet</div>
-                    <div className="font-bold">Database</div>
+              <div className="hidden md:grid md:grid-cols-3 gap-4 text-xs text-gray-700 uppercase bg-gray-200 p-4 rounded-t-lg">
+                <div className="font-bold">Feature</div>
+                <div className="font-bold">Spreadsheet</div>
+                <div className="font-bold">Database</div>
+              </div>
+              {t.comparison_table.map((row, index) => (
+                <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-y-2 md:gap-4 p-4 border md:border-t-0 md:border-l md:border-r md:border-b rounded-lg md:rounded-none bg-white">
+                  <div className="font-bold text-gray-900"><span className="md:hidden font-semibold text-gray-500">Feature: </span>{row.feature}</div>
+                  <div><span className="md:hidden font-semibold text-gray-500">Spreadsheet: </span>{row.spreadsheet}</div>
+                  <div><span className="md:hidden font-semibold text-gray-500">Database: </span>{row.database}</div>
                 </div>
-                {t.comparison_table.map((row, index) => (
-                    <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-y-2 md:gap-4 p-4 border md:border-t-0 md:border-l md:border-r md:border-b rounded-lg md:rounded-none bg-white">
-                        <div className="font-bold text-gray-900"><span className="md:hidden font-semibold text-gray-500">Feature: </span>{row.feature}</div>
-                        <div><span className="md:hidden font-semibold text-gray-500">Spreadsheet: </span>{row.spreadsheet}</div>
-                        <div><span className="md:hidden font-semibold text-gray-500">Database: </span>{row.database}</div>
-                    </div>
-                ))}
+              ))}
             </div>
           </motion.div>
 
@@ -433,7 +437,7 @@ const Databases = () => {
                       <strong className="font-semibold text-gray-800">When to avoid it:</strong>
                       <p>{selectedDb.when_to_avoid}</p>
                     </div>
-                     <div>
+                    <div>
                       <strong className="font-semibold text-gray-800">Popular DBMS:</strong>
                       <p>{selectedDb.popular_dbms}</p>
                     </div>
