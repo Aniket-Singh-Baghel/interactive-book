@@ -1,537 +1,485 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-    FaBug,
-    FaSearch,
-    FaTools,
-    FaCheckCircle,
-    FaTimesCircle,
-    FaPlay,
-    FaCode,
-    FaBook,
-    FaWrench,
-    FaShieldAlt,
-    FaSpinner,
-} from "react-icons/fa";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import {FaCheckCircle, FaTimesCircle, FaPlay, FaArrowLeft, FaArrowRight, FaHome } from "react-icons/fa";
+import { Link, useNavigate } from 'react-router-dom';
 
+const content = {
+  en: {
+    home: "Home",
+    title: "Testing & Debugging 🐞",
+    subtitle: "Ensuring your code is reliable, bug-free, and ready for the world.",
+    
+    testing_title: "What is Testing?",
+    testing_desc: "<em>Testing</em> is the process of <strong>verifying that a software application does what it is supposed to do</strong>. It's like checking your homework before submitting it to the teacher. You want to find any mistakes before anyone else does.",
+    testing_analogy_title: "The Car Factory Analogy",
+    testing_analogy: "Imagine a car factory. Before a car is sold, it goes through a series of tests: the engine is checked, the brakes are tested, and the lights are inspected. This is to ensure the car is safe and works correctly. Software testing is the same; it's a quality control process.",
 
-const COVERAGE_DATA = [
-    { name: "Covered", value: 78 },
-    { name: "Not Covered", value: 22 },
-];
-const COLORS = ["#10B981", "#EF4444"];
+    debugging_title: "What is Debugging?",
+    debugging_desc: "<em>Debugging</em> is the process of <strong>finding and fixing errors (bugs) in the source code</strong> of a program. This happens <em>after</em> a test has failed or a bug has been reported. It's the detective work of software development.",
+    debugging_analogy_title: "The Detective Analogy",
+    debugging_analogy: "If testing is like knowing a crime has been committed, debugging is the detective's job to find out who did it, how, and why. A debugger is a special tool that helps developers inspect the code step-by-step to find the root cause of the problem.",
 
-const bilingual = {
-    en: {
-        title: "Debugging & Testing",
-        subtitle: "Find bugs, fix them, and verify your software works the way it should.",
-        concept:
-            "The process of finding and fixing errors (bugs) and ensuring the software works correctly.",
-        analogy:
-            "A detective looks for clues (bugs) and an inspector ensures everything is up to code.",
-        why: [
-            "Improves reliability and user trust.",
-            "Prevents regressions and reduces maintenance costs.",
-            "Helps find edge-cases before users do.",
-        ],
-        pros: [
-            "Catches errors early.",
-            "Improves code quality.",
-            "Builds confidence for releases.",
-        ],
-        cons: [
-            "Takes time to write tests (but saves time later).",
-            "False confidence with poor tests.",
-        ],
-        how: [
-            "Reproduce: Make the bug appear consistently.",
-            "Isolate: Minimize the failing scope.",
-            "Fix: Implement a minimal, well-tested fix.",
-            "Verify: Add tests and run full suite.",
-            "Review & CI: Peer review and automated pipelines.",
-        ],
-        tools: [
-            "Jest / Vitest (unit)",
-            "React Testing Library (DOM)",
-            "Cypress / Playwright (E2E)",
-            "ESLint (static checks)",
-            "Prettier (formatting)",
-            "CI: GitHub Actions / GitLab CI",
-        ],
-        examples: [
-            "Student example: Your calculator app shows wrong total — write a unit test for the add function.",
-            "Project example: Form validation failing for edge case email formats — add DOM tests + E2E signup flow.",
-        ],
-        runTests: "Run Tests",
-        runAgain: "Run Again",
-        coverageLabel: "Sample Coverage",
-        copySnippet: "Copy snippet",
-    },
-    hi: {
-        title: "डीबगिंग और टेस्टिंग",
-        subtitle: "खामियों (bugs) को ढूँढना, ठीक करना, और यह सुनिश्चित करना कि सॉफ़्टवेयर सही काम कर रहा है।",
-        concept: "त्रुटियों (बग्स) को खोजने और ठीक करने की प्रक्रिया, तथा सॉफ़्टवेयर की सही कार्यक्षमता की पुष्टि।",
-        analogy:
-            "एक जासूस सुराग (bugs) ढूँढता है और एक निरीक्षक यह सुनिश्चित करता है कि सब कुछ नियमों के अनुसार है।",
-        why: [
-            "विश्वसनीयता और उपयोगकर्ता भरोसा बढ़ता है।",
-            "तकरारों/बग्स को रोका जाता है और रखरखाव की लागत घटती है।",
-            "उपयोगकर्ताओं के सामने आने से पहले edge-cases मिल जाते हैं।",
-        ],
-        pros: [
-            "त्रुटियाँ पहले पकड़ी जाती हैं।",
-            "कोड की गुणवत्ता सुधरती है।",
-            "रिलीज़ के लिए आत्मविश्वास बनता है।",
-        ],
-        cons: [
-            "टेस्ट लिखने में समय लगता है (पर बाद में बचत होती है)।",
-            "कमज़ोर टेस्ट से गलत सुरक्षा मिल सकती है।",
-        ],
-        how: [
-            "पुनरुत्पादन: बग को स्थायी रूप से दिखाएँ।",
-            "अलग करें: असफल हिस्से को छोटा करें।",
-            "ठीक करें: न्यूनतम, परीक्षण-सहित fix लागू करें।",
-            "सत्यापन: टेस्ट जोड़ें और पूरी टेस्ट-सूट चलाएँ।",
-            "रिव्यू और CI: सहकर्मी समीक्षा और स्वचालित पाइपलाइन्स।",
-        ],
-        tools: [
-            "Jest / Vitest (unit)",
-            "React Testing Library (DOM)",
-            "Cypress / Playwright (E2E)",
-            "ESLint (static checks)",
-            "Prettier (formatting)",
-            "CI: GitHub Actions / GitLab CI",
-        ],
-        examples: [
-            "छात्र उदाहरण: आपके कैलकुलेटर ऐप में गलत कुल दिखता है — add फ़ंक्शन के लिए unit test लिखें।",
-            "प्रोजेक्ट उदाहरण: फॉर्म वेलिडेशन कुछ ईमेल फ़ॉर्मैट्स पर fail हो रहा है — DOM टेस्ट और E2E signup flow जोड़ें।",
-        ],
-        runTests: "टेस्ट चलाएँ",
-        runAgain: "फिर चलाएँ",
-        coverageLabel: "नमूना कवरेज",
-        copySnippet: "स्निपेट कॉपी करें",
-    },
+    testing_types_title: "Types of Software Testing",
+    testing_types: [
+      {
+        name: "Unit Testing",
+        description: "Testing individual components or functions in isolation. It's like checking each ingredient before you cook.",
+        example: "A test that checks if a `sum(2, 3)` function correctly returns `5`."
+      },
+      {
+        name: "Integration Testing",
+        description: "Testing how multiple components work together. It's like making sure the engine and wheels of a car work together.",
+        example: "A test that checks if logging in (authentication) correctly shows the user's dashboard (UI)."
+      },
+      {
+        name: "End-to-End (E2E) Testing",
+        description: "Testing the entire application flow from start to finish, simulating a real user's journey.",
+        example: "A test that simulates a user signing up, adding an item to the cart, and checking out."
+      }
+    ],
+
+    distinction_title: "Testing vs. Debugging: Key Differences",
+    distinction: [
+      {
+        aspect: "Goal",
+        testing: "To find defects and bugs.",
+        debugging: "To fix the defects found."
+      },
+      {
+        aspect: "Timing",
+        testing: "Planned and scheduled before release.",
+        debugging: "Unplanned, happens when a bug is found."
+      },
+      {
+        aspect: "Process",
+        testing: "Can be automated or manual.",
+        debugging: "Mostly a manual process."
+      },
+      {
+        aspect: "Who does it?",
+        testing: "Often done by a dedicated testing team.",
+        debugging: "Done by the developer who wrote the code."
+      }
+    ],
+
+    interactive_title: "Live Simulation: Spot the Bug!",
+    interactive_desc: "Here is a simple function that is supposed to add two numbers. But there's a bug! Can you spot it? Run the tests to see what happens.",
+    code_snippet: `function add(a, b) {
+  return a - b; // Oops! This should be addition.
+}`,
+    run_tests_button: "Run Tests",
+    test_results_title: "Test Results",
+    test_case_1: "Test Case 1: 2 + 3 = 5",
+    test_case_2: "Test Case 2: 10 + 5 = 15",
+
+    ui_testing_title: "UI Testing Simulation",
+    ui_testing_desc: "Check if the button's color changes on click.",
+    ui_button_text: "Click Me",
+    ui_test_button: "Test UI",
+    ui_test_result: "Button color changed successfully!",
+
+    edge_case_title: "Edge Case Testing",
+    edge_case_desc: "Test how the system handles unexpected or extreme inputs. Enter a username to test.",
+    edge_case_input_placeholder: "Enter username",
+    edge_case_test_button: "Test Username",
+
+    detective_animation_title: "Interactive Detective",
+    detective_animation_desc: "Animated SVG demo",
+    detective_animation_tip: "Tip: Use the magnifying glass to imagine isolating code paths.",
+    
+    previous: "Previous",
+    next: "Next",
+  },
+  hi: {
+    home: "होम",
+    title: "टेस्टिंग और डीबगिंग 🐞",
+    subtitle: "यह सुनिश्चित करना कि आपका कोड विश्वसनीय, बग-मुक्त और दुनिया के लिए तैयार है।",
+
+    testing_title: "टेस्टिंग क्या है?",
+    testing_desc: "<em>टेस्टिंग</em> यह <strong>सत्यापित करने की प्रक्रिया है कि एक सॉफ्टवेयर एप्लिकेशन वही करता है जो उसे करना चाहिए</strong>। यह शिक्षक को अपना होमवर्क जमा करने से पहले उसकी जाँच करने जैसा है। आप चाहते हैं कि कोई और गलती खोजने से पहले आप खुद ही गलतियाँ खोज लें।",
+    testing_analogy_title: "कार फैक्ट्री का सादृश्य",
+    testing_analogy: "एक कार फैक्ट्री की कल्पना करें। कार बेचने से पहले, यह कई परीक्षणों से गुजरती है: इंजन की जाँच की जाती है, ब्रेक का परीक्षण किया जाता है, और लाइट का निरीक्षण किया जाता है। यह सुनिश्चित करने के लिए है कि कार सुरक्षित है और सही तरीके से काम करती है। सॉफ्टवेयर टेस्टिंग भी यही है; यह एक गुणवत्ता नियंत्रण प्रक्रिया है।",
+
+    debugging_title: "डीबगिंग क्या है?",
+    debugging_desc: "<em>डीबगिंग</em> एक प्रोग्राम के <strong>सोर्स कोड में त्रुटियों (बग) को खोजने और ठीक करने की प्रक्रिया है</strong>। यह तब होता है जब कोई परीक्षण विफल हो जाता है या कोई बग रिपोर्ट किया जाता है। यह सॉफ्टवेयर डेवलपमेंट की जासूसी का काम है।",
+    debugging_analogy_title: "जासूस का सादृश्य",
+    debugging_analogy: "अगर टेस्टिंग यह जानने जैसा है कि कोई अपराध किया गया है, तो डीबगिंग जासूस का काम है कि यह पता लगाए कि यह किसने, कैसे और क्यों किया। एक डीबगर एक विशेष उपकरण है जो डेवलपर्स को समस्या का मूल कारण खोजने के लिए कोड का चरण-दर-चरण निरीक्षण करने में मदद करता है।",
+
+    testing_types_title: "सॉफ्टवेयर टेस्टिंग के प्रकार",
+    testing_types: [
+      {
+        name: "यूनिट टेस्टिंग",
+        description: "अलग-अलग घटकों या कार्यों का परीक्षण करना। यह खाना पकाने से पहले प्रत्येक सामग्री की जाँच करने जैसा है।",
+        example: "एक परीक्षण जो यह जाँचता है कि `sum(2, 3)` फ़ंक्शन सही ढंग से `5` लौटाता है या नहीं।"
+      },
+      {
+        name: "इंटीग्रेशन टेस्टिंग",
+        description: "यह परीक्षण करना कि कई घटक एक साथ कैसे काम करते हैं। यह सुनिश्चित करने जैसा है कि कार का इंजन और पहिए एक साथ काम करते हैं।",
+        example: "एक परीक्षण जो यह जाँचता है कि लॉग इन करने (प्रमाणीकरण) से उपयोगकर्ता का डैशबोर्ड (UI) सही ढंग से दिखाई देता है या नहीं।"
+      },
+      {
+        name: "एंड-टू-एंड (E2E) टेस्टिंग",
+        description: "एक वास्तविक उपयोगकर्ता की यात्रा का अनुकरण करते हुए, शुरू से अंत तक पूरे एप्लिकेशन प्रवाह का परीक्षण करना।",
+        example: "एक परीक्षण जो एक उपयोगकर्ता को साइन अप करने, कार्ट में एक आइटम जोड़ने और चेक आउट करने का अनुकरण करता है।"
+      }
+    ],
+
+    distinction_title: "टेस्टिंग बनाम डीबगिंग: मुख्य अंतर",
+    distinction: [
+      {
+        aspect: "लक्ष्य",
+        testing: "दोषों और बगों को खोजना।",
+        debugging: "पाए गए दोषों को ठीक करना।"
+      },
+      {
+        aspect: "समय",
+        testing: "रिलीज से पहले योजनाबद्ध और निर्धारित।",
+        debugging: "अनियोजित, जब कोई बग पाया जाता है तब होता है।"
+      },
+      {
+        aspect: "प्रक्रिया",
+        testing: "स्वचालित या मैनुअल हो सकता है।",
+        debugging: "अधिकतर एक मैनुअल प्रक्रिया।"
+      },
+      {
+        aspect: "कौन करता है?",
+        testing: "अक्सर एक समर्पित परीक्षण टीम द्वारा किया जाता है।",
+        debugging: "उस डेवलपर द्वारा किया जाता है जिसने कोड लिखा है।"
+      }
+    ],
+
+    interactive_title: "लाइव सिमुलेशन: बग को पहचानें!",
+    interactive_desc: "यहाँ एक सरल फ़ंक्शन है जिसे दो नंबरों को जोड़ना चाहिए। लेकिन इसमें एक बग है! क्या आप इसे पहचान सकते हैं? यह देखने के लिए परीक्षण चलाएँ कि क्या होता है।",
+    code_snippet: `function add(a, b) {
+  return a - b; // अरे! यह जोड़ होना चाहिए।
+}`,
+    run_tests_button: "टेस्ट चलाएँ",
+    test_results_title: "टेस्ट के परिणाम",
+    test_case_1: "टेस्ट केस 1: 2 + 3 = 5",
+    test_case_2: "टेस्ट केस 2: 10 + 5 = 15",
+
+    ui_testing_title: "यूआई टेस्टिंग सिमुलेशन",
+    ui_testing_desc: "जांचें कि क्लिक करने पर बटन का रंग बदलता है या नहीं।",
+    ui_button_text: "मुझे क्लिक करें",
+    ui_test_button: "यूआई टेस्ट करें",
+    ui_test_result: "बटन का रंग सफलतापूर्वक बदल गया!",
+
+    edge_case_title: "एज केस टेस्टिंग",
+    edge_case_desc: "परीक्षण करें कि सिस्टम अनपेक्षित या चरम इनपुट को कैसे संभालता है। परीक्षण के लिए एक उपयोगकर्ता नाम दर्ज करें।",
+    edge_case_input_placeholder: "उपयोगकर्ता नाम दर्ज करें",
+    edge_case_test_button: "उपयोगकर्ता नाम का परीक्षण करें",
+
+    detective_animation_title: "इंटरैक्टिव जासूस",
+    detective_animation_desc: "एनिमेटेड एसवीजी डेमो",
+    detective_animation_tip: "टिप: मैग्नीफाइंग ग्लास का उपयोग कोड पथों को अलग करने की कल्पना करने के लिए करें।",
+
+    previous: "पिछला",
+    next: "अगला",
+  }
 };
 
-const SAMPLE_TEST_SNIPPET = `// Example: sum.test.js (Jest)
-import { sum } from './utils';
+const DebuggingTestingModule = () => {
+  const [lang, setLang] = useState('en');
+  const [testResults, setTestResults] = useState(null);
+  const [uiTestResult, setUiTestResult] = useState('');
+  const [edgeCaseResult, setEdgeCaseResult] = useState('');
+  const [username, setUsername] = useState('');
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const navigate = useNavigate();
+  const t = content[lang];
 
-describe('sum', () => {
-  it('adds positive numbers', () => {
-    expect(sum(1, 2)).toBe(3);
-  });
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        setLang(prevLang => prevLang === 'en' ? 'hi' : 'en');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
-  it('handles zero', () => {
-    expect(sum(0, 5)).toBe(5);
-  });
-});
-`;
+  const runTests = () => {
+    const results = {
+      test1: 2 + 3 === 2 - 3, // This will be false
+      test2: 10 + 5 === 10 - 5, // This will be false
+    };
+    setTestResults(results);
+  };
 
-export default function DebuggingTestingModule() {
-    const [lang, setLang] = useState("en");
-    const t = bilingual[lang];
+  const testUi = () => {
+    setIsButtonClicked(true);
+    setTimeout(() => {
+      setUiTestResult(t.ui_test_result);
+    }, 500);
+  };
 
-    const [running, setRunning] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const [passed, setPassed] = useState(null);
-    const [copied, setCopied] = useState(false);
-
-    const intervalRef = useRef(null);
-
-    useEffect(() => {
-        return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
-        };
-    }, []);
-
-    function startTests() {
-        setRunning(true);
-        setProgress(0);
-        setPassed(null);
-        intervalRef.current = setInterval(() => {
-            setProgress((p) => {
-                if (p >= 100) {
-                    clearInterval(intervalRef.current);
-                    // random pass/fail for demo
-                    const didPass = Math.random() > 0.12; // mostly pass
-                    setPassed(didPass);
-                    setRunning(false);
-                    return 100;
-                }
-                return Math.min(100, p + Math.random() * 12);
-            });
-        }, 300);
+  const testEdgeCase = () => {
+    if (username.length < 3) {
+      setEdgeCaseResult("Error: Username must be at least 3 characters long.");
+    } else if (username.length > 15) {
+      setEdgeCaseResult("Error: Username must be no more than 15 characters long.");
+    } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      setEdgeCaseResult("Error: Username can only contain letters, numbers, and underscores.");
+    } else {
+      setEdgeCaseResult("Success: Username is valid.");
     }
+  };
 
-    function copySnippet() {
-        navigator.clipboard
-            .writeText(SAMPLE_TEST_SNIPPET)
-            .then(() => {
-                setCopied(true);
-                setTimeout(() => setCopied(false), 2000);
-            })
-            .catch(() => {
-                setCopied(false);
-            });
-    }
-
-    return (
-        <div className="p-6 md:p-10 lg:p-16 bg-gradient-to-b from-sky-50 to-white min-h-screen">
-            <div className="max-w-7xl mx-auto">
-                <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                        <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.4 }}
-                            className="bg-white/80 backdrop-blur p-2 rounded-lg shadow"
-                            aria-hidden
-                        >
-                            <FaSearch className="text-sky-600 w-6 h-6" />
-                        </motion.div>
-
-                        <div>
-                            <motion.h1
-                                initial={{ y: -10, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 0.05 }}
-                                className="text-2xl md:text-3xl font-extrabold text-sky-800"
-                            >
-                                {t.title}
-                            </motion.h1>
-                            <motion.p
-                                initial={{ y: -6, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                className="text-sm text-sky-600"
-                            >
-                                {t.subtitle}
-                            </motion.p>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <div className="text-xs text-slate-600 mr-1">EN / HI</div>
-                        <div className="inline-flex rounded-full bg-white/70 p-1 shadow">
-                            <button
-                                onClick={() => setLang("en")}
-                                className={`px-3 py-1 rounded-full text-sm font-medium ${lang === "en" ? "bg-sky-600 text-white" : "text-slate-700"
-                                    }`}
-                                aria-pressed={lang === "en"}
-                            >
-                                EN
-                            </button>
-                            <button
-                                onClick={() => setLang("hi")}
-                                className={`px-3 py-1 rounded-full text-sm font-medium ${lang === "hi" ? "bg-sky-600 text-white" : "text-slate-700"
-                                    }`}
-                                aria-pressed={lang === "hi"}
-                            >
-                                HI
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Left: Content */}
-                    <div className="lg:col-span-2 space-y-6">
-                        <motion.div
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.05 }}
-                            className="bg-white rounded-2xl p-6 shadow"
-                        >
-                            <h3 className="text-lg font-semibold flex items-center gap-3">
-                                <FaTools className="w-5 h-5 text-sky-500" /> {lang === "en" ? "Concept" : "संकल्पना"}
-                            </h3>
-                            <p className="mt-3 text-slate-700">{t.concept}</p>
-
-                            <div className="mt-6 grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <h4 className="text-sm font-medium text-slate-600">{lang === "en" ? "Analogy" : "उपमा"}</h4>
-                                    <p className="mt-2 text-slate-700">{t.analogy}</p>
-
-                                    <div className="mt-4">
-                                        <h4 className="text-sm font-medium text-slate-600">{lang === "en" ? "Why needed" : "क्यों ज़रूरी है"}</h4>
-                                        <ul className="mt-2 list-disc list-inside text-slate-700">
-                                            {t.why.map((w, i) => (
-                                                <li key={i}>{w}</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <h4 className="text-sm font-medium text-slate-600">{lang === "en" ? "Pros" : "फ़ायदे"}</h4>
-                                    <ul className="mt-2 list-disc list-inside text-slate-700">
-                                        {t.pros.map((p, i) => (
-                                            <li key={i}>{p}</li>
-                                        ))}
-                                    </ul>
-
-                                    <h4 className="text-sm font-medium text-slate-600 mt-4">{lang === "en" ? "Cons" : "नुकसान"}</h4>
-                                    <ul className="mt-2 list-disc list-inside text-slate-700">
-                                        {t.cons.map((c, i) => (
-                                            <li key={i}>{c}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="mt-6">
-                                <h4 className="text-sm font-medium text-slate-600">{lang === "en" ? "How professionals do it" : "प्रोफेशनल इसे कैसे करते हैं"}</h4>
-                                <ol className="mt-3 list-decimal list-inside text-slate-700">
-                                    {t.how.map((s, i) => (
-                                        <li key={i} className="py-1">
-                                            {s}
-                                        </li>
-                                    ))}
-                                </ol>
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, x: -6 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.07 }}
-                            className="bg-white rounded-2xl p-6 shadow"
-                        >
-                            <div className="flex items-start justify-between gap-4">
-                                <div>
-                                    <h3 className="text-lg font-semibold flex items-center gap-3">
-                                        <FaBug className="w-5 h-5 text-rose-500" /> {lang === "en" ? "Tools & Stack" : "उपकरण और स्टैक"}
-                                    </h3>
-                                    <p className="mt-2 text-slate-700">{lang === "en" ? "Common tools used by developers:" : "डेवलपर्स द्वारा उपयोग किए जाने वाले सामान्य टूल्स:"}</p>
-
-                                    <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-700">
-                                        {t.tools.map((tool, idx) => (
-                                            <li key={idx} className="flex items-center gap-2">
-                                                <span className="w-7 h-7 flex items-center justify-center bg-sky-50 rounded-full">
-                                                    {idx % 2 === 0 ? <FaCheckCircle className="w-4 h-4 text-sky-600" /> : <FaWrench className="w-4 h-4 text-amber-500" />}
-                                                </span>
-                                                <span>{tool}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                <div className="w-44">
-                                    <ResponsiveContainer width="100%" height={120}>
-                                        <PieChart>
-                                            <Pie data={COVERAGE_DATA} dataKey="value" innerRadius={28} outerRadius={44} paddingAngle={2}>
-                                                {COVERAGE_DATA.map((entry, i) => (
-                                                    <Cell key={`cell-${i}`} fill={COLORS[i % COLORS.length]} />
-                                                ))}
-                                            </Pie>
-                                            <Tooltip />
-                                        </PieChart>
-                                    </ResponsiveContainer>
-                                    <div className="text-xs text-center mt-1 text-slate-600">{t.coverageLabel}</div>
-                                </div>
-                            </div>
-
-                            <div className="mt-4 border-t pt-4 flex flex-col sm:flex-row gap-3">
-                                <button
-                                    onClick={startTests}
-                                    disabled={running}
-                                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-md shadow text-white ${running ? "bg-slate-400" : "bg-sky-600 hover:bg-sky-700"}`}
-                                    aria-disabled={running}
-                                >
-                                    {running ? <FaSpinner className="animate-spin" /> : <FaPlay />} <span>{running ? t.runTests + '...' : t.runTests}</span>
-                                </button>
-
-                                <button
-                                    onClick={copySnippet}
-                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-md border text-slate-700 hover:bg-slate-50"
-                                >
-                                    <FaCode /> <span>{t.copySnippet}</span>
-                                </button>
-
-                                <div className="flex-1 self-center min-w-0">
-                                    <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
-                                        <div
-                                            className={`h-3 rounded-full transition-all ${passed === true ? "bg-emerald-500" : passed === false ? "bg-rose-500" : "bg-sky-400"}`}
-                                            style={{ width: `${progress}%` }}
-                                            role="progressbar"
-                                            aria-valuenow={Math.round(progress)}
-                                            aria-valuemin={0}
-                                            aria-valuemax={100}
-                                        />
-                                    </div>
-
-                                    <div className="mt-2 text-xs text-slate-600 flex items-center gap-2">
-                                        <span>{Math.round(progress)}%</span>
-                                        {passed === true && (
-                                            <span className="inline-flex items-center gap-1 text-emerald-600">
-                                                <FaCheckCircle /> {lang === "en" ? "All checks passed" : "सभी चेक पास"}
-                                            </span>
-                                        )}
-                                        {passed === false && (
-                                            <span className="inline-flex items-center gap-1 text-rose-600">
-                                                <FaTimesCircle /> {lang === "en" ? "Some tests failed" : "कुछ टेस्ट फेल"}
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, x: -6 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.09 }}
-                            className="bg-white rounded-2xl p-6 shadow"
-                        >
-                            <h3 className="text-lg font-semibold flex items-center gap-3">
-                                <FaBook className="w-5 h-5 text-sky-600" /> {lang === "en" ? "Real-life examples for students" : "छात्रों के लिए वास्तविक-जीवन उदाहरण"}
-                            </h3>
-                            <ul className="mt-3 list-disc list-inside text-slate-700">
-                                {t.examples.map((ex, i) => (
-                                    <li key={i} className="py-1">
-                                        {ex}
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <div className="mt-4 bg-slate-50 rounded p-3">
-                                <pre className="whitespace-pre-wrap text-xs text-slate-800 overflow-auto">{SAMPLE_TEST_SNIPPET}</pre>
-                                <div className="mt-2 text-xs text-slate-500">{lang === "en" ? "(Jest example)" : "(Jest उदाहरण)"}</div>
-                            </div>
-                        </motion.div>
-                    </div>
-
-                    {/* Right: Visual & Interactive */}
-                    <div className="space-y-6">
-                        <motion.div
-                            initial={{ opacity: 0, y: 6 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.08 }}
-                            className="bg-white rounded-2xl p-6 shadow flex flex-col gap-4"
-                        >
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="bg-emerald-50 p-2 rounded-md">
-                                        <FaSearch className="text-emerald-600 w-5 h-5" />
-                                    </div>
-                                    <div>
-                                        <div className="text-sm font-medium">{lang === "en" ? "Interactive Detective" : "इंटरैक्टिव जासूस"}</div>
-                                        <div className="text-xs text-slate-500">{lang === "en" ? "Animated SVG demo" : "एनिमेटेड SVG डेमो"}</div>
-                                    </div>
-                                </div>
-
-                                <div className="text-xs text-slate-500">{lang === "en" ? "Playful animation for teaching" : "शिक्षण के लिए प्लेफुल एनिमेशन"}</div>
-                            </div>
-
-                            {/* SVG Detective + Bugs */}
-                            <div className="w-full h-56 relative overflow-hidden rounded-lg bg-gradient-to-b from-sky-50 to-white border">
-                                <svg viewBox="0 0 600 220" className="w-full h-full">
-                                    {/* ground */}
-                                    <rect x="0" y="170" width="600" height="50" fill="#f8fafc"></rect>
-
-                                    {/* Magnifying glass (animated) */}
-                                    <motion.g
-                                        className="cursor-pointer"
-                                        initial={{ x: -60, y: 20 }}
-                                        animate={{ x: [-60, 80, 30, 180, 120, 300, 260], y: [20, 12, 18, 24, 10, 18, 12] }}
-                                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                                    >
-                                        <circle cx="40" cy="60" r="28" fill="#fff" stroke="#0ea5b1" strokeWidth="4" opacity="0.95" />
-                                        <circle cx="40" cy="60" r="20" fill="#0ea5b1" opacity="0.06" />
-                                        <rect x="60" y="82" width="48" height="8" rx="4" transform="rotate(28 84 86)" fill="#c7f0ef" />
-                                    </motion.g>
-
-                                    {/* Bugs (moving icons) */}
-                                    <motion.g
-                                        initial={{ x: 600 }}
-                                        animate={{ x: [600, 480, 420, 360, 300, 220, 160, 80, 0, -60] }}
-                                        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                                    >
-                                        <motion.circle animate={{ cy: [140, 130, 138, 132, 140] }} transition={{ duration: 2, yoyo: Infinity }} cx="520" cy="140" r="8" fill="#ef4444" />
-                                        <motion.circle animate={{ cy: [150, 145, 148, 142, 150] }} transition={{ duration: 2.4, yoyo: Infinity }} cx="460" cy="150" r="6" fill="#f97316" />
-                                        <motion.circle animate={{ cy: [135, 128, 132, 126, 135] }} transition={{ duration: 1.8, yoyo: Infinity }} cx="380" cy="135" r="7" fill="#f59e0b" />
-                                    </motion.g>
-
-                                    {/* Simple 'clue' marker */}
-                                    <motion.g
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: [0, 1.04, 1] }}
-                                        transition={{ delay: 1.2, duration: 1.6 }}
-                                        transform="translate(260, 50)"
-                                    >
-                                        <rect x="0" y="0" width="120" height="60" rx="10" fill="#fff" stroke="#93c5fd" />
-                                        <text x="14" y="28" fontSize="12" fill="#0f172a">{lang === "en" ? "Bug: off-by-one" : "बग: ऑफ-बाय-वन"}</text>
-                                        <text x="14" y="44" fontSize="10" fill="#475569">{lang === "en" ? "Clue: index error" : "सुराग: इंडेक्स त्रुटि"}</text>
-                                    </motion.g>
-                                </svg>
-
-                                {/* faint decorative bugs (CSS animated) */}
-                                <div className="absolute left-4 top-4 opacity-60">
-                                    <div className="bug w-4 h-4 rounded-full" />
-                                </div>
-                                <div className="absolute right-6 bottom-8 opacity-70">
-                                    <div className="bug w-3 h-3 rounded-full" />
-                                </div>
-
-                                <style>{`
-                  .bug { background: linear-gradient(180deg,#f43f5e,#fb923c); box-shadow: 0 1px 6px rgba(0,0,0,0.08); animation: roam 6s linear infinite; }
-                  @keyframes roam { 0%{transform: translate(0,0)} 25%{transform: translate(18px,-10px)} 50%{transform: translate(-6px,12px)} 75%{transform: translate(-18px,-6px)} 100%{transform: translate(0,0)} }
-                `}</style>
-                            </div>
-
-                            <div className="text-xs text-slate-500">{lang === "en" ? "Tip: Use the magnifying glass to imagine isolating code paths." : "टिप: मैग्नीफाइंग ग्लास का कल्पना करें कि यह कोड पाथ्स को अलग कर रहा है।"}</div>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 6 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            className="bg-white rounded-2xl p-6 shadow"
-                        >
-                            <h4 className="text-sm font-medium text-slate-700">{lang === "en" ? "Quick Checklist" : "त्वरित चेकलिस्ट"}</h4>
-                            <ul className="mt-3 text-slate-700 list-inside">
-                                <li className="flex items-center gap-2 py-1"><FaSearch className="w-4 h-4 text-sky-500" /> {lang === "en" ? "Reproduce the issue" : "समस्या को पुनरुत्पन्न करें"}</li>
-                                <li className="flex items-center gap-2 py-1"><FaCode className="w-4 h-4 text-sky-500" /> {lang === "en" ? "Write a failing test" : "एक फेलिंग टेस्ट लिखें"}</li>
-                                <li className="flex items-center gap-2 py-1"><FaWrench className="w-4 h-4 text-sky-500" /> {lang === "en" ? "Apply minimal fix" : "न्यूनतम फिक्स लागू करें"}</li>
-                                <li className="flex items-center gap-2 py-1"><FaShieldAlt className="w-4 h-4 text-sky-500" /> {lang === "en" ? "Add regression test" : "रिग्रेशन टेस्ट जोड़ें"}</li>
-                            </ul>
-                        </motion.div>
-
-                        <div className="text-xs text-slate-400">{lang === "en" ? "This component is ready to drop into a Tailwind + React project. See usage notes below." : "यह घटक Tailwind + React प्रोजेक्ट में जोड़ने के लिए तैयार है। नीचे उपयोग नोट देखें।"}</div>
-                    </div>
-                </div>
-
-                {/* Footer / usage notes */}
-                <div className="mt-8 bg-white rounded-2xl p-6 shadow">
-                    <h4 className="font-semibold text-slate-700 mb-2">{lang === "en" ? "Usage & Notes" : "उपयोग और नोट्स"}</h4>
-                    <div className="text-sm text-slate-600">
-                        <p>
-                            {lang === "en"
-                                ? "1) Copy this file into your React project (e.g., src/components/DebuggingTestingModule.jsx)."
-                                : "1) इस फ़ाइल को अपने React प्रोजेक्ट में कॉपी करें (उदा., src/components/DebuggingTestingModule.jsx)।"}
-                        </p>
-                        <p className="mt-2">
-                            {lang === "en"
-                                ? "2) Install dependencies: framer-motion, react-icons, recharts. Ensure Tailwind is configured in your project."
-                                : "2) निर्भरता स्थापित करें: framer-motion, react-icons, recharts। सुनिश्चित करें कि आपके प्रोजेक्ट में Tailwind कॉन्फ़िगर है।"}
-                        </p>
-
-                        <pre className="mt-3 bg-slate-50 p-3 rounded text-xs text-slate-700">
-                            {`npm install framer-motion react-icons recharts --save
-# or
-# yarn add framer-motion react-icons recharts`}
-                        </pre>
-
-                        <p className="mt-3">
-                            {lang === "en"
-                                ? "3) Optional: Replace the sample test snippet with your own snippets or connect the run button to a real CI endpoint."
-                                : "3) वैकल्पिक: सैंपल टेस्ट स्निपेट को अपने स्निपेट से बदलें या रन बटन को वास्तविक CI endpoint से जोड़ें।"}
-                        </p>
-
-                        <p className="mt-3 text-xs text-slate-500">{lang === "en" ? "Happy debugging! 🕵️‍♂️" : "सुखद डीबगिंग! 🕵️"}</p>
-                    </div>
-                </div>
+  return (
+    <div className="bg-gray-50 font-sans">
+      <div className="p-4 sm:p-6 lg:p-8 min-h-screen">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <Link to="/station" className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition">
+              <FaHome className="mr-2 text-lg text-sky-600" />
+              {t.home}
+            </Link>
+            <div className="flex space-x-2">
+              <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "en" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>EN</button>
+              <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
             </div>
+          </div>
+          <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-white rounded-2xl shadow-lg">
+            <motion.h1
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-gray-800 mb-2"
+            >
+              {t.title}
+            </motion.h1>
+            <p className="text-center text-gray-600 mb-6 text-sm sm:text-base">
+              {t.subtitle}
+            </p>
+
+            {/* Testing Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-blue-50 p-6 rounded-lg shadow-inner mb-6"
+            >
+              <h2 className="text-xl sm:text-2xl font-semibold text-blue-800 mb-3">{t.testing_title}</h2>
+              <p className="text-gray-700 mb-4" dangerouslySetInnerHTML={{ __html: t.testing_desc }} />
+              <h3 className="text-lg font-semibold text-blue-700 mb-2">{t.testing_analogy_title}</h3>
+              <p className="text-gray-700"><i>{t.testing_analogy}</i></p>
+            </motion.div>
+
+            {/* Debugging Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-red-50 p-6 rounded-lg shadow-inner mb-6"
+            >
+              <h2 className="text-xl sm:text-2xl font-semibold text-red-800 mb-3">{t.debugging_title}</h2>
+              <p className="text-gray-700 mb-4" dangerouslySetInnerHTML={{ __html: t.debugging_desc }} />
+              <h3 className="text-lg font-semibold text-red-700 mb-2">{t.debugging_analogy_title}</h3>
+              <p className="text-gray-700"><i>{t.debugging_analogy}</i></p>
+            </motion.div>
+
+            {/* Testing Types Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="mb-6"
+            >
+              <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4">{t.testing_types_title}</h2>
+              <div className="grid md:grid-cols-3 gap-6">
+                {t.testing_types.map((type, index) => (
+                  <div key={index} className="bg-gray-100 p-4 rounded-lg">
+                    <h3 className="font-bold text-lg text-gray-900">{type.name}</h3>
+                    <p className="text-sm text-gray-700 mt-1">{type.description}</p>
+                    <p className="text-xs text-gray-600 mt-2"><em><strong>Example:</strong> {type.example}</em></p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Distinction Table */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="mb-6"
+            >
+              <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4">{t.distinction_title}</h2>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.distinction[0].aspect}</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Testing</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Debugging</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {t.distinction.map((item, index) => (
+                      <tr key={index}>
+                        <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{item.aspect}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-700">{item.testing}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-700">{item.debugging}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </motion.div>
+            
+            {/* SVG Detective Animation */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-sky-50 p-6 rounded-lg shadow-inner mb-6"
+            >
+              <h2 className="text-xl sm:text-2xl font-semibold text-sky-800 mb-3">{t.detective_animation_title}</h2>
+              <p className="text-gray-700 mb-4">{t.detective_animation_desc}</p>
+              <div className="w-full h-56 relative overflow-hidden rounded-lg bg-white border">
+                <svg viewBox="0 0 600 220" className="w-full h-full">
+                  {/* ground */}
+                  <rect x="0" y="170" width="600" height="50" fill="#f8fafc"></rect>
+
+                  {/* Magnifying glass (animated) */}
+                  <motion.g
+                    className="cursor-pointer"
+                    initial={{ x: -60, y: 20 }}
+                    animate={{ x: [-60, 80, 30, 180, 120, 300, 260], y: [20, 12, 18, 24, 10, 18, 12] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                  >
+                    <circle cx="40" cy="60" r="28" fill="#fff" stroke="#0ea5b1" strokeWidth="4" opacity="0.95" />
+                    <circle cx="40" cy="60" r="20" fill="#0ea5b1" opacity="0.06" />
+                    <rect x="60" y="82" width="48" height="8" rx="4" transform="rotate(28 84 86)" fill="#c7f0ef" />
+                  </motion.g>
+
+                  {/* Bugs (moving icons) */}
+                  <motion.g
+                    initial={{ x: 600 }}
+                    animate={{ x: [600, 480, 420, 360, 300, 220, 160, 80, 0, -60] }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                  >
+                    <motion.circle animate={{ cy: [140, 130, 138, 132, 140] }} transition={{ duration: 2, yoyo: Infinity }} cx="520" cy="140" r="8" fill="#ef4444" />
+                    <motion.circle animate={{ cy: [150, 145, 148, 142, 150] }} transition={{ duration: 2.4, yoyo: Infinity }} cx="460" cy="150" r="6" fill="#f97316" />
+                    <motion.circle animate={{ cy: [135, 128, 132, 126, 135] }} transition={{ duration: 1.8, yoyo: Infinity }} cx="380" cy="135" r="7" fill="#f59e0b" />
+                  </motion.g>
+                </svg>
+              </div>
+              <p className="text-xs text-slate-500 mt-2"><i>{t.detective_animation_tip}</i></p>
+            </motion.div>
+
+            {/* Interactive Simulation */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="bg-green-50 p-6 rounded-lg shadow-inner"
+            >
+              <h2 className="text-xl sm:text-2xl font-semibold text-green-800 mb-3">{t.interactive_title}</h2>
+              <p className="text-gray-700 mb-4">{t.interactive_desc}</p>
+              <div className="bg-gray-900 text-white p-4 rounded-lg mb-4">
+                <pre><code>{t.code_snippet}</code></pre>
+              </div>
+              <button
+                onClick={runTests}
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition"
+              >
+                <FaPlay />
+                {t.run_tests_button}
+              </button>
+              {testResults && (
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold text-gray-800">{t.test_results_title}</h3>
+                  <div className={`flex items-center gap-2 p-2 rounded ${testResults.test1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                    {testResults.test1 ? <FaCheckCircle /> : <FaTimesCircle />}
+                    <span>{t.test_case_1} - {testResults.test1 ? 'Passed' : 'Failed'}</span>
+                  </div>
+                  <div className={`flex items-center gap-2 p-2 mt-2 rounded ${testResults.test2 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                    {testResults.test2 ? <FaCheckCircle /> : <FaTimesCircle />}
+                    <span>{t.test_case_2} - {testResults.test2 ? 'Passed' : 'Failed'}</span>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+
+            {/* UI Testing Simulation */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="bg-yellow-50 p-6 rounded-lg shadow-inner mt-6"
+            >
+              <h2 className="text-xl sm:text-2xl font-semibold text-yellow-800 mb-3">{t.ui_testing_title}</h2>
+              <p className="text-gray-700 mb-4">{t.ui_testing_desc}</p>
+              <button
+                onClick={testUi}
+                className={`px-4 py-2 rounded-lg shadow transition ${isButtonClicked ? 'bg-green-500' : 'bg-blue-500'} text-white`}
+              >
+                {t.ui_button_text}
+              </button>
+              {uiTestResult && (
+                <div className="mt-4 flex items-center gap-2 text-green-800">
+                  <FaCheckCircle />
+                  <span>{uiTestResult}</span>
+                </div>
+              )}
+            </motion.div>
+
+            {/* Edge Case Testing Simulation */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="bg-purple-50 p-6 rounded-lg shadow-inner mt-6"
+            >
+              <h2 className="text-xl sm:text-2xl font-semibold text-purple-800 mb-3">{t.edge_case_title}</h2>
+              <p className="text-gray-700 mb-4">{t.edge_case_desc}</p>
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder={t.edge_case_input_placeholder}
+                  className="border border-gray-300 p-2 rounded-lg w-full"
+                />
+                <button
+                  onClick={testEdgeCase}
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow transition"
+                >
+                  <FaPlay />
+                  {t.edge_case_test_button}
+                </button>
+              </div>
+              {edgeCaseResult && (
+                <div className={`mt-4 flex items-center gap-2 p-2 rounded ${edgeCaseResult.startsWith('Success') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                  {edgeCaseResult.startsWith('Success') ? <FaCheckCircle /> : <FaTimesCircle />}
+                  <span>{edgeCaseResult}</span>
+                </div>
+              )}
+            </motion.div>
+
+          </div>
+
+          <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
+            <button
+              onClick={() => navigate('/module4/version-control')}
+              className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+            >
+              <FaArrowLeft />
+              {t.previous}
+            </button>
+            <button
+              onClick={() => navigate('/module4/security')}
+              className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+            >
+              {t.next}
+              <FaArrowRight />
+            </button>
+          </div>
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
+
+export default DebuggingTestingModule;
