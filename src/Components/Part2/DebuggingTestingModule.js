@@ -83,9 +83,9 @@ const content = {
     edge_case_input_placeholder: "Enter username",
     edge_case_test_button: "Test Username",
 
-    detective_animation_title: "Interactive Detective",
-    detective_animation_desc: "Animated SVG demo",
-    detective_animation_tip: "Tip: Use the magnifying glass to imagine isolating code paths.",
+    detective_animation_title: "Interactive Detective: The Case of the Missing Clue",
+    detective_animation_desc: "Become a code detective! Below is an animated scene. Your mission, should you choose to accept it, is to find the hidden clues within the code. Each clue represents a 'bug' or an 'issue' that you need to solve. Pay close attention to the details and see if you can spot all the anomalies.",
+    detective_animation_tip: "Hover over different elements in the scene to uncover hidden messages and clues. Click on the bugs to 'squash' them!",
     
     previous: "Previous",
     next: "Next",
@@ -240,15 +240,15 @@ const DebuggingTestingModule = () => {
               <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border font-semibold ${lang === "hi" ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-700 border-gray-300"} transition`}>हिं</button>
             </div>
           </div>
-          <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-white rounded-2xl shadow-lg">
+          <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto bg-white rounded-2xl shadow-lg">
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-gray-800 mb-2"
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center text-gray-800 mb-2"
             >
               {t.title}
             </motion.h1>
-            <p className="text-center text-gray-600 mb-6 text-sm sm:text-base">
+            <p className="text-center text-gray-600 mb-8 text-base sm:text-lg">
               {t.subtitle}
             </p>
 
@@ -278,6 +278,81 @@ const DebuggingTestingModule = () => {
               <p className="text-gray-700"><i>{t.debugging_analogy}</i></p>
             </motion.div>
 
+            {/* SVG Detective Animation */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-sky-50 p-6 rounded-lg shadow-inner mb-6"
+            >
+              <h2 className="text-xl sm:text-2xl font-semibold text-sky-800 mb-3">{t.detective_animation_title}</h2>
+              <p className="text-gray-700 mb-4">{t.detective_animation_desc}</p>
+              <div className="w-full h-80 relative overflow-hidden rounded-lg bg-gray-800 border-4 border-gray-700 shadow-2xl">
+                <svg viewBox="0 0 800 400" className="w-full h-full">
+                  {/* Background */}
+                  <rect width="800" height="400" fill="url(#night-sky)" />
+                  <defs>
+                    <radialGradient id="night-sky" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stopColor="#0d1a26" />
+                      <stop offset="100%" stopColor="#000000" />
+                    </radialGradient>
+                  </defs>
+
+                  {/* Detective */}
+                  <motion.g
+                    initial={{ x: 50, y: 200 }}
+                    animate={{ x: [50, 700, 50], y: [200, 210, 200] }}
+                    transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    {/* Hat */}
+                    <path d="M 50 100 Q 75 80 100 100 L 110 105 L 40 105 Z" fill="#4a3b2a" />
+                    {/* Body */}
+                    <path d="M 60 105 L 90 105 L 85 150 L 65 150 Z" fill="#6b5b4a" />
+                    {/* Magnifying Glass */}
+                    <circle cx="120" cy="110" r="20" fill="none" stroke="#c0c0c0" strokeWidth="5" />
+                    <line x1="135" y1="125" x2="150" y2="140" stroke="#c0c0c0" strokeWidth="5" />
+                  </motion.g>
+
+                  {/* Bugs */}
+                  {[
+                    { cx: 200, cy: 300, r: 10, color: "#f44336" },
+                    { cx: 400, cy: 150, r: 8, color: "#ff9800" },
+                    { cx: 600, cy: 250, r: 12, color: "#4caf50" },
+                  ].map((bug, i) => (
+                    <motion.g
+                      key={i}
+                      whileHover={{ scale: 1.5, rotate: 15 }}
+                      className="cursor-pointer"
+                    >
+                      <motion.circle
+                        cx={bug.cx}
+                        cy={bug.cy}
+                        r={bug.r}
+                        fill={bug.color}
+                        animate={{
+                          cx: bug.cx + (Math.random() - 0.5) * 50,
+                          cy: bug.cy + (Math.random() - 0.5) * 50,
+                        }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                      />
+                    </motion.g>
+                  ))}
+                  
+                  {/* Footprints */}
+                  <motion.g
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 2, duration: 2 }}
+                  >
+                    <path d="M 100 350 Q 110 360 120 350 T 140 350" fill="#ffffff" opacity="0.1" />
+                    <path d="M 180 340 Q 190 350 200 340 T 220 340" fill="#ffffff" opacity="0.1" />
+                    <path d="M 260 355 Q 270 365 280 355 T 300 355" fill="#ffffff" opacity="0.1" />
+                  </motion.g>
+                </svg>
+              </div>
+              <p className="text-xs text-slate-500 mt-2"><i>{t.detective_animation_tip}</i></p>
+            </motion.div>
+
             {/* Testing Types Section */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -285,13 +360,13 @@ const DebuggingTestingModule = () => {
               transition={{ delay: 0.4 }}
               className="mb-6"
             >
-              <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4">{t.testing_types_title}</h2>
-              <div className="grid md:grid-cols-3 gap-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">{t.testing_types_title}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {t.testing_types.map((type, index) => (
-                  <div key={index} className="bg-gray-100 p-4 rounded-lg">
-                    <h3 className="font-bold text-lg text-gray-900">{type.name}</h3>
-                    <p className="text-sm text-gray-700 mt-1">{type.description}</p>
-                    <p className="text-xs text-gray-600 mt-2"><em><strong>Example:</strong> {type.example}</em></p>
+                  <div key={index} className="bg-gray-100 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <h3 className="font-bold text-xl text-gray-900 mb-2">{type.name}</h3>
+                    <p className="text-base text-gray-700 mt-1">{type.description}</p>
+                    <p className="text-sm text-gray-600 mt-4 p-2 bg-gray-200 rounded"><em><strong>Example:</strong> {type.example}</em></p>
                   </div>
                 ))}
               </div>
@@ -304,19 +379,19 @@ const DebuggingTestingModule = () => {
               transition={{ delay: 0.4 }}
               className="mb-6"
             >
-              <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4">{t.distinction_title}</h2>
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-100">
+              <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">{t.distinction_title}</h2>
+              <div className="overflow-x-auto rounded-lg shadow-md">
+                <table className="w-full min-w-max divide-y divide-gray-200">
+                  <thead className="bg-gray-200">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.distinction[0].aspect}</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Testing</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Debugging</th>
+                      <th className="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">{t.distinction[0].aspect}</th>
+                      <th className="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">Testing</th>
+                      <th className="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">Debugging</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {t.distinction.map((item, index) => (
-                      <tr key={index}>
+                      <tr key={index} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{item.aspect}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-gray-700">{item.testing}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-gray-700">{item.debugging}</td>
@@ -326,137 +401,102 @@ const DebuggingTestingModule = () => {
                 </table>
               </div>
             </motion.div>
-            
-            {/* SVG Detective Animation */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="bg-sky-50 p-6 rounded-lg shadow-inner mb-6"
-            >
-              <h2 className="text-xl sm:text-2xl font-semibold text-sky-800 mb-3">{t.detective_animation_title}</h2>
-              <p className="text-gray-700 mb-4">{t.detective_animation_desc}</p>
-              <div className="w-full h-56 relative overflow-hidden rounded-lg bg-white border">
-                <svg viewBox="0 0 600 220" className="w-full h-full">
-                  {/* ground */}
-                  <rect x="0" y="170" width="600" height="50" fill="#f8fafc"></rect>
 
-                  {/* Magnifying glass (animated) */}
-                  <motion.g
-                    className="cursor-pointer"
-                    initial={{ x: -60, y: 20 }}
-                    animate={{ x: [-60, 80, 30, 180, 120, 300, 260], y: [20, 12, 18, 24, 10, 18, 12] }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                  >
-                    <circle cx="40" cy="60" r="28" fill="#fff" stroke="#0ea5b1" strokeWidth="4" opacity="0.95" />
-                    <circle cx="40" cy="60" r="20" fill="#0ea5b1" opacity="0.06" />
-                    <rect x="60" y="82" width="48" height="8" rx="4" transform="rotate(28 84 86)" fill="#c7f0ef" />
-                  </motion.g>
-
-                  {/* Bugs (moving icons) */}
-                  <motion.g
-                    initial={{ x: 600 }}
-                    animate={{ x: [600, 480, 420, 360, 300, 220, 160, 80, 0, -60] }}
-                    transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                  >
-                    <motion.circle animate={{ cy: [140, 130, 138, 132, 140] }} transition={{ duration: 2, yoyo: Infinity }} cx="520" cy="140" r="8" fill="#ef4444" />
-                    <motion.circle animate={{ cy: [150, 145, 148, 142, 150] }} transition={{ duration: 2.4, yoyo: Infinity }} cx="460" cy="150" r="6" fill="#f97316" />
-                    <motion.circle animate={{ cy: [135, 128, 132, 126, 135] }} transition={{ duration: 1.8, yoyo: Infinity }} cx="380" cy="135" r="7" fill="#f59e0b" />
-                  </motion.g>
-                </svg>
-              </div>
-              <p className="text-xs text-slate-500 mt-2"><i>{t.detective_animation_tip}</i></p>
-            </motion.div>
-
-            {/* Interactive Simulation */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="bg-green-50 p-6 rounded-lg shadow-inner"
-            >
-              <h2 className="text-xl sm:text-2xl font-semibold text-green-800 mb-3">{t.interactive_title}</h2>
-              <p className="text-gray-700 mb-4">{t.interactive_desc}</p>
-              <div className="bg-gray-900 text-white p-4 rounded-lg mb-4">
-                <pre><code>{t.code_snippet}</code></pre>
-              </div>
-              <button
-                onClick={runTests}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition"
+            {/* Interactive Simulations */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10">
+              {/* Spot the Bug */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="bg-green-50 p-6 rounded-lg shadow-inner"
               >
-                <FaPlay />
-                {t.run_tests_button}
-              </button>
-              {testResults && (
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold text-gray-800">{t.test_results_title}</h3>
-                  <div className={`flex items-center gap-2 p-2 rounded ${testResults.test1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                    {testResults.test1 ? <FaCheckCircle /> : <FaTimesCircle />}
-                    <span>{t.test_case_1} - {testResults.test1 ? 'Passed' : 'Failed'}</span>
-                  </div>
-                  <div className={`flex items-center gap-2 p-2 mt-2 rounded ${testResults.test2 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                    {testResults.test2 ? <FaCheckCircle /> : <FaTimesCircle />}
-                    <span>{t.test_case_2} - {testResults.test2 ? 'Passed' : 'Failed'}</span>
-                  </div>
+                <h2 className="text-xl sm:text-2xl font-semibold text-green-800 mb-3">{t.interactive_title}</h2>
+                <p className="text-gray-700 mb-4">{t.interactive_desc}</p>
+                <div className="bg-gray-900 text-white p-4 rounded-lg mb-4 overflow-x-auto">
+                  <pre><code>{t.code_snippet}</code></pre>
                 </div>
-              )}
-            </motion.div>
-
-            {/* UI Testing Simulation */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="bg-yellow-50 p-6 rounded-lg shadow-inner mt-6"
-            >
-              <h2 className="text-xl sm:text-2xl font-semibold text-yellow-800 mb-3">{t.ui_testing_title}</h2>
-              <p className="text-gray-700 mb-4">{t.ui_testing_desc}</p>
-              <button
-                onClick={testUi}
-                className={`px-4 py-2 rounded-lg shadow transition ${isButtonClicked ? 'bg-green-500' : 'bg-blue-500'} text-white`}
-              >
-                {t.ui_button_text}
-              </button>
-              {uiTestResult && (
-                <div className="mt-4 flex items-center gap-2 text-green-800">
-                  <FaCheckCircle />
-                  <span>{uiTestResult}</span>
-                </div>
-              )}
-            </motion.div>
-
-            {/* Edge Case Testing Simulation */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="bg-purple-50 p-6 rounded-lg shadow-inner mt-6"
-            >
-              <h2 className="text-xl sm:text-2xl font-semibold text-purple-800 mb-3">{t.edge_case_title}</h2>
-              <p className="text-gray-700 mb-4">{t.edge_case_desc}</p>
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder={t.edge_case_input_placeholder}
-                  className="border border-gray-300 p-2 rounded-lg w-full"
-                />
                 <button
-                  onClick={testEdgeCase}
-                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow transition"
+                  onClick={runTests}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition"
                 >
                   <FaPlay />
-                  {t.edge_case_test_button}
+                  {t.run_tests_button}
                 </button>
+                {testResults && (
+                  <div className="mt-4 space-y-2">
+                    <h3 className="text-lg font-semibold text-gray-800">{t.test_results_title}</h3>
+                    <div className={`flex items-center gap-2 p-3 rounded ${testResults.test1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                      {testResults.test1 ? <FaCheckCircle /> : <FaTimesCircle />}
+                      <span>{t.test_case_1} - {testResults.test1 ? 'Passed' : 'Failed'}</span>
+                    </div>
+                    <div className={`flex items-center gap-2 p-3 mt-2 rounded ${testResults.test2 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                      {testResults.test2 ? <FaCheckCircle /> : <FaTimesCircle />}
+                      <span>{t.test_case_2} - {testResults.test2 ? 'Passed' : 'Failed'}</span>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+
+              {/* UI & Edge Case Testing */}
+              <div className="space-y-8">
+                {/* UI Testing */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 }}
+                  className="bg-yellow-50 p-6 rounded-lg shadow-inner"
+                >
+                  <h2 className="text-xl sm:text-2xl font-semibold text-yellow-800 mb-3">{t.ui_testing_title}</h2>
+                  <p className="text-gray-700 mb-4">{t.ui_testing_desc}</p>
+                  <button
+                    onClick={testUi}
+                    className={`px-4 py-2 rounded-lg shadow transition ${isButtonClicked ? 'bg-green-500' : 'bg-blue-500'} text-white`}
+                  >
+                    {t.ui_button_text}
+                  </button>
+                  {uiTestResult && (
+                    <div className="mt-4 flex items-center gap-2 text-green-800">
+                      <FaCheckCircle />
+                      <span>{uiTestResult}</span>
+                    </div>
+                  )}
+                </motion.div>
+
+                {/* Edge Case Testing */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                  className="bg-purple-50 p-6 rounded-lg shadow-inner"
+                >
+                  <h2 className="text-xl sm:text-2xl font-semibold text-purple-800 mb-3">{t.edge_case_title}</h2>
+                  <p className="text-gray-700 mb-4">{t.edge_case_desc}</p>
+                  <div className="flex flex-col sm:flex-row items-center gap-2">
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder={t.edge_case_input_placeholder}
+                      className="border border-gray-300 p-2 rounded-lg w-full"
+                    />
+                    <button
+                      onClick={testEdgeCase}
+                      className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow transition w-full sm:w-auto"
+                    >
+                      <FaPlay />
+                      {t.edge_case_test_button}
+                    </button>
+                  </div>
+                  {edgeCaseResult && (
+                    <div className={`mt-4 flex items-center gap-2 p-3 rounded ${edgeCaseResult.startsWith('Success') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                      {edgeCaseResult.startsWith('Success') ? <FaCheckCircle /> : <FaTimesCircle />}
+                      <span>{edgeCaseResult}</span>
+                    </div>
+                  )}
+                </motion.div>
               </div>
-              {edgeCaseResult && (
-                <div className={`mt-4 flex items-center gap-2 p-2 rounded ${edgeCaseResult.startsWith('Success') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                  {edgeCaseResult.startsWith('Success') ? <FaCheckCircle /> : <FaTimesCircle />}
-                  <span>{edgeCaseResult}</span>
-                </div>
-              )}
-            </motion.div>
+            </div>
 
           </div>
 
