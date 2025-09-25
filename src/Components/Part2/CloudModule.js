@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
-  FaCloud,
   FaServer,
   FaCogs,
   FaChartLine,
@@ -15,19 +14,7 @@ import {
   FaArrowLeft,
   FaArrowRight,
 } from "react-icons/fa";
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { Link, useNavigate } from "react-router-dom";
-
-// CloudModule.jsx
-// Single-file React component (Tailwind + Framer Motion + Recharts + react-icons)
-// Features:
-// - Bilingual (English / Hindi) toggle
-// - Animated title and SVG cloud animation
-// - Sections: Concept, Analogy, Why needed, Pros/Cons, How professionals use it, Tools/Services, Student examples
-// - Interactive "Deploy to Cloud" simulation with progress and autoscaling demo
-// - Cost vs Scalability sample pie chart
-// - Copyable deploy snippet
-// - Usage & integration notes
 
 const SAMPLE_DEPLOY_SNIPPET = `# Example: deploy.sh (simple demo script)
 # Builds the app and deploys to a generic cloud provider
@@ -37,13 +24,13 @@ cloudctl auth login --token $CLOUD_TOKEN
 cloudctl deploy --app my-app --region us-east-1 --instances 2
 `;
 
-const COST_SCALABILITY = [
-  { name: "Compute (autoscaled)", value: 55 },
-  { name: "Storage", value: 20 },
-  { name: "Networking", value: 15 },
-  { name: "Managed Services", value: 10 },
-];
-const COLORS = ["#0ea5a4", "#60a5fa", "#f97316", "#a78bfa"];
+// const COST_SCALABILITY = [
+//   { name: "Compute (autoscaled)", value: 55 },
+//   { name: "Storage", value: 20 },
+//   { name: "Networking", value: 15 },
+//   { name: "Managed Services", value: 10 },
+// ];
+// const COLORS = ["#0ea5a4", "#60a5fa", "#f97316", "#a78bfa"];
 
 const bilingual = {
   en: {
@@ -78,12 +65,30 @@ const bilingual = {
       "Monitor and optimize: Continuously monitor your application's performance and cost.",
     ],
     tools: [
-      "IaaS: AWS EC2, Azure VMs, GCP Compute Engine",
-      "PaaS: Heroku, Vercel, Firebase Hosting",
-      "Containers: Docker, Kubernetes (EKS/GKE/AKS)",
-      "IaC: Terraform, CloudFormation, Pulumi",
-      "CI/CD: GitHub Actions, GitLab CI, Jenkins",
-      "Databases: RDS, Cloud SQL, DynamoDB, Firestore",
+      {
+        name: "IaaS: AWS EC2, Azure VMs, GCP Compute Engine",
+        description: "Infrastructure as a Service (IaaS) provides virtualized computing resources over the internet. You can rent virtual machines (like AWS EC2) instead of buying physical servers."
+      },
+      {
+        name: "PaaS: Heroku, Vercel, Firebase Hosting",
+        description: "Platform as a Service (PaaS) provides a platform for customers to develop, run, and manage applications without the complexity of building and maintaining the infrastructure."
+      },
+      {
+        name: "Containers: Docker, Kubernetes (EKS/GKE/AKS)",
+        description: "Containers are a lightweight, portable way to package and run software. Docker is a popular containerization platform, and Kubernetes is a system for automating deployment, scaling, and management of containerized applications."
+      },
+      {
+        name: "IaC: Terraform, CloudFormation, Pulumi",
+        description: "Infrastructure as Code (IaC) is the process of managing and provisioning computer data centers through machine-readable definition files, rather than physical hardware configuration or interactive configuration tools."
+      },
+      {
+        name: "CI/CD: GitHub Actions, GitLab CI, Jenkins",
+        description: "Continuous Integration and Continuous Delivery (CI/CD) is a set of practices that automate the software development lifecycle, from building and testing to deployment."
+      },
+      {
+        name: "Databases: RDS, Cloud SQL, DynamoDB, Firestore",
+        description: "Cloud databases are database services built and accessed through a cloud platform. They offer services for storing, managing, and retrieving data."
+      }
     ],
     examples: [
       "Host a personal website or blog on a free tier service like Netlify or Vercel.",
@@ -95,6 +100,12 @@ const bilingual = {
     copySnippet: "Copy snippet",
     autoscaleLabel: "Autoscaling: simulated instances",
     costLabel: "Cost Breakdown (sample)",
+    comparisonTitle: "Cloud Computing vs. Cloud Storage",
+    comparisonDesc: "While they sound similar, they serve different purposes. Here's a simple breakdown:",
+    computingTitle: "Cloud Computing",
+    computingDesc: "This is like renting a whole kitchen. You get the stove, the oven, and all the tools to cook a complex meal (run an application).",
+    storageTitle: "Cloud Storage",
+    storageDesc: "This is like renting a pantry. It's a place to keep your ingredients (files) safe and access them when you need them.",
     previous: "Previous",
     next: "Next",
   },
@@ -130,12 +141,30 @@ const bilingual = {
       "निगरानी और अनुकूलन करें: अपने एप्लिकेशन के प्रदर्शन और लागत की लगातार निगरानी करें।",
     ],
     tools: [
-      "IaaS: AWS EC2, Azure VMs, GCP Compute Engine",
-      "PaaS: Heroku, Vercel, Firebase Hosting",
-      "Containers: Docker, Kubernetes (EKS/GKE/AKS)",
-      "IaC: Terraform, CloudFormation, Pulumi",
-      "CI/CD: GitHub Actions, GitLab CI, Jenkins",
-      "Databases: RDS, Cloud SQL, DynamoDB, Firestore",
+      {
+        name: "IaaS: AWS EC2, Azure VMs, GCP Compute Engine",
+        description: "इन्फ्रास्ट्रक्चर एज ए सर्विस (IaaS) इंटरनेट पर वर्चुअलाइज्ड कंप्यूटिंग संसाधन प्रदान करता है। आप भौतिक सर्वर खरीदने के बजाय वर्चुअल मशीन (जैसे AWS EC2) किराए पर ले सकते हैं।"
+      },
+      {
+        name: "PaaS: Heroku, Vercel, Firebase Hosting",
+        description: "प्लेटफॉर्म एज ए सर्विस (PaaS) ग्राहकों को बुनियादी ढांचे के निर्माण और रखरखाव की जटिलता के बिना अनुप्रयोगों को विकसित करने, चलाने और प्रबंधित करने के लिए एक मंच प्रदान करता है।"
+      },
+      {
+        name: "Containers: Docker, Kubernetes (EKS/GKE/AKS)",
+        description: "कंटेनर सॉफ्टवेयर को पैकेज और चलाने का एक हल्का, पोर्टेबल तरीका है। डॉकर एक लोकप्रिय कंटेनरीकरण प्लेटफॉर्म है, और कुबेरनेट्स कंटेनरीकृत अनुप्रयोगों की तैनाती, स्केलिंग और प्रबंधन को स्वचालित करने के लिए एक प्रणाली है।"
+      },
+      {
+        name: "IaC: Terraform, CloudFormation, Pulumi",
+        description: "इन्फ्रास्ट्रक्चर एज कोड (IaC) भौतिक हार्डवेयर कॉन्फ़िगरेशन या इंटरेक्टिव कॉन्फ़िगरेशन टूल के बजाय मशीन-पठनीय परिभाषा फ़ाइलों के माध्यम से कंप्यूटर डेटा केंद्रों के प्रबंधन और प्रावधान की प्रक्रिया है।"
+      },
+      {
+        name: "CI/CD: GitHub Actions, GitLab CI, Jenkins",
+        description: "सतत एकीकरण और सतत वितरण (CI/CD) प्रथाओं का एक सेट है जो सॉफ्टवेयर विकास जीवनचक्र को स्वचालित करता है, जिसमें बिल्डिंग और परीक्षण से लेकर परिनियोजन तक शामिल है।"
+      },
+      {
+        name: "Databases: RDS, Cloud SQL, DynamoDB, Firestore",
+        description: "क्लाउड डेटाबेस क्लाउड प्लेटफ़ॉर्म के माध्यम से निर्मित और एक्सेस की जाने वाली डेटाबेस सेवाएँ हैं। वे डेटा के भंडारण, प्रबंधन और पुनर्प्राप्ति के लिए सेवाएँ प्रदान करते हैं।"
+      }
     ],
     examples: [
       "Netlify या Vercel जैसी मुफ्त टियर सेवा पर एक व्यक्तिगत वेबसाइट या ब्लॉग होस्ट करें।",
@@ -147,6 +176,12 @@ const bilingual = {
     copySnippet: "स्निपेट कॉपी करें",
     autoscaleLabel: "ऑटोस्केलिंग: सिम्युलेटेड इंस्टेंसेज़",
     costLabel: "लागत विभाजन (नमूना)",
+    comparisonTitle: "क्लाउड कंप्यूटिंग बनाम क्लाउड स्टोरेज",
+    comparisonDesc: "हालांकि वे समान लगते हैं, वे अलग-अलग उद्देश्यों की पूर्ति करते हैं। यहाँ एक सरल विवरण है:",
+    computingTitle: "क्लाउड कंप्यूटिंग",
+    computingDesc: "यह एक पूरी रसोई किराए पर लेने जैसा है। आपको एक जटिल भोजन पकाने (एक एप्लिकेशन चलाने) के लिए स्टोव, ओवन और सभी उपकरण मिलते हैं।",
+    storageTitle: "क्लाउड स्टोरेज",
+    storageDesc: "यह एक पेंट्री किराए पर लेने जैसा है। यह आपके अवयवों (फ़ाइलों) को सुरक्षित रखने और ज़रूरत पड़ने पर उन तक पहुँचने का एक स्थान है।",
     previous: "पिछला",
     next: "अगला",
   },
@@ -268,37 +303,21 @@ export default function CloudModule() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4 mb-6">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.4 }}
-            className="bg-gray-100 p-2 rounded-lg shadow"
-          >
-            <FaCloud className="w-6 h-6 text-sky-600" />
-          </motion.div>
-
-          <div>
+        <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl">
             <motion.h1
-              initial={{ y: -8, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.05 }}
-              className="text-2xl md:text-3xl font-extrabold text-gray-800"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-gray-800 mb-2"
             >
               {t.title}
             </motion.h1>
-            <motion.p
-              initial={{ y: -6, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              className="text-sm text-gray-600"
-            >
+            <p className="text-center text-gray-600 mb-6 text-sm sm:text-base">
               {t.subtitle}
-            </motion.p>
-          </div>
+            </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+          <div className="lg:col-span-1 space-y-6">
             <motion.div
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
@@ -313,12 +332,12 @@ export default function CloudModule() {
 
               <div className="mt-4 grid md:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="text-sm font-medium text-slate-600">
+                  <h4 className="text-sm font-bold text-slate-600">
                     {lang === "en" ? "Analogy" : "उपमा"}
                   </h4>
                   <p className="mt-2 text-slate-700 italic">{t.analogy}</p>
 
-                  <h4 className="text-sm font-medium text-slate-600 mt-4">
+                  <h4 className="text-sm font-bold text-slate-600 mt-4">
                     {lang === "en" ? "Why needed" : "क्यों ज़रूरी है"}
                   </h4>
                   <ul className="mt-2 list-disc list-inside text-slate-700">
@@ -331,7 +350,7 @@ export default function CloudModule() {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-medium text-slate-600">
+                  <h4 className="text-sm font-bold text-slate-600">
                     {lang === "en" ? "Pros" : "फ़ायदे"}
                   </h4>
                   <ul className="mt-2 list-disc list-inside text-slate-700">
@@ -342,7 +361,7 @@ export default function CloudModule() {
                     ))}
                   </ul>
 
-                  <h4 className="text-sm font-medium text-slate-600 mt-4">
+                  <h4 className="text-sm font-bold text-slate-600 mt-4">
                     {lang === "en" ? "Cons" : "नुकसान"}
                   </h4>
                   <ul className="mt-2 list-disc list-inside text-slate-700">
@@ -356,7 +375,7 @@ export default function CloudModule() {
               </div>
 
               <div className="mt-6">
-                <h4 className="text-sm font-medium text-slate-600">
+                <h4 className="text-sm font-bold text-slate-600">
                   {lang === "en"
                     ? "How professionals use it"
                     : "प्रोफेशनल इसे कैसे उपयोग करते हैं"}
@@ -368,6 +387,34 @@ export default function CloudModule() {
                     </li>
                   ))}
                 </ol>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.07 }}
+              className="bg-white rounded-2xl p-6 shadow"
+            >
+              <h3 className="text-lg font-bold flex items-center gap-3">
+                <FaGlobe className="w-5 h-5 text-sky-600" />{" "}
+                {t.comparisonTitle}
+              </h3>
+              <p className="mt-3 text-slate-700 italic">{t.comparisonDesc}</p>
+
+              <div className="mt-4 grid md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-sm font-bold text-slate-600">
+                    {t.computingTitle}
+                  </h4>
+                  <p className="mt-2 text-slate-700 italic">{t.computingDesc}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-slate-600">
+                    {t.storageTitle}
+                  </h4>
+                  <p className="mt-2 text-slate-700 italic">{t.storageDesc}</p>
+                </div>
               </div>
             </motion.div>
 
@@ -387,22 +434,16 @@ export default function CloudModule() {
                   : "लोकप्रिय क्लाउड प्लेटफ़ॉर्म और सहायक टूल:"}
               </p>
 
-              <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-700">
+              <ul className="mt-3 grid grid-cols-1 sm:grid-cols-1 gap-4 text-slate-700">
                 {t.tools.map((tool, idx) => (
                   <li key={idx} className="flex items-start gap-3">
                     <span className="w-8 h-8 flex items-center justify-center bg-sky-100 rounded-full">
                       <FaCogs className="w-4 h-4 text-sky-600" />
                     </span>
                     <div>
-                      <div className="text-sm font-medium bold">{tool}</div>
+                      <div className="text-sm font-bold bold">{tool.name}</div>
                       <div className="text-xs text-slate-500 mt-1 italic">
-                        {idx % 2 === 0
-                          ? lang === "en"
-                            ? "Infra / Dev"
-                            : "इनफ्रा / देव"
-                          : lang === "en"
-                          ? "Managed / Platform"
-                          : "मैनेज्ड / प्लेटफ़ॉर्म"}
+                        {tool.description}
                       </div>
                     </div>
                   </li>
@@ -413,49 +454,6 @@ export default function CloudModule() {
             <motion.div
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl p-6 shadow"
-            >
-              <h3 className="text-lg font-semibold flex items-center gap-3">
-                <FaChartLine className="w-5 h-5 text-sky-600" />{" "}
-                {lang === "en"
-                  ? "Student & Project Examples"
-                  : "छात्र और प्रोजेक्ट उदाहरण"}
-              </h3>
-              <ul className="mt-3 list-disc list-inside text-slate-700">
-                {t.examples.map((ex, i) => (
-                  <li key={i} className="py-1 italic">
-                    {ex}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-4 bg-slate-50 rounded p-3">
-                <pre className="whitespace-pre-wrap text-xs text-slate-800 overflow-auto">
-                  {SAMPLE_DEPLOY_SNIPPET}
-                </pre>
-                <div className="mt-2 flex items-center gap-2">
-                  <button
-                    onClick={copySnippet}
-                    className="inline-flex items-center gap-2 px-3 py-1 rounded-md border text-slate-700 hover:bg-slate-100"
-                  >
-                    <FaCopy /> <span className="text-xs">{t.copySnippet}</span>
-                  </button>
-                  <div className="text-xs text-slate-500 italic">
-                    {lang === "en"
-                      ? "(Deployment snippet)"
-                      : "(डिप्लॉयमेंट स्निपेट)"}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right column: interactive + chart */}
-          <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.08 }}
               className="bg-white rounded-2xl p-6 shadow"
             >
@@ -617,44 +615,47 @@ export default function CloudModule() {
                 </div>
               </div>
             </motion.div>
-
+            
             <motion.div
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
               className="bg-white rounded-2xl p-6 shadow"
             >
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium text-slate-700 bold">
-                  {t.costLabel}
-                </h4>
-                <div className="text-xs text-slate-500 italic">
-                  {lang === "en" ? "sample data" : "नमूना डेटा"}
+              <h3 className="text-lg font-semibold flex items-center gap-3">
+                <FaChartLine className="w-5 h-5 text-sky-600" />{" "}
+                {lang === "en"
+                  ? "Student & Project Examples"
+                  : "छात्र और प्रोजेक्ट उदाहरण"}
+              </h3>
+              <ul className="mt-3 list-disc list-inside text-slate-700">
+                {t.examples.map((ex, i) => (
+                  <li key={i} className="py-1 italic">
+                    {ex}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-4 bg-slate-50 rounded p-3">
+                <pre className="whitespace-pre-wrap text-xs text-slate-800 overflow-auto">
+                  {SAMPLE_DEPLOY_SNIPPET}
+                </pre>
+                <div className="mt-2 flex items-center gap-2">
+                  <button
+                    onClick={copySnippet}
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-md border text-slate-700 hover:bg-slate-100"
+                  >
+                    <FaCopy /> <span className="text-xs">{t.copySnippet}</span>
+                  </button>
+                  <div className="text-xs text-slate-500 italic">
+                    {lang === "en"
+                      ? "(Deployment snippet)"
+                      : "(डिप्लॉयमेंट स्निपेट)"}
+                  </div>
                 </div>
               </div>
-
-              <div className="w-full h-40 mt-3">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={COST_SCALABILITY}
-                      dataKey="value"
-                      innerRadius={28}
-                      outerRadius={48}
-                      paddingAngle={4}
-                    >
-                      {COST_SCALABILITY.map((entry, i) => (
-                        <Cell
-                          key={`c-${i}`}
-                          fill={COLORS[i % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
             </motion.div>
+
           </div>
         </div>
         <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
