@@ -106,6 +106,29 @@ const bilingual = {
     computingDesc: "This is like renting a whole kitchen. You get the stove, the oven, and all the tools to cook a complex meal (run an application).",
     storageTitle: "Cloud Storage",
     storageDesc: "This is like renting a pantry. It's a place to keep your ingredients (files) safe and access them when you need them.",
+    serviceModelsTitle: "Cloud Service Models: IaaS, PaaS, SaaS",
+    serviceModelsDesc: "Cloud computing services are categorized into three main types. Understanding them helps in choosing the right set of tools for your project.",
+    iaas: {
+      title: "IaaS (Infrastructure as a Service)",
+      desc: "Provides fundamental building blocks of computing infrastructure: virtual servers, storage, and networking. It offers the highest level of flexibility and management control over your IT resources.",
+      analogy: "Like leasing a plot of land where you can build anything you want from scratch.",
+      use_case: "Best for startups and large enterprises needing full control over their infrastructure.",
+      color: "bg-blue-100",
+    },
+    paas: {
+      title: "PaaS (Platform as a Service)",
+      desc: "Removes the need for you to manage underlying infrastructure (usually hardware and operating systems) and allows you to focus on the deployment and management of your applications.",
+      analogy: "Like renting a fully equipped workshop. You don't own the tools, but you can use them to build your creations.",
+      use_case: "Excellent for developers who want to focus on coding and deploying applications quickly.",
+      color: "bg-green-100",
+    },
+    saas: {
+      title: "SaaS (Software as a Service)",
+      desc: "Provides you with a completed product that is run and managed by the service provider. In most cases, people referring to 'the cloud' are referring to SaaS products.",
+      analogy: "Like dining at a restaurant. You don't cook the meal; you just enjoy the finished product.",
+      use_case: "Ideal for end-users. Examples include email services, CRM software, and collaboration tools.",
+      color: "bg-orange-100",
+    },
     previous: "Previous",
     next: "Next",
   },
@@ -269,7 +292,7 @@ export default function CloudModule() {
   }
 
   return (
-    <div className="p-6 md:p-10 lg:p-14 bg-white min-h-screen">
+    <div className="p-6 md:p-10 lg:p-14 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <Link
@@ -322,7 +345,7 @@ export default function CloudModule() {
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.05 }}
-              className="bg-white rounded-2xl p-6 shadow"
+              className="bg-sky-50 rounded-2xl p-6 shadow"
             >
               <h3 className="text-lg font-semibold flex items-center gap-3">
                 <FaGlobe className="w-5 h-5 text-sky-600" />{" "}
@@ -393,8 +416,31 @@ export default function CloudModule() {
             <motion.div
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.075 }}
+              className="bg-purple-50 rounded-2xl p-6 shadow"
+            >
+              <h3 className="text-lg font-bold flex items-center gap-3">
+                <FaCogs className="w-5 h-5 text-sky-600" />{" "}
+                {t.serviceModelsTitle}
+              </h3>
+              <p className="mt-3 text-slate-700 italic">{t.serviceModelsDesc}</p>
+              <div className="mt-4 grid md:grid-cols-3 gap-4">
+                {[t.iaas, t.paas, t.saas].map((model) => (
+                  <div key={model.title} className={`${model.color} rounded-lg p-4`}>
+                    <h4 className="font-bold text-gray-800">{model.title}</h4>
+                    <p className="text-sm text-gray-700 mt-2">{model.desc}</p>
+                    <p className="text-sm text-gray-600 italic mt-2"><strong>Analogy:</strong> {model.analogy}</p>
+                    <p className="text-sm text-gray-600 mt-2"><strong>Use Case:</strong> {model.use_case}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.07 }}
-              className="bg-white rounded-2xl p-6 shadow"
+              className="bg-indigo-50 rounded-2xl p-6 shadow"
             >
               <h3 className="text-lg font-bold flex items-center gap-3">
                 <FaGlobe className="w-5 h-5 text-sky-600" />{" "}
@@ -422,7 +468,7 @@ export default function CloudModule() {
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.08 }}
-              className="bg-white rounded-2xl p-6 shadow"
+              className="bg-teal-50 rounded-2xl p-6 shadow"
             >
               <h3 className="text-lg font-semibold flex items-center gap-3">
                 <FaServer className="w-5 h-5 text-sky-600" />{" "}
@@ -441,8 +487,8 @@ export default function CloudModule() {
                       <FaCogs className="w-4 h-4 text-sky-600" />
                     </span>
                     <div>
-                      <div className="text-sm font-bold bold">{tool.name}</div>
-                      <div className="text-xs text-slate-500 mt-1 italic">
+                      <div className="text-base font-bold bold">{tool.name}</div>
+                      <div className="text-sm text-slate-500 mt-1 italic">
                         {tool.description}
                       </div>
                     </div>
@@ -455,7 +501,7 @@ export default function CloudModule() {
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.08 }}
-              className="bg-white rounded-2xl p-6 shadow"
+              className="bg-blue-50 rounded-2xl p-6 shadow"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -620,7 +666,7 @@ export default function CloudModule() {
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl p-6 shadow"
+              className="bg-orange-50 rounded-2xl p-6 shadow"
             >
               <h3 className="text-lg font-semibold flex items-center gap-3">
                 <FaChartLine className="w-5 h-5 text-sky-600" />{" "}
@@ -678,3 +724,4 @@ export default function CloudModule() {
     </div>
   );
 }
+    
