@@ -15,6 +15,20 @@ import {
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
+const renderWithTags = (text) => {
+  if (!text) return null;
+  const parts = text.split(/(<strong>.*?<\/strong>|<em>.*?<\/em>)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("<strong>")) {
+      return <strong key={i}>{part.replace(/<\/?strong>/g, "")}</strong>;
+    }
+    if (part.startsWith("<em>")) {
+      return <em key={i}>{part.replace(/<\/?em>/g, "")}</em>;
+    }
+    return part;
+  });
+};
+
 const bilingual = {
   en: {
     home: "Home",
@@ -41,6 +55,8 @@ const bilingual = {
     howUpdatesHappenContent: "Updates are typically delivered over the internet. Your device periodically checks with the software developer's servers for new versions. When an update is found, it's downloaded and installed. This can happen automatically in the background or require your manual approval.",
     whatUpdatesDoTitle: "What Updates Actually Do",
     whatUpdatesDoContent: "Updates can range from minor bug fixes to major feature overhauls. They replace or modify existing files in the software's installation directory. This could involve patching security holes, improving performance, adding new functionalities, or updating the user interface.",
+    installProcessTitle: "How Installation Works on Your Device",
+    installProcessContent: "When you click 'Install' on <strong>Windows</strong>, the installer unpacks files to a designated folder (like Program Files), creates shortcuts, and adds registry entries to integrate with the OS. On a <strong>mobile device</strong>, the process is managed by the app store. It verifies the app's safety, downloads it, and places it in a secure 'sandbox' environment, which restricts its access to your data and system features, enhancing security.",
     whyUpdatesNeededTitle: "Why Updates Are Needed",
     whyUpdatesNeededContent: "Software is rarely perfect upon release. Updates are crucial for fixing bugs discovered after launch, adapting to new technologies, and, most importantly, protecting you from security threats. As new vulnerabilities are found, developers release updates to patch them, keeping your data safe.",
     behindTheScenesTitle: "Behind the Scenes of Updates and Installs",
@@ -49,8 +65,8 @@ const bilingual = {
     installOnMobile: "Install on Mobile",
     pcInstallPath: "Installing to C:\\Program Files\\MyApp...",
     downloadSample: "Download Sample .exe",
-    exeExplanationTitle: "What is a .exe file?",
-    exeExplanationContent: "A .exe file (or executable) is a type of file that runs a program on Windows. When you double-click it, the operating system executes the code within the file to install or run the application.",
+    exeExplanationTitle: "What Are Installer Files?",
+    exeExplanationContent: "For <strong>Windows</strong>, installer files are typically <strong>.exe</strong> files. On <strong>macOS</strong>, you'll use <strong>.dmg</strong> files, which are virtual disk images containing the app. For <strong>mobile devices</strong>, Android uses <strong>.apk</strong> files, and iOS uses <strong>.ipa</strong> files, though these are usually handled by the app stores.",
   },
   hi: {
     home: "होम",
@@ -77,6 +93,8 @@ const bilingual = {
     howUpdatesHappenContent: "अपडेट आमतौर पर इंटरनेट पर दिए जाते हैं। आपका डिवाइस समय-समय पर सॉफ्टवेयर डेवलपर के सर्वर से नए संस्करणों की जांच करता है। जब कोई अपडेट मिलता है, तो उसे डाउनलोड और इंस्टॉल किया जाता है। यह स्वचालित रूप से पृष्ठभूमि में हो सकता है या इसके लिए आपकी मैन्युअल स्वीकृति की आवश्यकता हो सकती है।",
     whatUpdatesDoTitle: "अपडेट वास्तव में क्या करते हैं",
     whatUpdatesDoContent: "अपडेट मामूली बग फिक्स से लेकर बड़े फीचर ओवरहाल तक हो सकते हैं। वे सॉफ़्टवेयर की इंस्टॉलेशन डायरेक्टरी में मौजूदा फ़ाइलों को प्रतिस्थापित या संशोधित करते हैं। इसमें सुरक्षा छेदों को पैच करना, प्रदर्शन में सुधार करना, नई कार्यक्षमताएं जोड़ना, या उपयोगकर्ता इंटरफ़ेस को अपडेट करना शामिल हो सकता है।",
+    installProcessTitle: "आपके डिवाइस पर इंस्टॉलेशन कैसे काम करता है",
+    installProcessContent: "जब आप <strong>विंडोज</strong> पर 'इंस्टॉल' पर क्लिक करते हैं, तो इंस्टॉलर फ़ाइलों को एक निर्दिष्ट फ़ोल्डर (जैसे प्रोग्राम फ़ाइलें) में अनपैक करता है, शॉर्टकट बनाता है, और ओएस के साथ एकीकृत करने के लिए रजिस्ट्री प्रविष्टियाँ जोड़ता है। <strong>मोबाइल डिवाइस</strong> पर, प्रक्रिया ऐप स्टोर द्वारा प्रबंधित की जाती है। यह ऐप की सुरक्षा की पुष्टि करता है, इसे डाउनलोड करता है, और इसे एक सुरक्षित 'सैंडबॉक्स' वातावरण में रखता है, जो आपके डेटा और सिस्टम सुविधाओं तक इसकी पहुंच को प्रतिबंधित करता है, जिससे सुरक्षा बढ़ती है।",
     whyUpdatesNeededTitle: "अपडेट की आवश्यकता क्यों है",
     whyUpdatesNeededContent: "लॉन्च के बाद खोजे गए बग को ठीक करने, नई तकनीकों के अनुकूल होने और सबसे महत्वपूर्ण रूप से, आपको सुरक्षा खतरों से बचाने के लिए अपडेट महत्वपूर्ण हैं। जैसे ही नई कमजोरियां मिलती हैं, डेवलपर्स उन्हें पैच करने के लिए अपडेट जारी करते हैं, जिससे आपका डेटा सुरक्षित रहता है।",
     behindTheScenesTitle: "अपडेट और इंस्टॉल के पर्दे के पीछे",
@@ -85,8 +103,8 @@ const bilingual = {
     installOnMobile: "मोबाइल पर इंस्टॉल करें",
     pcInstallPath: "C:\\Program Files\\MyApp पर इंस्टॉल हो रहा है...",
     downloadSample: "नमूना .exe डाउनलोड करें",
-    exeExplanationTitle: ".exe फ़ाइल क्या है?",
-    exeExplanationContent: ".exe फ़ाइल (या निष्पादन योग्य) एक प्रकार की फ़ाइल है जो विंडोज पर एक प्रोग्राम चलाती है। जब आप इस पर डबल-क्लिक करते हैं, तो ऑपरेटिंग सिस्टम एप्लिकेशन को इंस्टॉल करने या चलाने के लिए फ़ाइल के भीतर कोड निष्पादित करता है।",
+    exeExplanationTitle: "इंस्टॉलर फ़ाइलें क्या हैं?",
+    exeExplanationContent: "<strong>विंडोज</strong> के लिए, इंस्टॉलर फ़ाइलें आमतौर पर <strong>.exe</strong> फ़ाइलें होती हैं। <strong>macOS</strong> पर, आप <strong>.dmg</strong> फ़ाइलों का उपयोग करेंगे, जो ऐप वाली वर्चुअल डिस्क इमेज होती हैं। <strong>मोबाइल डिवाइस</strong> के लिए, एंड्रॉइड <strong>.apk</strong> फ़ाइलों का उपयोग करता है, और आईओएस <strong>.ipa</strong> फ़ाइलों का उपयोग करता है, हालांकि ये आमतौर पर ऐप स्टोर द्वारा संभाले जाते हैं।",
   },
 };
 
@@ -169,97 +187,96 @@ export default function InstallModule() {
   }
 
   return (
-    <div className="p-6 md:p-10 lg:p-14 bg-white min-h-screen">
+<div className="p-6 md:p-10 lg:p-14 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <Link
             to="/parts/prt2"
-            className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-full shadow-md border border-gray-200 hover:bg-gray-200 transition"
+            className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-lg border border-gray-200 hover:bg-gray-50 transition-transform transform hover:scale-105"
           >
-            <FaHome className="mr-2 text-lg text-sky-600" />
-            {t.home}
+            <FaHome className="mr-2 text-lg text-indigo-600" />
+            <span className="font-semibold text-indigo-800">{t.home}</span>
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 backdrop-blur-sm bg-white/50 p-2 rounded-full shadow-md">
             <button
               onClick={() => setLang("en")}
-              className={`px-3 py-1 rounded-lg border font-semibold ${
+              className={`px-4 py-2 rounded-full text-sm font-bold transition ${
                 lang === "en"
-                  ? "bg-sky-600 text-white border-sky-600"
-                  : "bg-white text-gray-700 border-gray-300"
-              } transition`}
+                  ? "bg-indigo-600 text-white shadow-md"
+                  : "bg-transparent text-gray-700 hover:bg-indigo-100"
+              }`}
             >
               EN
             </button>
             <button
               onClick={() => setLang("hi")}
-              className={`px-3 py-1 rounded-lg border font-semibold ${
+              className={`px-4 py-2 rounded-full text-sm font-bold transition ${
                 lang === "hi"
-                  ? "bg-sky-600 text-white border-sky-600"
-                  : "bg-white text-gray-700 border-gray-300"
-              } transition`}
+                  ? "bg-indigo-600 text-white shadow-md"
+                  : "bg-transparent text-gray-700 hover:bg-indigo-100"
+              }`}
             >
               HI
             </button>
           </div>
         </div>
 
-        <div className="text-center mb-6">
+        <div className="text-center mb-12">
           <motion.h1
-            initial={{ y: -8, opacity: 0 }}
+            initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="text-2xl md:text-3xl font-extrabold text-gray-800"
+            transition={{ type: "spring", stiffness: 100 }}
+            className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 pb-2"
           >
             {t.title}
           </motion.h1>
           <motion.p
-            initial={{ y: -6, opacity: 0 }}
+            initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="text-sm text-gray-600 italic"
+            transition={{ delay: 0.2 }}
+            className="text-base text-gray-600 italic mt-2"
           >
             {t.subtitle}
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="space-y-8">
             <motion.div
-              initial={{ opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-gray-50 rounded-2xl p-6 shadow-sm"
+              className="bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200/80"
             >
-              <h3 className="text-lg font-semibold flex items-center gap-3">
-                <FaTools className="w-5 h-5 text-sky-500" />{" "}
+              <h3 className="text-xl font-bold flex items-center gap-3 text-indigo-800">
+                <FaTools className="w-6 h-6 text-indigo-500" />{" "}
                 {lang === "en" ? "Concept" : "संकल्पना"}
               </h3>
-              <p
-                className="mt-3 text-slate-700"
-                dangerouslySetInnerHTML={{ __html: t.concept }}
-              />
-
-              <div className="mt-6">
-                <h4 className="text-sm font-medium text-slate-600">
+              <div className="mt-4 text-gray-700 space-y-4">
+                {renderWithTags(t.concept)}
+              </div>
+              <div className="mt-6 border-t pt-4 border-indigo-100">
+                <h4 className="text-lg font-semibold text-indigo-700">
                   {lang === "en" ? "Analogy" : "उपमा"}
                 </h4>
-                <p
-                  className="mt-2 text-slate-700"
-                  dangerouslySetInnerHTML={{ __html: t.analogy }}
-                />
+                <div className="mt-2 text-gray-700">
+                  {renderWithTags(t.analogy)}
+                </div>
               </div>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-gray-50 rounded-2xl p-6 shadow-sm"
+              className="bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200/80"
             >
-              <h3 className="text-lg font-semibold flex items-center gap-3">
-                <FaCogs className="w-5 h-5 text-sky-500" />{" "}
+              <h3 className="text-xl font-bold flex items-center gap-3 text-indigo-800">
+                <FaCogs className="w-6 h-6 text-indigo-500" />{" "}
                 {lang === "en"
                   ? "How Professionals Do It"
                   : "पेशेवर इसे कैसे करते हैं"}
               </h3>
-              <ol className="mt-3 list-decimal list-inside text-slate-700">
+              <ol className="mt-4 list-decimal list-inside text-gray-700 space-y-2">
                 {t.how.map((s, i) => (
                   <li key={i} className="py-1">
                     {s}
@@ -269,49 +286,64 @@ export default function InstallModule() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-gray-50 rounded-2xl p-6 shadow-sm"
+              className="bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200/80"
             >
-              <h3 className="text-lg font-semibold flex items-center gap-3">
-                <FaCloudDownloadAlt className="w-5 h-5 text-sky-500" />{" "}
+              <h3 className="text-xl font-bold flex items-center gap-3 text-indigo-800">
+                <FaCloudDownloadAlt className="w-6 h-6 text-indigo-500" />{" "}
                 {t.howUpdatesHappenTitle}
               </h3>
-              <p className="mt-3 text-slate-700">{t.howUpdatesHappenContent}</p>
+              <p className="mt-4 text-gray-700">{t.howUpdatesHappenContent}</p>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-gray-50 rounded-2xl p-6 shadow-sm"
+              className="bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200/80"
             >
-              <h3 className="text-lg font-semibold flex items-center gap-3">
-                <FaSyncAlt className="w-5 h-5 text-sky-500" /> {t.whatUpdatesDoTitle}
+              <h3 className="text-xl font-bold flex items-center gap-3 text-indigo-800">
+                <FaSyncAlt className="w-6 h-6 text-indigo-500" />{" "}
+                {t.whatUpdatesDoTitle}
               </h3>
-              <p className="mt-3 text-slate-700">{t.whatUpdatesDoContent}</p>
+              <p className="mt-4 text-gray-700">{t.whatUpdatesDoContent}</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200/80"
+            >
+              <h3 className="text-xl font-bold flex items-center gap-3 text-indigo-800">
+                <FaCogs className="w-6 h-6 text-indigo-500" />{" "}
+                {t.installProcessTitle}
+              </h3>
+              <p className="mt-4 text-gray-700">
+                {renderWithTags(t.installProcessContent)}
+              </p>
             </motion.div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-8">
             <motion.div
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gray-50 rounded-2xl p-6 shadow-sm"
+              className="bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200/80"
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="bg-sky-100 p-2 rounded-md">
-                    <FaCloudDownloadAlt className="w-5 h-5 text-sky-500" />
+                <div className="flex items-center gap-4">
+                  <div className="bg-gradient-to-tr from-indigo-500 to-purple-500 p-3 rounded-xl shadow-lg">
+                    <FaCloudDownloadAlt className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <div className="text-xl font-medium">
+                    <div className="text-xl font-bold text-gray-800">
                       {lang === "en"
                         ? "Interactive Simulation"
                         : "इंटरैक्टिव सिमुलेशन"}
                     </div>
-                    <div className="text-sm text-slate-500">
+                    <div className="text-sm text-gray-500">
                       {lang === "en"
                         ? "Simulate installing and updating software."
                         : "सॉफ़्टवेयर स्थापित करने और अद्यतन करने का अनुकरण करें।"}
@@ -319,56 +351,56 @@ export default function InstallModule() {
                   </div>
                 </div>
               </div>
-              <p className="text-base text-slate-600 mt-4 italic">
-                {t.simulationExplanation}
+              <p className="text-base text-gray-600 mt-4 italic">
+                {renderWithTags(t.simulationExplanation)}
               </p>
 
-              <div className="mt-4 space-y-4">
-                <div className="flex gap-2">
+              <div className="mt-6 space-y-4">
+                <div className="flex gap-4">
                   <button
                     onClick={() => startInstall("pc")}
                     disabled={installing}
-                    className="w-full px-3 py-2 rounded-md text-sm inline-flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700 disabled:bg-slate-400"
+                    className="w-full px-4 py-3 rounded-xl text-sm font-bold inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed"
                   >
                     <FaDownload /> {t.installOnPC}
                   </button>
                   <button
                     onClick={() => startInstall("mobile")}
                     disabled={installing}
-                    className="w-full px-3 py-2 rounded-md text-sm inline-flex items-center justify-center gap-2 bg-green-600 text-white hover:bg-green-700 disabled:bg-slate-400"
+                    className="w-full px-4 py-3 rounded-xl text-sm font-bold inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed"
                   >
                     <FaDownload /> {t.installOnMobile}
                   </button>
                 </div>
 
                 {installing && (
-                  <div className="text-center text-base text-slate-600">
+                  <div className="text-center text-base text-indigo-700 font-semibold animate-pulse">
                     {t.pcInstallPath}
                   </div>
                 )}
 
-                <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden mt-2">
+                <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden mt-2 shadow-inner">
                   <div
-                    className={`h-3 rounded-full transition-all ${
+                    className={`h-4 rounded-full transition-all duration-500 ease-out ${
                       installSuccess === true
-                        ? "bg-emerald-500"
+                        ? "bg-gradient-to-r from-green-400 to-emerald-500"
                         : installSuccess === false
-                        ? "bg-rose-500"
-                        : "bg-sky-400"
+                        ? "bg-gradient-to-r from-red-400 to-rose-500"
+                        : "bg-gradient-to-r from-indigo-400 to-purple-500 animate-pulse"
                     }`}
                     style={{ width: `${installProgress}%` }}
                   />
                 </div>
-                <div className="mt-2 text-xs text-slate-600 flex items-center gap-2">
+                <div className="mt-2 text-sm text-gray-600 flex items-center justify-between">
                   <span>{Math.round(installProgress)}%</span>
                   {installSuccess === true && (
-                    <span className="inline-flex items-center gap-1 text-emerald-600">
+                    <span className="inline-flex items-center gap-2 font-semibold text-green-600">
                       <FaCheckCircle />{" "}
                       {lang === "en" ? "Installed" : "इंस्टॉल हुआ"}
                     </span>
                   )}
                   {installSuccess === false && (
-                    <span className="inline-flex items-center gap-1 text-rose-600">
+                    <span className="inline-flex items-center gap-2 font-semibold text-red-600">
                       <FaExclamationTriangle />{" "}
                       {lang === "en"
                         ? "Installation failed"
@@ -378,15 +410,15 @@ export default function InstallModule() {
                 </div>
               </div>
 
-              <div className="mt-4">
-                <div className="flex items-center gap-2">
+              <div className="mt-6 border-t pt-4 border-indigo-100">
+                <div className="flex items-center gap-4">
                   <button
                     onClick={checkForUpdates}
                     disabled={checking}
-                    className={`flex-1 px-3 py-2 rounded-md text-sm inline-flex items-center justify-center gap-2 ${
+                    className={`flex-1 px-4 py-3 rounded-xl text-sm font-bold inline-flex items-center justify-center gap-2 transition transform hover:-translate-y-0.5 ${
                       checking
-                        ? "bg-slate-300"
-                        : "bg-blue-600 text-white hover:bg-blue-700"
+                        ? "bg-gray-300 cursor-wait"
+                        : "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md hover:shadow-lg"
                     }`}
                   >
                     {checking ? "..." : t.checkUpdates}
@@ -394,21 +426,21 @@ export default function InstallModule() {
                   <button
                     onClick={applyUpdate}
                     disabled={!updateAvailable || applying}
-                    className={`flex-1 px-3 py-2 rounded-md text-sm inline-flex items-center justify-center gap-2 ${
+                    className={`flex-1 px-4 py-3 rounded-xl text-sm font-bold inline-flex items-center justify-center gap-2 transition transform hover:-translate-y-0.5 ${
                       !updateAvailable || applying
-                        ? "bg-slate-300"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
+                        ? "bg-gray-300 cursor-not-allowed"
+                        : "bg-gradient-to-r from-teal-400 to-cyan-500 text-white shadow-md hover:shadow-lg"
                     }`}
                   >
                     {applying ? (
-                      <FaPlay className="animate-pulse" />
+                      <FaPlay className="animate-spin" />
                     ) : (
                       <FaSyncAlt />
                     )}{" "}
                     <span>{t.applyUpdate}</span>
                   </button>
                 </div>
-                <div className="mt-2 text-sm text-slate-600">
+                <div className="mt-3 text-sm text-center font-medium text-gray-700">
                   {checking
                     ? lang === "en"
                       ? "Checking for updates..."
@@ -421,27 +453,29 @@ export default function InstallModule() {
                     ? "No updates found"
                     : "कोई अपडेट नहीं मिला"}
                 </div>
-                <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden mt-2">
+                <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden mt-2 shadow-inner">
                   <div
-                    className={`h-3 rounded-full transition-all ${
-                      applying ? "bg-emerald-500" : "bg-sky-300"
+                    className={`h-4 rounded-full transition-all duration-500 ease-out ${
+                      applying
+                        ? "bg-gradient-to-r from-teal-400 to-cyan-500"
+                        : "bg-gray-300"
                     }`}
                     style={{ width: `${applyProgress}%` }}
                   />
                 </div>
               </div>
 
-              <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-                <h4 className="font-semibold text-lg text-gray-800">
+              <div className="mt-6 p-4 bg-white/80 rounded-xl shadow-inner border border-gray-200/90">
+                <h4 className="font-bold text-lg text-gray-800">
                   {t.exeExplanationTitle}
                 </h4>
-                <p className="text-base text-slate-600 mt-1">
-                  {t.exeExplanationContent}
+                <p className="text-base text-gray-700 mt-2">
+                  {renderWithTags(t.exeExplanationContent)}
                 </p>
                 <a
                   href="data:application/octet-stream;base64,ZXhlY3V0YWJsZSBmaWxl"
                   download="sample.exe"
-                  className="mt-2 inline-block px-3 py-1 bg-purple-600 text-white text-sm rounded-md hover:bg-purple-700"
+                  className="mt-4 inline-block px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-sm rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition"
                 >
                   {t.downloadSample}
                 </a>
@@ -449,57 +483,59 @@ export default function InstallModule() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-gray-50 rounded-2xl p-6 shadow-sm"
+              className="bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200/80"
             >
-              <h3 className="text-lg font-semibold flex items-center gap-3">
+              <h3 className="text-xl font-bold flex items-center gap-3 text-red-800">
+                <FaExclamationTriangle className="w-6 h-6 text-red-500" />{" "}
                 {t.securityTitle}
               </h3>
-              <p className="mt-3 text-slate-700 italic">
-                {t.securityExplanation}
+              <p className="mt-4 text-gray-700 italic">
+                {renderWithTags(t.securityExplanation)}
               </p>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-gray-50 rounded-2xl p-6 shadow-sm"
+              transition={{ delay: 0.5 }}
+              className="bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200/80"
             >
-              <h3 className="text-lg font-semibold flex items-center gap-3">
-                <FaExclamationTriangle className="w-5 h-5 text-sky-500" />{" "}
+              <h3 className="text-xl font-bold flex items-center gap-3 text-yellow-800">
+                <FaExclamationTriangle className="w-6 h-6 text-yellow-500" />{" "}
                 {t.whyUpdatesNeededTitle}
               </h3>
-              <p className="mt-3 text-slate-700">{t.whyUpdatesNeededContent}</p>
+              <p className="mt-4 text-gray-700">{t.whyUpdatesNeededContent}</p>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 }}
-              className="bg-gray-50 rounded-2xl p-6 shadow-sm"
+              transition={{ delay: 0.6 }}
+              className="bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200/80"
             >
-              <h3 className="text-lg font-semibold flex items-center gap-3">
-                <FaCogs className="w-5 h-5 text-sky-500" /> {t.behindTheScenesTitle}
+              <h3 className="text-xl font-bold flex items-center gap-3 text-gray-800">
+                <FaCogs className="w-6 h-6 text-gray-500" />{" "}
+                {t.behindTheScenesTitle}
               </h3>
-              <p className="mt-3 text-slate-700">{t.behindTheScenesContent}</p>
+              <p className="mt-4 text-gray-700">{t.behindTheScenesContent}</p>
             </motion.div>
           </div>
         </div>
 
-        <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
+        <div className="w-full flex justify-between items-center mt-12 p-4 bg-white/60 backdrop-blur-sm rounded-full shadow-lg">
           <button
             onClick={() => navigate("/module4/distribution-models")}
-            className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+            className="flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-100 text-gray-800 font-bold rounded-full shadow-md transition-transform transform hover:scale-105"
           >
             <FaArrowLeft />
             {t.previous}
           </button>
           <button
             onClick={() => navigate("/parts/prt2")}
-            className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-400 to-teal-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-transform transform hover:scale-105"
           >
             {t.next}
             <FaArrowRight />

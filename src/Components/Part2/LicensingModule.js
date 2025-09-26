@@ -298,8 +298,8 @@ const DistributionModelSimulation = ({ t }) => {
     return (
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-white rounded-2xl p-6 shadow">
             <h4 className="text-lg font-semibold flex items-center gap-3">{t.simulation.title}</h4>
-            <p className="text-sm text-slate-600 mt-2 italic">{t.simulation.description}</p>
-            <p className="text-sm text-slate-600 mt-2 p-2 bg-blue-50 border-l-4 border-blue-400 italic">{t.simulation.metrics_explanation}</p>
+            <p className="text-base text-slate-600 mt-2 italic">{t.simulation.description}</p>
+            <p className="text-base text-slate-600 mt-2 p-2 bg-blue-50 border-l-4 border-blue-400 italic">{t.simulation.metrics_explanation}</p>
 
             <div className="mt-4">
                 <h5 className="text-sm font-bold text-slate-800 mb-2">{t.simulation.select}</h5>
@@ -322,7 +322,7 @@ const DistributionModelSimulation = ({ t }) => {
                 <SimulationBar icon={FaDollarSign} label={t.simulation.revenue} value={results.revenue} color="amber" />
                 <SimulationBar icon={FaHeart} label={t.simulation.community} value={results.community} color="rose" />
             </div>
-            <div className="mt-6 text-sm text-slate-600 space-y-4">
+            <div className="mt-6 text-base text-slate-600 space-y-4">
                 <p dangerouslySetInnerHTML={{ __html: t.simulation.metrics_explanation_details.users_revenue }} />
                 <p dangerouslySetInnerHTML={{ __html: t.simulation.metrics_explanation_details.users_community }} />
                 <p dangerouslySetInnerHTML={{ __html: t.simulation.metrics_explanation_details.community_revenue }} />
@@ -444,8 +444,8 @@ export default function LicensingModule() {
                     <li key={idx} className="flex items-start gap-3 p-3 bg-emerald-50 rounded-lg">
                         <span className="w-8 h-8 flex-shrink-0 flex items-center justify-center bg-white rounded-full shadow-sm"><FaDownload className="w-4 h-4 text-emerald-600" /></span>
                         <div>
-                            <div className="font-bold text-sm text-emerald-800">{tool.name}</div>
-                            <div className="text-xs text-slate-600 mt-1 italic" dangerouslySetInnerHTML={{ __html: tool.description }} />
+                            <div className="font-bold text-base text-emerald-800">{tool.name}</div>
+                            <div className="text-base text-slate-600 mt-1 italic" dangerouslySetInnerHTML={{ __html: tool.description }} />
                         </div>
                     </li>
                     ))}
@@ -460,15 +460,15 @@ export default function LicensingModule() {
                 <div className="mt-4 space-y-3">
                     <div>
                         <h5 className="font-bold text-slate-800">{lang === 'en' ? 'Why needed' : 'क्यों ज़रूरी है'}</h5>
-                        <ul className="mt-2 list-disc list-inside text-slate-700 text-sm italic">{t.why.map((w, i) => (<li key={i}>{w}</li>))}</ul>
+                        <ul className="mt-2 list-disc list-inside text-slate-700 text-base italic">{t.why.map((w, i) => (<li key={i}>{w}</li>))}</ul>
                     </div>
                     <div>
                         <h5 className="font-bold text-slate-800">{lang === 'en' ? 'Pros' : 'फ़ायदे'}</h5>
-                        <ul className="mt-2 list-disc list-inside text-slate-700 text-sm italic">{t.pros.map((p, i) => (<li key={i}>{p}</li>))}</ul>
+                        <ul className="mt-2 list-disc list-inside text-slate-700 text-base italic">{t.pros.map((p, i) => (<li key={i}>{p}</li>))}</ul>
                     </div>
                     <div>
                         <h5 className="font-bold text-slate-800">{lang === 'en' ? 'Cons' : 'नुकसान'}</h5>
-                        <ul className="mt-2 list-disc list-inside text-slate-700 text-sm italic">{t.cons.map((c, i) => (<li key={i}>{c}</li>))}</ul>
+                        <ul className="mt-2 list-disc list-inside text-slate-700 text-base italic">{t.cons.map((c, i) => (<li key={i}>{c}</li>))}</ul>
                     </div>
                 </div>
             </motion.div>
