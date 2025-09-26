@@ -51,6 +51,7 @@ import DebuggingTestingModule from './Components/Part2/DebuggingTestingModule';
 import SecurityModule from './Components/Part2/SecurityModule';
 import CloudModule from './Components/Part2/CloudModule'
 import LicensingModule from './Components/Part2/LicensingModule';
+import InstallModule from './Components/Part2/InstallModule';
 import Quiz2 from './Components/Part2/Quiz2';
 
 import Chapter9 from './Components/Part3/Chapter9';
@@ -116,6 +117,7 @@ root.render(
         <Route path="/module4/security" element={<SecurityModule />} />
         <Route path="/module4/cloud-computing" element={<CloudModule />} />
         <Route path="/module4/distribution-models" element={<LicensingModule />} />
+        <Route path="/module4/installation-updates" element={<InstallModule />} />
         <Route path="/part2/chapters/qiz2" element={<Quiz2 />} />
 
         <Route path="/part3/chapters/ch9" element={<Chapter9 />} />

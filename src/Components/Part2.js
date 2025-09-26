@@ -6,7 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';// <-- Import the array
 import {
   FaQuestionCircle, FaCogs, FaToolbox, FaUserTie, FaSyncAlt, FaCode,
   FaDatabase, FaProjectDiagram, FaDraftingCompass, FaPaintBrush, FaDesktop,
-  FaServer, FaHdd, FaGitAlt, FaBug, FaShieldAlt, FaCloud, FaUsers, FaHome
+  FaServer, FaHdd, FaGitAlt, FaBug, FaShieldAlt, FaCloud, FaUsers, FaHome,
+  FaDownload
 } from 'react-icons/fa';
 
 
@@ -187,7 +188,17 @@ export const softwareWorldChapters = [
     analogy: "Different ways to share food: giving it away, offering a free sample, or sharing the recipe.",
     path: "/module4/distribution-models",
     icon: <FaUsers className="text-purple-700 text-3xl" />
+  },
+  {
+    id: 19,
+    module: 4,
+    title: "Software, Installation and Updates",
+    concept: "The process of setting up software and keeping it updated with new features, bug fixes, and security patches.",
+    analogy: "Like installing furniture in your home and later repairing or upgrading it when needed.",
+    path: "/module4/installation-updates",
+    icon: <FaDownload className="text-green-700 text-3xl" />
   }
+
 ];
 
 function SoftwareWorldPage() {
