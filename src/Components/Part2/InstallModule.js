@@ -5,7 +5,6 @@ import {
   FaSyncAlt,
   FaTools,
   FaRocket,
-  FaClipboard,
   FaCheckCircle,
   FaExclamationTriangle,
   FaCogs,
@@ -25,13 +24,6 @@ cd your-app
 npm install
 npm run build
 npm start
-`;
-
-const UPDATE_POLICY_SNIPPET = `# Example update policy (short)
-- Security patches: apply within 48 hours of release
-- Minor bugs/feature releases: schedule weekly
-- Major releases: test on staging, deploy during maintenance window
-- Rollback plan: maintain previous deployment artifacts for 72 hours
 `;
 
 const PIE_DATA = [
@@ -193,7 +185,6 @@ export default function InstallModule() {
         const nxt = Math.min(100, p + Math.random() * 20);
         if (nxt >= 100) {
           clearInterval(applyRef.current);
-          const ok = Math.random() > 0.08; // mostly ok
           setApplying(false);
           setUpdateAvailable(false);
           return 100;
@@ -207,9 +198,6 @@ export default function InstallModule() {
     navigator.clipboard.writeText(SAMPLE_INSTALL_SNIPPET).catch(() => {});
   }
 
-  function copyPolicy() {
-    navigator.clipboard.writeText(UPDATE_POLICY_SNIPPET).catch(() => {});
-  }
 
   return (
     <div className="p-6 md:p-10 lg:p-14 bg-gradient-to-b from-red-50 to-white min-h-screen">
