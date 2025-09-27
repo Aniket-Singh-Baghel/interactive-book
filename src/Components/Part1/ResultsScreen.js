@@ -4,8 +4,12 @@ import { FaStar } from "react-icons/fa";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
+import { useNavigate } from "react-router-dom";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const ResultsScreen = ({ t, score, quizDataLength, resetQuiz, studentName }) => {
+
+const ResultsScreen = ({ t, score, quizDataLength, resetQuiz, studentName, timeUp }) => {
+  const navigate = useNavigate();
   let grade = "";
   let stars = 0;
   let motivationalMessage = "";
@@ -54,8 +58,9 @@ const ResultsScreen = ({ t, score, quizDataLength, resetQuiz, studentName }) => 
       >
         <Card className="shadow-2xl border-4 border-pink-300 rounded-3xl p-8 text-center max-w-lg">
           <h1 className="text-4xl font-extrabold text-purple-700 mb-2">
-            {t.quizComplete}
+            {timeUp ? t.timesUp : t.quizComplete}
           </h1>
+          {timeUp && <p className="text-red-500 font-bold mb-4">Sorry, you ran out of time!</p>}
           <p className="text-2xl font-bold text-gray-700 mb-4">
             {t.score}: {score} / {quizDataLength}
           </p>
@@ -75,15 +80,26 @@ const ResultsScreen = ({ t, score, quizDataLength, resetQuiz, studentName }) => 
               ))}
           </div>
           <p className="text-lg text-gray-600 mb-6">{motivationalMessage}</p>
-          <Button
-            onClick={resetQuiz}
-            variant="contained"
-            size="large"
-            startIcon={<ReplayIcon />}
-            className="!bg-green-500 hover:!bg-green-600 !text-white !font-bold rounded-full shadow"
-          >
-            {t.playAgain}
-          </Button>
+          <div className="flex justify-center space-x-4">
+            <Button
+              onClick={resetQuiz}
+              variant="contained"
+              size="large"
+              startIcon={<ReplayIcon />}
+              className="!bg-green-500 hover:!bg-green-600 !text-white !font-bold rounded-full shadow"
+            >
+              {t.playAgain}
+            </Button>
+            <Button
+              onClick={() => navigate("/part1/peripherals")}
+              variant="contained"
+              size="large"
+              endIcon={<ArrowForwardIcon />}
+              className="!bg-blue-500 hover:!bg-blue-600 !text-white !font-bold rounded-full shadow"
+            >
+              Next Page
+            </Button>
+          </div>
         </Card>
       </motion.div>
     </div>

@@ -13,6 +13,8 @@ export const content = {
       hideHint: "Hide Hint",
       welcomeMessage: "Welcome to the Computer Quiz! Enter your name to begin.",
       nameLabel: "Your Name",
+      nameRequired: "Please enter your name to start the quiz.",
+      timesUp: "Time's Up!",
       results: {
         failed: "Failed",
         passed: "Passed",
@@ -247,14 +249,124 @@ export const content = {
               { text: "It tells the RAM to forget everything it's doing.", isCorrect: false, rationale: "The CU needs to use RAM to process the video, not erase it." },
             ],
             hint: "Think of the logical steps: 1. Get the ingredients. 2. Prepare the meal. 3. Serve the food.",
+          },
+          {
+            id: "q21",
+            question: "What is a computer?",
+            options: [
+              { text: "A machine for watching movies.", isCorrect: false, rationale: "While you can watch movies on a computer, it's not its only function." },
+              { text: "An electronic device for storing and processing data.", isCorrect: true, rationale: "This is the primary definition of a computer." },
+              { text: "A tool for writing documents.", isCorrect: false, rationale: "A computer can be used for writing, but it's more than just a writing tool." },
+              { text: "A device for playing games.", isCorrect: false, rationale: "Gaming is one of many things a computer can do." },
+            ],
+            hint: "Think about the main purpose of a computer.",
+          },
+          {
+            id: "q22",
+            question: "What does ICT stand for?",
+            options: [
+              { text: "Information and Computer Technology", isCorrect: false, rationale: "Close, but not quite right." },
+              { text: "Information and Communication Technology", isCorrect: true, rationale: "ICT refers to technologies that provide access to information through telecommunications." },
+              { text: "Internal Communication Technology", isCorrect: false, rationale: "This is too specific and not the correct term." },
+              { text: "Information and Central Technology", isCorrect: false, rationale: "This is not the correct term." },
+            ],
+            hint: "What are the two main things technology helps us with?",
+          },
+          {
+            id: "q23",
+            question: "Which of the following is an example of an input device?",
+            options: [
+              { text: "Printer", isCorrect: false, rationale: "A printer is an output device." },
+              { text: "Monitor", isCorrect: false, rationale: "A monitor is an output device." },
+              { text: "Keyboard", isCorrect: true, rationale: "A keyboard is used to input text and commands." },
+              { text: "Speakers", isCorrect: false, rationale: "Speakers are output devices." },
+            ],
+            hint: "Which device sends information to the computer?",
+          },
+          {
+            id: "q24",
+            question: "What is the function of a CPU?",
+            options: [
+              { text: "To display images.", isCorrect: false, rationale: "This is the function of a monitor or display screen." },
+              { text: "To store files.", isCorrect: false, rationale: "This is the function of a hard drive or SSD." },
+              { text: "To process data and execute commands.", isCorrect: true, rationale: "The CPU is the 'brain' of the computer." },
+              { text: "To play audio.", isCorrect: false, rationale: "This is the function of speakers or headphones." },
+            ],
+            hint: "What does the 'brain' of the computer do?",
+          },
+          {
+            id: "q25",
+            question: "Which of the following is a type of computer memory?",
+            options: [
+              { text: "CPU", isCorrect: false, rationale: "The CPU is the processor, not memory." },
+              { text: "RAM", isCorrect: true, rationale: "RAM (Random Access Memory) is a type of volatile memory." },
+              { text: "GPU", isCorrect: false, rationale: "The GPU is the graphics processing unit." },
+              { text: "PSU", isCorrect: false, rationale: "The PSU is the power supply unit." },
+            ],
+            hint: "Which of these is a temporary storage for data?",
+          },
+          {
+            id: "q26",
+            question: "How are computers used in education?",
+            options: [
+              { text: "For online learning and research.", isCorrect: true, rationale: "Computers provide access to a vast amount of information and online courses." },
+              { text: "Only for playing games.", isCorrect: false, rationale: "While games can be educational, it's not the only use of computers in education." },
+              { text: "To replace teachers.", isCorrect: false, rationale: "Computers are a tool to aid learning, not replace teachers." },
+              { text: "To watch movies.", isCorrect: false, rationale: "This is a recreational use, not an educational one." },
+            ],
+            hint: "How do students use computers for their studies?",
+          },
+          {
+            id: "q27",
+            question: "What is the purpose of a storage device?",
+            options: [
+              { text: "To process information.", isCorrect: false, rationale: "This is the function of the CPU." },
+              { text: "To display information.", isCorrect: false, rationale: "This is the function of a monitor." },
+              { text: "To store data for long-term use.", isCorrect: true, rationale: "Storage devices like hard drives and SSDs are used for permanent storage." },
+              { text: "To input data.", isCorrect: false, rationale: "This is the function of input devices like keyboards and mice." },
+            ],
+            hint: "Where do you save your files so you can use them later?",
+          },
+          {
+            id: "q28",
+            question: "Which of these is NOT a basic component of a computer system?",
+            options: [
+              { text: "CPU", isCorrect: false, rationale: "The CPU is a core component." },
+              { text: "Memory", isCorrect: false, rationale: "Memory is essential for a computer to function." },
+              { text: "Internet Connection", isCorrect: true, rationale: "A computer can function without an internet connection." },
+              { text: "Storage", isCorrect: false, rationale: "Storage is a fundamental component." },
+            ],
+            hint: "Which of these is not required for a computer to work on its own?",
+          },
+          {
+            id: "q29",
+            question: "What is computer hardware?",
+            options: [
+              { text: "The programs and applications on a computer.", isCorrect: false, rationale: "This is software." },
+              { text: "The physical parts of a computer.", isCorrect: true, rationale: "Hardware includes all the physical components you can touch." },
+              { text: "The data stored on a computer.", isCorrect: false, rationale: "This is data, not hardware." },
+              { text: "The internet connection.", isCorrect: false, rationale: "This is a service, not a physical part of the computer itself." },
+            ],
+            hint: "What can you physically touch on a computer?",
+          },
+          {
+            id: "q30",
+            question: "How do banks use computers?",
+            options: [
+              { text: "To manage customer accounts and transactions.", isCorrect: true, rationale: "Computers are essential for modern banking operations." },
+              { text: "To bake bread.", isCorrect: false, rationale: "This is not a function of computers in a bank." },
+              { text: "To fly airplanes.", isCorrect: false, rationale: "This is a use of computers in aviation, not banking." },
+              { text: "To write novels.", isCorrect: false, rationale: "This is a use of computers in writing, not banking." },
+            ],
+            hint: "How does a bank keep track of your money?",
           }
-    ],
-  },
+        ],
+      },
     hi: {
       home: "होम",
       question: "प्रश्न",
       score: "स्कोर",
-      bestOfLuck: "आपके क्विज़ के लिए शुभकामनाएँ!",
+      bestOfLuck: "क्विज़ के लिए शुभकामनाएँ!",
       startQuiz: "क्विज़ शुरू करें",
       nextQuestion: "अगला प्रश्न",
       submit: "सबमिट करें",
@@ -264,6 +376,8 @@ export const content = {
       hideHint: "संकेत छिपाएँ",
       welcomeMessage: "कंप्यूटर क्विज़ में आपका स्वागत है! शुरू करने के लिए अपना नाम दर्ज करें।",
       nameLabel: "आपका नाम",
+      nameRequired: "क्विज़ शुरू करने के लिए कृपया अपना नाम दर्ज करें।",
+      timesUp: "समय समाप्त!",
       results: {
         failed: "असफल",
         passed: "उत्तीर्ण",
@@ -271,12 +385,12 @@ export const content = {
         b_grade: "ग्रेड: B",
         a_grade: "ग्रेड: A",
         excellent: "बहुत बढ़िया!",
-        failedMessage: "चिंता न करें, {studentName}। हर विशेषज्ञ कभी नौसिखिया ही था। कोशिश करते रहें!",
-        passedMessage: "अच्छा काम, {studentName}! आपने क्विज़ पास कर लिया है।",
-        c_gradeMessage: "बहुत अच्छा, {studentName}! आप इसे समझ रहे हैं।",
-        b_gradeMessage: "बहुत बढ़िया काम, {studentName}! आपकी समझ बहुत अच्छी है।",
-        a_gradeMessage: "उत्कृष्ट काम, {studentName}! आप एक सितारे हैं!",
-        excellentMessage: "असाधारण, {studentName}! आप एक कंप्यूटर विशेषज्ञ हैं!",
+        failedMessage: "चिंता न करें, {studentName}। हर विशेषज्ञ कभी नौसिखिया ही था। प्रयास करते रहें!",
+        passedMessage: "बहुत अच्छा, {studentName}! आपने क्विज़ पास कर लिया है।",
+        c_gradeMessage: "बहुत अच्छा, {studentName}! आप इसे समझने लगे हैं।",
+        b_gradeMessage: "बहुत बढ़िया, {studentName}! आपकी समझ काफ़ी अच्छी है।",
+        a_gradeMessage: "उत्कृष्ट, {studentName}! आप तो सितारे हैं!",
+        excellentMessage: "असाधारण, {studentName}! आप तो कंप्यूटर के विशेषज्ञ हैं!",
       },
       quizData: [
         {
@@ -303,7 +417,7 @@ export const content = {
         },
         {
           id: "q3",
-          question: "आपको अपना गणित का होमवर्क करना है जिसमें कई जोड़ और घटाव की समस्याएं हैं। सीपीयू का कौन सा हिस्सा कैलकुलेटर की तरह है जो आपके लिए सभी गणित करेगा?",
+          question: "आपको अपना गणित का होमवर्क करना है, जिसमें कई जोड़ने और घटाने वाले सवाल हैं। सीपीयू का कौन सा हिस्सा कैलकुलेटर की तरह है जो आपके लिए सारी गणनाएँ करेगा?",
           options: [
             { text: "रैम", isCorrect: false, rationale: "रैम आपके कार्यक्षेत्र की तरह है, जो होमवर्क (डेटा) को अस्थायी रूप से रखता है, लेकिन यह गणना नहीं करता है।" },
             { text: "कंट्रोल यूनिट (CU)", isCorrect: false, rationale: "कंट्रोल यूनिट कंप्यूटर को बताता है कि *क्या* करना है, लेकिन यह खुद गणित नहीं करता है।" },
@@ -314,7 +428,7 @@ export const content = {
         },
         {
           id: "q4",
-          question: "आपका दोस्त एक गाना सुनना चाहता है जो आपके कंप्यूटर पर है। कंप्यूटर आपके दोस्त को सुनने के लिए ध्वनि कैसे भेजता है?",
+          question: "आपका दोस्त आपके कंप्यूटर पर मौजूद एक गाना सुनना चाहता है। कंप्यूटर आपके दोस्त तक आवाज़ कैसे पहुँचाता है?",
           options: [
             { text: "कीबोर्ड के माध्यम से", isCorrect: false, rationale: "एक कीबोर्ड जानकारी डालने के लिए है, ध्वनि निकालने के लिए नहीं।" },
             { text: "स्पीकर के माध्यम से", isCorrect: true, rationale: "स्पीकर आउटपुट डिवाइस हैं जो विशेष रूप से विद्युत संकेतों को ध्वनि में बदलने के लिए डिज़ाइन किए गए हैं।" },
@@ -325,7 +439,7 @@ export const content = {
         },
         {
           id: "q5",
-          question: "कल्पना कीजिए कि सीपीयू की कंट्रोल यूनिट एक ट्रैफिक पुलिस है। कंप्यूटर में इसका मुख्य काम क्या है?",
+          question: "सोचिए कि सीपीयू की कंट्रोल यूनिट एक ट्रैफिक पुलिस की तरह है। कंप्यूटर में उसका मुख्य काम क्या है?",
           options: [
             { text: "सभी गणित की समस्याओं को हल करना।", isCorrect: false, rationale: "यह ALU (अरिथमैटिक लॉजिक यूनिट) का काम है, जो एक सुपर-फास्ट कैलकुलेटर की तरह है।" },
             { text: "आपके सभी गेम और फ़ोटो संग्रहीत करना।", isCorrect: false, rationale: "यह हार्ड ड्राइव या एसएसडी का काम है, जो दीर्घकालिक भंडारण है।" },
@@ -336,7 +450,7 @@ export const content = {
         },
         {
           id: "q6",
-          question: "आप एक वीडियो गेम खेल रहे हैं और आप 'जंप' बटन दबाते हैं। यह क्रिया किसका एक उदाहरण है:",
+          question: "आप एक वीडियो गेम खेलते हुए 'जंप' बटन दबाते हैं। यह क्रिया किसका उदाहरण है?",
           options: [
             { text: "इनपुट", isCorrect: true, rationale: "आप कंप्यूटर *में* एक कमांड भेज रहे हैं, अपने चरित्र को कूदने के लिए कह रहे हैं।" },
             { text: "आउटपुट", isCorrect: false, rationale: "स्क्रीन पर कूदने वाला चरित्र आउटपुट है। बटन दबाना इनपुट है।" },
@@ -347,7 +461,7 @@ export const content = {
         },
         {
           id: "q7",
-          question: "निम्नलिखित में से कौन सा कंप्यूटर हार्डवेयर का एक टुकड़ा नहीं है?",
+          question: "इनमें से कौन सा एक कंप्यूटर हार्डवेयर नहीं है?",
           options: [
             { text: "सीपीयू चिप", isCorrect: false, rationale: "सीपीयू एक भौतिक चिप है, इसलिए यह हार्डवेयर है।" },
             { text: "रैम स्टिक्स", isCorrect: false, rationale: "रैम स्टिक्स भौतिक सर्किट बोर्ड हैं, इसलिए वे हार्डवेयर हैं।" },
@@ -358,7 +472,7 @@ export const content = {
         },
         {
           id: "q8",
-          question: "यदि आप अपने द्वारा बनाई गई एक ड्राइंग को सहेजना चाहते हैं ताकि आप इसे कल अपने परिवार को दिखा सकें, तो कंप्यूटर को इसे कहाँ रखना चाहिए?",
+          question: "अगर आप अपनी बनाई हुई ड्राइंग सहेजना चाहते हैं ताकि आप उसे कल अपने परिवार को दिखा सकें, तो कंप्यूटर उसे कहाँ रखेगा?",
           options: [
             { text: "रैम में", isCorrect: false, rationale: "रैम अस्थायी मेमोरी है, जैसे एक व्हाइटबोर्ड। जब आप कंप्यूटर बंद करते हैं तो यह मिटा दिया जाता है।" },
             { text: "हार्ड ड्राइव पर", isCorrect: true, rationale: "हार्ड ड्राइव दीर्घकालिक भंडारण के लिए है। वहां सहेजी गई फाइलें कंप्यूटर बंद होने के बाद भी रहेंगी।" },
@@ -369,7 +483,7 @@ export const content = {
         },
         {
           id: "q9",
-          question: "सीपीयू कंप्यूटर का 'मस्तिष्क' है। यह दो मुख्य भागों से बना है जो एक साथ काम करते हैं। वे क्या हैं?",
+          question: "सीपीयू कंप्यूटर का 'दिमाग' होता है। यह दो मुख्य हिस्सों से बना है जो मिलकर काम करते हैं। वे कौन से हैं?",
           options: [
             { text: "कीबोर्ड और माउस", isCorrect: false, rationale: "कीबोर्ड और माउस इनपुट डिवाइस हैं, जो सीपीयू से अलग हैं।" },
             { text: "रैम और हार्ड ड्राइव", isCorrect: false, rationale: "रैम और हार्ड ड्राइव मेमोरी/स्टोरेज के प्रकार हैं, न कि सीपीयू के मुख्य प्रसंस्करण भाग।" },
@@ -380,7 +494,7 @@ export const content = {
         },
         {
           id: "q10",
-          question: "आप एक स्कूल रिपोर्ट लिख रहे हैं। आप कीबोर्ड पर एक अक्षर दबाते हैं। इस प्रक्रिया में कीबोर्ड का क्या काम है?",
+          question: "आप स्कूल की रिपोर्ट लिख रहे हैं और कीबोर्ड पर एक अक्षर दबाते हैं। इस प्रक्रिया में कीबोर्ड का क्या काम है?",
           options: [
             { text: "स्क्रीन पर अक्षर दिखाना।", isCorrect: false, rationale: "यह मॉनिटर का काम है (आउटपुट)।" },
             { text: "अक्षर का संकेत कंप्यूटर को भेजना।", isCorrect: true, rationale: "कीबोर्ड का काम एक इनपुट डिवाइस के रूप में कार्य करना है, जो आपके द्वारा दबाए गए कुंजी के बारे में जानकारी कंप्यूटर को भेजता है।" },
@@ -391,7 +505,7 @@ export const content = {
         },
         {
             id: "q11",
-            question: "एक डॉक्टर अस्पताल में कंप्यूटर का उपयोग क्यों करेगा?",
+            question: "एक डॉक्टर अस्पताल में कंप्यूटर का इस्तेमाल क्यों करेगा?",
             options: [
               { text: "ब्रेक के दौरान वीडियो गेम खेलने के लिए।", isCorrect: false, rationale: "हालांकि संभव है, प्राथमिक पेशेवर उपयोग चिकित्सा कार्यों के लिए है।" },
               { text: "रोगी के रिकॉर्ड पर नज़र रखने और एक्स-रे देखने के लिए।", isCorrect: true, rationale: "रोगी डेटा के प्रबंधन, चिकित्सा छवियों को देखने और उपचार पर शोध के लिए अस्पतालों में कंप्यूटर आवश्यक हैं।" },
@@ -413,7 +527,7 @@ export const content = {
           },
           {
             id: "q13",
-            question: "अरिथमैटिक लॉजिक यूनिट (ALU) केवल गणित से अधिक करता है। यह तुलना भी कर सकता है। इनमें से कौन सी तुलना ALU कर सकता है?",
+            question: "अरिथमैटिक लॉजिक यूनिट (ALU) सिर्फ़ गणित ही नहीं करता, यह तुलना भी कर सकता है। इनमें से कौन सी तुलना ALU कर सकता है?",
             options: [
               { text: "क्या संख्या 5, संख्या 3 से बड़ी है?", isCorrect: true, rationale: "ALU तार्किक तुलनाओं को संभालता है जैसे कि से बड़ा, से कम, और बराबर, जो कार्यक्रमों में निर्णय लेने के लिए महत्वपूर्ण हैं।" },
               { text: "क्या इस पिक्सेल का रंग नीला है?", isCorrect: false, rationale: "जबकि ALU इस प्रक्रिया में शामिल है, GPU ग्राफिक्स और रंग डेटा को संभालने के लिए विशिष्ट है।" },
@@ -424,10 +538,10 @@ export const content = {
           },
           {
             id: "q14",
-            question: "आप एक किराने की दुकान पर हैं, और कैशियर आपके सामान को स्कैन करता है। स्कैनर किस प्रकार का उपकरण है?",
+            question: "आप एक किराने की दुकान पर हैं और कैशियर आपके सामान को स्कैन करता है। स्कैनर किस तरह का उपकरण है?",
             options: [
               { text: "आउटपुट डिवाइस", isCorrect: false, rationale: "स्कैनर जानकारी बाहर नहीं डाल रहा है; यह इसे कैश रजिस्टर के कंप्यूटर में भेज रहा है।" },
-              { text: "भंडारण डिवाइस", isCorrect: false, rationale: "स्कैनर मूल्य संग्रहीत नहीं करता है; यह सिर्फ बारकोड पढ़ता है।" },
+              { text: "भंडारण डिवाइस", isCorrect: false, rationale: "स्क্যানर मूल्य संग्रहीत नहीं करता है; यह सिर्फ बारकोड पढ़ता है।" },
               { text: "इनपुट डिवाइस", isCorrect: true, rationale: "स्कैनर बारकोड (इनपुट) पढ़ता है और उस जानकारी को कंप्यूटर को भेजता है ताकि आइटम की कीमत का पता चल सके।" },
               { text: "प्रसंस्करण डिवाइस", isCorrect: false, rationale: "कंप्यूटर का सीपीयू स्कैनर से जानकारी संसाधित करता है।" },
             ],
@@ -446,7 +560,7 @@ export const content = {
           },
           {
             id: "q16",
-            question: "यदि सीपीयू कंप्यूटर का 'मस्तिष्क' है, तो मदरबोर्ड का सबसे अच्छा विवरण क्या है?",
+            question: "अगर सीपीयू कंप्यूटर का 'दिमाग' है, तो मदरबोर्ड का सबसे अच्छा वर्णन क्या होगा?",
             options: [
               { text: "कंप्यूटर की आंखें और कान।", isCorrect: false, rationale: "'आंखें और कान' कैमरे और माइक्रोफोन जैसे इनपुट डिवाइस होंगे।" },
               { text: "कंप्यूटर का कंकाल और तंत्रिका तंत्र।", isCorrect: true, rationale: "मदरबोर्ड मुख्य सर्किट बोर्ड है जो सब कुछ एक साथ रखता है (एक कंकाल की तरह) और सीपीयू सहित सभी भागों को संवाद करने की अनुमति देता है (एक तंत्रिका तंत्र की तरह)।" },
@@ -457,7 +571,7 @@ export const content = {
           },
           {
             id: "q17",
-            question: "एक वास्तुकार एक घर डिजाइन करने के लिए एक विशेष कार्यक्रम का उपयोग करता है। यह कंप्यूटर का उपयोग करने का एक उदाहरण है...",
+            question: "एक आर्किटेक्ट घर डिजाइन करने के लिए एक खास प्रोग्राम का इस्तेमाल करता है। यह कंप्यूटर के इस्तेमाल का एक उदाहरण है...",
             options: [
               { text: "संचार", isCorrect: false, rationale: "जबकि वे डिजाइन को ईमेल कर सकते हैं, डिजाइनिंग का कार्य स्वयं संचार नहीं है।" },
               { text: "रचनात्मकता और डिजाइन", isCorrect: true, rationale: "कंप्यूटर विस्तृत योजनाओं और 3 डी मॉडल बनाने के लिए शक्तिशाली उपकरण हैं, जो डिजाइन और वास्तुकला का एक महत्वपूर्ण हिस्सा है।" },
@@ -468,7 +582,7 @@ export const content = {
           },
           {
             id: "q18",
-            question: "जब आप अपना होमवर्क प्रिंट करते हैं, तो प्रिंटर एक के रूप में कार्य कर रहा है:",
+            question: "जब आप अपना होमवर्क प्रिंट करते हैं, तो प्रिंटर किस तरह काम कर रहा होता है?",
             options: [
               { text: "इनपुट डिवाइस", isCorrect: false, rationale: "आप प्रिंटर के साथ कंप्यूटर *को* जानकारी नहीं भेज रहे हैं।" },
               { text: "आउटपुट डिवाइस", isCorrect: true, rationale: "प्रिंटर आपके कंप्यूटर से डिजिटल जानकारी लेता है और इसे एक भौतिक प्रति (आउटपुट) में बदल देता है जिसे आप पकड़ सकते हैं।" },
@@ -479,7 +593,7 @@ export const content = {
           },
           {
             id: "q19",
-            question: "इनमें से कौन सा कार्य कंप्यूटर के सीपीयू के लिए सबसे अधिक जिम्मेदार होगा?",
+            question: "इनमें से कौन सा काम मुख्य रूप से सीपीयू का है?",
             options: [
               { text: "स्क्रीन को उज्ज्वल बनाना।", isCorrect: false, rationale: "स्क्रीन की चमक मॉनिटर के हार्डवेयर का एक कार्य है।" },
               { text: "1,234 x 5,678 के परिणाम की तुरंत गणना करना।", isCorrect: true, rationale: "सीपीयू, विशेष रूप से इसका एएलयू, अविश्वसनीय रूप से उच्च गति पर गणितीय गणना करने के लिए डिज़ाइन किया गया है।" },
@@ -490,7 +604,7 @@ export const content = {
           },
           {
             id: "q20",
-            question: "आप एक वीडियो पर क्लिक करते हैं, और कंट्रोल यूनिट (CU) एक आदेश देता है। यह किस घटनाओं के क्रम की सबसे अधिक संभावना है?",
+            question: "आप एक वीडियो पर क्लिक करते हैं और कंट्रोल यूनिट (CU) एक आदेश देता है। इसके बाद होने वाली घटनाओं का सबसे संभावित क्रम क्या है?",
             options: [
               { text: "यह स्पीकर को ध्वनि बनाने के लिए कहता है, फिर हार्ड ड्राइव को फ़ाइल खोजने के लिए कहता है।", isCorrect: false, rationale: "इसे कुछ भी बजाने के लिए स्पीकर को कहने से पहले फ़ाइल ढूंढनी होगी।" },
               { text: "यह हार्ड ड्राइव को वीडियो फ़ाइल खोजने के लिए कहता है, फिर सीपीयू/जीपीयू को इसे संसाधित करने के लिए कहता है, फिर मॉनिटर/स्पीकर को इसे दिखाने/चलाने के लिए कहता है।", isCorrect: true, rationale: "यह सही तार्किक क्रम है: डेटा ढूंढें, डेटा संसाधित करें, और फिर इसे आउटपुट डिवाइस पर भेजें।" },
@@ -498,6 +612,116 @@ export const content = {
               { text: "यह रैम को वह सब कुछ भूलने के लिए कहता है जो वह कर रहा है।", isCorrect: false, rationale: "सीयू को वीडियो संसाधित करने के लिए रैम का उपयोग करने की आवश्यकता है, न कि इसे मिटाने की।" },
             ],
             hint: "तार्किक चरणों के बारे में सोचें: 1. सामग्री प्राप्त करें। 2. भोजन तैयार करें। 3. भोजन परोसें।",
+          },
+          {
+            id: "q21",
+            question: "कंप्यूटर क्या है?",
+            options: [
+              { text: "फिल्में देखने की मशीन।", isCorrect: false, rationale: "आप कंप्यूटर पर फिल्में देख सकते हैं, लेकिन यह इसका एकमात्र कार्य नहीं है।" },
+              { text: "डेटा संग्रहीत करने और संसाधित करने के लिए एक इलेक्ट्रॉनिक उपकरण।", isCorrect: true, rationale: "यह कंप्यूटर की प्राथमिक परिभाषा है।" },
+              { text: "दस्तावेज़ लिखने का एक उपकरण।", isCorrect: false, rationale: "कंप्यूटर का उपयोग लिखने के लिए किया जा सकता है, लेकिन यह केवल एक लेखन उपकरण से कहीं अधिक है।" },
+              { text: "गेम खेलने का एक उपकरण।", isCorrect: false, rationale: "गेमिंग उन कई चीजों में से एक है जो एक कंप्यूटर कर सकता है।" },
+            ],
+            hint: "कंप्यूटर के मुख्य उद्देश्य के बारे में सोचें।",
+          },
+          {
+            id: "q22",
+            question: "ICT का मतलब क्या है?",
+            options: [
+              { text: "सूचना और कंप्यूटर प्रौद्योगिकी", isCorrect: false, rationale: "करीब है, लेकिन पूरी तरह से सही नहीं है।" },
+              { text: "सूचना और संचार प्रौद्योगिकी", isCorrect: true, rationale: "ICT उन प्रौद्योगिकियों को संदर्भित करता है जो दूरसंचार के माध्यम से सूचना तक पहुंच प्रदान करती हैं।" },
+              { text: "आंतरिक संचार प्रौद्योगिकी", isCorrect: false, rationale: "यह बहुत विशिष्ट है और सही शब्द नहीं है।" },
+              { text: "सूचना और केंद्रीय प्रौद्योगिकी", isCorrect: false, rationale: "यह सही शब्द नहीं है।" },
+            ],
+            hint: "प्रौद्योगिकी हमें किन दो मुख्य चीजों में मदद करती है?",
+          },
+          {
+            id: "q23",
+            question: "निम्नलिखित में से कौन सा इनपुट डिवाइस का एक उदाहरण है?",
+            options: [
+              { text: "प्रिंटर", isCorrect: false, rationale: "प्रिंटर एक आउटपुट डिवाइस है।" },
+              { text: "मॉनिटर", isCorrect: false, rationale: "मॉनिटर एक आउटपुट डिवाइस है।" },
+              { text: "कीबोर्ड", isCorrect: true, rationale: "कीबोर्ड का उपयोग टेक्स्ट और कमांड इनपुट करने के लिए किया जाता है।" },
+              { text: "स्पीकर", isCorrect: false, rationale: "स्पीकर आउटपुट डिवाइस हैं।" },
+            ],
+            hint: "कौन सा उपकरण कंप्यूटर को जानकारी भेजता है?",
+          },
+          {
+            id: "q24",
+            question: "सीपीयू का कार्य क्या है?",
+            options: [
+              { text: "छवियों को प्रदर्शित करना।", isCorrect: false, rationale: "यह एक मॉनिटर या डिस्प्ले स्क्रीन का कार्य है।" },
+              { text: "फ़ाइलों को संग्रहीत करना।", isCorrect: false, rationale: "यह एक हार्ड ड्राइव या एसएसडी का कार्य है।" },
+              { text: "डेटा को संसाधित करना और कमांड निष्पादित करना।", isCorrect: true, rationale: "सीपीयू कंप्यूटर का 'मस्तिष्क' है।" },
+              { text: "ऑडियो चलाना।", isCorrect: false, rationale: "यह स्पीकर या हेडफ़ोन का कार्य है।" },
+            ],
+            hint: "कंप्यूटर का 'मस्तिष्क' क्या करता है?",
+          },
+          {
+            id: "q25",
+            question: "निम्नलिखित में से कौन सा एक प्रकार का कंप्यूटर मेमोरी है?",
+            options: [
+              { text: "सीपीयू", isCorrect: false, rationale: "सीपीयू प्रोसेसर है, मेमोरी नहीं।" },
+              { text: "रैम", isCorrect: true, rationale: "रैम (रैंडम एक्सेस मेमोरी) एक प्रकार की अस्थिर मेमोरी है।" },
+              { text: "जीपीयू", isCorrect: false, rationale: "जीपीयू ग्राफिक्स प्रोसेसिंग यूनिट है।" },
+              { text: "पीएसयू", isCorrect: false, rationale: "पीएसयू बिजली आपूर्ति इकाई है।" },
+            ],
+            hint: "इनमें से कौन सा डेटा के लिए एक अस्थायी भंडारण है?",
+          },
+          {
+            id: "q26",
+            question: "शिक्षा में कंप्यूटर का उपयोग कैसे किया जाता है?",
+            options: [
+              { text: "ऑनलाइन सीखने और शोध के लिए।", isCorrect: true, rationale: "कंप्यूटर बड़ी मात्रा में जानकारी और ऑनलाइन पाठ्यक्रमों तक पहुंच प्रदान करते हैं।" },
+              { text: "केवल गेम खेलने के लिए।", isCorrect: false, rationale: "हालांकि खेल शैक्षिक हो सकते हैं, लेकिन यह शिक्षा में कंप्यूटर का एकमात्र उपयोग नहीं है।" },
+              { text: "शिक्षकों को बदलने के लिए।", isCorrect: false, rationale: "कंप्यूटर सीखने में सहायता करने का एक उपकरण है, शिक्षकों को बदलने का नहीं।" },
+              { text: "फिल्में देखने के लिए।", isCorrect: false, rationale: "यह एक मनोरंजक उपयोग है, शैक्षिक नहीं।" },
+            ],
+            hint: "छात्र अपनी पढ़ाई के लिए कंप्यूटर का उपयोग कैसे करते हैं?",
+          },
+          {
+            id: "q27",
+            question: "एक भंडारण उपकरण का उद्देश्य क्या है?",
+            options: [
+              { text: "जानकारी संसाधित करना।", isCorrect: false, rationale: "यह सीपीयू का कार्य है।" },
+              { text: "जानकारी प्रदर्शित करना।", isCorrect: false, rationale: "यह एक मॉनिटर का कार्य है।" },
+              { text: "दीर्घकालिक उपयोग के लिए डेटा संग्रहीत करना।", isCorrect: true, rationale: "हार्ड ड्राइव और एसएसडी जैसे भंडारण उपकरणों का उपयोग स्थायी भंडारण के लिए किया जाता है।" },
+              { text: "डेटा इनपुट करना।", isCorrect: false, rationale: "यह कीबोर्ड और माउस जैसे इनपुट उपकरणों का कार्य है।" },
+            ],
+            hint: "आप अपनी फ़ाइलों को कहाँ सहेजते हैं ताकि आप उन्हें बाद में उपयोग कर सकें?",
+          },
+          {
+            id: "q28",
+            question: "इनमें से कौन सा कंप्यूटर सिस्टम का एक बुनियादी घटक नहीं है?",
+            options: [
+              { text: "सीपीयू", isCorrect: false, rationale: "सीपीयू एक मुख्य घटक है।" },
+              { text: "मेमोरी", isCorrect: false, rationale: "कंप्यूटर के कार्य करने के लिए मेमोरी आवश्यक है।" },
+              { text: "इंटरनेट कनेक्शन", isCorrect: true, rationale: "एक कंप्यूटर इंटरनेट कनेक्शन के बिना भी काम कर सकता है।" },
+              { text: "भंडारण", isCorrect: false, rationale: "भंडारण एक मौलिक घटक है।" },
+            ],
+            hint: "इनमें से कौन सा कंप्यूटर को अपने आप काम करने के लिए आवश्यक नहीं है?",
+          },
+          {
+            id: "q29",
+            question: "कंप्यूटर हार्डवेयर क्या है?",
+            options: [
+              { text: "कंप्यूटर पर प्रोग्राम और एप्लिकेशन।", isCorrect: false, rationale: "यह सॉफ्टवेयर है।" },
+              { text: "कंप्यूटर के भौतिक भाग।", isCorrect: true, rationale: "हार्डवेयर में वे सभी भौतिक घटक शामिल होते हैं जिन्हें आप छू सकते हैं।" },
+              { text: "कंप्यूटर पर संग्रहीत डेटा।", isCorrect: false, rationale: "यह डेटा है, हार्डवेयर नहीं।" },
+              { text: "इंटरनेट कनेक्शन।", isCorrect: false, rationale: "यह एक सेवा है, कंप्यूटर का भौतिक हिस्सा नहीं।" },
+            ],
+            hint: "आप कंप्यूटर पर भौतिक रूप से क्या छू सकते हैं?",
+          },
+          {
+            id: "q30",
+            question: "बैंक कंप्यूटर का उपयोग कैसे करते हैं?",
+            options: [
+              { text: "ग्राहक खातों और लेनदेन का प्रबंधन करने के लिए।", isCorrect: true, rationale: "आधुनिक बैंकिंग कार्यों के लिए कंप्यूटर आवश्यक हैं।" },
+              { text: "रोटी पकाने के लिए।", isCorrect: false, rationale: "यह बैंक में कंप्यूटर का कार्य नहीं है।" },
+              { text: "हवाई जहाज उड़ाने के लिए।", isCorrect: false, rationale: "यह विमानन में कंप्यूटर का उपयोग है, बैंकिंग में नहीं।" },
+              { text: "उपन्यास लिखने के लिए।", isCorrect: false, rationale: "यह लेखन में कंप्यूटर का उपयोग है, बैंकिंग में नहीं।" },
+            ],
+            hint: "एक बैंक आपके पैसे का हिसाब कैसे रखता है?",
           }
     ],
     },

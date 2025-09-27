@@ -27,7 +27,8 @@ export default function AnimatedQuiz() {
   const [showHint, setShowHint] = useState(false);
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(23 * 60);
+  const [timeLeft, setTimeLeft] = useState(20 * 60);
+  const [timeUp, setTimeUp] = useState(false);
 
   const t = content[lang];
   
@@ -50,9 +51,14 @@ export default function AnimatedQuiz() {
   }, []);
 
   useEffect(() => {
-    if (quizStarted && timeLeft > 0 && !showResults) {
-      const timerId = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timerId);
+    if (quizStarted && !showResults) {
+      if (timeLeft > 0) {
+        const timerId = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+        return () => clearTimeout(timerId);
+      } else {
+        setShowResults(true);
+        setTimeUp(true);
+      }
     }
   }, [quizStarted, timeLeft, showResults]);
 
@@ -66,7 +72,8 @@ export default function AnimatedQuiz() {
     setShowHint(false);
     setScore(0);
     setShowResults(false);
-    setTimeLeft(23 * 60);
+    setTimeLeft(20 * 60);
+    setTimeUp(false);
   };
 
   const handlePick = (opt, index) => {
@@ -107,6 +114,7 @@ export default function AnimatedQuiz() {
         quizDataLength={shuffledIds.length}
         resetQuiz={resetQuiz}
         studentName={studentName}
+        timeUp={timeUp}
       />
     );
   }
