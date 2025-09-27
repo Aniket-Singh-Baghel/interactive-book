@@ -534,7 +534,7 @@ export default function InstallModule() {
             {t.previous}
           </button>
           <button
-            onClick={() => navigate("/parts/prt2")}
+            onClick={() => navigate("/part2/chapters/qiz2")}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-400 to-teal-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-transform transform hover:scale-105"
           >
             {t.next}
