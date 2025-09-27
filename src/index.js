@@ -32,6 +32,7 @@ import PortsAndConnectors from './Components/Part1/Extras/PortsAndConnectors';
 import HistoryOfComputers from './Components/Part1/Extras/HistoryOfComputers';
 import TypesOfComputers from './Components/Part1/Extras/TypesOfComputers';
 import Quiz1 from './Components/Part1/Quiz1';
+import Quiz2 from './Components/Part1/Quiz2.js'
 
 import Chapter6 from './Components/Part2/Chapter6';
 import Chapter7 from './Components/Part2/Chapter7';
@@ -52,7 +53,7 @@ import SecurityModule from './Components/Part2/SecurityModule';
 import CloudModule from './Components/Part2/CloudModule'
 import LicensingModule from './Components/Part2/LicensingModule';
 import InstallModule from './Components/Part2/InstallModule';
-import Quiz2 from './Components/Part2/Quiz2';
+import SwQuiz2 from './Components/Part2/Quiz2';
 
 import Chapter9 from './Components/Part3/Chapter9';
 import Chapter10 from './Components/Part3/Chapter10';
@@ -94,6 +95,7 @@ root.render(
         <Route path="/part1/history-of-computers" element={<HistoryOfComputers />} />
         <Route path="/part1/types-of-computers" element={<TypesOfComputers />} />
         <Route path="/part1/chapters/qiz1" element={<Quiz1 />} />
+        <Route path="/part1/chapters/qiz2" element={<Quiz2 />} />
         
         
         <Route path="/module1/what-is-software" element={<Chapter6 />} />
@@ -118,7 +120,7 @@ root.render(
         <Route path="/module4/cloud-computing" element={<CloudModule />} />
         <Route path="/module4/distribution-models" element={<LicensingModule />} />
         <Route path="/module4/installation-updates" element={<InstallModule />} />
-        <Route path="/part2/chapters/qiz2" element={<Quiz2 />} />
+        <Route path="/part2/chapters/qiz2" element={<SwQuiz2 />} />
 
         <Route path="/part3/chapters/ch9" element={<Chapter9 />} />
         <Route path="/part3/chapters/ch10" element={<Chapter10 />} />
