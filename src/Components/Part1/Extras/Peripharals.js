@@ -311,7 +311,7 @@ export default function PeripheralsLesson() {
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => navigate("/part1/input-output-devices")}
+                        onClick={() => navigate("/parts/prt1")}
                         className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
                     >
                         <FaArrowLeft />
