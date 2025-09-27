@@ -86,7 +86,7 @@ const ResultsScreen = ({ t, score, quizDataLength, resetQuiz, studentName, timeU
               endIcon={<ArrowForwardIcon />}
               className="!bg-gradient-to-r !from-pink-500 !to-yellow-500 hover:!from-pink-600 hover:!to-yellow-600 !text-white !font-bold rounded-full shadow-lg"
             >
-              Next
+              End Quiz
             </Button>
           </div>
         </Card>
