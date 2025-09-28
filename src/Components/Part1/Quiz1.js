@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import "@fontsource/comic-neue";
 import StartScreen from "./StartScreen";
 import QuizScreen from "./QuizScreen";
-import ResultsScreen from "./ResultsScreen";
+import ResultsScreen1 from "./ResultsScreen1";
 import { content } from "./Content";
 
 const shuffle = (arr) => {
@@ -108,7 +108,7 @@ export default function AnimatedQuiz() {
 
   if (showResults) {
     return (
-      <ResultsScreen
+      <ResultsScreen1
         t={t}
         score={score}
         quizDataLength={shuffledIds.length}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import "@fontsource/comic-neue";
 import StartScreen from "./StartScreen";
 import InstructionsScreen from "./InstructionsScreen";
@@ -31,7 +31,7 @@ export default function Quiz_2() {
   const [showResults, setShowResults] = useState(false);
   const [timeLeft, setTimeLeft] = useState(18 * 60);
   const [timeUp, setTimeUp] = useState(false);
-  const [tabSwitchCount, setTabSwitchCount] = useState(0);
+  const tabSwitchCount = useRef(0);
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [isDisqualified, setIsDisqualified] = useState(false);
   const [questionStatuses, setQuestionStatuses] = useState([]);
@@ -105,15 +105,12 @@ export default function Quiz_2() {
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        setTabSwitchCount((prevCount) => {
-          const newCount = prevCount + 1;
-          if (newCount === 1) {
-            setShowWarningModal(true);
-          } else if (newCount >= 2) {
-            setIsDisqualified(true);
-          }
-          return newCount;
-        });
+        tabSwitchCount.current += 1;
+        if (tabSwitchCount.current === 1) {
+          setShowWarningModal(true);
+        } else if (tabSwitchCount.current >= 2) {
+          setIsDisqualified(true);
+        }
       }
     };
 
@@ -148,7 +145,7 @@ export default function Quiz_2() {
     setTimeLeft(18 * 60);
     setEndTime(Date.now() + 18 * 60 * 1000);
     setTimeUp(false);
-    setTabSwitchCount(0);
+    tabSwitchCount.current = 0;
     setIsDisqualified(false);
     setShowWarningModal(false);
   };
@@ -234,6 +231,9 @@ export default function Quiz_2() {
         studentName={studentName}
         timeUp={timeUp}
         isDisqualified={isDisqualified}
+        shuffledIds={shuffledIds}
+        submittedAnswers={submittedAnswers}
+        questionsMap={questionsMap}
       />
     );
   }
