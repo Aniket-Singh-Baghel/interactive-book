@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import "@fontsource/comic-neue";
 import StartScreen from "./StartScreen";
+import InstructionsScreen from "./InstructionsScreen";
 import QuizScreen from "./QuizScreen2";
 import ResultsScreen from "./ResultsScreen";
 import { content } from "./Content2";
@@ -25,24 +26,30 @@ export default function Quiz_2() {
   const [shuffledIds, setShuffledIds] = useState([]);
   const [idx, setIdx] = useState(0);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
-  const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [timeLeft, setTimeLeft] = useState(18 * 60);
   const [timeUp, setTimeUp] = useState(false);
-  const [, setTabSwitchCount] = useState(0);
+  const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [isDisqualified, setIsDisqualified] = useState(false);
+  const [questionStatuses, setQuestionStatuses] = useState([]);
+  const [submittedAnswers, setSubmittedAnswers] = useState({});
+  const [endTime, setEndTime] = useState(null);
+  const [showInstructions, setShowInstructions] = useState(true);
 
   const t = content[lang];
-  
+
   const questionsMap = useMemo(() => {
     const map = new Map();
-    t.quizData.forEach(q => map.set(q.id, q));
+    t.quizData.forEach((q) => map.set(q.id, q));
     return map;
   }, [t]);
 
+  const allQuestionsAttempted = useMemo(() => {
+    return questionStatuses.every(status => status === 'answered' || status === 'markedForReview');
+  }, [questionStatuses]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -55,17 +62,41 @@ export default function Quiz_2() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  useEffect(() => {
-    if (quizStarted && !showResults && !isDisqualified) {
-      if (timeLeft > 0) {
-        const timerId = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-        return () => clearTimeout(timerId);
+  const calculateFinalScore = useCallback(() => {
+    let finalScore = 0;
+    for (const questionIdx in submittedAnswers) {
+      const questionId = shuffledIds[questionIdx];
+      const question = questionsMap.get(questionId);
+      const optionIndex = submittedAnswers[questionIdx];
+      if (question && question.options[optionIndex] && question.options[optionIndex].isCorrect) {
+        finalScore += 1;
       } else {
-        setShowResults(true);
-        setTimeUp(true);
+        finalScore -= 0.5;
       }
     }
-  }, [quizStarted, timeLeft, showResults, isDisqualified]);
+    setScore(finalScore);
+  }, [submittedAnswers, shuffledIds, questionsMap]);
+
+  useEffect(() => {
+    if (!quizStarted || showResults || isDisqualified) {
+      return;
+    }
+
+    const timerId = setInterval(() => {
+      const newTimeLeft = Math.round((endTime - Date.now()) / 1000);
+      if (newTimeLeft > 0) {
+        setTimeLeft(newTimeLeft);
+      } else {
+        setTimeLeft(0);
+        calculateFinalScore();
+        setShowResults(true);
+        setTimeUp(true);
+        clearInterval(timerId);
+      }
+    }, 1000);
+
+    return () => clearInterval(timerId);
+  }, [quizStarted, showResults, isDisqualified, endTime, calculateFinalScore]);
 
   useEffect(() => {
     if (!quizStarted || showResults) {
@@ -74,7 +105,7 @@ export default function Quiz_2() {
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        setTabSwitchCount(prevCount => {
+        setTabSwitchCount((prevCount) => {
           const newCount = prevCount + 1;
           if (newCount === 1) {
             setShowWarningModal(true);
@@ -104,50 +135,93 @@ export default function Quiz_2() {
 
   const startQuiz = (name) => {
     setStudentName(name);
-    setShuffledIds(shuffle(questionIds));
+    const newShuffledIds = shuffle(questionIds);
+    setShuffledIds(newShuffledIds);
+    setQuestionStatuses(Array(newShuffledIds.length).fill("unseen"));
+    setSubmittedAnswers({});
     setQuizStarted(true);
     setIdx(0);
     setSelectedOptionIndex(null);
-    setIsAnswerSubmitted(false);
     setShowHint(false);
     setScore(0);
     setShowResults(false);
     setTimeLeft(18 * 60);
+    setEndTime(Date.now() + 18 * 60 * 1000);
     setTimeUp(false);
     setTabSwitchCount(0);
     setIsDisqualified(false);
+    setShowWarningModal(false);
+  };
+
+  const updateStatus = (index, status) => {
+    setQuestionStatuses((prev) => {
+      const newStatuses = [...prev];
+      const currentStatus = newStatuses[index];
+      if (currentStatus === "answered" && status === "markedForReview") {
+        newStatuses[index] = status;
+      } else if (currentStatus !== "answered") {
+        newStatuses[index] = status;
+      }
+      return newStatuses;
+    });
   };
 
   const handlePick = (opt, index) => {
-    if (isAnswerSubmitted) return;
     setSelectedOptionIndex(index);
-    setIsAnswerSubmitted(true);
-    if (opt.isCorrect) {
-      setScore((s) => s + 1);
-    } else {
-      setScore((s) => s - 0.5);
+    updateStatus(idx, "answered");
+    setSubmittedAnswers((prev) => ({ ...prev, [idx]: index }));
+  };
+
+  const goToQuestion = (questionIndex) => {
+    if (questionIndex >= 0 && questionIndex < shuffledIds.length) {
+      setIdx(questionIndex);
+      const previouslySubmittedAnswer = submittedAnswers[questionIndex];
+      if (previouslySubmittedAnswer !== undefined) {
+        setSelectedOptionIndex(previouslySubmittedAnswer);
+      } else {
+        setSelectedOptionIndex(null);
+      }
+      setShowHint(false);
     }
   };
 
   const next = () => {
-    if (!isAnswerSubmitted) return;
-
+    if (selectedOptionIndex === null) {
+      updateStatus(idx, "skipped");
+    }
     if (idx < shuffledIds.length - 1) {
-      setIdx((i) => i + 1);
-      setSelectedOptionIndex(null);
-      setIsAnswerSubmitted(false);
-      setShowHint(false);
+      goToQuestion(idx + 1);
     } else {
-      setShowResults(true);
+      if (allQuestionsAttempted) {
+        calculateFinalScore();
+        setShowResults(true);
+      }
     }
   };
 
-  const resetQuiz = () => {
-    setQuizStarted(false);
+  const markForReview = () => {
+    updateStatus(idx, "markedForReview");
   };
 
+  const navigateToQuestion = (questionIndex) => {
+    goToQuestion(questionIndex);
+  };
+
+  const resetQuiz = () => {
+    setShowInstructions(true);
+    setQuizStarted(false);
+  };
+  
+  const handleContinueFromInstructions = () => {
+    setShowInstructions(false);
+  };
+
+  if (showInstructions) {
+    return <InstructionsScreen t={t} onContinue={handleContinueFromInstructions} lang={lang} setLang={setLang} />;
+  }
+
   if (!quizStarted) {
-    return <StartScreen t={t} startQuiz={startQuiz} />;
+    return <StartScreen t={t} startQuiz={startQuiz} lang={lang} setLang={setLang} />;
   }
 
   if (showResults) {
@@ -165,42 +239,43 @@ export default function Quiz_2() {
   }
 
   if (isDisqualified) {
-    return <DisqualificationScreen onShowResults={() => setShowResults(true)} />;
+    return <DisqualificationScreen onShowResults={() => setShowResults(true)} t={t} lang={lang} setLang={setLang} />;
   }
 
   const currentQuestionId = shuffledIds[idx];
   const translatedQ = questionsMap.get(currentQuestionId);
-  
-  const selectedOpt =
-    selectedOptionIndex !== null && translatedQ
-      ? translatedQ.options[selectedOptionIndex]
-      : null;
-  const isCorrect = selectedOpt && selectedOpt.isCorrect;
-  const isWrong = selectedOpt && !selectedOpt.isCorrect;
+
   const progress = Math.round(((idx + 1) / shuffledIds.length) * 100);
 
   return (
     <>
-      <WarningModal isOpen={showWarningModal} onClose={() => setShowWarningModal(false)} />
+      <WarningModal
+        isOpen={showWarningModal}
+        onClose={() => setShowWarningModal(false)}
+        t={t}
+        lang={lang}
+        setLang={setLang}
+      />
       <QuizScreen
         t={t}
         lang={lang}
-      setLang={setLang}
-      idx={idx}
-      quizData={t.quizData}
-      timeLeft={timeLeft}
-      score={score}
-      progress={progress}
-      translatedQ={translatedQ}
-      selectedOptionIndex={selectedOptionIndex}
-      isAnswerSubmitted={isAnswerSubmitted}
-      isCorrect={isCorrect}
-      isWrong={isWrong}
-      showHint={showHint}
-      setShowHint={setShowHint}
-      handlePick={handlePick}
-      next={next}
-    />
+        setLang={setLang}
+        idx={idx}
+        quizData={t.quizData}
+        timeLeft={timeLeft}
+        score={score}
+        progress={progress}
+        translatedQ={translatedQ}
+        selectedOptionIndex={selectedOptionIndex}
+        showHint={showHint}
+        setShowHint={setShowHint}
+        handlePick={handlePick}
+        next={next}
+        questionStatuses={questionStatuses}
+        navigateToQuestion={navigateToQuestion}
+        markForReview={markForReview}
+        allQuestionsAttempted={allQuestionsAttempted}
+      />
     </>
   );
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { motion } from "framer-motion";
 
-const StartScreen = ({ t, startQuiz }) => {
+const StartScreen = ({ t, startQuiz, lang, setLang }) => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
 
@@ -27,6 +27,10 @@ const StartScreen = ({ t, startQuiz }) => {
       className="min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-lime-200 via-yellow-200 to-orange-200"
       style={{ fontFamily: "'Roboto', sans-serif" }}
     >
+      <div className="absolute top-4 right-4 flex space-x-2">
+        <button onClick={() => setLang("en")} className={`px-3 py-1 rounded-lg border-2 font-semibold ${lang === "en" ? "bg-purple-600 text-white border-purple-700" : "bg-white/80 text-gray-800 border-purple-400"} transition`}>EN</button>
+        <button onClick={() => setLang("hi")} className={`px-3 py-1 rounded-lg border-2 font-semibold ${lang === "hi" ? "bg-purple-600 text-white border-purple-700" : "bg-white/80 text-gray-800 border-purple-400"} transition`}>हिं</button>
+      </div>
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
