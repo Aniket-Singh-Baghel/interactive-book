@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "@fontsource/comic-neue";
 import StartScreen from "./StartScreen";
-import QuizScreen from "./QuizScreen";
+import QuizScreen from "./QuizScreen2";
 import ResultsScreen from "./ResultsScreen";
 import { content } from "./Content2";
 import WarningModal from "./WarningModal";
