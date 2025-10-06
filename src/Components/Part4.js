@@ -1,27 +1,49 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaGlobe, FaChrome,FaHome } from "react-icons/fa";
+import { FaBrain, FaDatabase, FaLink, FaWifi, FaSignal, FaHome } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const topics = [
   {
-    id: 12,
-    title: "Chapter 12: What is the Internet?",
-    concept: "Introducing the internet as a global network of computers.",
-    analogy:
-      "The internet is like a vast network of roads and railway lines connecting every city and village in the world, allowing people to send and receive goods (information) from anywhere.",
-    icon: <FaGlobe className="text-blue-500 text-3xl" />,
-    path: "/parts/prt4/ch12",
+    id: 1,
+    title: "Artificial Intelligence & Machine Learning",
+    concept: "Simulating human intelligence in machines.",
+    analogy: "AI is the library; ML is learning from the books.",
+    icon: <FaBrain className="text-indigo-500 text-3xl" />,
+    path: "/parts/prt4/ai-ml",
   },
   {
-    id: 13,
-    title: "Chapter 13: Web Browsers and Websites",
-    concept: "Explaining how to access the internet.",
-    analogy:
-      "A web browser is like a bus or train that takes you to different websites (cities) on the internet.",
-    icon: <FaChrome className="text-pink-500 text-3xl" />,
-    path: "/parts/prt4/ch13",
+    id: 2,
+    title: "Big Data & Cloud Computing",
+    concept: "Handling massive data with cloud power.",
+    analogy: "Big Data is the LEGOs; the Cloud is the workshop.",
+    icon: <FaDatabase className="text-teal-500 text-3xl" />,
+    path: "/parts/prt4/big-data",
+  },
+  {
+    id: 3,
+    title: "Blockchain & Cryptocurrencies",
+    concept: "A secure digital ledger for transactions.",
+    analogy: "A public notebook no one can erase.",
+    icon: <FaLink className="text-orange-500 text-3xl" />,
+    path: "/parts/prt4/blockchain",
+  },
+  {
+    id: 4,
+    title: "The Internet of Things (IoT)",
+    concept: "Connecting everyday objects to the internet.",
+    analogy: "Giving a digital voice to your fridge.",
+    icon: <FaWifi className="text-cyan-500 text-3xl" />,
+    path: "/parts/prt4/iot",
+  },
+  {
+    id: 5,
+    title: "5G, 6G & Ultra-Fast Internet",
+    concept: "The next leap in wireless technology.",
+    analogy: "From a highway (4G) to teleportation (6G).",
+    icon: <FaSignal className="text-pink-500 text-3xl" />,
+    path: "/parts/prt4/5g-6g",
   },
 ];
 
@@ -29,9 +51,9 @@ export default function Part4() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen relative bg-gradient-to-br from-green-100 via-yellow-100 to-red-100 p-8 font-sans overflow-hidden">
+    <div className="min-h-screen relative bg-gradient-to-br from-purple-100 via-indigo-100 to-blue-100 p-8 font-sans overflow-hidden">
       {/* Home Button */}
-     <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-6">
         <Link
           to="/station"
           className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition"
@@ -45,14 +67,14 @@ export default function Part4() {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 100 }}
-        className="text-4xl font-bold text-center text-purple-700 mb-3"
+        className="text-4xl font-bold text-center text-indigo-700 mb-3"
       >
-        🌐 The Digital World
+        🚀 Advanced Digital Technologies
       </motion.h1>
 
       {/* Tagline */}
-      <p className="text-center text-pink-600 font-semibold mb-10">
-        Part 4: Internet & Safety – Navigating the online world with confidence.
+      <p className="text-center text-purple-600 font-semibold mb-10">
+        Part 4: Exploring the frontiers of technology.
       </p>
 
       {/* Topics List */}
