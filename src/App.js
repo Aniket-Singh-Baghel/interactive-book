@@ -56,7 +56,7 @@ const content = {
       {
         id: 4,
         part: "Part-4",
-        title: "The Digital World - Internet & Safety",
+        title: "The Digital World & Internet",
         fact: "💡 The first email was sent in 1971!",
         image: Part4,
         path: "/parts/prt4",
@@ -126,7 +126,7 @@ const content = {
       {
         id: 4,
         part: "भाग-4",
-        title: "डिजिटल दुनिया - इंटरनेट और सुरक्षा",
+        title: "डिजिटल दुनिया और इंटरनेट",
         fact: "💡 पहला ईमेल 1971 में भेजा गया था!",
         image: Part4,
         path: "/parts/prt4",
