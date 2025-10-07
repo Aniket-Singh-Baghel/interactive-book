@@ -64,6 +64,7 @@ import Chapter16 from './Components/Part5/Chapter16';
 import ErrorAnimation from './Components/error';
 
 import WhatIsInternet from './Components/Part4/Module1/WhatIsInternet.js';
+import BasicsOfConnectivity from './Components/Part4/Module1/BasicsOfConnectivity.js'
 // import internetServices from './Components/Part4/internetServices';
 // import webAndWebsites from './Components/Part4/webAndWebsites'; 
 
@@ -135,6 +136,7 @@ root.render(
         <Route path="/error404" element={<ErrorAnimation />} />
 
         <Route path="/part4/what-is-internet" element={<WhatIsInternet />} />
+        <Route path="/part4/basics-of-connectivity" element={<BasicsOfConnectivity />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
