@@ -63,6 +63,10 @@ import Chapter15 from './Components/Part5/Chapter15';
 import Chapter16 from './Components/Part5/Chapter16';
 import ErrorAnimation from './Components/error';
 
+import WhatIsInternet from './Components/Part4/Module1/WhatIsInternet.js';
+// import internetServices from './Components/Part4/internetServices';
+// import webAndWebsites from './Components/Part4/webAndWebsites'; 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -129,6 +133,8 @@ root.render(
         <Route path="/part5/chapters/ch15" element={<Chapter15 />} />
         <Route path="/part5/chapters/ch16" element={<Chapter16 />} />
         <Route path="/error404" element={<ErrorAnimation />} />
+
+        <Route path="/part4/what-is-internet" element={<WhatIsInternet />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
