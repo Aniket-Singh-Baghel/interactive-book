@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect} from "react";
 import { motion } from "framer-motion";
 import { FaHome, FaArrowLeft, FaArrowRight, FaNetworkWired } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
@@ -31,7 +31,7 @@ const content = {
         "<strong>School/Office LAN:</strong> Computers in a lab connected via Ethernet cables to a central switch for fast, reliable access to shared files and printers.",
         "<strong>Public Wi-Fi:</strong> Connecting to the internet at a café or airport, a common example of a wireless network."
     ],
-  },
+  }, 
   hi: {
     home: "होम",
     previous: "पिछला",

@@ -99,7 +99,7 @@ const CONTENT = {
                 images: [
                     "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjS8oogp9BQP8BDzOCJru2AMkLxTis5q8zo9r7D3g8D3RiDF4xm4TLmXWaq56L2vxXl3dyILAlPyq0K2DlC4q5oGUCRY1CXxyxs9rL6_o6ajhQGr4kOg62yMP4-FGcDGhGQqyqUvHTLC4-D/w1200-h630-p-k-no-nu/Transistor.jpg",
                     "https://zjcomputerhistory.weebly.com/uploads/2/2/6/6/22664196/273432971.jpg",
-                    "https://www.computerhistory.org/storage/app/media/images/pr-transistor-2-800.jpg"
+                    "https://images.shiksha.com/mediadata/images/articles/1733368899phpmI9VTZ.jpeg"
                 ],
                 bullets: [
                     "**Core Technology**: **Transistors** replaced bulky vacuum tubes.",
@@ -383,7 +383,7 @@ const CONTENT = {
                 images: [
                     "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjS8oogp9BQP8BDzOCJru2AMkLxTis5q8zo9r7D3g8D3RiDF4xm4TLmXWaq56L2vxXl3dyILAlPyq0K2DlC4q5oGUCRY1CXxyxs9rL6_o6ajhQGr4kOg62yMP4-FGcDGhGQqyqUvHTLC4-D/w1200-h630-p-k-no-nu/Transistor.jpg",
                     "https://zjcomputerhistory.weebly.com/uploads/2/2/6/6/22664196/273432971.jpg",
-                    "https://www.computerhistory.org/storage/app/media/images/pr-transistor-2-800.jpg"
+                    "https://images.shiksha.com/mediadata/images/articles/1733368899phpmI9VTZ.jpeg"
                 ],
                 bullets: [
                     "**मुख्य प्रौद्योगिकी**: **ट्रांजिस्टर** ने भारी वैक्यूम ट्यूबों की जगह ले ली।",

@@ -6,7 +6,7 @@ import {
   FaGlobe, FaBroadcastTower, FaCloud, FaShieldAlt, FaBook, FaKeyboard,
   FaCogs, FaProjectDiagram, FaUsers, FaUserSecret, FaRocket, FaSeedling,
   FaHandHoldingHeart, FaLaptopCode, FaUserShield, FaBrain, FaLink, FaHome,
-  FaNetworkWired, FaWifi, FaServer, FaRoute, FaEthernet, FaSatelliteDish
+  FaNetworkWired, FaRoute, FaEthernet
 } from "react-icons/fa";
 
 const content = {

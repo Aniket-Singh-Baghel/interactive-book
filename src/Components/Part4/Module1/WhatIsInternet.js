@@ -13,11 +13,8 @@ import {
   FaHome,
   FaArrowLeft,
   FaArrowRight as FaArrowRightNav,
-  FaHistory,
-  FaUsers,
-  FaLightbulb,
+  FaHistory, 
   FaBookOpen,
-  FaQuestionCircle,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
