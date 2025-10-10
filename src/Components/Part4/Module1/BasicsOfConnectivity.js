@@ -70,7 +70,7 @@ const wiredNodes = [
   { id: "printer", label: "Printer", x: 500, y: 250, type: "peripheral" },
 ];
 
-const wiredwiredLinks = [
+const wiredLinks = [
   { id: "w1", a: "server", b: "switch", medium: "wired" },
   { id: "w2", a: "switch", b: "desktop1", medium: "wired" },
   { id: "w3", a: "switch", b: "desktop2", medium: "wired" },
@@ -84,33 +84,45 @@ const wirelessNodes = [
     { id: "smart-tv", label: "Smart TV", x: 300, y: 350, type: "iot" },
   ];
   
-  const wirelesswiredLinks = [
+  const wirelessLinks = [
     { id: "wl1", a: "router", b: "laptop", medium: "wireless" },
     { id: "wl2", a: "router", b: "phone", medium: "wireless" },
     { id: "wl3", a: "router", b: "smart-tv", medium: "wireless" },
   ];
 
-function dailyUseFor(type, lang) {
-    const uses = {
-      en: {
-        network: "Connects multiple devices: home router, ISP gateway.",
-        endpoint: "Used for work, browsing, streaming — usually stable when wired.",
-        peripheral: "Office accessories like printers and scanners.",
-        iot: "Smart devices and cameras that stream small continuous data.",
-        mobile: "Handheld devices that often switch networks while moving.",
-        default: "Everyday device.",
-      },
-      hi: {
-        network: "कई उपकरणों को जोड़ता है: होम राउटर, आईएसपी गेटवे।",
-        endpoint: "काम, ब्राउज़िंग, स्ट्रीमिंग के लिए उपयोग किया जाता है - आमतौर पर वायर्ड होने पर स्थिर होता है।",
-        peripheral: "प्रिंटर और स्कैनर जैसे कार्यालय सहायक उपकरण।",
-        iot: "स्मार्ट डिवाइस और कैमरे जो छोटे निरंतर डेटा स्ट्रीम करते हैं।",
-        mobile: "हैंडहेल्ड डिवाइस जो अक्सर चलते-फिरते नेटवर्क स्विच करते हैं।",
-        default: "रोजमर्रा का उपकरण।",
-      }
+function getNodeDescription(node, lang) {
+    const { label } = node;
+    const en_descriptions = {
+        "Server": "I store important information and websites that you visit. When a computer asks for a webpage, I send it to them!",
+        "Switch": "I'm like a traffic cop for a wired network. I make sure messages sent between computers go to the right destination quickly.",
+        "Desktop 1": "I use a stable, wired connection for fast gaming and important work. Because I'm plugged in, my connection is super reliable!",
+        "Desktop 2": "Just like my friend, I'm connected with a cable to the network. This gives me a strong and steady internet connection.",
+        "Printer": "I get documents from other computers on the network and print them out for you. I can be shared by many devices.",
+        "Router": "I'm the heart of the wireless network! I send your data to the internet and back. Think of me as a mail carrier for your digital messages.",
+        "Laptop": "I can connect to the internet wirelessly, which means you can work, play, or learn from anywhere in the house!",
+        "Phone": "I use Wi-Fi to connect to the internet for games, videos, and talking to friends. My wireless connection lets me be on the move.",
+        "Smart TV": "I stream your favorite shows using the wireless network. No need for a cable, I get everything through the air!",
     };
-    return uses[lang][type] || uses[lang].default;
-  }
+
+    const hi_descriptions = {
+        "Server": "मैं सर्वर हूँ! मैं आपके द्वारा देखी जाने वाली महत्वपूर्ण जानकारी और वेबसाइटों को संग्रहीत करता हूँ। जब कोई कंप्यूटर वेबपेज मांगता है, तो मैं उसे भेजता हूँ!",
+        "Switch": "मैं एक वायर्ड नेटवर्क के लिए ट्रैफिक पुलिस वाले की तरह हूँ। मैं सुनिश्चित करता हूँ कि कंप्यूटरों के बीच भेजे गए संदेश सही मंजिल तक जल्दी पहुँचें।",
+        "Desktop 1": "मैं तेज गेमिंग और महत्वपूर्ण काम के लिए एक स्थिर, वायर्ड कनेक्शन का उपयोग करता हूँ। क्योंकि मैं प्लग इन हूँ, मेरा कनेक्शन सुपर विश्वसनीय है!",
+        "Desktop 2": "मेरे दोस्त की तरह, मैं नेटवर्क से एक केबल से जुड़ा हूँ। यह मुझे एक मजबूत और स्थिर इंटरनेट कनेक्शन देता है।",
+        "Printer": "मैं नेटवर्क पर अन्य कंप्यूटरों से दस्तावेज़ प्राप्त करता हूँ और उन्हें आपके लिए प्रिंट करता हूँ। मुझे कई उपकरणों द्वारा साझा किया जा सकता है।",
+        "Router": "मैं वायरलेस नेटवर्क का दिल हूँ! मैं आपके डेटा को इंटरनेट पर और वापस भेजता हूँ। मुझे अपने डिजिटल संदेशों के लिए एक मेल वाहक के रूप में सोचें।",
+        "Laptop": "मैं वायरलेस तरीके से इंटरनेट से जुड़ सकता हूँ, जिसका अर्थ है कि आप घर में कहीं से भी काम कर सकते हैं, खेल सकते हैं या सीख सकते हैं!",
+        "Phone": "मैं गेम, वीडियो और दोस्तों से बात करने के लिए इंटरनेट से जुड़ने के लिए वाई-फाई का उपयोग करता हूँ। मेरा वायरलेस कनेक्शन मुझे चलते-फिरते रहने देता है।",
+        "Smart TV": "मैं वायरलेस नेटवर्क का उपयोग करके आपके पसंदीदा शो स्ट्रीम करता हूँ। केबल की कोई आवश्यकता नहीं है, मुझे हवा के माध्यम से सब कुछ मिलता है!",
+    };
+
+    const descriptions = {
+        en: en_descriptions,
+        hi: hi_descriptions
+    }
+
+    return descriptions[lang][label] || (lang === 'en' ? "I am a device on the network." : "मैं नेटवर्क पर एक डिवाइस हूँ।");
+}
 
 const Node = ({ node, type, onSelect }) => {
   const nodeColor = {
@@ -160,29 +172,52 @@ const LinkPath = ({ link, nodes, medium }) => {
     const b = nodes.find(n => n.id === link.b);
   
     if (!a || !b) return null;
+
+    const duration = medium === "wireless" ? 4 / speed : 2 / speed;
+    const path = medium === 'wireless' 
+      ? `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2} ${(a.y + b.y) / 2 - 40} ${b.x} ${b.y}` 
+      : `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
   
     return (
-      <motion.circle
-        r="6"
-        fill={medium === "wireless" ? "#3b82f6" : "#10b981"}
-        initial={{ offsetDistance: "0%" }}
-        animate={running ? { offsetDistance: "100%" } : {}}
-        transition={{
-          duration: 3 / speed,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        style={{ offsetPath: `path("${medium === 'wireless' ? `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2} ${(a.y + b.y) / 2 - 40} ${b.x} ${b.y}` : `M ${a.x} ${a.y} L ${b.x} ${b.y}`}")` }}
-      />
+      <>
+        {/* Request Packet */}
+        <motion.circle
+          r="6"
+          fill="#3b82f6" // Blue for request
+          filter="url(#glow)"
+          style={{ offsetPath: `path("${path}")` }}
+          initial={{ offsetDistance: "0%" }}
+          animate={running ? { offsetDistance: "100%" } : {}}
+          transition={{
+            duration: duration,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+        {/* Response Packet */}
+        <motion.circle
+          r="6"
+          fill="#10b981" // Green for response
+          filter="url(#glow)"
+          style={{ offsetPath: `path("${path}")` }}
+          initial={{ offsetDistance: "100%" }}
+          animate={running ? { offsetDistance: "0%" } : {}}
+          transition={{
+            duration: duration,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </>
     );
   };
 
-const Simulation = ({ nodes, wiredLinks, onNodeSelect, speed, running, medium }) => (
+const Simulation = ({ nodes, links, onNodeSelect, speed, running, medium }) => (
     <div className="relative w-full h-[300px] sm:h-[420px] rounded-xl border border-gray-200 bg-gray-50 overflow-hidden shadow-inner">
       <svg width="100%" height="100%" viewBox="0 0 600 400">
         <defs>
           <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+            <feGaussianBlur stdDeviation="4" result="coloredBlur" />
             <feMerge>
               <feMergeNode in="coloredBlur" />
               <feMergeNode in="SourceGraphic" />
@@ -190,15 +225,15 @@ const Simulation = ({ nodes, wiredLinks, onNodeSelect, speed, running, medium })
           </filter>
         </defs>
         <g>
-          {wiredLinks.map(link => (
+          {links.map(link => (
             <LinkPath key={link.id} link={link} nodes={nodes} medium={medium} />
           ))}
-          {wiredLinks.map(link => (
+          {links.map(link => (
             <Packet key={`p-${link.id}`} link={link} nodes={nodes} medium={medium} speed={speed} running={running} />
           ))}
         </g>
       </svg>
-      {wiredNodes.map(node => (
+      {nodes.map(node => (
         <Node key={node.id} node={node} type={node.type} onSelect={onNodeSelect} />
       ))}
     </div>
@@ -259,58 +294,78 @@ export default function BasicsOfConnectivity() {
           </motion.p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <div className="bg-white p-4 rounded-2xl shadow-xl">
-              <div className="flex border-b border-gray-200 mb-4">
-                <button onClick={() => setActiveTab('wired')} className={`px-4 py-2 font-semibold ${activeTab === 'wired' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500'}`}>
-                  {t.wired_simulation}
-                </button>
-                <button onClick={() => setActiveTab('wireless')} className={`px-4 py-2 font-semibold ${activeTab === 'wireless' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500'}`}>
-                  {t.wireless_simulation}
-                </button>
-              </div>
+        <div className="space-y-8">
+          {/* Analogy Section */}
+          <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
+            <h3 className="font-semibold text-xl text-center">{t.analogy_title}</h3>
+            <p className="mt-3 text-slate-600 text-center" dangerouslySetInnerHTML={{ __html: t.analogy_text }} />
+          </motion.div>
 
-              {activeTab === 'wired' && (
-                <Simulation nodes={wiredNodes} wiredLinks={wiredwiredLinks} onNodeSelect={setSelectedNode} speed={speed} running={running} medium="wired" />
-              )}
-              {activeTab === 'wireless' && (
-                <Simulation nodes={wirelessNodes} wiredLinks={wirelesswiredLinks} onNodeSelect={setSelectedNode} speed={speed} running={running} medium="wireless" />
-              )}
-              
-              <div className="flex items-center justify-center gap-4 mt-4">
-                <button onClick={() => setRunning(r => !r)} className="px-4 py-2 rounded-lg bg-indigo-100 text-indigo-700 font-semibold hover:bg-indigo-200 transition">
-                  {running ? t.pause : t.play}
-                </button>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">{t.speed}</span>
-                  <input
-                    type="range"
-                    min="0.5"
-                    max="5"
-                    step="0.5"
-                    value={speed}
-                    onChange={(e) => setSpeed(Number(e.target.value))}
-                    className="w-32"
-                  />
-                </div>
+          {/* Full-Width Simulation Section */}
+          <div className="bg-white p-4 rounded-2xl shadow-xl">
+            <div className="flex border-b border-gray-200 mb-4">
+              <button onClick={() => setActiveTab('wired')} className={`px-4 py-2 font-semibold ${activeTab === 'wired' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500'}`}>
+                {t.wired_simulation}
+              </button>
+              <button onClick={() => setActiveTab('wireless')} className={`px-4 py-2 font-semibold ${activeTab === 'wireless' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500'}`}>
+                {t.wireless_simulation}
+              </button>
+            </div>
+
+            {activeTab === 'wired' && (
+              <Simulation nodes={wiredNodes} links={wiredLinks} onNodeSelect={setSelectedNode} speed={speed} running={running} medium="wired" />
+            )}
+            {activeTab === 'wireless' && (
+              <Simulation nodes={wirelessNodes} links={wirelessLinks} onNodeSelect={setSelectedNode} speed={speed} running={running} medium="wireless" />
+            )}
+            
+            <div className="flex items-center justify-center gap-4 mt-4">
+              <button onClick={() => setRunning(r => !r)} className="px-4 py-2 rounded-lg bg-indigo-100 text-indigo-700 font-semibold hover:bg-indigo-200 transition">
+                {running ? t.pause : t.play}
+              </button>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">{t.speed}</span>
+                <input
+                  type="range"
+                  min="0.5"
+                  max="5"
+                  step="0.5"
+                  value={speed}
+                  onChange={(e) => setSpeed(Number(e.target.value))}
+                  className="w-32"
+                />
               </div>
             </div>
-            {selectedNode && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-4 bg-white rounded-2xl shadow-lg border border-indigo-200">
-                <h3 className="font-bold text-lg text-indigo-700">{selectedNode.label}</h3>
-                <p className="text-sm text-gray-600"><strong>{t.node_type}:</strong> {selectedNode.type}</p>
-                <p className="text-sm text-gray-500 mt-1"><strong>{t.daily_use}:</strong> {dailyUseFor(selectedNode.type, lang)}</p>
-              </motion.div>
-            )}
           </div>
 
-          <aside className="space-y-6">
-             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-                <h3 className="font-semibold text-xl">{t.analogy_title}</h3>
-                <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.analogy_text }} />
+          {selectedNode && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              className="mt-6 p-6 bg-indigo-50 rounded-2xl shadow-lg border border-indigo-200 text-center"
+            >
+              <h3 className="font-bold text-xl text-indigo-700">{selectedNode.label}</h3>
+              <p className="text-base text-slate-700 mt-2 leading-relaxed">
+                {getNodeDescription(selectedNode, lang)}
+              </p>
+            </motion.div>
+          )}
+
+          {/* Grid for other sections */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
+              <h3 className="font-semibold text-xl">{t.simulation_explanation_title}</h3>
+              <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.simulation_explanation_text }} />
             </motion.div>
             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
+              <h3 className="font-semibold text-xl">{t.digital_world_title}</h3>
+              <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.digital_world_text }} />
+            </motion.div>
+            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white md:col-span-2">
+              <h3 className="font-semibold text-xl">{t.deep_dive_title}</h3>
+              <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.deep_dive_text }} />
+            </motion.div>
+             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
                 <h3 className="font-semibold text-xl">{t.examples_title}</h3>
                 <ul className="mt-3 text-slate-600 space-y-3 list-disc pl-5">
                     {t.examples_list.map((item, index) => (
@@ -318,23 +373,8 @@ export default function BasicsOfConnectivity() {
                     ))}
                 </ul>
             </motion.div>
-          </aside>
+          </div>
         </div>
-
-        <motion.div initial="hidden" animate="show" variants={container} className="mt-12 space-y-8">
-            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-                <h3 className="font-semibold text-xl">{t.simulation_explanation_title}</h3>
-                <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.simulation_explanation_text }} />
-            </motion.div>
-            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-                <h3 className="font-semibold text-xl">{t.digital_world_title}</h3>
-                <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.digital_world_text }} />
-            </motion.div>
-            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-                <h3 className="font-semibold text-xl">{t.deep_dive_title}</h3>
-                <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.deep_dive_text }} />
-            </motion.div>
-        </motion.div>
 
         <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
             <button
