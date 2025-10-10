@@ -25,6 +25,12 @@ const content = {
     pause: "Pause",
     play: "Play",
     speed: "Speed",
+    examples_title: "Practical Examples",
+    examples_list: [
+        "<strong>Home Network:</strong> Your Wi-Fi router connecting your laptop, phone, and smart TV.",
+        "<strong>School/Office LAN:</strong> Computers in a lab connected via Ethernet cables to a central switch for fast, reliable access to shared files and printers.",
+        "<strong>Public Wi-Fi:</strong> Connecting to the internet at a café or airport, a common example of a wireless network."
+    ],
   },
   hi: {
     home: "होम",
@@ -47,6 +53,12 @@ const content = {
     pause: "रोकें",
     play: "चलाएं",
     speed: "गति",
+    examples_title: "व्यावहारिक उदाहरण",
+    examples_list: [
+        "<strong>होम नेटवर्क:</strong> आपका वाई-फाई राउटर जो आपके लैपटॉप, फोन और स्मार्ट टीवी को जोड़ता है।",
+        "<strong>स्कूल/ऑफिस लैन:</strong> एक लैब में कंप्यूटर जो साझा फ़ाइलों और प्रिंटर तक तेज़, विश्वसनीय पहुंच के लिए एक केंद्रीय स्विच से ईथरनेट केबल के माध्यम से जुड़े होते हैं।",
+        "<strong>सार्वजनिक वाई-फाई:</strong> किसी कैफे या हवाई अड्डे पर इंटरनेट से कनेक्ट करना, एक वायरलेस नेटवर्क का एक सामान्य उदाहरण।"
+    ],
   },
 };
 
