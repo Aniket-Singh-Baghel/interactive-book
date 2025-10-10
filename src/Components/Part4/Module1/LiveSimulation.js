@@ -339,7 +339,7 @@ export default function NetworkSimulation({ initialLang = "en" }) {
             </div>
             <button onClick={() => { setMode("satellite"); setIsPlaying(true); }} className="w-full mt-2 px-3 py-2 rounded-md bg-white/6 text-white">Satellite</button>
           </div>
- 
+
         </aside>
       </div>
 
