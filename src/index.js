@@ -65,6 +65,7 @@ import ErrorAnimation from './Components/error';
 
 import WhatIsInternet from './Components/Part4/Module1/WhatIsInternet.js';
 import BasicsOfConnectivity from './Components/Part4/Module1/BasicsOfConnectivity.js'
+import ComputerNetworks from './Components/Part4/Module1/ComputerNetworks.js';
 // import internetServices from './Components/Part4/internetServices';
 // import webAndWebsites from './Components/Part4/webAndWebsites'; 
 
@@ -137,6 +138,7 @@ root.render(
 
         <Route path="/part4/what-is-internet" element={<WhatIsInternet />} />
         <Route path="/part4/basics-of-connectivity" element={<BasicsOfConnectivity />} />
+        <Route path='/part4/computer-networks' element={<ComputerNetworks />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
