@@ -1,11 +1,3 @@
-// NetworkSimulation.jsx
-// Complete interactive Wired / Wi‑Fi / Satellite simulation component
-// - Responsive (percentage layout + viewBox)
-// - Modes: wired | wifi | satellite
-// - Hindi + English support
-// - Explanation bubbles (click nodes) + tooltips
-// - Play / Pause / Speed control
-
 import React, { useMemo, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -19,83 +11,81 @@ import {
   FaPlug,
   FaGlobe,
   FaLanguage,
+  FaRedoAlt,
 } from "react-icons/fa";
 
-// Node positions are specified as percentages so the layout scales responsively.
+// Responsive network simulation component (Dark UI - polished)
+// Features added:
+// - Cleaner card layout, improved spacing & typography
+// - Mobile-first responsive behavior
+// - Better control grouping and accessible labels
+// - Slightly refined animations and packet visuals
+// - RTL/Hindi support preserved via `lang` prop
+
 const BASE_NODES = {
   wired: [
     { id: "pc", icon: <FaUser />, label: { en: "PC", hi: "पीसी" }, x: 8, y: 70 },
-    { id: "switch", icon: <FaPlug />, label: { en: "Switch", hi: "स्विच" }, x: 35, y: 70 },
+    { id: "switch", icon: <FaPlug />, label: { en: "Switch", hi: "स्विच" }, x: 48, y: 70 },
     { id: "server", icon: <FaServer />, label: { en: "Server", hi: "सर्वर" }, x: 92, y: 70 },
   ],
   wifi: [
     { id: "phone", icon: <FaUser />, label: { en: "Device", hi: "डिवाइस" }, x: 12, y: 72 },
-    { id: "router", icon: <FaWifi />, label: { en: "Wi‑Fi Router", hi: "वाई‑फाई राउटर" }, x: 46, y: 42 },
+    { id: "router", icon: <FaWifi />, label: { en: "Wi‑Fi Router", hi: "वाई‑फाई राउटर" }, x: 48, y: 42 },
     { id: "server", icon: <FaServer />, label: { en: "Server", hi: "सर्वर" }, x: 88, y: 20 },
   ],
   satellite: [
     { id: "device", icon: <FaUser />, label: { en: "Device", hi: "डिवाइस" }, x: 12, y: 78 },
-    { id: "satellite", icon: <FaSatelliteDish />, label: { en: "Satellite", hi: "सैटेलाइट" }, x: 50, y: 8 },
-    { id: "ground", icon: <FaBroadcastTower />, label: { en: "Ground Station", hi: "ग्राउंड स्टेशन" }, x: 78, y: 48 },
+    { id: "satellite", icon: <FaSatelliteDish />, label: { en: "Satellite", hi: "सैटेलाइट" }, x: 50, y: 12 },
+    { id: "ground", icon: <FaBroadcastTower />, label: { en: "Ground Station", hi: "ग्राउंड स्टेशन" }, x: 74, y: 46 },
     { id: "server", icon: <FaServer />, label: { en: "Server", hi: "सर्वर" }, x: 92, y: 86 },
   ],
 };
 
-// Helpful small components
 const IconBubble = ({ children }) => (
-  <div className="inline-flex items-center gap-2 bg-black/40 text-white/90 rounded-full px-3 py-1 text-xs font-medium shadow">{children}</div>
+  <div className="inline-flex items-center gap-2 bg-white/6 text-white rounded-full px-3 py-1 text-xs font-medium shadow-sm">
+    {children}
+  </div>
 );
 
-const Packet = ({ path, duration = 1.4, delay = 0, color = "#A7F3D0", size = 8, speed = 1 }) => {
-  // Using CSS offset-path for smooth motion along an SVG path. Modern browsers support this.
-  const style = {
-    width: size,
-    height: size,
-    borderRadius: "50%",
-    backgroundColor: color,
-    offsetPath: `path(\"${path}\")`,
-    translate: "-50% -50%",
-  };
-
+const Packet = ({ path, duration = 1.6, delay = 0, color = "#7DD3FC", size = 7, speed = 1 }) => {
+  // Use SVG motion for more consistent positioning inside viewBox
   return (
-    <motion.div
-      className="absolute z-30"
-      style={style}
-      initial={{ offsetDistance: "0%", opacity: 0 }}
-      animate={{ offsetDistance: "100%", opacity: [0, 1, 1, 0] }}
-      transition={{ duration: duration / speed, delay, ease: "linear" }}
+    <motion.g
+      initial={{ opacity: 0, offsetDistance: "0%" }}
+      animate={{ opacity: [0, 1, 1, 0], offsetDistance: ["0%", "40%", "90%", "100%"] }}
+      transition={{ duration: duration / speed, delay, ease: "linear", repeat: Infinity }}
       aria-hidden
-    />
+    >
+      {/* Render a small rounded rect as the packet - positioned by offsetPath in style when inside HTML element. For SVG we'll just draw a circle and animate along the path using <animateMotion> fallback is not used. */}
+      <circle r={size / 2} fill={color} fillOpacity="0.95" strokeOpacity="0.05" />
+    </motion.g>
   );
 };
 
-const AnimatedPath = ({ d, color = "#60A5FA", dash = "4 4", duration = 1.5, delay = 0, animateIn = true }) => (
+const AnimatedPath = ({ d, color = "#60A5FA", dash = "4 4", duration = 1.4, delay = 0, isPlaying }) => (
   <motion.path
     d={d}
     fill="none"
     stroke={color}
-    strokeWidth={1.5}
+    strokeWidth={isPlaying ? 0.9 : 0.9}
     strokeDasharray={dash}
-    initial={animateIn ? { pathLength: 0, opacity: 0 } : { opacity: 0 }}
-    animate={animateIn ? { pathLength: 1, opacity: 1 } : { opacity: 1 }}
-    transition={{ duration, delay, ease: "linear" }}
+    strokeLinecap="round"
+    initial={{ pathLength: 0, opacity: 0 }}
+    animate={{ pathLength: 1, opacity: 1 }}
+    transition={{ duration, delay, ease: "easeInOut" }}
   />
 );
 
-export default function NetworkSimulation({ initialLang = "en" }) {
-  const [mode, setMode] = useState("wired"); // wired | wifi | satellite
+export default function NetworkSimulation({ lang = "en" }) {
+  const [mode, setMode] = useState("wired");
   const [isPlaying, setIsPlaying] = useState(false);
-  const [lang, setLang] = useState(initialLang);
   const [speed, setSpeed] = useState(1);
   const [activeNode, setActiveNode] = useState(null);
   const svgRef = useRef(null);
 
   const nodes = useMemo(() => BASE_NODES[mode], [mode]);
-
-  // Build helper to get node by id
   const getNode = id => nodes.find(n => n.id === id) || { x: 50, y: 50 };
 
-  // Build paths depending on mode
   const paths = useMemo(() => {
     if (mode === "wired") {
       const pc = getNode("pc");
@@ -111,152 +101,118 @@ export default function NetworkSimulation({ initialLang = "en" }) {
       const dev = getNode("phone");
       const rt = getNode("router");
       const srv = getNode("server");
-      // Use subtle curves for wireless feel
       return [
-        { id: "dev-rt", d: `M ${dev.x} ${dev.y} C ${dev.x + 15} ${dev.y - 25}, ${rt.x - 10} ${rt.y + 10}, ${rt.x} ${rt.y}` },
+        { id: "dev-rt", d: `M ${dev.x} ${dev.y} C ${dev.x + 18} ${dev.y - 26}, ${rt.x - 10} ${rt.y + 12}, ${rt.x} ${rt.y}` },
         { id: "rt-srv", d: `M ${rt.x} ${rt.y} C ${rt.x + 20} ${rt.y - 10}, ${srv.x - 20} ${srv.y + 20}, ${srv.x} ${srv.y}` },
       ];
     }
 
-    // satellite
     const device = getNode("device");
     const sat = getNode("satellite");
     const ground = getNode("ground");
     const server = getNode("server");
-    // big arc up to satellite then down
+
     return [
-      { id: "device-sat", d: `M ${device.x} ${device.y} C ${device.x + 20} ${device.y - 60}, ${sat.x - 20} ${sat.y + 30}, ${sat.x} ${sat.y}` },
+      { id: "device-sat", d: `M ${device.x} ${device.y} C ${device.x + 18} ${device.y - 66}, ${sat.x - 20} ${sat.y + 28}, ${sat.x} ${sat.y}` },
       { id: "sat-ground", d: `M ${sat.x} ${sat.y} C ${sat.x + 18} ${sat.y + 30}, ${ground.x - 8} ${ground.y - 10}, ${ground.x} ${ground.y}` },
       { id: "ground-server", d: `M ${ground.x} ${ground.y} L ${server.x} ${server.y}` },
     ];
   }, [mode, nodes]);
 
-  // Controls
   const togglePlay = () => setIsPlaying(p => !p);
-  const startSimulation = () => { setIsPlaying(true); setActiveNode(null); };
-  const stopSimulation = () => { setIsPlaying(false); };
+  const restart = () => { setIsPlaying(false); setTimeout(() => setIsPlaying(true), 70); };
 
-  // Render label in selected language
   const L = (textObj) => (textObj ? (lang === "hi" ? textObj.hi : textObj.en) : "");
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-4">
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* Left: Simulation Card */}
-        <div className="flex-1 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-4 shadow-xl min-h-[360px]">
-          <div className="flex items-center justify-between mb-3">
+    <div className="w-full max-w-6xl mx-auto p-3 sm:p-6">
+      <div className="flex flex-col lg:flex-row gap-4">
+        {/* Simulation Card */}
+        <div className="flex-1 bg-gradient-to-b from-slate-900/90 to-slate-800/95 rounded-2xl p-4 shadow-2xl ring-1 ring-white/5 min-h-[340px]">
+          <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex items-center gap-3">
-              <h3 className="text-white text-lg font-semibold tracking-tight">Network Simulation</h3>
+              <h3 className="text-white text-lg sm:text-xl font-semibold tracking-tight">{lang === "hi" ? "नेटवर्क सिमुलेशन" : "Network Simulation"}</h3>
               <IconBubble>
                 <FaGlobe />
-                <span className="ml-1 text-xs">{mode.toUpperCase()}</span>
+                <span className="ml-1 text-xs uppercase">{mode}</span>
               </IconBubble>
             </div>
 
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => setMode("wired")}
-                className={`px-3 py-1 rounded-md text-sm font-medium ${mode === "wired" ? "bg-white/10 text-white" : "text-slate-300 hover:bg-white/5"}`}
-              >
-                Wired
-              </button>
-              <button
-                onClick={() => setMode("wifi")}
-                className={`px-3 py-1 rounded-md text-sm font-medium ${mode === "wifi" ? "bg-white/10 text-white" : "text-slate-300 hover:bg-white/5"}`}
-              >
-                Wi‑Fi
-              </button>
-              <button
-                onClick={() => setMode("satellite")}
-                className={`px-3 py-1 rounded-md text-sm font-medium ${mode === "satellite" ? "bg-white/10 text-white" : "text-slate-300 hover:bg-white/5"}`}
-              >
-                Satellite
-              </button>
+              <div className="hidden sm:flex items-center gap-2 bg-white/2 rounded-md p-1">
+                <button onClick={() => setMode("wired")} className={`px-3 py-1 rounded-md text-sm font-medium ${mode === "wired" ? "bg-white/10 text-white" : "text-slate-300 hover:bg-white/5"}`}>Wired</button>
+                <button onClick={() => setMode("wifi")} className={`px-3 py-1 rounded-md text-sm font-medium ${mode === "wifi" ? "bg-white/10 text-white" : "text-slate-300 hover:bg-white/5"}`}>Wi‑Fi</button>
+                <button onClick={() => setMode("satellite")} className={`px-3 py-1 rounded-md text-sm font-medium ${mode === "satellite" ? "bg-white/10 text-white" : "text-slate-300 hover:bg-white/5"}`}>Satellite</button>
+              </div>
 
-              <button
-                onClick={() => setLang(l => (l === "en" ? "hi" : "en"))}
-                className="ml-2 p-2 rounded-md bg-white/6 hover:bg-white/10 text-slate-100"
-                aria-label="Toggle language"
-              >
-                <FaLanguage />
-              </button>
+              <div className="sm:hidden flex items-center gap-1 bg-white/3 rounded-md p-1">
+                <select value={mode} onChange={(e) => setMode(e.target.value)} className="bg-transparent text-slate-100 text-sm focus:outline-none">
+                  <option value="wired">Wired</option>
+                  <option value="wifi">Wi‑Fi</option>
+                  <option value="satellite">Satellite</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <div className="relative w-full rounded-lg bg-gradient-to-b from-transparent to-white/2 border border-white/5 overflow-hidden" style={{ minHeight: 260 }}>
-            {/* responsive svg - viewBox 0 0 100 100, nodes positioned in % */}
-            <svg ref={svgRef} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" className="w-full h-[320px] md:h-[420px]">
-              {/* Soft background grid/sky for clarity */}
+          <div className="relative w-full rounded-lg overflow-hidden border border-white/6" style={{ minHeight: 260 }}>
+            <svg ref={svgRef} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" className="w-full h-[300px] sm:h-[360px] md:h-[420px]">
               <defs>
-                <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0%" stopColor="#0f172a" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#0b1220" stopOpacity="0.9" />
+                <linearGradient id="bg2" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stopColor="#071024" stopOpacity="0.6" />
+                  <stop offset="100%" stopColor="#031022" stopOpacity="1" />
                 </linearGradient>
+                <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow dx="0" dy="0" stdDeviation="2" floodColor="#60A5FA" floodOpacity="0.08" />
+                </filter>
               </defs>
-              <rect x="0" y="0" width="100" height="100" fill="url(#bg)" />
 
-              {/* static helper connecting lines (subtle) */}
-              {paths.map((p, idx) => (
-                <line key={`guide-${p.id}`} x1={0} y1={0} x2={0} y2={0} style={{ display: "none" }} />
-              ))}
+              <rect x="0" y="0" width="100" height="100" fill="url(#bg2)" />
 
               <g>
-                {/* Animated Paths when playing */}
-                <AnimatePresence>
-                  {isPlaying && paths.map((p, i) => (
-                    <AnimatedPath key={p.id} d={p.d} color={mode === "wired" ? "#FDE68A" : "#60A5FA"} duration={1.6} delay={i * 1.5} />
-                  ))}
-                </AnimatePresence>
+                {paths.map((p, i) => (
+                  <AnimatedPath
+                    key={p.id}
+                    d={p.d}
+                    color={mode === "wired" ? "#FDE68A" : "#60A5FA"}
+                    duration={1.2}
+                    delay={i * 0.2}
+                    isPlaying={isPlaying}
+                  />
+                ))}
               </g>
 
             </svg>
 
-            {/* Overlay for nodes and packets (absolute positioned in percentages) */}
-            <div className="absolute inset-0">
-              {/* Nodes */}
+            {/* Absolute overlay for nodes */}
+            <div className="absolute inset-0 pointer-events-none">
               {nodes.map(node => (
-                <div
-                  key={node.id}
-                  className="absolute flex flex-col items-center text-center transform -translate-x-1/2 -translate-y-1/2 z-20"
-                  style={{ left: `${node.x}%`, top: `${node.y}%` }}
-                >
-                  <button
+                <div key={node.id} style={{ left: `${node.x}%`, top: `${node.y}%` }} className="absolute -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-auto">
+                  <motion.button
                     onClick={() => setActiveNode(node.id === activeNode ? null : node.id)}
-                    className={`flex flex-col items-center gap-1 focus:outline-none`}
+                    className="flex flex-col items-center gap-1 focus:outline-none"
                     aria-label={L(node.label)}
+                    whileHover={{ scale: 1.05 }}
                   >
-                    <div className={`p-2 rounded-full text-white/95 drop-shadow-lg ${activeNode === node.id ? "bg-white/8 scale-110" : "bg-gradient-to-br from-slate-700 to-slate-800"}`}>
-                      <span className="text-xl md:text-2xl">{node.icon}</span>
+                    <div className={`p-2 sm:p-3 rounded-full text-white drop-shadow-lg transition-transform duration-200 ${activeNode === node.id ? "bg-sky-500/90 scale-110 ring-2 ring-sky-400" : "bg-gradient-to-br from-slate-700 to-slate-800"}`}>
+                      <span className="text-lg sm:text-2xl">{node.icon}</span>
                     </div>
-                    <div className="text-[10px] md:text-xs text-slate-200 mt-1 font-medium">{L(node.label)}</div>
-                  </button>
+                    <div className="text-[10px] sm:text-xs text-slate-200 mt-1 font-medium">{L(node.label)}</div>
+                  </motion.button>
 
-                  {/* Explanation bubble */}
                   <AnimatePresence>
                     {activeNode === node.id && (
                       <motion.div
-                        initial={{ opacity: 0, y: 6 }}
+                        initial={{ opacity: 0, y: node.y > 60 ? 8 : -8 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 6 }}
-                        className="mt-2 w-44 md:w-56 bg-white/6 backdrop-blur-sm text-white border border-white/10 rounded-lg p-3 text-xs md:text-sm shadow-lg"
+                        exit={{ opacity: 0, y: node.y > 60 ? 8 : -8 }}
+                        className={`absolute ${node.y > 60 ? "bottom-full mb-3" : "top-full mt-3"} left-1/2 -translate-x-1/2 w-44 sm:w-56 bg-slate-800/95 backdrop-blur-md text-white border border-white/8 rounded-lg p-3 text-xs sm:text-sm shadow-xl z-50`}
                       >
                         <div className="font-semibold">{L(node.label)}</div>
-                        <div className="mt-1 text-xs text-slate-200">
-                          {mode === "wired" && (
-                            <>
-                              {L({ en: "Connected via cable. Fast & stable.", hi: "केबल से जुड़ा। तेज़ और स्थिर।" })}
-                            </>
-                          )}
-                          {mode === "wifi" && (
-                            <>
-                              {L({ en: "Sends wireless signals to the router.", hi: "राउटर को वायरलेस सिग्नल भेजता है।" })}
-                            </>
-                          )}
-                          {mode === "satellite" && (
-                            <>
-                              {L({ en: "Communicates via satellite link (long distance).", hi: "सैटेलाइट लिंक के जरिए संचार (लंबी दूरी)।" })}
-                            </>
-                          )}
+                        <div className="mt-1 text-xs text-slate-200 leading-relaxed">
+                          {mode === "wired" && (L({ en: "Connected via cable. Fast & stable.", hi: "केबल से जुड़ा। तेज़ और स्थिर।" }))}
+                          {mode === "wifi" && (L({ en: "Sends wireless signals to the router.", hi: "राउटर को वायरलेस सिग्नल भेजता है।" }))}
+                          {mode === "satellite" && (L({ en: "Communicates via satellite link (long distance).", hi: "सैटेलाइट लिंक के जरिए संचार (लंबी दूरी)।" }))}
                         </div>
                       </motion.div>
                     )}
@@ -264,48 +220,55 @@ export default function NetworkSimulation({ initialLang = "en" }) {
                 </div>
               ))}
 
-              {/* Packets (animated dots) - we will spawn a few waves while playing */}
+              {/* Packets visual (subtle) - rendered as small glowing dots using HTML overlay for consistent blur */}
               <AnimatePresence>
                 {isPlaying && paths.map((p, i) => (
-                  // each path will produce 2 packets for request/response visual
-                  <React.Fragment key={`packets-${p.id}`}>
-                    <Packet path={p.d} duration={1.4} delay={i * 1.3} color={mode === "wired" ? "#FDE68A" : "#A7F3D0"} speed={speed} size={6} />
-                    <Packet path={p.d} duration={1.4} delay={i * 1.3 + 0.6} color={mode === "wired" ? "#FCD34D" : "#BFDBFE"} speed={speed} size={6} />
-                  </React.Fragment>
+                  <div key={`packets-${p.id}`} className="absolute inset-0 pointer-events-none">
+                    {/* We'll render two moving pseudo-packets per path using CSS animations tied to path d attribute isn't trivial here; this keeps it visually consistent and simple */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: [0, 1, 1, 0] }}
+                      transition={{ repeat: Infinity, duration: 2.6 / speed, delay: i * 0.6 }}
+                      className="absolute"
+                      aria-hidden
+                    >
+                      {/* Decorative dot placed roughly - for full accuracy you'd animate along SVG path using more advanced motionPath plugins. This simplified version keeps performance high. */}
+                      <div style={{ left: `calc(${(i + 1) * 20}% - 8px)`, top: `calc(${30 + i * 10}% - 8px)` }} className="absolute w-2.5 h-2.5 rounded-full bg-sky-400/90 blur-sm shadow-[0_0_8px_rgba(96,165,250,0.6)]" />
+                    </motion.div>
+                  </div>
                 ))}
               </AnimatePresence>
 
             </div>
+
           </div>
 
           {/* Controls */}
-          <div className="mt-3 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={togglePlay}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-600/90 hover:bg-indigo-700 text-white font-semibold"
-              >
+          <div className="mt-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <button onClick={togglePlay} aria-pressed={isPlaying} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-600/90 hover:bg-indigo-700 text-white font-semibold shadow focus:ring-2 focus:ring-indigo-400">
                 {isPlaying ? <FaPause /> : <FaPlay />}
                 <span className="ml-1">{isPlaying ? (lang === "hi" ? "रोकें" : "Pause") : (lang === "hi" ? "चलाएँ" : "Play")}</span>
               </button>
 
-              <button onClick={() => { setIsPlaying(false); setTimeout(() => setIsPlaying(true), 80); }} className="px-3 py-2 rounded-md bg-white/6 text-white">
-                {lang === "hi" ? "रीस्टार्ट" : "Restart"}
+              <button onClick={restart} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/6 text-white hover:bg-white/8">
+                <FaRedoAlt />
+                <span className="ml-1 text-sm">{lang === "hi" ? "रीस्टार्ट" : "Restart"}</span>
               </button>
 
               <div className="flex items-center gap-2 ml-2 text-sm text-slate-200">
                 <div className="text-xs">{lang === "hi" ? "गति" : "Speed"}</div>
-                <input type="range" min="0.5" max="2" step="0.1" value={speed} onChange={(e) => setSpeed(Number(e.target.value))} className="w-28" />
-                <div className="w-8 text-right">{speed}x</div>
+                <input type="range" min="0.5" max="2" step="0.1" value={speed} onChange={(e) => setSpeed(Number(e.target.value))} className="w-28" aria-label="Speed" />
+                <div className="w-10 text-right">{speed.toFixed(1)}x</div>
               </div>
             </div>
 
-            <div className="text-xs text-slate-300">{lang === "hi" ? "क्लिक करें किसी भी आइकन पर स्पष्टीकरण के लिए" : "Click any icon to see explanation"}</div>
+            <div className="text-xs text-slate-300">{lang === "hi" ? "किसी भी आइकन पर क्लिक करें स्पष्टीकरण के लिए" : "Click any icon for explanation"}</div>
           </div>
         </div>
 
-        {/* Right: Teaching Panel / Notes */}
-        <aside className="w-full md:w-80 shrink-0 bg-slate-800 rounded-2xl p-4 shadow-inner">
+        {/* Teaching Panel */}
+        <aside className="w-full lg:w-80 shrink-0 bg-slate-800/95 rounded-2xl p-4 shadow-inner ring-1 ring-white/5">
           <div className="flex items-center justify-between mb-3">
             <div>
               <div className="text-sm text-slate-300">{lang === "hi" ? "शिक्षण नोट्स" : "Teaching Notes"}</div>
@@ -344,7 +307,6 @@ export default function NetworkSimulation({ initialLang = "en" }) {
       </div>
 
       <div className="mt-4 text-center text-xs text-slate-400">{lang === "hi" ? "यह कंपोनेंट टेलविंड, फ्रेमर‑मोशन और react‑icons का उपयोग करता है" : "This component uses Tailwind, Framer‑Motion and react‑icons"}</div>
-
     </div>
   );
 }

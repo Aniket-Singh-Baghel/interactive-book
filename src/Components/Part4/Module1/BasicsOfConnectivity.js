@@ -1,7 +1,8 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaHome, FaArrowLeft, FaArrowRight, FaNetworkWired } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import NetworkSimulation from "./LiveSimulation.js";
 
 const content = {
   en: {
@@ -31,6 +32,21 @@ const content = {
         "<strong>School/Office LAN:</strong> Computers in a lab connected via Ethernet cables to a central switch for fast, reliable access to shared files and printers.",
         "<strong>Public Wi-Fi:</strong> Connecting to the internet at a café or airport, a common example of a wireless network."
     ],
+    technologies_title: "Wired vs. Wireless Technologies: A Closer Look",
+    wired_tech_title: "Wired Connections: The Digital Highways",
+    wired_tech_text: "Wired connections use physical cables to transfer data, offering high speed and reliability. They are like the superhighways of the digital world, perfect for when you need a stable and fast connection.",
+    wired_tech_examples: [
+        "<strong>Ethernet</strong>: The most common wired connection for homes and offices, connecting computers to routers.",
+        "<strong>Fiber Optics</strong>: Uses light to transfer data at incredibly high speeds, powering modern broadband.",
+        "<strong>Coaxial Cables</strong>: Often used for cable TV and internet."
+    ],
+    wireless_tech_title: "Wireless Connections: The Freedom to Connect",
+    wireless_tech_text: "Wireless technologies use radio waves to send data through the air, giving us the freedom to connect from anywhere. They are like the side roads and delivery drones of the digital world, offering convenience and mobility.",
+    wireless_tech_examples: [
+        "<strong>Wi-Fi</strong>: The most popular wireless technology, used in homes, schools, and public places to connect devices to the internet.",
+        "<strong>Bluetooth</strong>: Used for short-range communication between devices, like connecting headphones to your phone.",
+        "<strong>Cellular (4G/5G)</strong>: The technology that connects your smartphone to the internet over long distances."
+    ],
   }, 
   hi: {
     home: "होम",
@@ -59,192 +75,26 @@ const content = {
         "<strong>स्कूल/ऑफिस लैन:</strong> एक लैब में कंप्यूटर जो साझा फ़ाइलों और प्रिंटर तक तेज़, विश्वसनीय पहुंच के लिए एक केंद्रीय स्विच से ईथरनेट केबल के माध्यम से जुड़े होते हैं।",
         "<strong>सार्वजनिक वाई-फाई:</strong> किसी कैफे या हवाई अड्डे पर इंटरनेट से कनेक्ट करना, एक वायरलेस नेटवर्क का एक सामान्य उदाहरण।"
     ],
+    technologies_title: "वायर्ड बनाम वायरलेस टेक्नोलॉजीज: एक नज़दीकी नज़र",
+    wired_tech_title: "वायर्ड कनेक्शन: डिजिटल हाईवे",
+    wired_tech_text: "वायर्ड कनेक्शन डेटा ट्रांसफर करने के लिए भौतिक केबल का उपयोग करते हैं, जो उच्च गति और विश्वसनीयता प्रदान करते हैं। वे डिजिटल दुनिया के सुपरहाइवे की तरह हैं, जब आपको एक स्थिर और तेज़ कनेक्शन की आवश्यकता होती है तो यह एकदम सही है।",
+    wired_tech_examples: [
+        "<strong>ईथरनेट</strong>: घरों और कार्यालयों के लिए सबसे आम वायर्ड कनेक्शन, कंप्यूटर को राउटर से जोड़ता है।",
+        "<strong>फाइबर ऑप्टिक्स</strong>: अविश्वसनीय रूप से उच्च गति पर डेटा स्थानांतरित करने के लिए प्रकाश का उपयोग करता है, जो आधुनिक ब्रॉडबैंड को शक्ति प्रदान करता है।",
+        "<strong>कोएक्सियल केबल</strong>: अक्सर केबल टीवी और इंटरनेट के लिए उपयोग किया जाता है।"
+    ],
+    wireless_tech_title: "वायरलेस कनेक्शन: कनेक्ट करने की स्वतंत्रता",
+    wireless_tech_text: "वायरलेस प्रौद्योगिकियां हवा के माध्यम से डेटा भेजने के लिए रेडियो तरंगों का उपयोग करती हैं, जिससे हमें कहीं से भी जुड़ने की स्वतंत्रता मिलती है। वे डिजिटल दुनिया की साइड सड़कों और डिलीवरी ड्रोन की तरह हैं, जो सुविधा और गतिशीलता प्रदान करते हैं।",
+    wireless_tech_examples: [
+        "<strong>वाई-फाई</strong>: सबसे लोकप्रिय वायरलेस तकनीक, जिसका उपयोग घरों, स्कूलों और सार्वजनिक स्थानों पर उपकरणों को इंटरनेट से जोड़ने के लिए किया जाता है।",
+        "<strong>ब्लूटूथ</strong>: उपकरणों के बीच छोटी दूरी के संचार के लिए उपयोग किया जाता है, जैसे हेडफ़ोन को आपके फ़ोन से कनेक्ट करना।",
+        "<strong>सेलुलर (4G/5G)</strong>: वह तकनीक जो आपके स्मार्टफोन को लंबी दूरी पर इंटरनेट से जोड़ती है।"
+    ],
   },
 };
 
-const wiredNodes = [
-  { id: "server", label: "Server", x: 300, y: 50, type: "network" },
-  { id: "switch", label: "Switch", x: 300, y: 150, type: "network" },
-  { id: "desktop1", label: "Desktop 1", x: 100, y: 250, type: "endpoint" },
-  { id: "desktop2", label: "Desktop 2", x: 300, y: 250, type: "endpoint" },
-  { id: "printer", label: "Printer", x: 500, y: 250, type: "peripheral" },
-];
-
-const wiredLinks = [
-  { id: "w1", a: "server", b: "switch", medium: "wired" },
-  { id: "w2", a: "switch", b: "desktop1", medium: "wired" },
-  { id: "w3", a: "switch", b: "desktop2", medium: "wired" },
-  { id: "w4", a: "switch", b: "printer", medium: "wired" },
-];
-
-const wirelessNodes = [
-    { id: "router", label: "Router", x: 300, y: 100, type: "network" },
-    { id: "laptop", label: "Laptop", x: 150, y: 250, type: "endpoint" },
-    { id: "phone", label: "Phone", x: 450, y: 250, type: "mobile" },
-    { id: "smart-tv", label: "Smart TV", x: 300, y: 350, type: "iot" },
-  ];
-  
-  const wirelessLinks = [
-    { id: "wl1", a: "router", b: "laptop", medium: "wireless" },
-    { id: "wl2", a: "router", b: "phone", medium: "wireless" },
-    { id: "wl3", a: "router", b: "smart-tv", medium: "wireless" },
-  ];
-
-function getNodeDescription(node, lang) {
-    const { label } = node;
-    const en_descriptions = {
-        "Server": "I store important information and websites that you visit. When a computer asks for a webpage, I send it to them!",
-        "Switch": "I'm like a traffic cop for a wired network. I make sure messages sent between computers go to the right destination quickly.",
-        "Desktop 1": "I use a stable, wired connection for fast gaming and important work. Because I'm plugged in, my connection is super reliable!",
-        "Desktop 2": "Just like my friend, I'm connected with a cable to the network. This gives me a strong and steady internet connection.",
-        "Printer": "I get documents from other computers on the network and print them out for you. I can be shared by many devices.",
-        "Router": "I'm the heart of the wireless network! I send your data to the internet and back. Think of me as a mail carrier for your digital messages.",
-        "Laptop": "I can connect to the internet wirelessly, which means you can work, play, or learn from anywhere in the house!",
-        "Phone": "I use Wi-Fi to connect to the internet for games, videos, and talking to friends. My wireless connection lets me be on the move.",
-        "Smart TV": "I stream your favorite shows using the wireless network. No need for a cable, I get everything through the air!",
-    };
-
-    const hi_descriptions = {
-        "Server": "मैं सर्वर हूँ! मैं आपके द्वारा देखी जाने वाली महत्वपूर्ण जानकारी और वेबसाइटों को संग्रहीत करता हूँ। जब कोई कंप्यूटर वेबपेज मांगता है, तो मैं उसे भेजता हूँ!",
-        "Switch": "मैं एक वायर्ड नेटवर्क के लिए ट्रैफिक पुलिस वाले की तरह हूँ। मैं सुनिश्चित करता हूँ कि कंप्यूटरों के बीच भेजे गए संदेश सही मंजिल तक जल्दी पहुँचें।",
-        "Desktop 1": "मैं तेज गेमिंग और महत्वपूर्ण काम के लिए एक स्थिर, वायर्ड कनेक्शन का उपयोग करता हूँ। क्योंकि मैं प्लग इन हूँ, मेरा कनेक्शन सुपर विश्वसनीय है!",
-        "Desktop 2": "मेरे दोस्त की तरह, मैं नेटवर्क से एक केबल से जुड़ा हूँ। यह मुझे एक मजबूत और स्थिर इंटरनेट कनेक्शन देता है।",
-        "Printer": "मैं नेटवर्क पर अन्य कंप्यूटरों से दस्तावेज़ प्राप्त करता हूँ और उन्हें आपके लिए प्रिंट करता हूँ। मुझे कई उपकरणों द्वारा साझा किया जा सकता है।",
-        "Router": "मैं वायरलेस नेटवर्क का दिल हूँ! मैं आपके डेटा को इंटरनेट पर और वापस भेजता हूँ। मुझे अपने डिजिटल संदेशों के लिए एक मेल वाहक के रूप में सोचें।",
-        "Laptop": "मैं वायरलेस तरीके से इंटरनेट से जुड़ सकता हूँ, जिसका अर्थ है कि आप घर में कहीं से भी काम कर सकते हैं, खेल सकते हैं या सीख सकते हैं!",
-        "Phone": "मैं गेम, वीडियो और दोस्तों से बात करने के लिए इंटरनेट से जुड़ने के लिए वाई-फाई का उपयोग करता हूँ। मेरा वायरलेस कनेक्शन मुझे चलते-फिरते रहने देता है।",
-        "Smart TV": "मैं वायरलेस नेटवर्क का उपयोग करके आपके पसंदीदा शो स्ट्रीम करता हूँ। केबल की कोई आवश्यकता नहीं है, मुझे हवा के माध्यम से सब कुछ मिलता है!",
-    };
-
-    const descriptions = {
-        en: en_descriptions,
-        hi: hi_descriptions
-    }
-
-    return descriptions[lang][label] || (lang === 'en' ? "I am a device on the network." : "मैं नेटवर्क पर एक डिवाइस हूँ।");
-}
-
-const Node = ({ node, type, onSelect }) => {
-  const nodeColor = {
-    network: "bg-blue-500",
-    endpoint: "bg-green-500",
-    peripheral: "bg-yellow-500",
-    iot: "bg-purple-500",
-    mobile: "bg-pink-500",
-  }[type];
-
-  return (
-    <motion.div
-      className={`absolute w-24 h-12 flex items-center justify-center rounded-lg shadow-md text-white font-bold text-sm cursor-pointer ${nodeColor}`}
-      style={{ left: node.x - 48, top: node.y - 24 }}
-      whileHover={{ scale: 1.1 }}
-      onClick={() => onSelect(node)}
-    >
-      {node.label}
-    </motion.div>
-  );
-};
-
-const LinkPath = ({ link, nodes, medium }) => {
-    const a = nodes.find(n => n.id === link.a);
-    const b = nodes.find(n => n.id === link.b);
-  
-    if (!a || !b) return null;
-  
-    const isWireless = medium === "wireless";
-    const pathData = isWireless
-      ? `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2} ${(a.y + b.y) / 2 - 40} ${b.x} ${b.y}`
-      : `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
-  
-    return (
-      <path
-        d={pathData}
-        stroke={isWireless ? "#3b82f6" : "#10b981"}
-        strokeWidth="2"
-        fill="none"
-        strokeDasharray={isWireless ? "5,5" : "none"}
-      />
-    );
-  };
-  
-  const Packet = ({ link, nodes, medium, speed, running }) => {
-    const a = nodes.find(n => n.id === link.a);
-    const b = nodes.find(n => n.id === link.b);
-  
-    if (!a || !b) return null;
-
-    const duration = medium === "wireless" ? 4 / speed : 2 / speed;
-    const path = medium === 'wireless' 
-      ? `M ${a.x} ${a.y} Q ${(a.x + b.x) / 2} ${(a.y + b.y) / 2 - 40} ${b.x} ${b.y}` 
-      : `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
-  
-    return (
-      <>
-        {/* Request Packet */}
-        <motion.circle
-          r="6"
-          fill="#3b82f6" // Blue for request
-          filter="url(#glow)"
-          style={{ offsetPath: `path("${path}")` }}
-          initial={{ offsetDistance: "0%" }}
-          animate={running ? { offsetDistance: "100%" } : {}}
-          transition={{
-            duration: duration,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-        {/* Response Packet */}
-        <motion.circle
-          r="6"
-          fill="#10b981" // Green for response
-          filter="url(#glow)"
-          style={{ offsetPath: `path("${path}")` }}
-          initial={{ offsetDistance: "100%" }}
-          animate={running ? { offsetDistance: "0%" } : {}}
-          transition={{
-            duration: duration,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-      </>
-    );
-  };
-
-const Simulation = ({ nodes, links, onNodeSelect, speed, running, medium }) => (
-    <div className="relative w-full h-[300px] sm:h-[420px] rounded-xl border border-gray-200 bg-gray-50 overflow-hidden shadow-inner">
-      <svg width="100%" height="100%" viewBox="0 0 600 400">
-        <defs>
-          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="4" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-        <g>
-          {links.map(link => (
-            <LinkPath key={link.id} link={link} nodes={nodes} medium={medium} />
-          ))}
-          {links.map(link => (
-            <Packet key={`p-${link.id}`} link={link} nodes={nodes} medium={medium} speed={speed} running={running} />
-          ))}
-        </g>
-      </svg>
-      {nodes.map(node => (
-        <Node key={node.id} node={node} type={node.type} onSelect={onNodeSelect} />
-      ))}
-    </div>
-  );
-
 export default function BasicsOfConnectivity() {
   const [lang, setLang] = useState("en");
-  const [activeTab, setActiveTab] = useState("wired");
-  const [running, setRunning] = useState(true);
-  const [speed, setSpeed] = useState(1);
-  const [selectedNode, setSelectedNode] = useState(null);
   const navigate = useNavigate();
   const t = content[lang];
 
@@ -302,54 +152,7 @@ export default function BasicsOfConnectivity() {
           </motion.div>
 
           {/* Full-Width Simulation Section */}
-          <div className="bg-white p-4 rounded-2xl shadow-xl">
-            <div className="flex border-b border-gray-200 mb-4">
-              <button onClick={() => setActiveTab('wired')} className={`px-4 py-2 font-semibold ${activeTab === 'wired' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500'}`}>
-                {t.wired_simulation}
-              </button>
-              <button onClick={() => setActiveTab('wireless')} className={`px-4 py-2 font-semibold ${activeTab === 'wireless' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500'}`}>
-                {t.wireless_simulation}
-              </button>
-            </div>
-
-            {activeTab === 'wired' && (
-              <Simulation nodes={wiredNodes} links={wiredLinks} onNodeSelect={setSelectedNode} speed={speed} running={running} medium="wired" />
-            )}
-            {activeTab === 'wireless' && (
-              <Simulation nodes={wirelessNodes} links={wirelessLinks} onNodeSelect={setSelectedNode} speed={speed} running={running} medium="wireless" />
-            )}
-            
-            <div className="flex items-center justify-center gap-4 mt-4">
-              <button onClick={() => setRunning(r => !r)} className="px-4 py-2 rounded-lg bg-indigo-100 text-indigo-700 font-semibold hover:bg-indigo-200 transition">
-                {running ? t.pause : t.play}
-              </button>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">{t.speed}</span>
-                <input
-                  type="range"
-                  min="0.5"
-                  max="5"
-                  step="0.5"
-                  value={speed}
-                  onChange={(e) => setSpeed(Number(e.target.value))}
-                  className="w-32"
-                />
-              </div>
-            </div>
-          </div>
-
-          {selectedNode && (
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              className="mt-6 p-6 bg-indigo-50 rounded-2xl shadow-lg border border-indigo-200 text-center"
-            >
-              <h3 className="font-bold text-xl text-indigo-700">{selectedNode.label}</h3>
-              <p className="text-base text-slate-700 mt-2 leading-relaxed">
-                {getNodeDescription(selectedNode, lang)}
-              </p>
-            </motion.div>
-          )}
+          <NetworkSimulation lang={lang} />
 
           {/* Grid for other sections */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
@@ -365,13 +168,37 @@ export default function BasicsOfConnectivity() {
               <h3 className="font-semibold text-xl">{t.deep_dive_title}</h3>
               <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.deep_dive_text }} />
             </motion.div>
-             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-                <h3 className="font-semibold text-xl">{t.examples_title}</h3>
-                <ul className="mt-3 text-slate-600 space-y-3 list-disc pl-5">
-                    {t.examples_list.map((item, index) => (
-                        <li key={index} dangerouslySetInnerHTML={{ __html: item }} />
+            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
+              <h3 className="font-semibold text-xl">{t.examples_title}</h3>
+              <ul className="mt-3 text-slate-600 space-y-3 list-disc pl-5">
+                {t.examples_list.map((item, index) => (
+                  <li key={index} dangerouslySetInnerHTML={{ __html: item }} />
+                ))}
+              </ul>
+            </motion.div>
+            {/* New Technologies Section */}
+            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white md:col-span-2">
+              <h3 className="font-semibold text-2xl text-center mb-6">{t.technologies_title}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h4 className="font-bold text-xl text-indigo-700">{t.wired_tech_title}</h4>
+                  <p className="mt-2 text-slate-600">{t.wired_tech_text}</p>
+                  <ul className="mt-4 space-y-2 list-disc pl-5">
+                    {t.wired_tech_examples.map((item, index) => (
+                      <li key={index} dangerouslySetInnerHTML={{ __html: item }} />
                     ))}
-                </ul>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-bold text-xl text-indigo-700">{t.wireless_tech_title}</h4>
+                  <p className="mt-2 text-slate-600">{t.wireless_tech_text}</p>
+                  <ul className="mt-4 space-y-2 list-disc pl-5">
+                    {t.wireless_tech_examples.map((item, index) => (
+                      <li key={index} dangerouslySetInnerHTML={{ __html: item }} />
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
