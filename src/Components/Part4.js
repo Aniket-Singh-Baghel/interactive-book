@@ -40,7 +40,7 @@ const content = {
         title: "Computer Networks (LAN, WAN)",
         concept: "Connecting devices in a small area (home, school) versus over large distances (internet).",
         analogy: "A local street network (LAN) versus the national highway system (WAN).",
-        path: "/part4/computer-networks/part4/computer-networks",
+        path: "/part4/computer-networks",
         icon: <FaUsers className="text-blue-500" />,
       },
       {

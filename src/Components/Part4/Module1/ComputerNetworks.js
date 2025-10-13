@@ -330,10 +330,10 @@ export default function ComputerNetworks({ initialLang = "en" }) {
               <button onClick={addNode} className="flex items-center gap-2 bg-emerald-500 px-3 py-2 rounded-md text-white"><FaPlus /> <span className="text-sm">{lang === 'hi' ? 'नोड जोड़ें' : 'Add Node'}</span></button>
 
               <button onClick={() => {
-                setNodes(DEFAULT_TOPOLOGIES[mode].nodes.map(n => ({ ...n }));
-                setLinks(DEFAULT_TOPOLOGIES[mode].links.map(l => ({ ...l }));
-                setSelectedNode(null);
-                setIsPlaying(false);
+                setNodes(DEFAULT_TOPOLOGIES[mode].nodes.map(n => ({ ...n })))
+                setLinks(DEFAULT_TOPOLOGIES[mode].links.map(l => ({ ...l })))
+                setSelectedNode(null)
+                setIsPlaying(false)
               }} className="flex items-center gap-2 bg-white/6 px-3 py-2 rounded-md text-white"><FaTrash /> <span className="text-sm">{lang === 'hi' ? 'रीसेट' : 'Reset'}</span></button>
             </div>
 
