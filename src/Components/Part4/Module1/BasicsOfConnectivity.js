@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaHome, FaArrowLeft, FaArrowRight, FaNetworkWired } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import NetworkSimulation from "./LiveSimulation.js";
+import InteractiveConnectivitySimulation from "./LiveSimulation.js";
 
 const content = {
   en: {
@@ -14,7 +14,7 @@ const content = {
     wired_simulation: "Wired Network",
     wireless_simulation: "Wireless Network",
     simulation_explanation_title: "How This Simulation Works",
-    simulation_explanation_text: "This visualizer demonstrates the fundamental difference between wired and wireless connections. The <strong>straight, solid lines</strong> represent <strong>wired wiredLinks</strong>, showing a direct, stable path. The <strong>curved, dashed lines</strong> represent <strong>wireless wiredLinks</strong>, illustrating their more flexible but potentially less direct nature. The moving dots are <strong>data packets</strong>. Notice how they travel in a continuous loop. You can <strong>pause/play</strong> the simulation, adjust the <strong>speed</strong> to see how faster traffic might flow, and toggle the visibility of different network types to focus on specific connections.",
+    simulation_explanation_text: "This interactive simulation lets you build and observe simple networks. You can <strong>drag and drop</strong> nodes to reposition them. Click on a node to see options to <strong>connect it to another node</strong> or <strong>remove it</strong>. Use the controls to <strong>add new nodes</strong> of different types (like PCs, routers, and satellite dishes), <strong>pause/play</strong> the packet animation, and <strong>reset</strong> the simulation to the default layout. The <strong>speed slider</strong> directly controls how fast the data packets move along the connections. Notice how <strong>wireless and satellite</strong> connections are represented with <strong>dashed lines</strong> to distinguish them from the solid lines of a <strong>wired</strong> connection.",
     digital_world_title: "Connectivity in the Digital World",
     digital_world_text: "In the digital world, connectivity isn't just about linking devices; it's about creating a <strong>global network of information</strong>. When you visit a website, your computer sends a request packet that might travel through dozens of routers and across continents via undersea fiber optic cables. This vast, interconnected system is the <strong>Internet</strong>. It relies on standardized <strong>protocols</strong> (like TCP/IP) to ensure that data from any device can be understood by any other, creating a seamless experience whether you're sending an email, streaming a movie, or video-calling a friend on the other side of the world. Every online action you take is a testament to this incredible, planet-spanning connectivity.",
     deep_dive_title: "Deep Dive: How Data Packets Flow",
@@ -28,9 +28,11 @@ const content = {
     speed: "Speed",
     examples_title: "Practical Examples",
     examples_list: [
-        "<strong>Home Network:</strong> Your Wi-Fi router connecting your laptop, phone, and smart TV.",
-        "<strong>School/Office LAN:</strong> Computers in a lab connected via Ethernet cables to a central switch for fast, reliable access to shared files and printers.",
-        "<strong>Public Wi-Fi:</strong> Connecting to the internet at a café or airport, a common example of a wireless network."
+        "<strong>Gaming Night:</strong> Your gaming console connected via an Ethernet cable to the router for a lag-free online match, while your friends connect their phones to the Wi-Fi for snacks and music.",
+        "<strong>Smart Home Hub:</strong> Your smart speaker (like Alexa or Google Home) wirelessly controls lights, thermostats, and cameras, all communicating through your Wi-Fi network.",
+        "<strong>Video Conferencing:</strong> A satellite internet connection allows someone in a remote, rural area to have a video call with a team in a city skyscraper, bridging vast distances.",
+        "<strong>In-Car Bluetooth:</strong> Your phone connecting wirelessly to your car's stereo to play music or take hands-free calls is a mini-network in action.",
+        "<strong>Library Computers:</strong> The desktop computers at a public library using a wired LAN connection so that dozens of users can reliably access the internet and shared printers simultaneously."
     ],
     technologies_title: "Wired vs. Wireless Technologies: A Closer Look",
     wired_tech_title: "Wired Connections: The Digital Highways",
@@ -57,7 +59,7 @@ const content = {
     wired_simulation: "वायर्ड नेटवर्क",
     wireless_simulation: "वायरलेस नेटवर्क",
     simulation_explanation_title: "यह सिमुलेशन कैसे काम करता है",
-    simulation_explanation_text: "यह विज़ुअलाइज़र वायर्ड और वायरलेस कनेक्शन के बीच मूलभूत अंतर को प्रदर्शित करता है। <strong>सीधी, ठोस रेखाएँ</strong> <strong>वायर्ड लिंक</strong> का प्रतिनिधित्व करती हैं, जो एक सीधा, स्थिर पथ दिखाती हैं। <strong>घुमावदार, धराशायी रेखाएँ</strong> <strong>वायरलेस लिंक</strong> का प्रतिनिधित्व करती हैं, जो उनकी अधिक लचीली लेकिन संभावित रूप से कम सीधी प्रकृति को दर्शाती हैं। चलती हुई बिंदियाँ <strong>डेटा पैकेट</strong> हैं। ध्यान दें कि वे एक सतत लूप में कैसे यात्रा करते हैं। आप सिमुलेशन को <strong>रोक/चला</strong> सकते हैं, यह देखने के लिए <strong>गति</strong> को समायोजित कर सकते हैं कि तेज़ ट्रैफ़िक कैसे प्रवाहित हो सकता है, और विशिष्ट कनेक्शनों पर ध्यान केंद्रित करने के लिए विभिन्न नेटवर्क प्रकारों की दृश्यता को टॉगल कर सकते हैं।",
+    simulation_explanation_text: "यह इंटरैक्टिव सिमुलेशन आपको सरल नेटवर्क बनाने और उनका निरीक्षण करने देता है। आप नोड्स को <strong>खींचकर और छोड़कर</strong> उनकी स्थिति बदल सकते हैं। किसी नोड पर क्लिक करके उसे <strong>दूसरे नोड से जोड़ने</strong> या <strong>उसे हटाने</strong> के विकल्प देखें। विभिन्न प्रकार के नए नोड्स (जैसे पीसी, राउटर और सैटेलाइट डिश) <strong>जोड़ने</strong>, पैकेट एनीमेशन को <strong>रोकने/चलाने</strong>, और सिमुलेशन को डिफ़ॉल्ट लेआउट पर <strong>रीसेट करने</strong> के लिए नियंत्रणों का उपयोग करें। <strong>स्पीड स्लाइडर</strong> सीधे नियंत्रित करता है कि डेटा पैकेट कनेक्शन के साथ कितनी तेजी से चलते हैं। ध्यान दें कि <strong>वायरलेस और सैटेलाइट</strong> कनेक्शनों को <strong>डैश्ड लाइनों</strong> से दर्शाया गया है ताकि उन्हें <strong>वायर्ड</strong> कनेक्शन की ठोस लाइनों से अलग किया जा सके।",
     digital_world_title: "डिजिटल दुनिया में कनेक्टिविटी",
     digital_world_text: "डिजिटल दुनिया में, कनेक्टिविटी केवल उपकरणों को जोड़ने के बारे में नहीं है; यह <strong>सूचना का एक वैश्विक नेटवर्क</strong> बनाने के बारे में है। जब आप किसी वेबसाइट पर जाते हैं, तो आपका कंप्यूटर एक अनुरोध पैकेट भेजता है जो दर्जनों राउटरों से होकर और महाद्वीपों के पार समुद्री फाइबर ऑप्टिक केबलों के माध्यम से यात्रा कर सकता है। यह विशाल, परस्पर जुड़ी प्रणाली ही <strong>इंटरनेट</strong> है। यह मानकीकृत <strong>प्रोटोकॉल</strong> (जैसे टीसीपी/आईपी) पर निर्भर करता है ताकि यह सुनिश्चित हो सके कि किसी भी डिवाइस से डेटा को किसी अन्य द्वारा समझा जा सके, जिससे एक सहज अनुभव बनता है चाहे आप ईमेल भेज रहे हों, मूवी स्ट्रीम कर रहे हों, या दुनिया के दूसरी तरफ किसी दोस्त को वीडियो-कॉल कर रहे हों। आपके द्वारा की जाने वाली हर ऑनलाइन कार्रवाई इस अविश्वसनीय, ग्रह-व्यापी कनेक्टिविटी का एक प्रमाण है।",
     deep_dive_title: "गहराई से जानें: डेटा पैकेट कैसे प्रवाहित होते हैं",
@@ -71,9 +73,11 @@ const content = {
     speed: "गति",
     examples_title: "व्यावहारिक उदाहरण",
     examples_list: [
-        "<strong>होम नेटवर्क:</strong> आपका वाई-फाई राउटर जो आपके लैपटॉप, फोन और स्मार्ट टीवी को जोड़ता है।",
-        "<strong>स्कूल/ऑफिस लैन:</strong> एक लैब में कंप्यूटर जो साझा फ़ाइलों और प्रिंटर तक तेज़, विश्वसनीय पहुंच के लिए एक केंद्रीय स्विच से ईथरनेट केबल के माध्यम से जुड़े होते हैं।",
-        "<strong>सार्वजनिक वाई-फाई:</strong> किसी कैफे या हवाई अड्डे पर इंटरनेट से कनेक्ट करना, एक वायरलेस नेटवर्क का एक सामान्य उदाहरण।"
+        "<strong>गेमिंग नाइट:</strong> आपका गेमिंग कंसोल एक लैग-फ्री ऑनलाइन मैच के लिए राउटर से ईथरनेट केबल के माध्यम से जुड़ा हुआ है, जबकि आपके दोस्त स्नैक्स और संगीत के लिए अपने फोन को वाई-फाई से कनेक्ट करते हैं।",
+        "<strong>स्मार्ट होम हब:</strong> आपका स्मार्ट स्पीकर (जैसे एलेक्सा या गूगल होम) वायरलेस तरीके से रोशनी, थर्मोस्टैट्स और कैमरों को नियंत्रित करता है, जो सभी आपके वाई-फाई नेटवर्क के माध्यम से संचार करते हैं।",
+        "<strong>वीडियो कॉन्फ्रेंसिंग:</strong> एक सैटेलाइट इंटरनेट कनेक्शन एक दूरस्थ, ग्रामीण क्षेत्र में किसी को एक शहर के गगनचुंबी इमारत में एक टीम के साथ वीडियो कॉल करने की अनुमति देता है, जो विशाल दूरियों को पाटता है।",
+        "<strong>इन-कार ब्लूटूथ:</strong> संगीत चलाने या हैंड्स-फ्री कॉल लेने के लिए आपकी कार के स्टीरियो से वायरलेस तरीके से कनेक्ट होने वाला आपका फोन एक्शन में एक मिनी-नेटवर्क है।",
+        "<strong>लाइब्रेरी कंप्यूटर:</strong> एक सार्वजनिक पुस्तकालय में डेस्कटॉप कंप्यूटर एक वायर्ड लैन कनेक्शन का उपयोग करते हैं ताकि दर्जनों उपयोगकर्ता एक साथ मज़बूती से इंटरनेट और साझा प्रिंटर का उपयोग कर सकें।"
     ],
     technologies_title: "वायर्ड बनाम वायरलेस टेक्नोलॉजीज: एक नज़दीकी नज़र",
     wired_tech_title: "वायर्ड कनेक्शन: डिजिटल हाईवे",
@@ -120,23 +124,23 @@ export default function BasicsOfConnectivity() {
   };
 
   return (
-    <div className="min-h-screen bg-sky-50 text-slate-900 font-sans">
+    <div className="min-h-screen bg-amber-50 text-slate-800 font-sans">
       <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md shadow-lg z-20 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link to="/parts/prt4" className="flex items-center gap-2 text-lg font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">
+          <Link to="/parts/prt4" className="flex items-center gap-2 text-lg font-semibold text-amber-600 hover:text-amber-800 transition-colors">
             <FaHome />
             <span>{t.home}</span>
           </Link>
           <div className="flex items-center gap-2">
-            <button onClick={() => setLang("en")} className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-300 ${lang === 'en' ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-indigo-600 hover:bg-indigo-100'}`}>EN</button>
-            <button onClick={() => setLang("hi")} className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-300 ${lang === 'hi' ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-indigo-600 hover:bg-indigo-100'}`}>हिं</button>
+            <button onClick={() => setLang("en")} className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-300 ${lang === 'en' ? 'bg-amber-600 text-white shadow-md' : 'bg-white text-amber-600 hover:bg-amber-100'}`}>EN</button>
+            <button onClick={() => setLang("hi")} className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-300 ${lang === 'hi' ? 'bg-amber-600 text-white shadow-md' : 'bg-white text-amber-600 hover:bg-amber-100'}`}>हिं</button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
-        <motion.div initial="hidden" animate="show" variants={container} className="text-center mb-12">
-          <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-extrabold text-indigo-700 tracking-tight flex items-center justify-center gap-3">
+      <main className="px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+        <motion.div initial="hidden" animate="show" variants={container} className="text-center mb-12 max-w-7xl mx-auto">
+          <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-extrabold text-amber-700 tracking-tight flex items-center justify-center gap-3">
             <FaNetworkWired /> {t.title}
           </motion.h1>
           <motion.p variants={fadeUp} className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
@@ -152,10 +156,12 @@ export default function BasicsOfConnectivity() {
           </motion.div>
 
           {/* Full-Width Simulation Section */}
-          <NetworkSimulation lang={lang} />
+          <div className="my-8 -mx-4 sm:-mx-6 lg:-mx-8">
+            <InteractiveConnectivitySimulation initialLang={lang} />
+          </div>
 
           {/* Grid for other sections */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+          <div className="space-y-8 mt-12">
             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
               <h3 className="font-semibold text-xl">{t.simulation_explanation_title}</h3>
               <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.simulation_explanation_text }} />
@@ -164,7 +170,7 @@ export default function BasicsOfConnectivity() {
               <h3 className="font-semibold text-xl">{t.digital_world_title}</h3>
               <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.digital_world_text }} />
             </motion.div>
-            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white md:col-span-2">
+            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
               <h3 className="font-semibold text-xl">{t.deep_dive_title}</h3>
               <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.deep_dive_text }} />
             </motion.div>
@@ -177,11 +183,11 @@ export default function BasicsOfConnectivity() {
               </ul>
             </motion.div>
             {/* New Technologies Section */}
-            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white md:col-span-2">
+            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
               <h3 className="font-semibold text-2xl text-center mb-6">{t.technologies_title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h4 className="font-bold text-xl text-indigo-700">{t.wired_tech_title}</h4>
+                  <h4 className="font-bold text-xl text-amber-700">{t.wired_tech_title}</h4>
                   <p className="mt-2 text-slate-600">{t.wired_tech_text}</p>
                   <ul className="mt-4 space-y-2 list-disc pl-5">
                     {t.wired_tech_examples.map((item, index) => (
@@ -190,7 +196,7 @@ export default function BasicsOfConnectivity() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-bold text-xl text-indigo-700">{t.wireless_tech_title}</h4>
+                  <h4 className="font-bold text-xl text-amber-700">{t.wireless_tech_title}</h4>
                   <p className="mt-2 text-slate-600">{t.wireless_tech_text}</p>
                   <ul className="mt-4 space-y-2 list-disc pl-5">
                     {t.wireless_tech_examples.map((item, index) => (
@@ -203,17 +209,17 @@ export default function BasicsOfConnectivity() {
           </div>
         </div>
 
-        <div className="w-full flex justify-between items-center mt-10 p-4 bg-gray-100 rounded-lg shadow-md">
+        <div className="w-full flex justify-between items-center mt-10 p-4 bg-amber-100/50 rounded-lg shadow-md">
             <button
               onClick={() => navigate('/module4/distribution-models')}
-              className="flex items-center gap-2 px-4 py-2 bg-purple-200 hover:bg-purple-300 text-purple-900 rounded-lg shadow transition"
+              className="flex items-center gap-2 px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg shadow transition"
             >
               <FaArrowLeft />
               {t.previous}
             </button>
             <button
               onClick={() => navigate('/parts/prt2/part4/computer-networks')}
-              className="flex items-center gap-2 px-4 py-2 bg-green-200 hover:bg-green-300 text-green-900 rounded-lg shadow transition"
+              className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg shadow transition"
             >
               {t.next}
               <FaArrowRight />
