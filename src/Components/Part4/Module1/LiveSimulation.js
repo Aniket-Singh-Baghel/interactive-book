@@ -7,7 +7,6 @@ import {
   FaTrash,
   FaPlay,
   FaPause,
-  FaRedoAlt,
   FaWifi,
   FaServer,
   FaDesktop,
@@ -69,7 +68,33 @@ const DEFAULT_TOPOLOGIES = {
       { id: "l1", a: "user", b: "dish" },
       { id: "l2", a: "dish", b: "server" },
     ],
-  }
+  },
+  deviceDescriptions: {
+    router: {
+      en: "Directs data packets between computer networks.",
+      hi: "कंप्यूटर नेटवर्क के बीच डेटा पैकेट निर्देशित करता है।",
+    },
+    pc: {
+      en: "A personal computer for end-users.",
+      hi: "अंतिम-उपयोगकर्ताओं के लिए एक व्यक्तिगत कंप्यूटर।",
+    },
+    server: {
+      en: "Stores, sends, and receives data for clients.",
+      hi: "ग्राहकों के लिए डेटा संग्रहीत करता है, भेजता है और प्राप्त करता है।",
+    },
+    wifi: {
+      en: "Provides wireless internet access to devices.",
+      hi: "उपकरणों को वायरलेस इंटरनेट का उपयोग प्रदान करता है।",
+    },
+    phone: {
+      en: "A mobile device for communication and data.",
+      hi: "संचार और डेटा के लिए एक मोबाइल उपकरण।",
+    },
+    satellite: {
+      en: "Receives and transmits signals from/to a satellite.",
+      hi: "एक उपग्रह से/को सिग्नल प्राप्त और प्रसारित करता है।",
+    },
+  },
 };
 
 
@@ -108,6 +133,7 @@ export default function InteractiveConnectivitySimulation({ initialLang = "en" }
   const canvasRef = useRef(null);
   const [draggingId, setDraggingId] = useState(null);
   const [newNodeType, setNewNodeType] = useState("pc");
+  const [connectingNodeId, setConnectingNodeId] = useState(null);
 
   useEffect(() => {
     setTopology(DEFAULT_TOPOLOGIES[mode]);
@@ -128,6 +154,24 @@ export default function InteractiveConnectivitySimulation({ initialLang = "en" }
       y: 50,
       label: { en: `${newNodeType} ${id}`, hi: `${newNodeType} ${id}` },
     };
+
+    if (nodes.length > 0) {
+      let closestNode = null;
+      let minDistance = Infinity;
+
+      nodes.forEach(node => {
+        const distance = Math.pow(node.x - newNode.x, 2) + Math.pow(node.y - newNode.y, 2);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestNode = node;
+        }
+      });
+      
+      if (closestNode) {
+        setLinks(prev => [...prev, { id: uid('link'), a: newNode.id, b: closestNode.id }]);
+      }
+    }
+
     setNodes(prev => [...prev, newNode]);
   }
 
@@ -160,8 +204,6 @@ export default function InteractiveConnectivitySimulation({ initialLang = "en" }
     setDraggingId(null);
   }
 
-  const startSimulation = () => setIsPlaying(true);
-  const stopSimulation = () => setIsPlaying(false);
   const toggleSimulation = () => setIsPlaying(p => !p);
 
   function findNode(id) { return nodes.find(n => n.id === id); }
@@ -169,7 +211,7 @@ export default function InteractiveConnectivitySimulation({ initialLang = "en" }
   const stats = useMemo(() => ({ nodes: nodes.length, links: links.length }), [nodes, links]);
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full">
       <div className="flex flex-col gap-6">
 
         <div className="flex-1 bg-white rounded-2xl p-4 shadow-lg border border-slate-200 min-h-[520px]">
@@ -244,7 +286,6 @@ export default function InteractiveConnectivitySimulation({ initialLang = "en" }
                 const B = findNode(link.b);
                 if (!A || !B) return null;
                 const duration = 3 / speed;
-                const delay = (idx % 3) * 0.6;
                 return (
                   <motion.circle
                     key={`p-${link.id}-${speed}`}
@@ -254,7 +295,7 @@ export default function InteractiveConnectivitySimulation({ initialLang = "en" }
                     fill="#F59E0B"
                     initial={{ cx: A.x, cy: A.y, opacity: 0 }}
                     animate={{ cx: B.x, cy: B.y, opacity: [0, 1, 1, 0] }}
-                    transition={{ duration, delay, ease: "linear", repeat: Infinity }}
+                    transition={{ duration, ease: "linear", repeat: Infinity, delay: (idx % 3) * 0.6 }}
                     opacity={0.95}
                   />
                 );
@@ -280,8 +321,16 @@ export default function InteractiveConnectivitySimulation({ initialLang = "en" }
         <motion.button
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.98 }}
-          onClick={() => setSelectedNode(node.id === selectedNode ? null : node.id)}
-          className="flex flex-col items-center p-2 rounded-full bg-white text-slate-700 shadow-md ring-1 ring-slate-200/50"
+          onClick={() => {
+            if (connectingNodeId) {
+              connectNodes(connectingNodeId, node.id);
+              setConnectingNodeId(null);
+              setSelectedNode(null);
+            } else {
+              setSelectedNode(node.id === selectedNode ? null : node.id);
+            }
+          }}
+          className={`flex flex-col items-center p-2 rounded-full bg-white text-slate-700 shadow-md ring-1 ring-slate-200/50 ${connectingNodeId ? 'cursor-pointer' : ''}`}
           aria-label={node.label?.en || node.id}
         >
           <div className="text-xl">{IconForType(node.type)}</div>
@@ -304,21 +353,15 @@ export default function InteractiveConnectivitySimulation({ initialLang = "en" }
                 {lang === 'hi' ? node.label.hi : node.label.en}
               </div>
               <div className="text-slate-500 text-xs mt-1">
-                {node.type === 'router'
-                  ? lang === 'hi'
-                    ? 'नेटवर्क पैकेट को आगे भेजता है'
-                    : 'Forwards network packets'
-                  : lang === 'hi'
-                  ? 'एक नेटवर्क डिवाइस'
-                  : 'A network device'}
+                {L(DEFAULT_TOPOLOGIES.deviceDescriptions[node.type])}
               </div>
 
               <div className="flex gap-2 mt-2">
                 <button
-                  onClick={() => connectNodes(selectedNode, node.id)}
+                  onClick={() => setConnectingNodeId(node.id)}
                   className="flex-1 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-xs"
                 >
-                  {lang === 'hi' ? 'कनेक्ट करें' : 'Connect'}
+                  {connectingNodeId === node.id ? (lang === 'hi' ? 'रद्द करें' : 'Cancel') : (lang === 'hi' ? 'कनेक्ट करें' : 'Connect')}
                 </button>
                 <button
                   onClick={() => removeNode(node.id)}

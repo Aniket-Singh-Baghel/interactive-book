@@ -49,7 +49,52 @@ const content = {
         "<strong>Bluetooth</strong>: Used for short-range communication between devices, like connecting headphones to your phone.",
         "<strong>Cellular (4G/5G)</strong>: The technology that connects your smartphone to the internet over long distances."
     ],
-  }, 
+    connectivity_types_title: "Data Packet Flow: Wired, Wireless, and Satellite",
+    connectivity_types: [
+      {
+        title: "Wired Connectivity",
+        description: "Data packets travel through physical cables, like Ethernet or fiber optics. This creates a direct, stable path from sender to receiver.",
+        pros_title: "Pros",
+        pros: ["<strong>High Speed:</strong> Generally the fastest option.", "<strong>Low Latency:</strong> Minimal delay in data transfer.", "<strong>Reliable & Secure:</strong> Less prone to interference or unauthorized access."],
+        cons_title: "Cons",
+        cons: ["<strong>Limited Mobility:</strong> Devices are tethered by cables.", "<strong>Complex Installation:</strong> Can be difficult to set up in large or old buildings."],
+        usage_title: "Usage Sectors",
+        usage: "Ideal for offices, data centers, gaming setups, and home networks where speed and stability are critical.",
+        devices_title: "Participating Devices",
+        devices: "<strong>Router:</strong> Directs traffic. <strong>Switch:</strong> Connects multiple devices on a network. <strong>End Devices:</strong> PCs, servers. <strong>Cables:</strong> Ethernet, Fiber Optic.",
+        direction_title: "Connection Type",
+        direction: "<strong>Two-way connection</strong>, allowing simultaneous data sending and receiving."
+      },
+      {
+        title: "Wireless Connectivity (Wi-Fi)",
+        description: "Data packets are converted into radio waves and transmitted from a wireless router to a device's receiver.",
+        pros_title: "Pros",
+        pros: ["<strong>Mobility & Convenience:</strong> Connect from anywhere within range.", "<strong>Easy Setup:</strong> No need to run physical cables."],
+        cons_title: "Cons",
+        cons: ["<strong>Interference:</strong> Can be affected by walls, other Wi-Fi networks, or electronics.", "<strong>Variable Speed:</strong> Slower than wired and speed can fluctuate."],
+        usage_title: "Usage Sectors",
+        usage: "Homes, cafes, airports, smart devices (IoT), and connecting mobile users.",
+        devices_title: "Participating Devices",
+        devices: "<strong>Wireless Access Point (WAP)/Router:</strong> Sends and receives radio signals. <strong>End Devices:</strong> Laptops, smartphones, tablets with wireless adapters.",
+        direction_title: "Connection Type",
+        direction: "<strong>Two-way connection</strong> for sending and receiving data."
+      },
+      {
+        title: "Satellite Connectivity",
+        description: "Data packets travel from a user's dish to a satellite in space, which then relays the signal back to a ground station connected to the internet.",
+        pros_title: "Pros",
+        pros: ["<strong>Global Coverage:</strong> Provides internet access in remote or rural areas.", "<strong>Reaches Anywhere:</strong> Not dependent on ground-based infrastructure."],
+        cons_title: "Cons",
+        cons: ["<strong>High Latency:</strong> Significant delay due to the vast distance the signal travels.", "<strong>Weather Dependent:</strong> Rain, snow, or storms can disrupt the signal."],
+        usage_title: "Usage Sectors",
+        usage: "Rural internet, GPS navigation, satellite television broadcasting, in-flight Wi-Fi.",
+        devices_title: "Participating Devices",
+        devices: "<strong>Satellite Dish:</strong> Sends and receives signals from the satellite. <strong>Modem:</strong> Processes the signal. <strong>Satellite:</strong> Relays signals between the user and the ground station. <strong>Ground Station:</strong> Connects the satellite network to the internet.",
+        direction_title: "Connection Type",
+        direction: "Can be <strong>one-way</strong> (e.g., satellite TV) or <strong>two-way</strong> (e.g., satellite internet)."
+      }
+    ]
+  },
   hi: {
     home: "होम",
     previous: "पिछला",
@@ -94,6 +139,51 @@ const content = {
         "<strong>ब्लूटूथ</strong>: उपकरणों के बीच छोटी दूरी के संचार के लिए उपयोग किया जाता है, जैसे हेडफ़ोन को आपके फ़ोन से कनेक्ट करना।",
         "<strong>सेलुलर (4G/5G)</strong>: वह तकनीक जो आपके स्मार्टफोन को लंबी दूरी पर इंटरनेट से जोड़ती है।"
     ],
+    connectivity_types_title: "डेटा पैकेट प्रवाह: वायर्ड, वायरलेस और सैटेलाइट",
+    connectivity_types: [
+      {
+        title: "वायर्ड कनेक्टिविटी",
+        description: "डेटा पैकेट भौतिक केबलों, जैसे ईथरनेट या फाइबर ऑप्टिक्स, के माध्यम से यात्रा करते हैं। यह प्रेषक से प्राप्तकर्ता तक एक सीधा, स्थिर पथ बनाता है।",
+        pros_title: "फायदे",
+        pros: ["<strong>उच्च गति:</strong> आम तौर पर सबसे तेज़ विकल्प।", "<strong>कम विलंबता:</strong> डेटा ट्रांसफर में न्यूनतम देरी।", "<strong>विश्वसनीय और सुरक्षित:</strong> हस्तक्षेप या अनधिकृत पहुंच के प्रति कम संवेदनशील।"],
+        cons_title: "नुकसान",
+        cons: ["<strong>सीमित गतिशीलता:</strong> डिवाइस केबलों से बंधे होते हैं।", "<strong>जटिल स्थापना:</strong> बड़ी या पुरानी इमारतों में स्थापित करना मुश्किल हो सकता है।"],
+        usage_title: "उपयोग क्षेत्र",
+        usage: "कार्यालयों, डेटा केंद्रों, गेमिंग सेटअप और घरेलू नेटवर्क के लिए आदर्श जहां गति और स्थिरता महत्वपूर्ण है।",
+        devices_title: "भाग लेने वाले उपकरण",
+        devices: "<strong>राउटर:</strong> ट्रैफिक को निर्देशित करता है। <strong>स्विच:</strong> एक नेटवर्क पर कई उपकरणों को जोड़ता है। <strong>अंतिम उपकरण:</strong> पीसी, सर्वर। <strong>केबल:</strong> ईथरनेट, फाइबर ऑप्टिक।",
+        direction_title: "कनेक्शन प्रकार",
+        direction: "<strong>दो-तरफ़ा कनेक्शन</strong>, एक साथ डेटा भेजने और प्राप्त करने की अनुमति देता है।"
+      },
+      {
+        title: "वायरलेस कनेक्टिविटी (वाई-फाई)",
+        description: "डेटा पैकेट को रेडियो तरंगों में परिवर्तित किया जाता है और एक वायरलेस राउटर से डिवाइस के रिसीवर तक प्रेषित किया जाता है।",
+        pros_title: "फायदे",
+        pros: ["<strong>गतिशीलता और सुविधा:</strong> सीमा के भीतर कहीं से भी कनेक्ट करें।", "<strong>आसान सेटअप:</strong> भौतिक केबल चलाने की कोई आवश्यकता नहीं है।"],
+        cons_title: "नुकसान",
+        cons: ["<strong>हस्तक्षेप:</strong> दीवारों, अन्य वाई-फाई नेटवर्क या इलेक्ट्रॉनिक्स से प्रभावित हो सकता है।", "<strong>परिवर्तनीय गति:</strong> वायर्ड से धीमी और गति में उतार-चढ़ाव हो सकता है।"],
+        usage_title: "उपयोग क्षेत्र",
+        usage: "घर, कैफे, हवाई अड्डे, स्मार्ट डिवाइस (IoT), और मोबाइल उपयोगकर्ताओं को जोड़ने के लिए।",
+        devices_title: "भाग लेने वाले उपकरण",
+        devices: "<strong>वायरलेस एक्सेस प्वाइंट (WAP)/राउटर:</strong> रेडियो सिग्नल भेजता और प्राप्त करता है। <strong>अंतिम उपकरण:</strong> लैपटॉप, स्मार्टफोन, वायरलेस एडेप्टर वाले टैबलेट।",
+        direction_title: "कनेक्शन प्रकार",
+        direction: "<strong>दो-तरफ़ा कनेक्शन</strong> डेटा भेजने और प्राप्त करने के लिए।"
+      },
+      {
+        title: "सैटेलाइट कनेक्टिविटी",
+        description: "डेटा पैकेट एक उपयोगकर्ता की डिश से अंतरिक्ष में एक उपग्रह तक यात्रा करते हैं, जो फिर सिग्नल को इंटरनेट से जुड़े एक ग्राउंड स्टेशन पर वापस भेजता है।",
+        pros_title: "फायदे",
+        pros: ["<strong>वैश्विक कवरेज:</strong> दूरस्थ या ग्रामीण क्षेत्रों में इंटरनेट का उपयोग प्रदान करता है।", "<strong>कहीं भी पहुंच:</strong> जमीन-आधारित बुनियादी ढांचे पर निर्भर नहीं है।"],
+        cons_title: "नुकसान",
+        cons: ["<strong>उच्च विलंबता:</strong> सिग्नल द्वारा तय की गई विशाल दूरी के कारण महत्वपूर्ण देरी।", "<strong>मौसम पर निर्भर:</strong> बारिश, बर्फ या तूफान सिग्नल को बाधित कर सकते हैं।"],
+        usage_title: "उपयोग क्षेत्र",
+        usage: "ग्रामीण इंटरनेट, जीपीएस नेविगेशन, सैटेलाइट टेलीविजन प्रसारण, इन-फ्लाइट वाई-फाई।",
+        devices_title: "भाग लेने वाले उपकरण",
+        devices: "<strong>सैटेलाइट डिश:</strong> उपग्रह से सिग्नल भेजता और प्राप्त करता है। <strong>मोडेम:</strong> सिग्नल को संसाधित करता है। <strong>उपग्रह:</strong> उपयोगकर्ता और ग्राउंड स्टेशन के बीच सिग्नल रिले करता है। <strong>ग्राउंड स्टेशन:</strong> सैटेलाइट नेटवर्क को इंटरनेट से जोड़ता है।",
+        direction_title: "कनेक्शन प्रकार",
+        direction: "<strong>एक-तरफ़ा</strong> (जैसे, सैटेलाइट टीवी) या <strong>दो-तरफ़ा</strong> (जैसे, सैटेलाइट इंटरनेट) हो सकता है।"
+      }
+    ]
   },
 };
 
@@ -125,7 +215,7 @@ export default function BasicsOfConnectivity() {
 
   return (
     <div className="min-h-screen bg-amber-50 text-slate-800 font-sans">
-      <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md shadow-lg z-20 p-4">
+      <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md shadow-lg z-[100] p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link to="/parts/prt4" className="flex items-center gap-2 text-lg font-semibold text-amber-600 hover:text-amber-800 transition-colors">
             <FaHome />
@@ -174,7 +264,8 @@ export default function BasicsOfConnectivity() {
               <h3 className="font-semibold text-xl">{t.deep_dive_title}</h3>
               <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.deep_dive_text }} />
             </motion.div>
-            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
+            <div className="my-8 -mx-4 sm:-mx-6 lg:-mx-8">
+            <motion.div variants={fadeUp} className="w-full p-6 rounded-2xl shadow-lg bg-white">
               <h3 className="font-semibold text-xl">{t.examples_title}</h3>
               <ul className="mt-3 text-slate-600 space-y-3 list-disc pl-5">
                 {t.examples_list.map((item, index) => (
@@ -182,6 +273,7 @@ export default function BasicsOfConnectivity() {
                 ))}
               </ul>
             </motion.div>
+            </div>
             {/* New Technologies Section */}
             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
               <h3 className="font-semibold text-2xl text-center mb-6">{t.technologies_title}</h3>
@@ -206,19 +298,61 @@ export default function BasicsOfConnectivity() {
                 </div>
               </div>
             </motion.div>
+            {/* Data Packet Flow Section */}
+            <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
+              <h3 className="font-semibold text-2xl text-center mb-6">{t.connectivity_types_title}</h3>
+              <div className="space-y-8">
+                {t.connectivity_types.map((type, index) => (
+                  <div key={index} className="border-b border-slate-200 pb-6 last:border-b-0">
+                    <h4 className="font-bold text-xl text-amber-700">{type.title}</h4>
+                    <p className="mt-2 text-slate-600">{type.description}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                      <div>
+                        <h5 className="font-semibold text-slate-800">{type.pros_title}</h5>
+                        <ul className="mt-2 space-y-1 list-disc pl-5 text-emerald-600">
+                          {type.pros.map((pro, i) => (
+                            <li key={i}><span className="text-slate-600" dangerouslySetInnerHTML={{ __html: pro }} /></li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <h5 className="font-semibold text-slate-800">{type.cons_title}</h5>
+                        <ul className="mt-2 space-y-1 list-disc pl-5 text-red-500">
+                          {type.cons.map((con, i) => (
+                            <li key={i}><span className="text-slate-600" dangerouslySetInnerHTML={{ __html: con }} /></li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <h5 className="font-semibold text-slate-800">{type.usage_title}</h5>
+                      <p className="mt-1 text-slate-600">{type.usage}</p>
+                    </div>
+                    <div className="mt-4">
+                      <h5 className="font-semibold text-slate-800">{type.devices_title}</h5>
+                      <p className="mt-1 text-slate-600" dangerouslySetInnerHTML={{ __html: type.devices }} />
+                    </div>
+                     <div className="mt-4">
+                      <h5 className="font-semibold text-slate-800">{type.direction_title}</h5>
+                      <p className="mt-1 text-slate-600" dangerouslySetInnerHTML={{ __html: type.direction }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
 
         <div className="w-full flex justify-between items-center mt-10 p-4 bg-amber-100/50 rounded-lg shadow-md">
             <button
-              onClick={() => navigate('/module4/distribution-models')}
+              onClick={() => navigate('/parts/prt4')}
               className="flex items-center gap-2 px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg shadow transition"
             >
               <FaArrowLeft />
               {t.previous}
             </button>
             <button
-              onClick={() => navigate('/parts/prt2/part4/computer-networks')}
+              onClick={() => navigate('/part4/computer-networks')}
               className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg shadow transition"
             >
               {t.next}
