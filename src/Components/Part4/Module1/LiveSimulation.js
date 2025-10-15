@@ -123,7 +123,7 @@ function IconForType(type) {
 
 export default function InteractiveConnectivitySimulation({ initialLang = "en" }) {
   const [mode, setMode] = useState("wired");
-  const [lang, setLang] = useState(initialLang);
+  const [lang] = useState(initialLang);
   const [topology, setTopology] = useState(DEFAULT_TOPOLOGIES[mode]);
   const [nodes, setNodes] = useState(DEFAULT_TOPOLOGIES[mode].nodes.map(n => ({ ...n })));
   const [links, setLinks] = useState(DEFAULT_TOPOLOGIES[mode].links.map(l => ({ ...l })));
@@ -214,21 +214,21 @@ export default function InteractiveConnectivitySimulation({ initialLang = "en" }
     <div className="w-full">
       <div className="flex flex-col gap-6">
 
-        <div className="flex-1 bg-white rounded-2xl p-4 shadow-lg border border-slate-200 min-h-[520px]">
-          <div className="flex items-start justify-between gap-4 mb-4">
-            <div className="flex items-center gap-3">
+        <div className="flex-1 bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-slate-200">
+          <div className="flex flex-col lg:flex-row items-start justify-between gap-4 mb-4">
+            <div className="flex-1">
               <h2 className="text-slate-800 font-bold text-lg">{L(topology.name)}</h2>
-              <div className="text-slate-500 text-sm">{L(topology.description)}</div>
+              <div className="text-slate-500 text-sm mt-1">{L(topology.description)}</div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <div className="bg-slate-100 rounded-md p-1 flex items-center gap-2">
                 <button onClick={() => setMode('wired')} className={`px-3 py-1 rounded-md text-sm ${mode === 'wired' ? 'bg-indigo-600 text-white shadow' : 'text-slate-600 hover:bg-slate-200'}`}>Wired</button>
                 <button onClick={() => setMode('wireless')} className={`px-3 py-1 rounded-md text-sm ${mode === 'wireless' ? 'bg-indigo-600 text-white shadow' : 'text-slate-600 hover:bg-slate-200'}`}>Wireless</button>
                 <button onClick={() => setMode('satellite')} className={`px-3 py-1 rounded-md text-sm ${mode === 'satellite' ? 'bg-indigo-600 text-white shadow' : 'text-slate-600 hover:bg-slate-200'}`}>Satellite</button>
               </div>
 
-              <div className="bg-slate-100/80 rounded-md p-1 flex items-center gap-2">
+              <div className="bg-slate-100/80 rounded-md p-1 flex items-center flex-wrap gap-2">
                 <button onClick={toggleSimulation} className="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-md flex items-center gap-2 text-white">
                   {isPlaying ? <FaPause /> : <FaPlay />}
                   <span className="text-sm">{isPlaying ? (lang === 'hi' ? 'रोकें' : 'Pause') : (lang === 'hi' ? 'चलाएँ' : 'Play')}</span>
@@ -250,7 +250,7 @@ export default function InteractiveConnectivitySimulation({ initialLang = "en" }
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
-            className="relative bg-slate-50 rounded-xl border border-slate-200 h-[420px] sm:h-[520px] overflow-hidden"
+            className="relative bg-slate-50 rounded-xl border border-slate-200 h-[60vh] lg:h-[520px] overflow-hidden"
           >
             <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full absolute inset-0 pointer-events-none">
               <defs>

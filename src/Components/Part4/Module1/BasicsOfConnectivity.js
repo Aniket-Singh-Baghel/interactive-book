@@ -233,7 +233,7 @@ export default function BasicsOfConnectivity() {
           <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl font-extrabold text-amber-700 tracking-tight flex items-center justify-center gap-3">
             <FaNetworkWired /> {t.title}
           </motion.h1>
-          <motion.p variants={fadeUp} className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
+          <motion.p variants={fadeUp} className="mt-4 text-base sm:text-lg text-slate-600 max-w-3xl mx-auto">
             {t.subtitle}
           </motion.p>
         </motion.div>
@@ -241,7 +241,7 @@ export default function BasicsOfConnectivity() {
         <div className="space-y-8">
           {/* Analogy Section */}
           <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-            <h3 className="font-semibold text-xl text-center">{t.analogy_title}</h3>
+            <h3 className="font-semibold text-lg sm:text-xl text-center">{t.analogy_title}</h3>
             <p className="mt-3 text-slate-600 text-center" dangerouslySetInnerHTML={{ __html: t.analogy_text }} />
           </motion.div>
 
@@ -253,20 +253,20 @@ export default function BasicsOfConnectivity() {
           {/* Grid for other sections */}
           <div className="space-y-8 mt-12">
             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-              <h3 className="font-semibold text-xl">{t.simulation_explanation_title}</h3>
+              <h3 className="font-semibold text-lg sm:text-xl">{t.simulation_explanation_title}</h3>
               <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.simulation_explanation_text }} />
             </motion.div>
             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-              <h3 className="font-semibold text-xl">{t.digital_world_title}</h3>
+              <h3 className="font-semibold text-lg sm:text-xl">{t.digital_world_title}</h3>
               <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.digital_world_text }} />
             </motion.div>
             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-              <h3 className="font-semibold text-xl">{t.deep_dive_title}</h3>
+              <h3 className="font-semibold text-lg sm:text-xl">{t.deep_dive_title}</h3>
               <p className="mt-3 text-slate-600" dangerouslySetInnerHTML={{ __html: t.deep_dive_text }} />
             </motion.div>
             <div className="my-8 -mx-4 sm:-mx-6 lg:-mx-8">
             <motion.div variants={fadeUp} className="w-full p-6 rounded-2xl shadow-lg bg-white">
-              <h3 className="font-semibold text-xl">{t.examples_title}</h3>
+              <h3 className="font-semibold text-lg sm:text-xl">{t.examples_title}</h3>
               <ul className="mt-3 text-slate-600 space-y-3 list-disc pl-5">
                 {t.examples_list.map((item, index) => (
                   <li key={index} dangerouslySetInnerHTML={{ __html: item }} />
@@ -276,10 +276,10 @@ export default function BasicsOfConnectivity() {
             </div>
             {/* New Technologies Section */}
             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-              <h3 className="font-semibold text-2xl text-center mb-6">{t.technologies_title}</h3>
+              <h3 className="font-semibold text-xl sm:text-2xl text-center mb-6">{t.technologies_title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h4 className="font-bold text-xl text-amber-700">{t.wired_tech_title}</h4>
+                  <h4 className="font-bold text-lg sm:text-xl text-amber-700">{t.wired_tech_title}</h4>
                   <p className="mt-2 text-slate-600">{t.wired_tech_text}</p>
                   <ul className="mt-4 space-y-2 list-disc pl-5">
                     {t.wired_tech_examples.map((item, index) => (
@@ -288,7 +288,7 @@ export default function BasicsOfConnectivity() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-bold text-xl text-amber-700">{t.wireless_tech_title}</h4>
+                  <h4 className="font-bold text-lg sm:text-xl text-amber-700">{t.wireless_tech_title}</h4>
                   <p className="mt-2 text-slate-600">{t.wireless_tech_text}</p>
                   <ul className="mt-4 space-y-2 list-disc pl-5">
                     {t.wireless_tech_examples.map((item, index) => (
@@ -300,11 +300,11 @@ export default function BasicsOfConnectivity() {
             </motion.div>
             {/* Data Packet Flow Section */}
             <motion.div variants={fadeUp} className="p-6 rounded-2xl shadow-lg bg-white">
-              <h3 className="font-semibold text-2xl text-center mb-6">{t.connectivity_types_title}</h3>
+              <h3 className="font-semibold text-xl sm:text-2xl text-center mb-6">{t.connectivity_types_title}</h3>
               <div className="space-y-8">
                 {t.connectivity_types.map((type, index) => (
                   <div key={index} className="border-b border-slate-200 pb-6 last:border-b-0">
-                    <h4 className="font-bold text-xl text-amber-700">{type.title}</h4>
+                    <h4 className="font-bold text-lg sm:text-xl text-amber-700">{type.title}</h4>
                     <p className="mt-2 text-slate-600">{type.description}</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                       <div>
