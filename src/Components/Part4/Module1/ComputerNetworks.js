@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { FaHome, FaArrowLeft, FaArrowRight, FaNetworkWired } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import InteractiveSimulation from "./InteractiveSimulation";
+import SimulationControls from "./SimulationControls";
 
 const content = {
   en: {
@@ -154,7 +156,7 @@ export default function ComputerNetworks() {
         </motion.div>
 
         <div className="space-y-8">
-          <NetworkOverview t={t} />
+          <NetworkOverview t={t} lang={lang} />
           <NetworkTypes t={t} />
           <RealWorldExamples t={t} />
           <ComparisonChart t={t} />
@@ -182,7 +184,7 @@ export default function ComputerNetworks() {
   );
 }
 
-function NetworkOverview({ t }) {
+function NetworkOverview({ t, lang }) {
   return (
     <section className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm">
       <div className="flex flex-col items-center">
@@ -200,45 +202,42 @@ function NetworkOverview({ t }) {
           </p>
         </div>
         <div className="mt-4 w-full">
-          <MiniNetworkIllustration t={t} />
+          <MiniNetworkIllustration t={t} lang={lang} />
         </div>
       </div>
     </section>
   );
 }
 
-function MiniNetworkIllustration({ t }) {
+function MiniNetworkIllustration({ t, lang }) {
+  const [networkType, setNetworkType] = useState('LAN');
+  const [speed, setSpeed] = useState(2.5);
+  const [isRealWorld, setIsRealWorld] = useState(false);
+  const [isAnalogy, setIsAnalogy] = useState(false);
+
   return (
-    <div className="w-full h-64 bg-gradient-to-br from-sky-100 to-white rounded-xl p-3 shadow-inner">
-      <svg viewBox="0 0 400 200" className="w-full h-full">
-        <g>
-          <circle cx="50" cy="100" r="15" fill="#fff" stroke="#7dd3fc" strokeWidth="3" />
-          <text x="50" y="105" fontSize="10" textAnchor="middle" fill="#0369a1">{t.pc}</text>
-
-          <circle cx="120" cy="50" r="15" fill="#fff" stroke="#a5f3fc" strokeWidth="3" />
-          <text x="120" y="55" fontSize="10" textAnchor="middle" fill="#0369a1">{t.phone}</text>
-
-          <circle cx="120" cy="150" r="15" fill="#fff" stroke="#a5f3fc" strokeWidth="3" />
-          <text x="120" y="155" fontSize="10" textAnchor="middle" fill="#0369a1">{t.laptop}</text>
-
-          <circle cx="250" cy="100" r="20" fill="#fff" stroke="#38bdf8" strokeWidth="3" />
-          <text x="250" y="105" fontSize="10" textAnchor="middle" fill="#0369a1">{t.router}</text>
-
-          <circle cx="350" cy="100" r="15" fill="#fff" stroke="#7dd3fc" strokeWidth="3" />
-          <text x="350" y="105" fontSize="10" textAnchor="middle" fill="#0369a1">{t.server}</text>
-        </g>
-        <g>
-          <path d="M65,100 L230,100" stroke="#bae6fd" strokeWidth="3" strokeLinecap="round" />
-          <path d="M135,55 L235,95" stroke="#bae6fd" strokeWidth="3" strokeLinecap="round" />
-          <path d="M135,145 L235,105" stroke="#bae6fd" strokeWidth="3" strokeLinecap="round" />
-          <path d="M270,100 L335,100" stroke="#bae6fd" strokeWidth="3" strokeLinecap="round" />
-        </g>
-        <g>
-          <motion.circle r="5" fill="#06b6d4" animate={{ cx: [65, 240, 335], cy: [100, 100, 100] }} transition={{ duration: 4, repeat: Infinity, repeatType: "loop", ease: "linear" }} />
-          <motion.circle r="5" fill="#fb923c" animate={{ cx: [135, 240, 65], cy: [55, 95, 100] }} transition={{ duration: 3.5, repeat: Infinity, repeatType: "loop", ease: "linear", delay: 1 }} />
-          <motion.circle r="5" fill="#84cc16" animate={{ cx: [135, 240, 335], cy: [145, 105, 100] }} transition={{ duration: 4.5, repeat: Infinity, repeatType: "loop", ease: "linear", delay: 2 }} />
-        </g>
-      </svg>
+    <div className="w-full h-auto">
+      <div className="bg-gradient-to-br from-sky-100 to-white rounded-xl p-3 shadow-inner">
+        <InteractiveSimulation
+          t={t}
+          lang={lang}
+          networkType={networkType}
+          speed={speed}
+          isRealWorld={isRealWorld}
+          isAnalogy={isAnalogy}
+        />
+      </div>
+      <SimulationControls
+        networkType={networkType}
+        setNetworkType={setNetworkType}
+        speed={speed}
+        setSpeed={setSpeed}
+        isRealWorld={isRealWorld}
+        setIsRealWorld={setIsRealWorld}
+        isAnalogy={isAnalogy}
+        setIsAnalogy={setIsAnalogy}
+        lang={lang}
+      />
     </div>
   );
 }
