@@ -138,7 +138,7 @@ root.render(
 
         <Route path="/part4/what-is-internet" element={<WhatIsInternet />} />
         <Route path="/part4/basics-of-connectivity" element={<BasicsOfConnectivity />} />
-        <Route path='/part4/computer-networks' element={<ComputerNetworks />} />
+        <Route path='/part4/computer-networks' element={<ComputerNetworks />} />   
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
